@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 37 シリーズ・588 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 38 シリーズ・594 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -43,6 +43,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 35. [HttpClient の細部と issue](httpx/README.md)（6 章）— HttpRequest の options・headers と params の更新の規則・オーバーロードの型・httpResource の型・転送キャッシュのキー・spec と issue
 36. [SSR の守りと細部](ssrx/README.md)（10 章）— resolveUrl・location と allowedHosts・サーバーの HttpClient・ホストの検査・プロキシのヘッダー・リダイレクト・ロケール・Node のストリーム・アセットと CSS・spec と issue
 37. [Navigation API と FakeNavigation](navx/README.md)（7 章）— Navigation API の型と PlatformNavigation・FakeNavigation の navigate・戻る進む・precommitHandler・Router の連携の残り・テストでの使い方・spec と issue
+38. [パイプを書くと何を宣言したことになるか](pipe/README.md)（6 章）— 1 行の | が生むもの・@Pipe の定義・名前の解決・書ける場所と書けない場所・インスタンスと寿命・spec と issue
 
 ## 作り直し方
 

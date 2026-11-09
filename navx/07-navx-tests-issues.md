@@ -488,4 +488,5 @@ router/test/BUILD.bazel の `ts_config` が `@types/dom-navigation` を足して
 
 ---
 
-← 前: [テストの土台：FakeNavigationPlatformLocation と provideFakePlatformNavigation](06-navx-testing.md)
+← 前: [テストの土台：FakeNavigationPlatformLocation と provideFakePlatformNavigation](06-navx-testing.md)  
+次: [1 行の | が生むもの：テンプレートに書いた pipe の全体像](../pipe/01-pipe-what-declared.md) →
