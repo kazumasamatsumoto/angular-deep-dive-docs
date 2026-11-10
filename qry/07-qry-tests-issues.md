@@ -212,4 +212,5 @@ authoring の BUILD.bazel が、同じファイルを ngtsc で AOT にした `t
 
 ---
 
-← 前: [コンテンツのクエリ：投影されたノード、ディレクティブのクエリ、継承](06-qry-content-projection.md)
+← 前: [コンテンツのクエリ：投影されたノード、ディレクティブのクエリ、継承](06-qry-content-projection.md)  
+次: [1 行の ng-content が生むもの：投影の全体像](../proj/01-proj-what-declared.md) →
