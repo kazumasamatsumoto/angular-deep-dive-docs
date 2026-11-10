@@ -448,4 +448,5 @@ console.log('specs', specs.length, 'runs', total, 'issues', issues.length);
 
 ---
 
-← 前: [インスタンスの数と寿命：@for の中の pipe、inject、ngOnDestroy](05-pipe-instances-lifecycle.md)
+← 前: [インスタンスの数と寿命：@for の中の pipe、inject、ngOnDestroy](05-pipe-instances-lifecycle.md)  
+次: [1 行の viewChild が生むもの：クエリの全体像](../qry/01-qry-what-declared.md) →
