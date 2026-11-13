@@ -240,4 +240,5 @@ template\_typecheck\_spec.ts は `runInEachFileSystem` で、4 つの模擬の�
 
 ---
 
-← 前: [動的な投影：createComponent の projectableNodes と、よくある誤解](05-proj-dynamic.md)
+← 前: [動的な投影：createComponent の projectableNodes と、よくある誤解](05-proj-dynamic.md)  
+次: [params から状態を返す：ResourceParamsStatus と chain()](../resx/01-resx-params-status.md) →

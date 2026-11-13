@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 40 シリーズ・607 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 41 シリーズ・613 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -46,6 +46,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 38. [パイプを書くと何を宣言したことになるか](pipe/README.md)（6 章）— 1 行の | が生むもの・@Pipe の定義・名前の解決・書ける場所と書けない場所・インスタンスと寿命・spec と issue
 39. [クエリ（viewChild・contentChildren）の内側](qry/README.md)（7 章）— 1 行の viewChild が生むもの・コンパイラの出力・TQuery の照合・LQuery と結果の集め方・更新の時機と signal クエリ・コンテンツと投影・spec と issue
 40. [ng-content と投影の内側](proj/README.md)（6 章）— 1 行の ng-content が生むもの・コンパイラの出力・振り分け・描画と再投影・動的な投影とよくある誤解・spec と issue
+41. [resource の細部と新しい部品](resx/README.md)（6 章）— params の特別な戻り値と chain・debounced・エラーの包み方・SSR のキャッシュ・後片付けと漏れの修正・spec と issue
 
 ## 作り直し方
 
