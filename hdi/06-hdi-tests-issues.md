@@ -233,4 +233,5 @@ pnpm bazel test //packages/compiler-cli/test/compliance/full:full --nocache_test
 
 ---
 
-← 前: [host directive の providers と入出力：注入器と配線の細部](05-hdi-host-providers-bindings.md)
+← 前: [host directive の providers と入出力：注入器と配線の細部](05-hdi-host-providers-bindings.md)  
+次: [ErrorHandler と内部の入口：INTERNAL\_APPLICATION\_ERROR\_HANDLER](../err/01-err-handler-core.md) →

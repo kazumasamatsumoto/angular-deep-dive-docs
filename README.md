@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 42 シリーズ・619 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 43 シリーズ・625 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -48,6 +48,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 40. [ng-content と投影の内側](proj/README.md)（6 章）— 1 行の ng-content が生むもの・コンパイラの出力・振り分け・描画と再投影・動的な投影とよくある誤解・spec と issue
 41. [resource の細部と新しい部品](resx/README.md)（6 章）— params の特別な戻り値と chain・debounced・エラーの包み方・SSR のキャッシュ・後片付けと漏れの修正・spec と issue
 42. [hostDirectives と継承（features）](hdi/README.md)（6 章）— features の並びと実行・継承で def を混ぜる行・継承のコンパイル・host directive の重複の解消・providers と入出力・spec と issue
+43. [ErrorHandler とエラーの行き先](err/README.md)（6 章）— ErrorHandler と内部の入口・エラーを捕まえる場所の地図・ブラウザの全体のエラー・@boundary の実行時・@boundary のコンパイル・spec と issue
 
 ## 作り直し方
 
