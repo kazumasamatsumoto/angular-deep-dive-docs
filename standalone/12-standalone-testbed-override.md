@@ -541,7 +541,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> つまり AOT 済みコンポーネントに `set: {imports: [Stub]}` や `set: {template: '...'}` を積んでも、**例外にはならないが `ɵcmp` には反映されません**。この経路で効くのは `providers` と `viewProviders` だけです。`imports` や `template` を差し替えたいテストは、JIT（デコレータが残る）でコンパイルされている必要があります。
+> つまり AOT 済みコンポーネントに `set: {imports: [Stub]}` や `set: {template: '...'}` を積んでも、**例外にはならないが `ɵcmp` には反映されません**。この経路で効くのは `providers` と `viewProviders` だけです。ただし v22.0 以降（4ad3a1fe379 から）の 22.1.6 で手元で確かめると、この 2 つも差し替えた値が注入されず、元の値も消えて `null` になります。547 行目と 558 行目の resolver が配列を返すだけで、providers を登録する処理を呼ばないためです（[host directive の providers と入出力](../hdi/05-hdi-host-providers-bindings.md)の章）。`imports` や `template` を差し替えたいテストは、JIT（デコレータが残る）でコンパイルされている必要があります。
 
 ## 8. overrideTemplateUsingTestingModule も overrideComponent に帰着する
 

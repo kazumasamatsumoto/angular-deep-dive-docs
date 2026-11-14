@@ -256,4 +256,5 @@ resource\_spec.ts の `MockBackend`（30 行目）が、解決しない Promise 
 
 ---
 
-← 前: [後片付けと漏れ：destroy、abort、購読の漏れの修正](05-resx-cleanup-leaks.md)
+← 前: [後片付けと漏れ：destroy、abort、購読の漏れの修正](05-resx-cleanup-leaks.md)  
+次: [features とは何か：コンパイラが並べ、defineComponent が順に呼ぶ](../hdi/01-hdi-features-pipeline.md) →
