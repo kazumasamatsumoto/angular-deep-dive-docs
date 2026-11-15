@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 45 シリーズ・637 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 46 シリーズ・643 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -53,6 +53,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 43. [ErrorHandler とエラーの行き先](err/README.md)（6 章）— ErrorHandler と内部の入口・エラーを捕まえる場所の地図・ブラウザの全体のエラー・@boundary の実行時・@boundary のコンパイル・spec と issue
 44. [動的コンポーネント：createComponent と ViewContainerRef](dyn/README.md)（6 章）— 2 つの入口・ComponentFactory.create の中・directives の選択肢・bindings と ComponentRef・ViewContainerRef.createComponent とホストの要素・spec と issue
 45. [外のコンポーネント：foreignImports と foreign view](fgn/README.md)（6 章）— 契約と歩み・foreign view・ɵɵforeignComponent の中・@content と後始末・コンパイラと ngtsc・spec と PR
+46. [@let の内側：字句から LView の枠まで](letd/README.md)（6 章）— 字句と構文・スコープと binder・テンプレートのパイプライン・実行時とハイドレーション・型チェックと診断・spec と issue
 
 ## 作り直し方
 

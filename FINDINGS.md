@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（23 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（24 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -567,3 +567,18 @@ await cycle(); // 3 回目に戻す
 | 外のコンポーネントの名前が HTML の要素名と大文字小文字を無視して同じだと、HTML の要素の定義が使われる。`<Title ... />` は「Only void, custom and foreign elements can be self closed」になる | compiler の ml\_parser/html\_tags.ts 192 行目（定義が無ければ小文字にして引き直す） | compiler-cli 22.1.6 の記録（確かめたのは Title だけ） | ― |
 | @Component の定義を作るとき、consts の中の外のコンポーネントのオブジェクトを `join` で文字列にする。文字列にできないオブジェクトだと、クラスを読み込んだ時点で TypeError になる（不具合というより、橋を書く側が知っておくこと） | core の render3/definition.ts 739 行目（getComponentId） | ページの上の Proxy の橋 | [第 1 回](fgn/01-fgn-contract-history.md) |
 | spec が固めていない行: 再利用のときの `setCurrentTNode(tNode, false)` の 1 行は、消しても render3 の 9 specs が通る（固めているのは前の形に戻らないことだけ） | core の render3/instructions/foreign\_component.ts | 作業木で行を消して bazel | [第 3 回](fgn/03-fgn-instruction.md) |
+
+## @let の内側：字句から LView の枠まで
+
+### [spec と issue を読む：@let を固めているテスト](letd/06-letd-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜5 回を書いている途中で、lexer が止まらなくなる書き方や、ハイドレーションが止まる `@let` の値が見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現には、このサイトの依存の @angular/\* 22.1.6 と、Node で動かした 22.2.6 を使いました。2 つ目と 3 つ目は、すでに開いている issue や PR と根が同じです。
+
+| 何が起きるか | どこ | 確かめ方 | 章 |
+| --- | --- | --- | --- |
+| `@let` の構文を切った設定（`tokenizeLet: false`）でブロックの構文は有効にしておくと、`@let` の文字で lexer が先へ進まず、空の TEXT のトークンを積み続けてメモリが尽きる。`a@letter.example` のような文字でも起きる。版の古い部分コンパイルの宣言を linker にかける道で届く | compiler の ml\_parser/lexer.ts 1421〜1424 行目（`_isTextEnd` が `_tokenizeLet` を見ずに `_isLetStart()` で止まる。読む側の 251 行目は `_tokenizeLet` を見る）。18a675081f9（20.2.0）から | heap 64 MB の Worker で `parseTemplate(…, {enableLetSyntax: false})`。compiler 22.1.6・22.2.6 の linker の記録 | [第 1 回](letd/01-letd-syntax.md) |
+| `@let pair = ['a', true];` のように 1 番目の要素が true の配列を子のビューで読むと、サーバーの側でコンテナとして書き出され、ブラウザのハイドレーションが NG0502 で止まる | core の hydration/annotate.ts 658 行目（`isLContainer` の枝が 686 行目の `!isLetDeclaration` より先）、node\_lookup\_utils.ts 172 行目 | 22.1.6・22.2.6 の platform-server と domino の記録。658 行目の前で LetDeclaration を外す写しで消える。根は #59504・#71929 と同じ | [第 4 回](letd/04-letd-runtime.md) |
+| ハイドレーションの後片付けが、`@let` に入れた利用者の配列に `i18nNodes` などを書き足す。凍らせた配列では TypeError（#71929 の最小の形は今も起きる。#71990 は開いたまま） | core の hydration/cleanup.ts 114〜120 行目 | 22.1.6・22.2.6 の記録。#71990 の形の写しで消える | [第 4 回](letd/04-letd-runtime.md) |
+| 読み取りだけの変数への書き込み（`[(x)]` に signal でない `@let` を書くなど）の診断が、NG8005 ではなく NG998005 と表示される。spec は文だけを比べている | compiler-cli の ngtsc/typecheck/template\_semantics/src/template\_semantics\_checker.ts 149 行目で `ngErrorCode()` を掛け、受け取る checker.ts 927 行目がもう一度掛ける | compiler-cli 22.1.6・22.2.6 の formatDiagnostics の記録 | [第 5 回](letd/05-letd-typecheck.md) |
+| `@let` の終わりの `;` を忘れると、名前の span が飲み込まれた後ろの方の同じ文字を指す | compiler の ml\_parser/parser.ts 894 行目（`lastIndexOf(name)`） | ページの上の parseTemplate | [第 1 回](letd/01-letd-syntax.md) |
+| NG8109（signal を呼ばずに補間した）の文の閉じ括弧が 1 つ多い（`s()}`） | compiler-cli の typecheck/extended/checks/interpolated\_signal\_not\_invoked/index.ts 217 行目 | compiler-cli の記録 | [第 5 回](letd/05-letd-typecheck.md) |
