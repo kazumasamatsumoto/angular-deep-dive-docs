@@ -237,4 +237,5 @@ ErrorHandler 本体と全体のリスナーは `error_handler_spec.ts` の `desc
 
 ---
 
-← 前: [@boundary のコンパイル：字句解析から型チェックまで](05-err-boundary-compile.md)
+← 前: [@boundary のコンパイル：字句解析から型チェックまで](05-err-boundary-compile.md)  
+次: [2 つの入口：createComponent 関数と ViewContainerRef.createComponent](../dyn/01-dyn-entry-points.md) →

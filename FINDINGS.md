@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（21 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（22 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -536,3 +536,18 @@ await cycle(); // 3 回目に戻す
 | `@error (let e = $index)` のような誤った書き方が、パーサの NG5002 ではなく、スタック付きの TS500 になる。パーサはエラーを積むが変数も残すので、型チェックの中で例外になる。`@for` の `let i = $foo` も同じ形 | compiler の render3/r3\_boundaries.ts 73〜79 行目と、型チェックの scope.ts の境界の分岐 | 22.2.6 の compiler-cli で 16 の書き方をコンパイルした記録 | [第 5 回](err/05-err-boundary-compile.md) |
 | 境界の中のビューを作るときに投げられたエラーは、包まずに覚えられる。子の constructor が文字列を投げると @error の `$error` は文字列のまま（更新のときは包まれ、型チェックは Error として扱う）。このときの details は declarationType がホストになり、caughtBy が無い | core の render3/instructions/boundary.ts 159 行目と 164〜173 行目 | 22.2.6 の Node の記録 | [第 4 回](err/04-err-boundary-runtime.md) |
 | （細かいもの）全体のリスナーの `if (e.error)` は、`throw 0` のような偽の値も「error を持たない ErrorEvent」として包む | error\_handler.ts 204 行目 | 第 3 回のデモ | [第 3 回](err/03-err-global-listeners.md) |
+
+## 動的コンポーネント：createComponent と ViewContainerRef
+
+### [spec と issue を読む：動的コンポーネントを固めているテスト](dyn/06-dyn-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜5 回を書いている途中で、開発モードと本番で振る舞いが分かれる書き方や、古くなった説明が見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現には、このサイトの依存の @angular/core 22.1.6 と、Node で動かした 22.2.6 を使いました。gh で検索した範囲では、同じ件を扱った issue は見つかっていません。
+
+| 何が起きるか | どこ | 確かめ方 | 章 |
+| --- | --- | --- | --- |
+| `twoWayBinding('formField', sig)` が、開発モードでは呼んだ時点で ``Unexpected `create` callback in inputBinding`` の ASSERTION ERROR になる。名前が formField の inputBinding だけが create を持つため。本番では作れるが、二方向の binding は出力の create だけを使うので、入力の create（controlCreateInternal）は呼ばれない | core の render3/dynamic\_bindings.ts 134〜147 行目（formField の分岐）、229 行目（assertNotDefined）、241 行目（`create: output.create`） | 22.2.6 の Node の記録（開発と本番）。create\_component\_spec.ts の formField の it は inputBinding だけ | [第 4 回](dyn/04-dyn-bindings-ref.md) |
+| `vcr.createComponent(C, {index: 5})` のように範囲の外の index を渡すと、コンポーネントを作ってから index を確かめるので、コンストラクタが走ったあとで投げる（開発は ASSERTION ERROR、本番は TypeError）。作られたものは ViewContainerRef にもアプリにも付かず、ホストやアプリを壊しても DestroyRef.onDestroy が呼ばれない。index の範囲の確かめは開発モードだけ | core の linker/view\_container\_ref.ts 524 行目（create）、536 行目（insertImpl）、664〜674 行目（\_adjustIndex）。createEmbeddedView も 413 行目で同じ順 | 22.2.6 の Node の記録（開発と本番） | [第 5 回](dyn/05-dyn-vcr-host.md) |
+| reflectComponentType の JSDoc の例が、`@Input('inputName') inputPropName` に対して `{propName: 'inputName', templateName: 'inputPropName'}` と逆に書いている（isSignal も無い）。実物は propName が inputPropName を返し、spec も実物と同じ向き。angular-main でも同じ | core の render3/component.ts 188〜189 行目 | 例と同じクラスを 22.1.6 と 22.2.6 の JIT で作って呼んだ記録 | [第 1 回](dyn/01-dyn-entry-points.md) |
+| ComponentFactory を公開 API から外したあとの残り: `ComponentFactory.isBoundToModule` は書くだけで読む行が無い。`TestBedCompiler._getComponentFactories` を呼ぶ行が無い。view\_container\_ref.ts の `ngModule == null` の判定とそのコメントは ComponentFactory を渡せたころの説明のまま。ComponentRef の JSDoc が非公開の ComponentFactory を指している | component\_ref.ts 226・263 行目、testing の test\_bed\_compiler.ts 494 行目、view\_container\_ref.ts 493〜509 行目、linker/component\_factory.ts 17・63 行目 | grep（呼び出し元が 0 件）、f9b74e90e3c・df9eed4ff1d の差分 | [第 1 回](dyn/01-dyn-entry-points.md) |
+| spec の穴: environmentInjector と ngModuleRef を両方渡したときの確かめに it が無い。2026-04 の df9eed4ff1d で render3/component\_ref\_spec.ts がファイルごと消え、そこにあった ComponentRef.setInput の it（同じ値なら書かない など）と同じ名前の it が今の木に無い。acceptance の component\_spec.ts 893 行目の it は「投げる」という名前で null が返ることを確かめている | view\_container\_ref.ts 476〜480 行目（`grep -rn "Cannot pass both" packages/core/test` は 0 件）、component\_spec.ts 893〜904 行目 | grep と git show df9eed4ff1d | [第 5 回](dyn/05-dyn-vcr-host.md)・[第 1 回](dyn/01-dyn-entry-points.md) |
+| （仕様の可能性あり）環境の注入器を親に持つ `Injector.create({parent: appEnv})` を elementInjector に渡すと、`providedIn: 'root'` のトークンは elementInjector の親から先に見つかるので、environmentInjector で上書きしても効かない。NodeInjector を親にすると上書きが効く。本番で directives にコンポーネントのクラスを渡すと、開発モードだけの確かめが無いため原因の分かりにくい TypeError になる | chained\_injector.ts 32〜44 行目、component\_ref.ts の directives を並べる行（第 3 回） | 第 2 回のデモと Node の記録、第 3 回の本番の記録 | [第 2 回](dyn/02-dyn-factory-create.md)・[第 3 回](dyn/03-dyn-directives.md) |
