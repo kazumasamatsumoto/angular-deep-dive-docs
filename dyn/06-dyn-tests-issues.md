@@ -236,4 +236,5 @@ filter が 0 件に当たっても jasmine は失敗にしないからです。a
 
 ---
 
-← 前: [ViewContainerRef.createComponent とホストの要素の守り](05-dyn-vcr-host.md)
+← 前: [ViewContainerRef.createComponent とホストの要素の守り](05-dyn-vcr-host.md)  
+次: [契約と歩み：4 つの Symbol と g3-only の印](../fgn/01-fgn-contract-history.md) →

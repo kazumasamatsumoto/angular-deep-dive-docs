@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（22 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（23 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -551,3 +551,19 @@ await cycle(); // 3 回目に戻す
 | ComponentFactory を公開 API から外したあとの残り: `ComponentFactory.isBoundToModule` は書くだけで読む行が無い。`TestBedCompiler._getComponentFactories` を呼ぶ行が無い。view\_container\_ref.ts の `ngModule == null` の判定とそのコメントは ComponentFactory を渡せたころの説明のまま。ComponentRef の JSDoc が非公開の ComponentFactory を指している | component\_ref.ts 226・263 行目、testing の test\_bed\_compiler.ts 494 行目、view\_container\_ref.ts 493〜509 行目、linker/component\_factory.ts 17・63 行目 | grep（呼び出し元が 0 件）、f9b74e90e3c・df9eed4ff1d の差分 | [第 1 回](dyn/01-dyn-entry-points.md) |
 | spec の穴: environmentInjector と ngModuleRef を両方渡したときの確かめに it が無い。2026-04 の df9eed4ff1d で render3/component\_ref\_spec.ts がファイルごと消え、そこにあった ComponentRef.setInput の it（同じ値なら書かない など）と同じ名前の it が今の木に無い。acceptance の component\_spec.ts 893 行目の it は「投げる」という名前で null が返ることを確かめている | view\_container\_ref.ts 476〜480 行目（`grep -rn "Cannot pass both" packages/core/test` は 0 件）、component\_spec.ts 893〜904 行目 | grep と git show df9eed4ff1d | [第 5 回](dyn/05-dyn-vcr-host.md)・[第 1 回](dyn/01-dyn-entry-points.md) |
 | （仕様の可能性あり）環境の注入器を親に持つ `Injector.create({parent: appEnv})` を elementInjector に渡すと、`providedIn: 'root'` のトークンは elementInjector の親から先に見つかるので、environmentInjector で上書きしても効かない。NodeInjector を親にすると上書きが効く。本番で directives にコンポーネントのクラスを渡すと、開発モードだけの確かめが無いため原因の分かりにくい TypeError になる | chained\_injector.ts 32〜44 行目、component\_ref.ts の directives を並べる行（第 3 回） | 第 2 回のデモと Node の記録、第 3 回の本番の記録 | [第 2 回](dyn/02-dyn-factory-create.md)・[第 3 回](dyn/03-dyn-directives.md) |
+
+## 外のコンポーネント：foreignImports と foreign view
+
+### [spec と PR を読む：foreign component を固めているテスト](fgn/06-fgn-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜5 回を書いている途中で、サーバーで描くと止まる行や、並べ替えで DOM が消える行が見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現には、このサイトの依存の @angular/core 22.1.6 と、Node で動かした 22.2.6 を使いました。gh で検索した範囲では、同じ件を扱った issue や PR は見つかっていません。foreign component は内部向けの仕組みなので、仕様として決めてある振る舞いが含まれているかもしれません。
+
+| 何が起きるか | どこ | 確かめ方 | 章 |
+| --- | --- | --- | --- |
+| 外のコンポーネントを @if などのビューの根に置いて platform-server で描くと、`ReferenceError: document is not defined` で止まる。同じ回の変更検知も止まり、ほかの外のコンポーネントの render も呼ばれない | core の render3/foreign\_view.ts 126 行目（`document.createDocumentFragment()`）、node\_manipulation.ts 962 行目（Detach の枝も大域の `document`） | 22.1.6 と 22.2.6 の renderApplication の記録 | [第 2 回](fgn/02-fgn-foreign-view.md) |
+| @for の中の外のコンポーネントで、@content の中身をもう作ったあとに並べ替えると、`insertBefore` が NG05106 を投げ、要素が 1 つ消える。開発モードと本番のどちらでも起きる | core の render3/node\_manipulation.ts 714〜715 行目（`getFirstNativeNode` のコンテナの枝が LogicalOnly のコンテナに降り、外が持っているノードを返す） | 22.1.6・22.2.6 の Node の記録。LogicalOnly なら `lContainer[NATIVE]` を返す 1 行を写しに足すと並べ替わった。spec の並べ替えの it は中身の無い外のコンポーネントだけ | [第 4 回](fgn/04-fgn-content.md) |
+| 同じ要素がディレクティブのセレクタと外のコンポーネントの名前の両方に当たると、テンプレートの診断ではなく素の `Error` になり、ビルドは TS500 で落ちる。spec もその throw を期待している | compiler の render3/view/t2\_binder.ts 754〜756 行目、test の binding\_spec.ts 1688 行目 | compiler-cli 22.1.6・22.2.6 の記録 | [第 5 回](fgn/05-fgn-compiler.md) |
+| 部分コンパイル（ライブラリの配布の形）では foreignImports が残らず、linker が `foreignImports: null` を渡す。リンクのあとの `<Card>` はふつうの要素になり、診断は 0 件 | compiler-cli の linker/src/file\_linker/partial\_linkers/partial\_component\_linker\_1.ts 257 行目。compliance の test は linked のモードを外している | compiler-cli の部分コンパイル → linker の記録 | [第 5 回](fgn/05-fgn-compiler.md) |
+| 外のコンポーネントの名前が HTML の要素名と大文字小文字を無視して同じだと、HTML の要素の定義が使われる。`<Title ... />` は「Only void, custom and foreign elements can be self closed」になる | compiler の ml\_parser/html\_tags.ts 192 行目（定義が無ければ小文字にして引き直す） | compiler-cli 22.1.6 の記録（確かめたのは Title だけ） | ― |
+| @Component の定義を作るとき、consts の中の外のコンポーネントのオブジェクトを `join` で文字列にする。文字列にできないオブジェクトだと、クラスを読み込んだ時点で TypeError になる（不具合というより、橋を書く側が知っておくこと） | core の render3/definition.ts 739 行目（getComponentId） | ページの上の Proxy の橋 | [第 1 回](fgn/01-fgn-contract-history.md) |
+| spec が固めていない行: 再利用のときの `setCurrentTNode(tNode, false)` の 1 行は、消しても render3 の 9 specs が通る（固めているのは前の形に戻らないことだけ） | core の render3/instructions/foreign\_component.ts | 作業木で行を消して bazel | [第 3 回](fgn/03-fgn-instruction.md) |
