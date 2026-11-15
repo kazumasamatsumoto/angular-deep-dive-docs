@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（24 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（25 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -582,3 +582,21 @@ await cycle(); // 3 回目に戻す
 | 読み取りだけの変数への書き込み（`[(x)]` に signal でない `@let` を書くなど）の診断が、NG8005 ではなく NG998005 と表示される。spec は文だけを比べている | compiler-cli の ngtsc/typecheck/template\_semantics/src/template\_semantics\_checker.ts 149 行目で `ngErrorCode()` を掛け、受け取る checker.ts 927 行目がもう一度掛ける | compiler-cli 22.1.6・22.2.6 の formatDiagnostics の記録 | [第 5 回](letd/05-letd-typecheck.md) |
 | `@let` の終わりの `;` を忘れると、名前の span が飲み込まれた後ろの方の同じ文字を指す | compiler の ml\_parser/parser.ts 894 行目（`lastIndexOf(name)`） | ページの上の parseTemplate | [第 1 回](letd/01-letd-syntax.md) |
 | NG8109（signal を呼ばずに補間した）の文の閉じ括弧が 1 つ多い（`s()}`） | compiler-cli の typecheck/extended/checks/interpolated\_signal\_not\_invoked/index.ts 217 行目 | compiler-cli の記録 | [第 5 回](letd/05-letd-typecheck.md) |
+
+## @angular/upgrade の内側：AngularJS と 1 つのページを分け合う
+
+### [spec と issue を読む：upgrade を固めているテスト](upg/06-upg-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜5 回を書いている途中で、投影の番号の並べ方や、downgrade した input が transform を通らないこと、zoneless の枝を固める spec が無いことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現には、Node の上で動かした @angular/upgrade 22.1.6 と AngularJS 1.8.3（jsdom 26）を使いました。spec の穴は、作業木で行を変えて static/test の 614 の it が通るままかで確かめました。
+
+| 何が起きるか | どこ | 確かめ方 | 章 |
+| --- | --- | --- | --- |
+| AngularJS の側から投影した要素が、セレクタに合う ng-content のうち番号の小さい方ではなく、文字列として先に来る方に入る（\[2\] と \[10\] の両方に合うと \[10\] に入る）。Angular のテンプレートから同じものを投影すると \[2\] に入る | upgrade の src/common/src/downgrade\_component\_adapter.ts 396 行目（`ngContentIndices.sort()` に比べる関数が無い） | ng-content が 12 個のコンポーネントの記録。配布物の写しで `(a, b) => a - b` にすると \[2\] に入る | [第 2 回](upg/02-upg-downgrade-component.md) |
+| downgrade したコンポーネントの input に `transform`（例: `booleanAttribute`）があっても、AngularJS の属性から入る値は transform を通らない（空の文字列が `''` のまま。`ComponentRef.setInput` なら `true`） | 同じファイルの `updateInput`（319〜348 行目）。transform を走らせるのは core の write\_to\_directive\_input.ts 57〜61 行目で、この道を通らない | デコレーターの input と signal の input の両方の記録。5f56a658375 のコミットの本文に、setInput への書き換えを先送りした理由が書かれている | [第 2 回](upg/02-upg-downgrade-component.md) |
+| AngularJS の起動より前に Angular の側で `$injector` に頼るものを引くと最初は分かりやすいエラーになるが、それを受け止めて起動を続けると、後の bootstrap が `NG0200: Circular dependency detected for $injector` で止まり、元の原因がメッセージに出ない | upgrade の static/src/angular1\_providers.ts 21 行目が投げ、core の di/r3\_injector.ts 530 行目で入れた CIRCULAR の印が戻されないまま残る（upgrade に限らない注入器のふるまい）。upgrade\_module.ts 291 行目で表に出る | Node の記録（3 つ目の場面） | [第 1 回](upg/01-upg-bootstrap.md) |
+| zoneless の混在アプリで `$digest` を呼ぶ枝を消しても、spec が 1 つも落ちない。この枝を入れたコミットの本文は afterEveryRender だが、入ったコードは内部の `afterTick` を `as any` で購読している | upgrade の static/src/upgrade\_module.ts 328〜329 行目（900cd37f68c、spec の追加なし） | 作業木で 328 行目を `false && …` にしても static/test は 614 passed | [第 4 回](upg/04-upg-injection-cd.md) |
+| downgradeModule に NgModule のクラスを渡すと zone の変更検知が足されるが、起動の関数を渡すと足されず、v22 では NoopNgZone のまま動く。クラスの形で足す provider を消しても spec が落ちない | upgrade の static/src/downgrade\_module.ts 388 行目と 396〜398 行目（2a7a5de53fd からこの差がある） | 作業木で 388 行目を `applicationProviders: []` にしても 614 passed。3 つの形の記録 | [第 5 回](upg/05-upg-downgrade-module.md) |
+| 遅延読み込みの NgModule や standalone のコンポーネントの imports に UpgradeModule を置くと、根とは別の NgZone ができる（根の NgModule や bootstrapApplication の providers に置けば同じ）。閉じた #67368 の続きの問いに当たる | upgrade の static/src/upgrade\_module.ts 149 行目（UpgradeModule の providers の zone の変更検知、d9e597f3418） | 置き場所ごとに NgZone が根と同じかを比べた記録 | [第 4 回](upg/04-upg-injection-cd.md) |
+| zoneless のとき、AngularJS の側の whenStable の callback が Angular のタイマーを待たずにその場で呼ばれる | upgrade の static/src/upgrade\_module.ts 203〜230 行目（Testability の橋） | NoopNgZone の記録。仕様の範囲かどうかはソースとコミットからは決められない | [第 4 回](upg/04-upg-injection-cd.md) |
+
+ほかに、UpgradeHelper の `$httpBackend` の枝（upgrade\_helper.ts 110〜119 行目）は UpgradeAdapter が消えた後どこからも呼ばれていないこと、getAngularLib は export から外れただけで angular1.ts に残っていることを、[第 3 回](upg/03-upg-upgrade-component.md)と[第 1 回](upg/01-upg-bootstrap.md)に書きました。

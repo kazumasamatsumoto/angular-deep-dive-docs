@@ -303,4 +303,5 @@ compiler-cli の spec の多くが `runInEachFileSystem` で同じ it を 4 つ�
 
 ---
 
-← 前: [型チェックと診断：TCB と NG8015〜8017・NG8112](05-letd-typecheck.md)
+← 前: [型チェックと診断：TCB と NG8015〜8017・NG8112](05-letd-typecheck.md)  
+次: [全体と起動：UpgradeModule.bootstrap が 2 つを順に起こす](../upg/01-upg-bootstrap.md) →
