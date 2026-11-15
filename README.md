@@ -4,6 +4,8 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
+連載の途中で見つけた本家の不具合と、手元で作った直しは [FINDINGS.md](FINDINGS.md) に集めています（本家には issue も PR も出していません）。
+
 ## シリーズ
 
 1. [起動の全手順](boot/README.md)（13 章）— ng serve と打ってから最初の画面が出るまで

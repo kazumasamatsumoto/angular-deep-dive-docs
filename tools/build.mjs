@@ -339,6 +339,7 @@ const top = [
   '# Angular Deep Dive',
   `Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 ${series.length} シリーズ・${total} 章。`,
   `各章の Markdown は、[サイト](${SITE_URL}) の本番ビルドから \`npm run build\` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。`,
+  '連載の途中で見つけた本家の不具合と、手元で作った直しは [FINDINGS.md](FINDINGS.md) に集めています（本家には issue も PR も出していません）。',
   '## シリーズ',
   series.map((s, i) => `${i + 1}. [${esc(s.title)}](${s.key}/README.md)（${bySeries.get(s.key).length} 章）— ${esc(s.subtitle)}`).join('\n'),
   '## 作り直し方',

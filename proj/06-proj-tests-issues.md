@@ -194,15 +194,6 @@ pnpm bazel test //packages/platform-server/test:test --nocache_test_results --te
 
 ## 書いている途中で見つかったもの
 
-第 4・5 回を書く途中で、既存の it が固めていない振る舞いが 2 つ見つかりました。どちらも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で、ページの上の本物（このサイトの 22.1.6）で確かめました。
-
-| 何が起きるか | どこ | 確かめ方 | 章 |
-| --- | --- | --- | --- |
-| `@for (r of rows; track r) {…<ng-content />}` のように ng-content がブロックの直下にあると、中身の無い行を消しただけで、最後の行にある中身が document から外れる。残った行には戻らない | 行のビューを外す道が node\_manipulation.ts の `applyNodes` の ng-content の分岐（854〜862 行目）から `applyProjectionRecursive` に入り、枠のノードを今どこにあっても `remove()` する | 第 5 回の DEMO 2 の `prd-in-for-root`（行 1, 2, 3 → 先頭を消す → `[行 2][行 3]` で中身が `isConnected === false`） | [第 5 回](05-proj-dynamic.md) |
-| 再投影で、外の ng-content に既定の内容が無く、外に何も渡されていないと、内の ng-content の既定の内容も出ない（何も出ない） | instructions/projection.ts 197 行目。内から見た枠の先頭は外の ng-content の TNode なので空ではない | 第 4 回の DEMO のケース 1（`middle の既定（title）\| ` の後ろが空） | [第 4 回](04-proj-render.md) |
-
-## 書いている途中で見つかったもの
-
 第 1〜5 回を書く途中で、実行時に落ちる書き方と、DOM の付け外しの食い違いと、古くなったコメントが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめ、再現はこのサイトの依存の @angular/\* 22.1.6 で行いました。
 
 | 何が起きるか | どこ | 確かめ方 | 章 |
