@@ -333,4 +333,5 @@ angular-main より後（2026-11-13）に、PR #72018（`control_cva.ts` の属�
 
 ---
 
-← 前: [ControlValueAccessor との互換：古いコントロールを \[formField\] で使う](05-sfd-cva.md)
+← 前: [ControlValueAccessor との互換：古いコントロールを \[formField\] で使う](05-sfd-cva.md)  
+次: [declareExperimentalWebMcpTool：1 つのツールを登録して取り消すまで](../wmcp/01-wmcp-declare.md) →

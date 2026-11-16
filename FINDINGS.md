@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（26 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（27 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -616,3 +616,20 @@ await cycle(); // 3 回目に戻す
 | 最初の更新の後で `[type]` が変わると、min / max を受けるかの判定が古いまま残り、DOM の value も書き直されない | signals/src/directive/form\_field.ts 425 行目（`_elementAcceptsMinMax ??=` で 1 回だけ判定） | 第 2 回のデモ（color から text に切り替える） | [第 2 回](sfd/02-sfd-native.md) |
 
 ほかに、日付の input を置いただけで dirty になること（開いている #69632 と同じ現象）の原因の道筋を[第 3 回](sfd/03-sfd-validity.md)に、CVA に `pattern` として空の配列が書かれること（#68246）と InteropNgControl に無いメソッド（#69678）を[第 5 回](sfd/05-sfd-cva.md)に書きました。
+
+## WebMCP の内側：Angular のアプリが AI のエージェントにツールを渡す
+
+### [spec と issue を読む：WebMCP を固めているテスト](wmcp/04-wmcp-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜3 回を書いている途中で、登録の失敗が受け取られないまま捨てられる場所が 2 つと、守りの行を固める spec が無いことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現は、このサイトの依存の @angular/core 22.1.6 で動かしたページの上のデモと、Node の上の 22.2.6 の記録、作業木に足した spec です。
+
+| 何が起きるか | どこ | 確かめ方 | 章 |
+| --- | --- | --- | --- |
+| provideExperimentalWebMcpTools で登録が失敗しても（同じ名前のツールなど）、注入器はふつうに作られ、失敗は受け取る人のいない reject になる。2 つ目のツールは登録されない | core の webmcp/provide\_tools.ts 34 行目（`declareExperimentalWebMcpTool` の Promise を捨てる。f908140d718 で登録が非同期になってから） | 同じ名前のツールを持つ注入器を 2 つ作る、作業木の spec | [第 2 回](wmcp/02-wmcp-provide.md) |
+| form() の `experimentalWebMcpTool` で、モデルからスキーマを作れなかったとき（null を含むモデルなど）のエラーが、ErrorHandler に届かず、受け取る人のいない reject になる | forms の signals/src/api/structure.ts 231〜236 行目（`registerWebMcpForm` の Promise を捨てる）、webmcp/registration.ts 32 行目と 47 行目 | Node の 22.2.6 の記録（unhandledRejection）と、作業木の spec（Chromium）。既存の spec はトークンを直接呼ぶのでこの道を通らない | [第 3 回](wmcp/03-wmcp-forms.md) |
+| 登録の途中で注入器を壊したときの AbortError を飲み込む枝、SSR で止める行、`registerTool` が関数かを確かめる行を消しても、core の 13 の spec が全部通る | core の webmcp/declare\_tool.ts 36 行目・46 行目・84〜89 行目（98960556a6d・e50d47a4931・8cf7731468f） | 作業木で行を消して `webmcp_chromium` を走らせる。「登録の途中で destroy」の it を足すと、枝を消したときだけ落ちる | [第 1 回](wmcp/01-wmcp-declare.md) |
+| フォームのツールの execute は、エージェントの引数でモデル全体を置き換えるので、引数で省いたプロパティがモデルから消える。submission の無いフォームでは、NG01915 で reject される前にモデルがもう書き換わっている | forms の signals/src/webmcp/registration.ts 69 行目（`node.value.set(args)`）と 72 行目（`submit`） | Node の 22.2.6 の記録。省いたプロパティの件は開いている PR #71271 と同じ指摘 | [第 3 回](wmcp/03-wmcp-forms.md) |
+| 配列のフィールドのスキーマは先頭の要素だけから作られ、空の配列ではスキーマを作れない | forms の signals/src/webmcp/registration.ts 104〜112 行目 | Node の 22.2.6 の記録 | [第 3 回](wmcp/03-wmcp-forms.md) |
+| angular-main では、core の annotations を `registerTool` に渡すことを確かめる it が無くなっている | core の test/webmcp/declare\_tool\_spec.ts（ecbc89b465c のテストの一斉の更新で古い形に戻り、fe9c0d77975 で一度戻ってから cdc2ea085e2 でまた消えた） | angular-main の履歴と、2026-11-16 の本家の main のファイル | [第 4 回](wmcp/04-wmcp-tests-issues.md) |
+
+ほかに、ツールごとの引数の型推論が効かない #70125 が 22.1.6・8576f161ae4・22.2.6 のどれでも再現すること（閉じた PR #70159・#71658 の経緯）を[第 2 回](wmcp/02-wmcp-provide.md)に、readonly・disabled・hidden のフィールドもスキーマに載り書き換えられること（閉じた PR #70819・#70820 の指摘）を[第 3 回](wmcp/03-wmcp-forms.md)に書きました。

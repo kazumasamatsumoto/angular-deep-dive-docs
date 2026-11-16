@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 48 シリーズ・655 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 49 シリーズ・659 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -56,6 +56,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 46. [@let の内側：字句から LView の枠まで](letd/README.md)（6 章）— 字句と構文・スコープと binder・テンプレートのパイプライン・実行時とハイドレーション・型チェックと診断・spec と issue
 47. [@angular/upgrade の内側：AngularJS と 1 つのページを分け合う](upg/README.md)（6 章）— 全体と起動・downgradeComponent・UpgradeComponent・注入器と変更検知・downgradeModule・spec と issue
 48. [Signal Forms の \[formField\]：フィールドと DOM の境目](sfd/README.md)（6 章）— FormField の全体・ネイティブの要素・parse エラーと validity・カスタムコントロール・ControlValueAccessor との互換・spec と issue
+49. [WebMCP の内側：Angular のアプリが AI のエージェントにツールを渡す](wmcp/README.md)（4 章）— declareExperimentalWebMcpTool・provideExperimentalWebMcpTools とアプリの寿命・Signal Forms のフォームをツールにする・spec と issue
 
 ## 作り直し方
 
