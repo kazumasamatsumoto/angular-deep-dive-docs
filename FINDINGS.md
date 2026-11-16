@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（25 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（26 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -600,3 +600,19 @@ await cycle(); // 3 回目に戻す
 | zoneless のとき、AngularJS の側の whenStable の callback が Angular のタイマーを待たずにその場で呼ばれる | upgrade の static/src/upgrade\_module.ts 203〜230 行目（Testability の橋） | NoopNgZone の記録。仕様の範囲かどうかはソースとコミットからは決められない | [第 4 回](upg/04-upg-injection-cd.md) |
 
 ほかに、UpgradeHelper の `$httpBackend` の枝（upgrade\_helper.ts 110〜119 行目）は UpgradeAdapter が消えた後どこからも呼ばれていないこと、getAngularLib は export から外れただけで angular1.ts に残っていることを、[第 3 回](upg/03-upg-upgrade-component.md)と[第 1 回](upg/01-upg-bootstrap.md)に書きました。
+
+## Signal Forms の \[formField\]：フィールドと DOM の境目
+
+### [spec と issue を読む：\[formField\] を固めているテスト](sfd/06-sfd-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜5 回を書いている途中で、CVA の `name` が配列の並べ替えに追いつかないことや、`[type]` を束縛した日付の input が監視されないことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現は、このサイトの依存の @angular/forms 22.1.6 で動かしたページの上のデモと、作業木に足した spec（web の suite）です。
+
+| 何が起きるか | どこ | 確かめ方 | 章 |
+| --- | --- | --- | --- |
+| `@for` の各行の CVA に自動で付いた `name` が、配列の先頭を消しても書き直されない。続けて行を足すと 2 つの CVA が同じ名前になる（ネイティブの input は正しく付け直される） | forms の signals/src/directive/control\_cva.ts 102〜106 行目と 124〜126 行目（`isDefinedPredicate` は今の値が空のときだけ真）、core の render3/instructions/control.ts 182〜183 行目 | 第 5 回のデモの「name の追従」と、作業木の spec | [第 5 回](sfd/05-sfd-cva.md) |
+| number\|null のモデルを text の input につなぐ形（41b1410cb8a で扱えるようになった）でも、欄を空にするたびに開発モードで NG01921 の警告が出る | signals/src/directive/native.ts 148〜159 行目（条件が「text の input で値が null」だけ） | number\_input.spec.ts 232・254 行目の it を走らせたログに NG01921 が出る | [第 2 回](sfd/02-sfd-native.md) |
+| `[type]` を束縛した日付の input は、ブラウザの検証の変化を拾う InputValidityMonitor に登録されない | signals/src/directive/control\_native.ts 67〜68 行目（作るときに 1 回だけ type を見る。67 行目に TODO がある） | 第 3 回のデモ | [第 3 回](sfd/03-sfd-validity.md) |
+| まだ document につながっていない時点で監視を始めた日付の input では、監視用の style が document の head ではなく input の中に入り、要素ごとに 1 つずつ増える | signals/src/directive/input\_validity\_monitor.ts 52〜55 行目と 91〜95 行目（つながっていない要素の `getRootNode()` は要素の木の根を返す） | 第 3 回のデモ（`@if` の中の date の input） | [第 3 回](sfd/03-sfd-validity.md) |
+| 最初の更新の後で `[type]` が変わると、min / max を受けるかの判定が古いまま残り、DOM の value も書き直されない | signals/src/directive/form\_field.ts 425 行目（`_elementAcceptsMinMax ??=` で 1 回だけ判定） | 第 2 回のデモ（color から text に切り替える） | [第 2 回](sfd/02-sfd-native.md) |
+
+ほかに、日付の input を置いただけで dirty になること（開いている #69632 と同じ現象）の原因の道筋を[第 3 回](sfd/03-sfd-validity.md)に、CVA に `pattern` として空の配列が書かれること（#68246）と InteropNgControl に無いメソッド（#69678）を[第 5 回](sfd/05-sfd-cva.md)に書きました。
