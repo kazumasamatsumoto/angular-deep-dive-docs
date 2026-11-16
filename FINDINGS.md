@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（28 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（29 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -653,3 +653,27 @@ await cycle(); // 3 回目に戻す
 | `hashPrefix` と `serverBaseHref` の設定を読む行が無い。`appBaseHref` も APP\_BASE\_HREF も無いと `<base href>` を読まない | location\_upgrade\_module.ts の `LocationUpgradeConfig` と `provideAppBaseHref` | grep と、設定を変えて起動した記録 | — | [第 1 回](lshim/01-lshim-module.md) |
 | テスト用の `provide$location` と `APP_BASE_HREF_RESOLVED`、upgrade.spec.ts の `MockUpgradeModule` が使われていない | upgrade\_location\_test\_module.ts 71〜82・92〜112 行目、upgrade.spec.ts 17〜27 行目 | 72 行目の token を替えても 64 specs, 0 failures。`grep -rn` | — | 第 5 回（3 節） |
 | 5064dc75acb（#32037）の題と PR の本文は「AngularJS のイベントの前に知らせる」だが、コードと spec は `$locationChangeSuccess` の後 | コミットのメッセージ（location\_shim.ts の `$watch` の中） | `git show 5064dc75acb` と `gh pr view 32037` | — | [第 3 回](lshim/03-lshim-api.md) |
+
+## ng serve の内側：Vite の middleware と plugin が 1 つの要求をさばくまで
+
+### [spec と issue を読む：dev-server を固めているテスト](vds/05-vds-tests-issues.md) — このシリーズで見つけたもの
+
+書きながら作業木と記録で見つけたものです。本家の行と、再現に使った記録を書きます。「既存の issue / PR」は 2026-11-17 に gh で検索した結果（読むだけ）です。
+
+| ソースの行 | 再現 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- |
+| vite 8.1.5 の `isHostAllowedInternal`（16915 行目）と `vite/index.ts` の 104〜108 行目 | `allowedHosts: ["*"]` で起動すると、名前の付いた Host は全部 Vite の 403。SSR の側（`security.allowedHosts`）は `'*'` を「全部」と読む | 「allowedHosts "\*" vite」「allowedHosts wildcard dev-server」で見つからず | [第 3 回](vds/03-vds-host-headers.md) |
+| CLI の `json-schema.ts` の `getSupportedTypes`（22.1.7） | `ng serve --allowed-hosts demo.test` が `Argument: project, Given: "demo.test"` で止まる | #33955（閉じた）。7ee5f905a8（PR #34607）は main と 22.3.x だけ | [第 3 回](vds/03-vds-host-headers.md) |
+| `chrome-devtools-middleware.ts` の 24〜65 行目 | 24 行目を壊しても dev-server の 77 specs が全部通る。足した it は壊すと落ち、戻すと通る | #30482 は機能の要望（閉じた）。spec の不足の issue は見つからず | [第 3 回](vds/03-vds-host-headers.md) |
+| vite の 26014 行目と `ssr-middleware.ts` の 22〜75 行目 | `--ssl -c ssr`（内部の SSR）で、許していない Host にも 200（Vite は https で Host を見ず、内部の SSR は `AngularAppEngine` を通らない） | Vite の判断による動き。Angular の側の issue は見つからず | [第 3 回](vds/03-vds-host-headers.md) |
+| `ssr-middleware.ts` の 22〜75 行目（`resetComponentUpdates` が無い） | 22.1.7 で `-c ssr`、コンポーネントの CSS → テンプレート → `@import` の CSS の順に変えると、読み直しても 10px のまま。`/@ng/component` が 6758 バイトの古い更新を返す | #34163（閉じた）。de91345c13（main）・37cf399d95（22.2.x、v22.2.1 から）。22.1.x には無い | [第 4 回](vds/04-vds-hmr-ssr.md) |
+| `hmr.ts` の 107〜124 行目と、vite の `client.mjs` の 970 行目 | `NG_HMR_CSTYLES=1` で、テンプレートの更新の後に同じ CSS の link が 2 本残り、次の `css-update`（40px）が効かない | #34248（同じ設定の別の症状、開いている）。この形は見つからず | [第 4 回](vds/04-vds-hmr-ssr.md) |
+| `hmr.ts` の 86〜159 行目 | 98 行目を `some` に壊しても落ちる spec が無い。WebSocket に送る枠を見る spec が無い | 見つからず | [第 4 回](vds/04-vds-hmr-ssr.md) |
+| `id-prefix-plugin.ts` の 61 行目 | `base` を escape せずに正規表現に入れる（名前は 58 行目で escape する） | 見つからず（実害の報告も無い） | [第 4 回](vds/04-vds-hmr-ssr.md) |
+| `options.ts` の 130 行目（22.1.7 には無い） | `--port 0` で Vite に渡る `strictPort` が `true` | PR #34055（strictPort）・#34686（port 0 をそのまま渡す） | [第 1 回](vds/01-vds-config.md) |
+| `builders/dev-server/vite/utils.ts` の 106〜116 行目 | `isAbsoluteUrl` はどこからも呼ばれない | 見つからず | [第 1 回](vds/01-vds-config.md) |
+| `assets-middleware.ts` の 53 行目 | 拡張子の無いアセットなどの ETag が `W/` + 引用符の無い hash | PR #34566（0e2799d3a2、main と 22.3.x） | [第 2 回](vds/02-vds-assets-html.md) |
+| `assets-middleware.ts` の 58〜61 行目 | 拡張子の無いアセット（`/version`）に `Content-Type` が付かない | 見つからず | [第 2 回](vds/02-vds-assets-html.md) |
+| `tools/vite/utils.ts` の 30〜32 行目と `assets-middleware.ts` の 43 行目 | `baseHref: /app/` でも、base の外の `/version`・`/styles.css`・`/favicon.ico` が 200 | 見つからず（#27576 は base と proxy の別の話） | [第 2 回](vds/02-vds-assets-html.md) |
+
+どれも、本文に書いたのは行と再現だけです。第 1〜2 回の行は、それぞれの章の記録とテストの節にあります。

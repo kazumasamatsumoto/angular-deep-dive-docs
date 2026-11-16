@@ -472,4 +472,5 @@ Ran 9 of 64 specs
 
 ---
 
-← 前: [UrlCodec と AngularJSUrlCodec：URL を分けて組み立て直す規則](04-lshim-params.md)
+← 前: [UrlCodec と AngularJSUrlCodec：URL を分けて組み立て直す規則](04-lshim-params.md)  
+次: [Vite の設定を組み立てる：server.ts と prebundle と外部の依存](../vds/01-vds-config.md) →

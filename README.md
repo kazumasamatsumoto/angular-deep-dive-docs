@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 50 シリーズ・664 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 51 シリーズ・669 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -58,6 +58,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 48. [Signal Forms の \[formField\]：フィールドと DOM の境目](sfd/README.md)（6 章）— FormField の全体・ネイティブの要素・parse エラーと validity・カスタムコントロール・ControlValueAccessor との互換・spec と issue
 49. [WebMCP の内側：Angular のアプリが AI のエージェントにツールを渡す](wmcp/README.md)（4 章）— declareExperimentalWebMcpTool・provideExperimentalWebMcpTools とアプリの寿命・Signal Forms のフォームをツールにする・spec と issue
 50. [$locationShim の内側：AngularJS の $location を Angular の Location で動かす](lshim/README.md)（5 章）— LocationUpgradeModule と provider・初期化とブラウザとの同期・url / path / search / hash の読み書き・UrlCodec・spec と issue
+51. [ng serve の内側：Vite の middleware と plugin が 1 つの要求をさばくまで](vds/README.md)（5 章）— Vite の設定の組み立て・アセットと base href と index.html・Host の検査と開発用のヘッダー・HMR と SSR の plugin・spec と issue
 
 ## 作り直し方
 
