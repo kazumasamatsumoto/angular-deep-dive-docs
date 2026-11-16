@@ -406,4 +406,5 @@ SSR で無効にする e50d47a4931 と、DOM clobbering に備える 8cf7731468f
 
 ---
 
-← 前: [Signal Forms のフォームをツールにする：スキーマから JSON Schema へ](03-wmcp-forms.md)
+← 前: [Signal Forms のフォームをツールにする：スキーマから JSON Schema へ](03-wmcp-forms.md)  
+次: [LocationUpgradeModule：$location を差し替える provider の組み立て](../lshim/01-lshim-module.md) →

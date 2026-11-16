@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（27 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（28 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -633,3 +633,23 @@ await cycle(); // 3 回目に戻す
 | angular-main では、core の annotations を `registerTool` に渡すことを確かめる it が無くなっている | core の test/webmcp/declare\_tool\_spec.ts（ecbc89b465c のテストの一斉の更新で古い形に戻り、fe9c0d77975 で一度戻ってから cdc2ea085e2 でまた消えた） | angular-main の履歴と、2026-11-16 の本家の main のファイル | [第 4 回](wmcp/04-wmcp-tests-issues.md) |
 
 ほかに、ツールごとの引数の型推論が効かない #70125 が 22.1.6・8576f161ae4・22.2.6 のどれでも再現すること（閉じた PR #70159・#71658 の経緯）を[第 2 回](wmcp/02-wmcp-provide.md)に、readonly・disabled・hidden のフィールドもスキーマに載り書き換えられること（閉じた PR #70819・#70820 の指摘）を[第 3 回](wmcp/03-wmcp-forms.md)に書きました。
+
+## $locationShim の内側：AngularJS の $location を Angular の Location で動かす
+
+### [spec と issue を読む：$locationShim を固めているテスト](lshim/05-lshim-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜4 回を書いている途中で見つけたものを並べます。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめ、再現には Node の上で動かした `@angular/common/upgrade` 22.1.6 と AngularJS 1.8.3（jsdom 26）を使いました。2026-11-17 に gh で検索した範囲では、「見つからない」と書いた行に当たる issue はありませんでした。
+
+| 何が起きるか | どこ | 確かめ方 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- | --- |
+| 初期化のあとに `state()` だけを替えた digest では、ブラウザにも `onChange` にも何も起きない（AngularJS 1.8.3 は history を積む）。替えた state は、次に URL を替えたときに一緒に書かれる | location\_shim.ts 744〜753 行目（`state()` が `updateBrowser` を立てない） | 記録の html5 の 8〜9 段目。作業木に it を足すと 65 specs, 1 failure、`this.updateBrowser = true;` を足すと 65 specs, 0 failures（2 つの作業木で別々に確かめた） | 見つからない | [第 3 回](lshim/03-lshim-api.md)・[第 2 回](lshim/02-lshim-sync.md) |
+| ブラウザの「進む」を `$locationChangeStart` の `preventDefault()` で止めると、`$location` は戻るがブラウザの URL は進んだまま（AngularJS 1.8.3 は書き戻す） | location\_shim.ts の urlChanges の購読（167〜171 行目）と `browserUrl` の 288 行目（`lastBrowserUrl` が popstate でそろわない） | 第 2 回の記録の 7 段目 | 見つからない | [第 2 回](lshim/02-lshim-sync.md) |
+| port を書かない `http://` の URL で `port()` が 80 ではなく `null` | location\_shim.ts の `DEFAULT_PORTS`（20〜22 行目、キーが `'http:'`）と params.ts 223 行目（protocol の `:` を落とす） | 第 1 回の記録の「protocol() / host() / port()」 | — | [第 2 回](lshim/02-lshim-sync.md)・[第 4 回](lshim/04-lshim-params.md) |
+| `useHash: true` で、開いた URL の hash を `$$hash` と読み、再読み込みのたびに URL の hash が重なって伸びる | location\_shim.ts 359〜371 行目と 484 行目 | 再読み込みを 3 回繰り返す記録。#70501 の差分を写しに当てると伸びないが、path のモードのアンカーが path になる | #30305（開いている）、#70501（閉） | [第 3 回](lshim/03-lshim-api.md) |
+| `useHash: true` でも `absUrl()` と `$locationChangeStart` に渡る URL に `#` が入らない | location\_shim.ts 485 行目 | 記録の hash のモードの全部の段 | 見つからない | [第 3 回](lshim/03-lshim-api.md) |
+| `search()` にオブジェクトを渡したあと、`search()` の戻り値に `hasOwnProperty` などのメソッドが無い（AngularJS 1.8.3 の戻り値は普通のオブジェクト） | location\_shim.ts 671 行目（862a0c8ab34） | 記録の 4 段目以降の `typeof search().hasOwnProperty`。671 行目を `{}` に戻しても 64 specs, 0 failures | 見つからない | [第 3 回](lshim/03-lshim-api.md) |
+| 戻る前と後で hash が違うと、`history.back()` 1 回で `$locationChangeStart` と `$locationChangeSuccess` が 2 回ずつ出る。また戻ったあとの `state()` が、戻った先の `history.state` ではなく最後に書いた state のまま | `Location.onUrlChange` に popstate と hashchange の両方が届く。state は `cacheState` が戻る道で呼ばれないため（どちらも第 2 回の範囲の行） | 記録の 10 段目と、hash が同じ URL の間で戻る比べ（1 回だけ） | 見つからない | [第 3 回](lshim/03-lshim-api.md)・[第 2 回](lshim/02-lshim-sync.md) |
+| `/indexXhtml` のような path も `/index.html` として落とし、`areEqual('/docs', '/docs/indexXhtml')` が true（Angular の `Location` は d109bf90d50 で直っている） | params.ts 238 行目（`.` が escape されていない） | codec の記録と、ページの上の写し | #69023（閉、古い PR として） | [第 4 回](lshim/04-lshim-params.md) |
+| `hashPrefix` と `serverBaseHref` の設定を読む行が無い。`appBaseHref` も APP\_BASE\_HREF も無いと `<base href>` を読まない | location\_upgrade\_module.ts の `LocationUpgradeConfig` と `provideAppBaseHref` | grep と、設定を変えて起動した記録 | — | [第 1 回](lshim/01-lshim-module.md) |
+| テスト用の `provide$location` と `APP_BASE_HREF_RESOLVED`、upgrade.spec.ts の `MockUpgradeModule` が使われていない | upgrade\_location\_test\_module.ts 71〜82・92〜112 行目、upgrade.spec.ts 17〜27 行目 | 72 行目の token を替えても 64 specs, 0 failures。`grep -rn` | — | 第 5 回（3 節） |
+| 5064dc75acb（#32037）の題と PR の本文は「AngularJS のイベントの前に知らせる」だが、コードと spec は `$locationChangeSuccess` の後 | コミットのメッセージ（location\_shim.ts の `$watch` の中） | `git show 5064dc75acb` と `gh pr view 32037` | — | [第 3 回](lshim/03-lshim-api.md) |
