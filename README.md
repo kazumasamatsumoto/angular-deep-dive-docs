@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 54 シリーズ・684 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 55 シリーズ・689 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -62,6 +62,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 52. [ng test と Vitest の内側：テストを束ねて走らせるまで](vit/README.md)（5 章）— テストの探し方と options・テスト用のビルド・Vitest の plugin・executor とブラウザ・spec と issue
 53. [Karma の builder の内側：esbuild で束ねたテストを Karma に配るまで](kar/README.md)（5 章）— 入口と Karma の設定・テストを束ねる・Karma に配る・unit-test の karma runner・spec と issue
 54. [oxc の変換と TypeScript の transformer の内側：ビルドが JavaScript を書き換える行](oxc/README.md)（5 章）— transform の 1 回の走査・後順の走査・linker の AST host と文字列の factory・JIT と Worker の transformer・spec と issue
+55. [SSR のサーバールートの内側：ルートを取り出し、木で照合し、応答を組み立てる](srt/README.md)（5 章）— ルートの取り出し・プリレンダーのパラメータとリダイレクト・ルートの木・manifest と renderAngular・応答とその後片付け・spec と issue
 
 ## 作り直し方
 

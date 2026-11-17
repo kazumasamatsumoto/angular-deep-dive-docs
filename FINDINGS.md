@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（32 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（33 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -738,3 +738,27 @@ await cycle(); // 3 回目に戻す
 | `tools/angular/transformers/jit-bootstrap-transformer.ts 72〜76（44129f66a3）` | 名前だけを消す集合を作っても、消す関数がファイルの直下しか見ないので、platformBrowserDynamic の名前が import に残る | &lt;scratchpad&gt;/oxc-demo/b/ts/record.mjs の「ほかの名前と同じ import」（HEAD の版） | origin/main の 174eb34540 で直った（#34582 の続き。22.2.x は a4ce7bf461、22.2.7 に入っている） | 第 4 回 |
 | `tools/angular/linker/string-ast-factory.ts 93（wrapOperand）` | 両端だけを見るので (a) \|\| (b) を包まれた式とみなし、! を付けると !(a) \|\| (b) になる。記録の 4 つのリンクでは、この形の文字列は渡ってこなかった | &lt;scratchpad&gt;/oxc-demo/b/linker/record.mjs の単体の呼び出し（UNIT の最後の行） | なし | 第 3 回 |
 | `3 節の表の 0 failures の 10 行` | 行を変えても spec が落ちない（spec の無い行）。不具合ではなく、固める spec が無いことの記録 | &lt;scratchpad&gt;/oxc-demo/b/mut/mutate.mjs（作業木で 1 行ずつ） | — | 第 1〜3 回 |
+
+## SSR のサーバールートの内側：ルートを取り出し、木で照合し、応答を組み立てる
+
+### [spec と issue を読む：サーバールートを固めているテスト](srt/05-srt-tests-issues.md) — このシリーズで見つけたもの
+
+第 1〜4 回を書く途中で、本家の振る舞いの食い違いと、spec や文書の小さな抜けが見つかりました。どれも Node で本物の @angular/ssr 22.2.7（と、比べるための 22.1.7）を動かすか、作業木で行を変えて bazel で走らせて確かめ、ソースの行（angular-cli 44129f66a3）と照らしています。「既存」の欄は、gh で題と本文を検索した範囲で見つかったものです。
+
+| 何が起きるか | ソースの行 | 再現 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- | --- |
+| Router に `user/:id` を `user/new` より先に書くと、`/user/new` の応答は、ヘッダーなどの値を `user/new` の serverRoute から取り、本文は Router が選んだ `user/:id` の部品になる | routes/route-tree.ts 243〜261 行目（段ごとに完全一致が先）と、Router の上から順の照合 | 第 3 回の記録 order（`ɵgetOrCreateAngularServerApp().handle`） | 同じ種類の食い違い（URL の文字の読み方）は #33555（開）・PR #34091（開）。並びの順の形は書かれていない | [第 3 回](srt/03-srt-route-tree.md) |
+| serverRoute の path が先頭の段の `*`（`'*'`・`'*/x'`）だと、`getPrerenderParams` との組がエラーにならない（`'p/*'` はエラー） | routes/ng-routes.ts 589 行目（8bfcae4c1b で `path.includes('*')` から変わった） | 第 3 回の記録 star。`path.split('/').includes('*')` にすると 249 件はそのまま通る（T9） | 見つからない | [第 3 回](srt/03-srt-route-tree.md) |
+| `toObject` → `fromObject` で decode がもう 1 回かかり、`%25` を含む経路は manifest から作り直した木で当たらなくなる | routes/route-tree.ts 175〜181 行目と 210 行目 | 第 3 回の記録（1 往復の前後で match の答えが変わる） | 見つからない | [第 3 回](srt/03-srt-route-tree.md) |
+| Router の path に `%` をそのまま書くと（`50%-off`）、取り出しの `insert` が `URIError` を投げる | routes/route-tree.ts 210 行目 | 第 3 回の記録 | リクエストの側の同じ `URIError` は、SSR の守りのシリーズの最終回の表にある。issue は見つからない | [第 3 回](srt/03-srt-route-tree.md) |
+| 使われない serverRoute のエラーは、書いた `post/:slug` ではなく正規化した `post/*` で出る | routes/ng-routes.ts の逆向きの検査（serverRoutes の木の `traverse()`）と route-tree.ts 121 行目 | 第 3 回の記録 unused | — | [第 3 回](srt/03-srt-route-tree.md) |
+| 44129f66a3（と 22.1.7）では、描画中に request.signal を abort しても描画を続け、保留中のタスクが終わらないとプラットフォームを壊さない | utils/promise.ts 43 行目（待つのをやめるだけ）と utils/ng.ts 54〜59 行目（signal を受け取らない） | 第 4 回の記録 `/hang`（22.1.7 は 600 ms 待っても破棄されない、22.2.7 は 1〜2 ms で破棄） | origin/main の 47bc9c3969（PR #34568）で直っていて、22.2.7 にも入っている | [第 4 回](srt/04-srt-manifest-render.md) |
+| （spec）完全一致の枝からの後戻り、プラットフォームを壊す 3 か所、`promiseWithAbort` の聞き手の 2 か所、`hasOptions`、`MODULE_PRELOAD_MAX` は、消しても 249 件が通る。53b9623b7b が足した it は decode を外しても通る。`withAppShell` を起動する it は `test/` に無い | 5 節の表の各行 | 作業木で行を変えて bazel（T1・T4・T11〜T16・T19） | — | 第 1・3・4 回 |
+| （文書）`RouteTree.match` の JSDoc は「先に入れたものが勝つ」のままで、4df97d1923 のあとの動き（完全一致が先）と違う。`getPrerenderParams` の JSDoc の例の path は `/` で始まり、そのままだと先頭の `/` の検査で弾かれる | routes/route-tree.ts 141〜143 行目、routes/route-config.ts 156・166 行目 | git show 4df97d1923、第 3 回の記録 bad の 1 つめのエラー | — | [第 3 回](srt/03-srt-route-tree.md) |
+| 22.2.7 で `getPrerenderParams` の値が 1 つでも検査に落ちると、その経路の残りの値と fallback の 1 件が出ない（値ごとではなく経路ごとに止まる） | 22.2.7 の ng-routes の展開の行（bf1602a916 で足された検査を、for の外側の try が包む） | 第 2 回の記録（値の表で `/item/first` だけが残る行） | bf1602a916（PR #34570）の spec はエラーが 1 件出ることだけを確かめる | [第 2 回](srt/02-srt-prerender-params.md) |
+| `fallback: None` でも、invoke が偽の取り出し（manifest に木が無いときのリクエスト時）では、型の経路が Server で木に入り、サーバーで描かれる | routes/ng-routes.ts の fallback の条件（第 2 回の 5 節） | 第 2 回の記録（5 節の表の右の列） | — | [第 2 回](srt/02-srt-prerender-params.md) |
+| （spec）0fdcde5426（正規表現の g の状態）を戻すと落ちる it は、jasmine の並べ替えの seed で入れ替わる。`getPrerenderParams` が投げる場合と、文字列でない値を返す場合の it は 44129f66a3 に無い | test/routes/ng-routes\_spec.ts の describe（184 行目） | 作業用の複製で行を戻して bazel を 3 回（第 2 回） | 0fdcde5426 は spec を足していない（#33154） | [第 2 回](srt/02-srt-prerender-params.md) |
+| （型）取り出しの結果の型 `AngularRouterConfigResult` に、どこでも値を入れない `serverRoutesConfig` がある | routes/ng-routes.ts 125 行目 | grep（第 1 回） | — | [第 1 回](srt/01-srt-extract.md) |
+| matcher のルートの下のサーバールートは、`親の経路/**` の文字列の前方一致で集めるので、`**` を使わずに書いた serverRoute（`shop/*/sale`）は集められない | routes/ng-routes.ts 274・275 行目 | 第 1 回の記録と ng-routes\_spec.ts 383 行目の it | — | [第 1 回](srt/01-srt-extract.md) |
+
+読み方の目安: 上の 2 つ（並びの順の食い違い、先頭の `*`）は、利用者が普通に書ける設定で起きるので影響がいちばん大きいものです。3・4 つめは `%` を経路に書いたときだけです。片付けの抜けは 22.2.7 では直っていますが、それを見張る spec は 44129f66a3 の `test/` にはありません。

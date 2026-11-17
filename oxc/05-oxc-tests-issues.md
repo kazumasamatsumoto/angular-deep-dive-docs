@@ -427,4 +427,5 @@ eb1edeb514 2026-09-21 refactor(@angular/build): relocate non-esbuild utilities o
 
 ---
 
-← 前: [TypeScript の transformer：JIT の resource・bootstrap の置き換え・Web Worker](04-oxc-ts-transformers.md)
+← 前: [TypeScript の transformer：JIT の resource・bootstrap の置き換え・Web Worker](04-oxc-ts-transformers.md)  
+次: [ルートを取り出す：サーバーで Router を起動して設定をたどる](../srt/01-srt-extract.md) →
