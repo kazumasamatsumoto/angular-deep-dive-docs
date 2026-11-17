@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（30 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（31 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -702,3 +702,21 @@ await cycle(); // 3 回目に戻す
 | `runner-config-vitest_spec.ts 167 行目の it` | 1 回目に落ち、flaky = True の 2 回目で通った | unit-test\_integration\_tests の shard 4（Expected false to be true.） | 見つからない | この章 3 節 |
 
 ほかに、spec が無いと各章で書いた行は、[第 1 回](vit/01-vit-discovery.md)の `DependencyChecker`・大文字と小文字の扱い・`preserveSymlinks` を継ぐ行、[第 2 回](vit/02-vit-build.md)の `adjustOutputHashing`・renderer・`findVitestBaseConfig`（`build-options.ts` と `configuration.ts` に `_spec.ts` が無い）、[第 3 回](vit/03-vit-plugins.md)の `determineCoverageProvider`（export されていない）、[第 4 回](vit/04-vit-executor.md)の後片付けの timeout です。
+
+## Karma の builder の内側：esbuild で束ねたテストを Karma に配るまで
+
+### [spec と issue を読む：Karma の builder を固めているテスト](kar/05-kar-tests-issues.md) — このシリーズで見つけたもの
+
+書きながら記録と作業木で見つけたものです。本家の行と、再現に使った記録を書きます。「既存の issue / PR」は 2026-11-17 に gh で検索した結果（読むだけ）です。
+
+| ソースの行 | 見つけたこと | 再現 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- | --- |
+| `builders/karma/application_builder.ts 105〜107、progress-reporter.ts 53〜92` | ng test --watch で、1 回目の SIGINT（Ctrl+C）では Karma が止まり一時のフォルダも消えるが、ng のプロセスが終わらない。2 回目の SIGINT で終わる | 第 3 回の記録の watch（process group へ SIGINT、10 秒待つ）と sigint-pty.py（疑似端末に Ctrl+C、15 秒待つ）。どちらも 1 回目では終わらず、2 回目ですぐ終わった | 見つからなかった（"SIGINT"・"ctrl c" などで検索） | 第 3 回 |
+| `builders/karma/find-tests.ts 15〜17（removeLeadingSlash）` | POSIX で --include に絶対パスを渡すと先頭の「/」が落ちて何も見つからない（unit-test の側は 683d0e09e5 で直っている） | 第 1 回の記録の「--include 絶対パス」。結果は空、0 件で終了コード 1 | 見つからなかった | 第 1 回 |
+| `builders/karma/karma-config.ts 35・36` | karmaConfig があるとき、karma.conf.js の client.clearContext: false が --watch=false で true になる | 第 1 回の記録の「conf で basePath などを上書き」 | 見つからなかった（#28271 はこの行を入れた元の件） | 第 1 回 |
+| `builders/karma/application_builder.ts 214` | zone.js を使うかを、polyfills にちょうど "zone.js" があるかだけで決める | 第 2 回の本文（行の読み） | #30689 は application builder の zoneless の判定の件で、別の行 | 第 2 回 |
+| `unit-test/runners/karma/executor.ts 143` | coverageWatermarks を書かなくても coverageReporter.watermarks に {} が入る | 第 4 回の記録の「unit-test + 使えない options」の karmaOptions の後 | 見つからなかった | 第 4 回 |
+| `builders/karma/tests/setup.ts 137〜141` | harness が karma.conf.js から webpack の plugin と framework を先に消すので、configureKarma の 369〜387 行目（外す行と警告）を通る spec が無い | この章の 4 節（filter を常に true にしても 41 specs が通る） | — | 第 3 回 |
+| `builders/karma/tests/setup.ts 145、web-worker-tsconfig_spec.ts 74・85` | describeKarmaBuilder は isApplicationTarget をいつも true で渡すので、85 行目の it は定義されない | この章の 2 節（行の読み）。走らせた数も 41 で合う | — | 第 5 回 |
+
+ほかに、spec が無いと各章で書いた行は、[第 1 回](kar/01-kar-entry.md)の `getBuiltInKarmaConfig`（harness がいつも `karmaConfig` を書く）、[第 2 回](kar/02-kar-build.md)の zoneless の仮想の init と `@angular/localize` の有無、[第 3 回](kar/03-kar-serve.md)の junit・scripts の重なり・`files.clear()`・coverage の spec の除外・一時のフォルダの後片付け、[第 4 回](kar/04-kar-runner.md)の options の写し方と `transforms` です。

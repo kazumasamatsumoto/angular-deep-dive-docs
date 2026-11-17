@@ -367,4 +367,5 @@ target に `flaky = True` があるので（326 行目）、bazel は落ちた s
 
 ---
 
-← 前: [executor とブラウザ：Vitest を起動し、watch し、後片付けする](04-vit-executor.md)
+← 前: [executor とブラウザ：Vitest を起動し、watch し、後片付けする](04-vit-executor.md)  
+次: [入口と Karma の設定：options の正規化・テストを探す・Karma の設定を作る](../kar/01-kar-entry.md) →
