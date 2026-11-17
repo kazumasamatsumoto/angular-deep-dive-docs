@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（29 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（30 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -677,3 +677,28 @@ await cycle(); // 3 回目に戻す
 | `tools/vite/utils.ts` の 30〜32 行目と `assets-middleware.ts` の 43 行目 | `baseHref: /app/` でも、base の外の `/version`・`/styles.css`・`/favicon.ico` が 200 | 見つからず（#27576 は base と proxy の別の話） | [第 2 回](vds/02-vds-assets-html.md) |
 
 どれも、本文に書いたのは行と再現だけです。第 1〜2 回の行は、それぞれの章の記録とテストの節にあります。
+
+## ng test と Vitest の内側：テストを束ねて走らせるまで
+
+### [spec と issue を読む：unit-test builder を固めているテスト](vit/05-vit-tests-issues.md) — このシリーズで見つけたもの
+
+書きながら記録と作業木で見つけたものです。本家の行と、再現に使った記録を書きます。「既存の issue / PR」は 2026-11-17 に gh で検索した結果（読むだけ）です。
+
+| ソースの行 | 見つけたこと | 再現 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- | --- |
+| `test-discovery.ts findTests 57〜58 行目` | exclude は glob の include にしか効かず、spec のパスを直に書くと外れない | --include src/app/greet.spec.ts --exclude '\*\*/greet.spec.ts' で 2 つのテストが走り、終了コード 0（第 1 回の記録） | 見つからない | 第 1 回 6 節 |
+| `test-discovery.ts 117・194 行目と 22 行目のコメント` | entry の名前は 128 文字に縮めた後に接頭辞が付くので、128 文字を超える | 202 文字の名前が spec- 付きで 133 文字（第 1 回の記録） | 見つからない | 第 1 回 7 節 |
+| `test-discovery.ts 187 行目のコメント` | 「SHA256 の 8 文字」だが、198 行目の calculateHash は xxhash（cda8830710 から） | 22.1.7 の名前は sha256 と一致、44129f66a3 では変わる | 見つからない | 第 1 回 7 節 |
+| `plugins.ts 234 行目` | config.plugins を消しても、root の Vite には利用者の plugin が残る | runnerConfig の記録で demo-user-plugin が root の 21 番目にも入った | 見つからない | 第 3 回 4 節 |
+| `plugins.ts の projectDefaults と projectOverrides の extends: false` | vitest 5 で plugin が 2 回適用されるのを止める 2 行に spec が無い | 作業木で消すと 104 specs が通る。足した it は expected 2 to be 1 で落ちる | 8504cfffcf（spec なし） | 第 3 回 5 節 |
+| `runner-config-vitest_spec.ts 400・432・465・497 行目` | 4 つの警告の it は文言の expect がコメントのまま | plugins.ts の 209 行目を消しても通る | 0aab1158d6 からの TODO | 第 3 回 4 節 |
+| `plugins.ts 565 行目と Vite の mergeConfig` | Set で重複を消しても、root の設定と混ぜた後に exclude が重複する | --coverage + runnerConfig の記録で src/app/label.ts が 2 回 | 見つからない | 第 3 回 7 節 |
+| `executor.ts 191 行目` | テストが落ちても理由の文言が All tests passed. のまま | NG\_TEST\_LOG=1 で落ちる spec を走らせると success: false. Reason: All tests passed. | 見つからない | 第 4 回 6 節 |
+| `executor.ts 196〜201 行目と runners/vitest/index.ts 29〜33 行目` | runnerConfig で依存の確認を飛ばすと、provider の package が無い exitCode 1 を threshold の不足と読む | --coverage --runner-config で Reason: Test run failed due to unmet coverage thresholds.（テストは 0 本） | 見つからない | 第 4 回 6 節 |
+| `executor.ts 210〜241 行目と vitest の startVitest の finally` | --watch=false の 1 回目の close には timeout がかからない | 記録で close が 2 回、2 回目は 1 ms 以内。timeout を 1 ms にしても警告が出ない | #32832 の本文が触れている（95510511d9 で閉じた） | 第 4 回 4 節 |
+| `executor.ts 138 行目と vitest の SIGINT の扱い` | watch を Ctrl+C で止めると、テストが落ちていても終了コード 0。asyncDispose も呼ばれない | SIGINT から 41 ms で終了コード 0、Disposing の行なし | 見つからない | 第 4 回 4 節 |
+| `browser-provider.ts 148 行目` | runnerConfig のときの文言が "playwright" or "webdriverio" で、要る package と違う | --browsers=chromium --runner-config の記録 | origin/main の f9325ab02d（PR #34442）で直った | 第 4 回 8 節 |
+| `runners/karma/index.ts 33 行目` | coverage はいつもオブジェクトなので、karma-coverage をいつも要求する | origin/main の index\_spec.ts を 44129f66a3 に置くと 1 つ落ちる | origin/main の 77fb7fa0f2（PR #34500）で直った | 第 4 回 9 節 |
+| `runner-config-vitest_spec.ts 167 行目の it` | 1 回目に落ち、flaky = True の 2 回目で通った | unit-test\_integration\_tests の shard 4（Expected false to be true.） | 見つからない | この章 3 節 |
+
+ほかに、spec が無いと各章で書いた行は、[第 1 回](vit/01-vit-discovery.md)の `DependencyChecker`・大文字と小文字の扱い・`preserveSymlinks` を継ぐ行、[第 2 回](vit/02-vit-build.md)の `adjustOutputHashing`・renderer・`findVitestBaseConfig`（`build-options.ts` と `configuration.ts` に `_spec.ts` が無い）、[第 3 回](vit/03-vit-plugins.md)の `determineCoverageProvider`（export されていない）、[第 4 回](vit/04-vit-executor.md)の後片付けの timeout です。

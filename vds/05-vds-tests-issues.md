@@ -558,4 +558,5 @@ origin/main では `tools/vite/middlewares/` に初めて 2 つの単体の spec
 
 ---
 
-← 前: [HMR と SSR の plugin：変更をどう届け、サーバーの側でどう読み込むか](04-vds-hmr-ssr.md)
+← 前: [HMR と SSR の plugin：変更をどう届け、サーバーの側でどう読み込むか](04-vds-hmr-ssr.md)  
+次: [テストを探す：options の正規化・依存の確認・test-discovery](../vit/01-vit-discovery.md) →
