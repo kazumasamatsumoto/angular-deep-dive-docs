@@ -281,7 +281,7 @@ Angular のフォームには、書き方が 3 つあります。`FormControl` �
 
 > **🧪 DEMO — 同じ「名前（必須）」を 3 つの API で**
 >
-> この章のコンポーネントが `ReactiveFormsModule`・`FormsModule`・`FormField` を全部 import しています（サイトに入っている `@angular/forms` は 22.1.6）。空のときは 3 つとも invalid です。リアクティブとテンプレート駆動の入力欄の赤い枠は、`NgControlStatus` が付けた `ng-invalid` クラスです。
+> この章のコンポーネントが `ReactiveFormsModule`・`FormsModule`・`FormField` を全部 import しています（サイトに入っている `@angular/forms` は 22.2.6）。空のときは 3 つとも invalid です。リアクティブとテンプレート駆動の入力欄の赤い枠は、`NgControlStatus` が付けた `ng-invalid` クラスです。
 >
 > ボタンは 1 では `reactiveName.setValue`、2 では自分の signal の `set`（`NgModel` が拾って中の `FormControl` に書く）、3 では `model.set` を呼んでいます。1 と 2 は `FormControl` に値をコピーして持ち、3 は `model` そのものを読みます。
 >

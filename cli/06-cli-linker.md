@@ -160,7 +160,7 @@ npm の `@angular/router` を開くと、`RouterOutlet` の定義は `ɵɵdefine
 
 1. **7〜8 行目：宣言の呼び出し**
 
-   `static ɵcmp` の値が `i0.ɵɵngDeclareComponent({…})` です。`minVersion` は「この宣言を読めるリンカーの最低のバージョン」、`version` は「この宣言を出力したコンパイラのバージョン」。テストでは `0.0.0-PLACEHOLDER` ですが、npm のパッケージでは実際の値（このサイトの `@angular/router` なら `"22.1.6"`）が入ります。
+   `static ɵcmp` の値が `i0.ɵɵngDeclareComponent({…})` です。`minVersion` は「この宣言を読めるリンカーの最低のバージョン」、`version` は「この宣言を出力したコンパイラのバージョン」。テストでは `0.0.0-PLACEHOLDER` ですが、npm のパッケージでは実際の値（このサイトの `@angular/router` なら `"22.2.6"`）が入ります。
 2. **8・19 行目：テンプレートは文字列のまま**
 
    `template: '<other-cmp></other-cmp>'` はソースの文字列です。full の出力なら、ここが `ɵɵelement(0, "other-cmp")` を呼ぶテンプレート関数になります（同じ入力の full の出力は[standalone の章](../standalone/01-standalone.md)）。
@@ -651,7 +651,7 @@ npm の `@angular/router` を開くと、`RouterOutlet` の定義は `ɵɵdefine
 
 1. **86 行目：このリンカーが読める範囲**
 
-   `LATEST_VERSION_RANGE` は「`<=` このリンカー自身のバージョン」です。ソースでは `0.0.0-PLACEHOLDER` ですが、npm に載る `@angular/compiler-cli` では実際の値に置き換わっています（このサイトの node\_modules では `"22.1.6"`）。
+   `LATEST_VERSION_RANGE` は「`<=` このリンカー自身のバージョン」です。ソースでは `0.0.0-PLACEHOLDER` ですが、npm に載る `@angular/compiler-cli` では実際の値に置き換わっています（このサイトの node\_modules では `"22.2.6"`）。
 2. **177〜182 行目：minVersion と範囲が交わるか**
 
    宣言の「`>=` minVersion」とリンカーの範囲が交われば、そのリンカーを使います。いまはどの宣言にもリンカーが 1 つ（Version1）しか無いので、交われば必ずそれです。
@@ -752,7 +752,7 @@ Babel のリンカーは Babel の節点を作り、Babel がコードを生成�
 
 > **🧪 DEMO — このサイトの本番の JS で、リンク済みかを数える**
 >
-> npm の `@angular/router`（このサイトの node\_modules）の `RouterOutlet` は `static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "17.1.0", version: "22.1.6", type: RouterOutlet, selector: "router-outlet", inputs: { name: { classPropertyName: "name", … } }, … })` です。ボタンを押すと、このページが読んだ JS を取得し、宣言の形（`minVersion:"…",version:` の空白なしの並び）と、リンク済みの定義（`static ɵcmp=` / `static ɵdir=` / `static ɵpipe=`）を数え、`router-outlet` の定義の先頭を切り出します。
+> npm の `@angular/router`（このサイトの node\_modules）の `RouterOutlet` は `static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "17.1.0", version: "22.2.6", type: RouterOutlet, selector: "router-outlet", inputs: { name: { classPropertyName: "name", … } }, … })` です。ボタンを押すと、このページが読んだ JS を取得し、宣言の形（`minVersion:"…",version:` の空白なしの並び）と、リンク済みの定義（`static ɵcmp=` / `static ɵdir=` / `static ɵpipe=`）を数え、`router-outlet` の定義の先頭を切り出します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cli-linker)
 

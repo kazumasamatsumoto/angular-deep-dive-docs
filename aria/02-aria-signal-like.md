@@ -226,7 +226,7 @@ MenuBar のコンストラクタは、SignalLike になれるものを全種類�
 > [!NOTE]
 > **ポイント**
 >
-> 119 行目の `V | undefined` は 22.1.8 では `V` です（[第 1 回](01-aria-overview.md)の表、#33715）。SignalLike の話には関係しません。Listbox の同じ所（`{...this, id, items, ...}`）は[第 1 回](01-aria-overview.md)の 3 節で読みました。
+> 119 行目の `V | undefined` は、この章を書いたときのサイトの 22.1.8 では `V` でした（#33715。22.2.0 から入ったので、いまのサイトの 22.2.7 は引用と同じです。[第 18 回](18-aria-menu.md)の 10 節）。SignalLike の話には関係しません。Listbox の同じ所（`{...this, id, items, ...}`）は[第 1 回](01-aria-overview.md)の 3 節で読みました。
 
 ## 6. デモ：DOM なしの ListboxPattern を signal だけで動かす
 

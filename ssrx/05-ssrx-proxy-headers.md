@@ -923,7 +923,7 @@ f086eccc36 と 4d564f66f6 の正規表現は「当てはまったら拒む」（
 | x-forwarded-host | false | \[\] |
 | \* | （無し） | throw: "\*" is not allowed as a value for the "trustProxyHeaders" option. |
 
-`false` を渡すと環境変数は使われません（`??` は `false` では右に行かない）。`NG_TRUST_PROXY_HEADERS=*` はエンジンを作るときに投げます。配布物 22.1.7 の `fesm2022/_validation-chunk.mjs` にも、ここで読んだ関数が同じ形で入っています（第 4 回 9 節で同じ入力の結果が一致することを確かめました）。
+`false` を渡すと環境変数は使われません（`??` は `false` では右に行かない）。`NG_TRUST_PROXY_HEADERS=*` はエンジンを作るときに投げます。配布物 22.1.7 の `fesm2022/_validation-chunk.mjs` にも、ここで読んだ関数が同じ形で入っています（今のこのサイトの依存の 22.2.7 の同じファイルも、22.1.7 と 1 文字も違いません。第 4 回 9 節で同じ入力の結果が一致することを確かめました）。
 
 📄 `scratchpad/ssrx-demo/ssrx-proxy-headers/build.mjs`
 

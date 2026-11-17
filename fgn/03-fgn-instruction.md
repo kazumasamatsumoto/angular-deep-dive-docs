@@ -790,7 +790,7 @@ $ bazelisk test //packages/core/test/render3:render3 --test_arg=--filter="^ɵɵf
 
 ## 6. デモ：signal を渡して、render の回数を数える
 
-このサイトの 22.1.6 で、ページの上で確かめます。外の部品は第 1 回と同じ手作りの橋（Proxy、**本家の使い方ではない**）で、`value` には `readN()` の値を、`live` には signal の `n` そのものを、`injector` にはデモの部品の注入器を渡します。外の部品は render の中で `live()` を 1 回読み、さらに `effect` で `live()` を追います。
+このサイトの 22.2.6 で、ページの上で確かめます（記録 2 のとおり 22.1.6 と同じ形です）。外の部品は第 1 回と同じ手作りの橋（Proxy、**本家の使い方ではない**）で、`value` には `readN()` の値を、`live` には signal の `n` そのものを、`injector` にはデモの部品の注入器を渡します。外の部品は render の中で `live()` を 1 回読み、さらに `effect` で `live()` を追います。
 
 DEMO — props に値と signal を渡して、render が何回呼ばれるかを数える 枠の中は `<MiniCounter [value]="readN()" [live]="n" [injector]="injector" />` です。`readN()` は `n()` を返す前に回数を数えるので、props を作る関数（コンパイラが出す `() => ({...})`）が何回呼ばれたかが分かります。数えたもの回数n()（Angular の側の値）props を作る関数が readN() を呼んだ回数外の render（RENDER）が呼ばれた回数外の effect が走った回数
 

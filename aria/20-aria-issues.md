@@ -149,7 +149,7 @@ PR の列は issue のタイムラインの「cross-referenced」から、angula
 
 - combobox の 12 件のうち 9 件が 2026-06〜08 に立っています（#33352・#33358・#33359・#33361・#33396・#33448・#33516・#33640・#33696）。5 月の 0ca47b4a06（#33206）で以前の combobox を消し、simple-combobox を `Combobox` にした直後です（[第 17 回](17-aria-combobox.md)の 6 節）。
 - #32603 は 2026-07-02 に閉じたあと、09-23 に外部の PR #33859（grid の CDK table との連携）が付き、PR は開いたままです。issue のタイムラインの PR と、issue を閉じた変更は、同じとは限りません。
-- #33684（toolbar に select / combobox を置きたい）を閉じたのは #33747「toolbar から選択の Behavior を外す」で、これがこのサイトの 22.1.8 と snapshot の toolbar の差の大部分です（[第 13 回](13-aria-toolbar.md)）。
+- #33684（toolbar に select / combobox を置きたい）を閉じたのは #33747「toolbar から選択の Behavior を外す」で、これがこの章を書いたときのサイトの 22.1.8 と snapshot の toolbar の差の大部分です（いまのサイトの 22.2.7 には入っています）（[第 13 回](13-aria-toolbar.md)）。
 
 ## 5. developer preview が外れた、Material との関係、新しい部品
 

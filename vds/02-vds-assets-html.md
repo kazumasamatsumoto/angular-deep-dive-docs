@@ -216,7 +216,7 @@ $ git show e2ee6b3e8e -- packages/angular/build/src/tools/vite/middlewares/asset
 +      if (!extension || JS_TS_REGEXP.test(extension) || CSS_PREPROCESSOR_REGEXP.test(extension)) {
 ```
 
-53 行目の ETag は `W/` の後ろに hash をそのまま付けていて、引用符がありません。RFC 9110 の ETag は `W/"…"` と引用符で囲む形で、同じファイルのほかの ETag（5 節の 155 行目など）はそうなっています。origin/main の 0e2799d3a2（#34566、外の人の PR）がここを直しました。サイトの依存の 22.1.7 はさらに古く、hash に `createHash('sha256')` の 16 進をそのまま使います（9 節の記録の `/version` の ETag）。
+53 行目の ETag は `W/` の後ろに hash をそのまま付けていて、引用符がありません。RFC 9110 の ETag は `W/"…"` と引用符で囲む形で、同じファイルのほかの ETag（5 節の 155 行目など）はそうなっています。origin/main の 0e2799d3a2（#34566、外の人の PR）がここを直しました。22.2.x には 0f63a03bae として移され（v22.2.6 から）、今のサイトの依存の 22.2.7 の `assets-middleware.js` は `W/"…"` と引用符で囲みます。記録に使った 22.1.7 はさらに古く、hash に `createHash('sha256')` の 16 進をそのまま使います（9 節の記録の `/version` の ETag）。
 
 📄 `../angular-cli で git show（origin/main の続き、抜粋）`
 

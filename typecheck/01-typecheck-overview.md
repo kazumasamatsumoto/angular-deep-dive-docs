@@ -118,7 +118,7 @@ compiler-cli の型チェックのディレクトリには、設計を説明し�
 
 ## 3. デモ：本物の generateTypeCheckBlock でテンプレートから TCB を作る
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 の generateTypeCheckBlock**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 の generateTypeCheckBlock**
 >
 > ボタンを押すと `@angular/compiler` を読み込み、`parseTemplate` → `R3TargetBinder`（`<user-card>` を入力 `size` を持つコンポーネント `UserCard` として登録）→ `generateTypeCheckBlock` の順に呼びます。テンプレートは自由に書き換えられます。コンポーネント（`this` の型）の名前は `DemoCmp` です。
 >

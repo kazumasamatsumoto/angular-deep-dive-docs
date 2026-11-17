@@ -324,7 +324,7 @@ JSAction は、要素ごとにリスナーを付けず、入れ物（コンテ�
    540〜541 行目の `syntheticPreventDefault` は `defaultPrevented` を `true` に、548〜549 行目の `syntheticStopPropagation` は標準に無い `_propagationStopped` を `true` にするだけです。**元の touchend の既定の動きも、伝わり方も変わりません**。
 5. **526〜532 行目：座標を、指の座標で上書きする**
 
-ところが、`recreateTouchEventAsClick` と `getTouchData` を呼ぶ所は、../angular の packages の中に spec（event\_test.ts）しかありません。このサイトが使う配布物（@angular/core 22.1.6 の `fesm2022/primitives-event-dispatch.mjs`）を `grep` すると、この 2 つも 520〜523 行目の 2 つの関数も入っていません。**配布物の JSAction は、タッチを click に作り直しません**。`touchend` は `touchend` のまま、ブラウザが続けて出す `click` は `click` のまま届きます（7 節の記録）。
+ところが、`recreateTouchEventAsClick` と `getTouchData` を呼ぶ所は、../angular の packages の中に spec（event\_test.ts）しかありません。このサイトが使う配布物（@angular/core 22.2.6 の `fesm2022/primitives-event-dispatch.mjs`）を `grep` すると、この 2 つも 520〜523 行目の 2 つの関数も入っていません。**配布物の JSAction は、タッチを click に作り直しません**。`touchend` は `touchend` のまま、ブラウザが続けて出す `click` は `click` のまま届きます（7 節の記録）。
 
 > [!NOTE]
 > **ポイント**

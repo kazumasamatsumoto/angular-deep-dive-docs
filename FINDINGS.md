@@ -195,7 +195,7 @@ Debug log:
 | mock\_location\_strategy.ts の `back` | replaceState のあとで戻ると、今のパスが記録用の文字列 `replace: /b` になる | 本物の Location と組み合わせて Node で動かした | 第 18 回 |
 | location.ts の `go` と `onUrlChange` | listener が受け取る URL が、go では base href 付き、戻るでは正規化済み。# が変わる戻るでは 2 回 | 第 17 回の DEMO。振る舞いとして文書に書かれていないので、不具合かどうかは決めていない | [第 17 回](cmn/17-cmn-location.md) |
 | imgix\_loader.ts の独自の変換 | 値にカンマを含む変換（`crop: 'faces,edges'`）が `split(',')` で割れる | 第 15 回の DEMO と Node | [第 15 回](cmn/15-cmn-image-loaders.md) |
-| keyvalue\_pipe.ts の `compareFn` | 関数 → `null` に変えても並びが戻らない | 第 8 回で 22.1.6 を Node で動かした | [第 8 回](cmn/08-cmn-keyvalue-pipe.md) |
+| keyvalue\_pipe.ts の `compareFn` | 関数 → `null` に変えても並びが戻らない（あとで main の 622a7c7f29d・issue #71893 で直り、22.2.6 に fb705aad90 として入った） | 第 8 回で 22.1.6 を Node で動かした | [第 8 回](cmn/08-cmn-keyvalue-pipe.md) |
 | NgStyle の shorthand と longhand | `padding` だけを変えると `padding-left` が画面で消える | 第 2 回の DEMO（renderer に届いた呼び出し） | [第 2 回](cmn/02-cmn-ng-class-style.md) |
 | format\_date.ts | 閉じていない `'` が消える／-00:30 のタイムゾーンの符号／0〜99 年の `W` | 第 10・11 回で本物の 22.1.6 を動かして確かめた（第 11 回は spec の形の再現も示した） | [第 10 回](cmn/10-cmn-format-date.md)・[第 11 回](cmn/11-cmn-date-getters.md) |
 | number\_pipe.ts の CurrencyPipe | `currencyCode` に `null`・`''` を渡したときの通貨の決め方 | 第 12 回 | [第 12 回](cmn/12-cmn-format-number.md) |
@@ -214,7 +214,7 @@ Debug log:
 | 初期値の無い enum のメンバーの値が TypeScript と違う。`enum Size { Small = 1, Large }` の `Size.Large` を評価すると 1 になる（TypeScript では 2）。selector に使うと `app-size-1` が出力される | partial\_evaluator/src/interpreter.ts 323 行目（並びの番号 index をそのまま値にする） | PartialEvaluator と NgtscProgram の emit の記録 | [第 5 回](ngtsc/05-ngtsc-partial-evaluator.md) |
 | Angular のクラスで、ほかのデコレーターが付いた `declare` のフィールドが、`useDefineForClassFields: true` のとき JS に `note;` として出る | transform/src/transform.ts 315-316 行目（作り直したノードに NodeFlags.Ambient が無い） | NgtscProgram の emit と、作り直す前後のノードの比較。既存の spec は es2015 で走るので拾わない | [第 12 回](ngtsc/12-ngtsc-ivy-transform.md) |
 | 途中にデコレーターの無い素のクラスを挟むと、継承した入力が型チェックで見えなくなり NG8002 になる（実行時は ɵɵInheritDefinitionFeature で親の入力が効く） | metadata/src/inheritance.ts 50-56 行目（'dynamic' で止まる） | 継承の連なりの記録（plainMiddle の場面） | [第 10 回](ngtsc/10-ngtsc-metadata-registry.md) |
-| 配布物 22.1.6 では、エラーの説明へのリンクが v22 ではなく next.angular.dev を指す。ソースでは版の判定の文字列を 2 つに分けて書いているが、配布物では 1 つにまとまったあとで版の番号に置き換わり、`full === "22.1.6"` になっている | diagnostics/src/error\_details\_base\_url.ts 14 行目と、配布物の chunk-NPM4D5UO.js 147 行目 | 記録した診断のリンクと、配布物の中身 | [第 18 回](ngtsc/18-ngtsc-diagnostics-perf.md) |
+| 配布物 22.1.6（22.2.6 でも同じ）では、エラーの説明へのリンクが v22 ではなく next.angular.dev を指す。ソースでは版の判定の文字列を 2 つに分けて書いているが、配布物では 1 つにまとまったあとで版の番号に置き換わり、`full === "22.1.6"` になっている | diagnostics/src/error\_details\_base\_url.ts 14 行目と、配布物の chunk-NPM4D5UO.js 147 行目（22.2.6 では chunk-HRCA6XIV.js 151 行目） | 記録した診断のリンクと、配布物の中身 | [第 18 回](ngtsc/18-ngtsc-diagnostics-perf.md) |
 | （不具合とはしない）resourceChangeTicket の道のあとに emit すると、出力のテンプレートが古いまま。この道を使うのは emit しない言語サービスだけ | annotations/component/src/handler.ts 1547 行目（analysis.template だけ書き換える）と 1602 行目（compileFull は analysis.meta を使う） | チケットの記録 | [第 3 回](ngtsc/03-ngtsc-compiler-ticket.md) |
 | （テスト）hmr\_spec.ts 378-392 行目の it は「HMR に対応しない Angular のクラス」を試す名前だが、`Directive` を import して `@Component` と書いているため、実際はデコレーターの無いクラスの道を通っている | test/ngtsc/hmr\_spec.ts 378-392 行目 | 同じ入力の記録（spec-directive と real-directive の場面） | [第 17 回](ngtsc/17-ngtsc-hmr.md) |
 | （テスト）ngtsc\_spec.ts 1754 行目の it は名前が @ContentChild なのに、1755 行目で 'ContentChildren' を渡している。@ContentChild そのものを試す it が無い | test/ngtsc/ngtsc\_spec.ts 1754-1755 行目 | spec の行を読む | [第 9 回](ngtsc/09-ngtsc-directive-handler.md) |
@@ -277,7 +277,7 @@ Debug log:
 | --- | --- | --- | --- |
 | ハイドレーションの前に Shift や Cmd（Mac 以外では Ctrl）を押しながらしたクリックが、渡し直されない。早期の契約には貯まるが、再生のときに種類が clickmod に書き換わり、サーバーが付けた `click:;` に当たらない。2a915d1912d（#57201）は当時のイベントの委譲には clickModSupport を false で渡したが、イベントの再生には渡していない | core/src/hydration/event\_replay.ts 220 行目（`new EventDispatcher(fn)` で clickModSupport が既定の true）と primitives/event-dispatch/src/action\_resolver.ts 93-98 行目 | このサイトの本番のプリレンダーで main を止めたまま押してから JS を流す（ふつうのクリックは動き、Shift・Cmd は動かない）。ソースを束ねた記録でも delegate が 0 回 | [第 7 回](jsaction/07-jsaction-resolver.md) |
 | 同じ Event を 2 つの EventDispatcher が配ると、2 つ目で `TypeError: Cannot redefine property: stopPropagation` になる。stopPropagation を書き換えられない形（configurable: false）で貼るため。インクリメンタルハイドレーションでは body の契約が残るので、APP\_ID の違う 2 つのアプリが 1 ページにあると起きうる（Angular のアプリ 2 つでは試していない） | primitives/event-dispatch/src/event\_dispatcher.ts 105-114 行目と 172-179 行目 | 公開の入口だけで 2 組の EventContract と EventDispatcher を入れ子に置いて押す（22.1.6・手元・main のソースのどれでも出る）。このサイトでも、デモの組を body まで泡立たせると出る | [第 10 回](jsaction/10-jsaction-dispatcher.md) |
-| （既存の issue）早期の契約が body に付けたリスナーが、アプリの起動後も外されず、早期の箱の q に積み続ける。initEventReplay は clearAppScopedEarlyEventContract を呼ぶが、removeAllAppScopedEventListeners を呼ばない（425f44c1333 で抜け落ちた）。開いている #71518 と、承認済みの PR #71519 | core/src/hydration/event\_replay.ts の initEventReplay | 自分専用の appId で同じ順に呼ぶデモと、記録の「安定の後に押す」場面 | [第 5 回](jsaction/05-jsaction-early-contract.md)・[第 11 回](jsaction/11-jsaction-angular.md) |
+| （既存の issue）早期の契約が body に付けたリスナーが、アプリの起動後も外されず、早期の箱の q に積み続ける。initEventReplay は clearAppScopedEarlyEventContract を呼ぶが、removeAllAppScopedEventListeners を呼ばない（425f44c1333 で抜け落ちた）。#71518 と PR #71519。2026-11-10 に閉じられ、22.2 系には 6b257f59b42 として v22.2.6 から入った（`clearAppScopedEarlyEventContract` がリスナーも外す）。このサイトの 22.2.6 の第 5 回のデモでは、チェックを外しても「clear のあとに q に増えた数」は 0 のまま | core/src/hydration/event\_replay.ts の initEventReplay | 自分専用の appId で同じ順に呼ぶデモと、記録の「安定の後に押す」場面 | [第 5 回](jsaction/05-jsaction-early-contract.md)・[第 11 回](jsaction/11-jsaction-angular.md) |
 | registerAppScopedDispatcher（と registerGlobalDispatcher）で渡した関数が呼ばれない。欄の `d` を差し替えるが、リスナーの `h` が呼ぶのは作ったときの局所の `d` のまま。最小化した min.js の中も同じ形。Angular の中ではこの関数を呼んでいないので、Angular のアプリには影響しない | primitives/event-dispatch/src/earlyeventcontract.ts 70-74 行目と 121 行目 | 自分専用の appId のデモで、登録したあとに押しても 0 回のまま | [第 5 回](jsaction/05-jsaction-early-contract.md) |
 | getActionCache が返した辞書に書き込むと、ほかの要素にも効く。jsaction の無い要素には共有の EMPTY\_ACTION\_MAP が、同じ文字列の要素には同じ辞書が貼られるため。Angular 本体は getActionCache を使っていない | primitives/event-dispatch/src/action\_resolver.ts 22 行目・256-257 行目と cache.ts 27-29 行目 | ライブのデモ（main でも同じ） | [第 2 回](jsaction/02-jsaction-attribute.md) |
 | 素の Dispatcher が再生の配列を空にしないので、2 回目の予定のときに、前のイベントがもう一度渡される。最初の版（666d6465758）のコメントは「空にするのは eventReplayer の役目」と書いていたが、今はそのコメントも無い。Angular は eventReplayer を渡さない EventDispatcher だけを使う | primitives/event-dispatch/src/dispatcher.ts 98-108 行目と createEventReplayer | ソースを束ねて Node で動かした記録 | [第 10 回](jsaction/10-jsaction-dispatcher.md) |
@@ -393,7 +393,7 @@ await cycle(); // 3 回目に戻す
 | --- | --- | --- | --- |
 | [第 5 回](httpx/05-httpx-transfer-cache-key.md) | （不具合）`responseType: 'blob'` の応答を SSR で転送キャッシュに入れると、本文が空で書かれ、ブラウザでは 0 バイトの `Blob` が返る | transfer\_cache.ts 329 行目が `Blob` を `toBase64` に渡し、436 行目の `new Uint8Array(Blob)` が長さ 0。esbuild で束ねたソースで、5 バイトの `Blob` → 書いた本文 `''` → `Blob 0 バイト`。spec の 520 行目の it はキャッシュからの応答を見ていない | 1f057afaac8 で直して 7eb33713b90 で戻された。開いている issue は見つからなかった |
 | [第 5 回](httpx/05-httpx-transfer-cache-key.md) | （不具合・開発モードだけ）`includeHeaders: ['ETag']` で運んだヘッダーを `get('etag')` で読むと、値は返るのに NG02802 の警告が出る | transfer\_cache.ts 521 行目の `includes(headerName)` が大文字・小文字を区別する。記録で `get('ETag')` は警告なし、`get('etag')` は警告あり。Proxy の spec は 0 件 | 見つからなかった |
-| [第 5 回](httpx/05-httpx-transfer-cache-key.md) | 2 進の本文（`ArrayBuffer`）・`Blob`・`FormData`・本文なしが、全部同じキーになる | transfer\_cache.ts 420・421 行目。記録で 7 つが同じキー。ライブの DEMO（22.1.6）で、B が A の応答をキャッシュから受け取る | #70226（開）、PR #70227（開） |
+| [第 5 回](httpx/05-httpx-transfer-cache-key.md) | 2 進の本文（`ArrayBuffer`）・`Blob`・`FormData`・本文なしが、全部同じキーになる | transfer\_cache.ts 420・421 行目。記録で 7 つが同じキー。ライブの DEMO（22.2.6）で、B が A の応答をキャッシュから受け取る | #70226（開）、PR #70227（開） |
 | [第 5 回](httpx/05-httpx-transfer-cache-key.md) | キャッシュから作った応答で、`url` がリクエストの URL になり、`redirected` が消える | transfer\_cache.ts 333・274 行目。記録で `redirected: true` → `undefined` | #70947（開）、PR #70946（開） |
 | [第 5 回](httpx/05-httpx-transfer-cache-key.md) | （コメント）595 行目「64-bit keyspace」は、消えた DJB2 の実物（32 ビット）と合わない。response.ts 206・207 行目「既定の XHR では `undefined`」は、Fetch が既定の今と合わない | `git show 5f36274da3f` の消えた行（`<< 0` と 2 の 31 乗）、1f9a42bb424 | — |
 | [第 4 回](httpx/04-httpx-resource-types.md) | （型）`httpResource.text`・`blob`・`arrayBuffer` で、引数に型を書かない `parse` と `defaultValue` を一緒に書くと、TResult が既定の型のまま決まって型のエラーになり、文は「`string` を `HttpResourceRequest` に入れられない」という原因と関係の無いものになる | resource.ts 186〜206 行目の並びと `<TResult = string>`。TypeScript 6.0.3 の記録の i・n1・n6（n2・n3・n7・n8 は通る）。describe `types` は `parse: () => 0` だけ | 見つからなかった。TypeScript の推論の振る舞いから来るもので、不具合かどうかは判断していない |
@@ -505,7 +505,7 @@ await cycle(); // 3 回目に戻す
 | angular-main で、debounce\_spec.ts の timer cleanup の it 4 つが消えた（ecbc89b465c の「modernize unit tests」）。debounce.ts の修正そのものは残っている。手元の木で修正を戻すと、そのうち 3 つが落ちる | core/test/resource/debounce\_spec.ts（0904f90b13a が足した `describe('timer cleanup')`） | `git -C angular-main show ecbc89b465c` と、作業木で修正を戻して走らせた結果（17 件中 3 件が失敗） | [第 2 回](resx/02-resx-debounced.md) |
 | （細かいもの）resource.ts 290 行目の `const key` が使われていない。api.ts 241 行目の説明に「value value」の重複 | resource.ts 290 行目、api.ts 241 行目 | grep | [第 4 回](resx/04-resx-ssr-cache.md) |
 
-読み込み中に params が undefined などになると前の読み込みが abort されない件（#71765）は、origin/main の efbab16e567（2026-11-10）で直っています。手元の木と 22.1.6 には入っていません。詳しくは[第 5 回](resx/05-resx-cleanup-leaks.md)にあります。
+読み込み中に params が undefined などになると前の読み込みが abort されない件（#71765）は、origin/main の efbab16e567（2026-11-10）で直っています。手元の木と 22.1.6・22.2.6 には入っていません。詳しくは[第 5 回](resx/05-resx-cleanup-leaks.md)にあります。
 
 ## hostDirectives と継承（features）
 
@@ -572,7 +572,7 @@ await cycle(); // 3 回目に戻す
 
 ### [spec と issue を読む：@let を固めているテスト](letd/06-letd-tests-issues.md) — このシリーズで見つけたもの
 
-第 1〜5 回を書いている途中で、lexer が止まらなくなる書き方や、ハイドレーションが止まる `@let` の値が見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現には、このサイトの依存の @angular/\* 22.1.6 と、Node で動かした 22.2.6 を使いました。2 つ目と 3 つ目は、すでに開いている issue や PR と根が同じです。
+第 1〜5 回を書いている途中で、lexer が止まらなくなる書き方や、ハイドレーションが止まる `@let` の値が見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現には、Node で動かした @angular/\* 22.1.6（書いたときのこのサイトの依存）と 22.2.6 を使いました。2 つ目と 3 つ目は、すでに開いている issue や PR と根が同じです。
 
 | 何が起きるか | どこ | 確かめ方 | 章 |
 | --- | --- | --- | --- |
@@ -605,7 +605,7 @@ await cycle(); // 3 回目に戻す
 
 ### [spec と issue を読む：\[formField\] を固めているテスト](sfd/06-sfd-tests-issues.md) — このシリーズで見つけたもの
 
-第 1〜5 回を書いている途中で、CVA の `name` が配列の並べ替えに追いつかないことや、`[type]` を束縛した日付の input が監視されないことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現は、このサイトの依存の @angular/forms 22.1.6 で動かしたページの上のデモと、作業木に足した spec（web の suite）です。
+第 1〜5 回を書いている途中で、CVA の `name` が配列の並べ替えに追いつかないことや、`[type]` を束縛した日付の input が監視されないことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現は、書いたときのサイトの依存の @angular/forms 22.1.6 で動かしたページの上のデモと、作業木に足した spec（web の suite）です。下の表のデモの 4 つは、今のサイトの 22.2.6 でも同じに出ます。
 
 | 何が起きるか | どこ | 確かめ方 | 章 |
 | --- | --- | --- | --- |
@@ -621,7 +621,7 @@ await cycle(); // 3 回目に戻す
 
 ### [spec と issue を読む：WebMCP を固めているテスト](wmcp/04-wmcp-tests-issues.md) — このシリーズで見つけたもの
 
-第 1〜3 回を書いている途中で、登録の失敗が受け取られないまま捨てられる場所が 2 つと、守りの行を固める spec が無いことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現は、このサイトの依存の @angular/core 22.1.6 で動かしたページの上のデモと、Node の上の 22.2.6 の記録、作業木に足した spec です。
+第 1〜3 回を書いている途中で、登録の失敗が受け取られないまま捨てられる場所が 2 つと、守りの行を固める spec が無いことなどが見つかりました。どれも **issue も PR も出していません**。ソースの行は手元の木（8576f161ae4）で確かめました。再現は、書いたときのサイトの依存の @angular/core 22.1.6 で動かしたページの上のデモ（今のサイトの 22.2.6 でも同じに出ます）と、Node の上の 22.2.6 の記録、作業木に足した spec です。
 
 | 何が起きるか | どこ | 確かめ方 | 章 |
 | --- | --- | --- | --- |

@@ -30,7 +30,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 | 2024-10-08 | 09f589f0006 | `this.a` はいつもクラスのプロパティを指す（#55115、v19 の破壊的変更）。@let だけの枝を、すべてのテンプレートの名前に広げる。作者の日付は 2024-04-02、本流に入ったのがこの日 | 6 節 |
 | 2025-12-22 | fa7cb4b87af | `ThisReceiver` が `ImplicitReceiver` を継承するのをやめる。binder の `this.` の特別扱いが不要に | 6 節 |
 
-22.1.6 と ../angular（22.2.0-next.7）の `t2_binder.ts` の違いは `@boundary` と `@defer` の pipe の記録で、@let の行は同じです。
+このサイトの 22.2.6 の `t2_binder.ts` は ../angular（22.2.0-next.7）と同じです。22.1.6 との違いは `@boundary` と `@defer` の pipe の記録で、@let の行は同じです。
 
 ## 2. Scope に @let を登録する
 
@@ -375,7 +375,7 @@ DEMO の「イベントで代入」では、`(click)="count = count + 1"` の左
 
 > **🧪 DEMO — parseTemplate → R3TargetBinder.bind → getExpressionTarget**
 >
-> ボタンを押すと `@angular/compiler`（22.1.6）を読み込み、`new R3TargetBinder(null).bind({ template })` を呼びます（ディレクティブは照合しません）。式の中の受け手の無い読み（`PropertyRead` と `SafePropertyRead`）を `CombinedRecursiveAstVisitor` で集め、`getExpressionTarget` と `getDefinitionNodeOfSymbol` の答えを並べます。数字はテンプレートの中の位置です。
+> ボタンを押すと `@angular/compiler`（22.2.6）を読み込み、`new R3TargetBinder(null).bind({ template })` を呼びます（ディレクティブは照合しません）。式の中の受け手の無い読み（`PropertyRead` と `SafePropertyRead`）を `CombinedRecursiveAstVisitor` で集め、`getExpressionTarget` と `getDefinitionNodeOfSymbol` の答えを並べます。数字はテンプレートの中の位置です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/letd-scope)
 

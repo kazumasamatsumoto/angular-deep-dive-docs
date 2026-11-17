@@ -283,7 +283,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — onFetch の条件と、サーバーに届いたもの**
 >
-> 本物の `ngsw-worker.js`（@angular/service-worker 22.1.6 の配布物）を、偽物のブラウザの上で動かします（偽物にしたものは `sw-sandbox.ts` の先頭のコメント）。アプリはグループ app（`/index.html`・`/main.js`、prefetch）とグループ assets（`/assets/data.json`、lazy）です。最初に押したときに install・activate・`settle(0)`・`settle(6000)` まで進め、app を先読みした状態から、tab-1 のリクエストを送ります。「サーバーに届いた」は、同じオリジンの GET はパスだけ、GET 以外は `POST /api/save`、別のオリジンは `https://cdn.example/lib.js` の形で出ます。偽物のサーバーは別のオリジンのファイルを持たないので、そちらは 404 です。
+> 本物の `ngsw-worker.js`（@angular/service-worker 22.2.6 の配布物）を、偽物のブラウザの上で動かします（偽物にしたものは `sw-sandbox.ts` の先頭のコメント）。アプリはグループ app（`/index.html`・`/main.js`、prefetch）とグループ assets（`/assets/data.json`、lazy）です。最初に押したときに install・activate・`settle(0)`・`settle(6000)` まで進め、app を先読みした状態から、tab-1 のリクエストを送ります。「サーバーに届いた」は、同じオリジンの GET はパスだけ、GET 以外は `POST /api/save`、別のオリジンは `https://cdn.example/lib.js` の形で出ます。偽物のサーバーは別のオリジンのファイルを持たないので、そちらは 404 です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-driver-fetch)
 

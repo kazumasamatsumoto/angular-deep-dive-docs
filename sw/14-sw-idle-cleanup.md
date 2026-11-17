@@ -339,7 +339,7 @@ driver.ts:972:    this.idle.schedule(`initialization(${appVersion.manifestHash})
 
 > **🧪 DEMO 1 — fetch を続けると、アイドルの仕事はいつ走るか**
 >
-> **本物の ngsw-worker.js（@angular/service-worker 22.1.6）を偽物のブラウザの上で動かしています**（タイマーと `Date.now` は仮想の時計。`sw-sandbox.ts` の先頭のコメント）。v1 を入れてからタブ a でナビゲーションし（592 行目の更新の確認が積まれる）、仮想の時計を 0.5 秒ずつ進めながら、選んだ間隔で `/main.js` を取り続けます。サーバーに `/ngsw.json?ngsw-cache-bust=…` が届いた時刻が「アイドルの仕事が走った時刻」です。
+> **本物の ngsw-worker.js（@angular/service-worker 22.2.6）を偽物のブラウザの上で動かしています**（タイマーと `Date.now` は仮想の時計。`sw-sandbox.ts` の先頭のコメント）。v1 を入れてからタブ a でナビゲーションし（592 行目の更新の確認が積まれる）、仮想の時計を 0.5 秒ずつ進めながら、選んだ間隔で `/main.js` を取り続けます。サーバーに `/ngsw.json?ngsw-cache-bust=…` が届いた時刻が「アイドルの仕事が走った時刻」です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-idle-cleanup)
 

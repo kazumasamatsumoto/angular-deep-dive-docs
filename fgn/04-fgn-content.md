@@ -26,7 +26,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 1. 歩み：子を渡す道は 1 か月で 5 回変わった
 
-子コンテンツの道を変えたコミットを日付順に並べます（../angular の `git log`。どれも 22.1.0 に入っていて、このサイトの 22.1.6 にもあります）。
+子コンテンツの道を変えたコミットを日付順に並べます（../angular の `git log`。どれも 22.1.0 に入っていて、このサイトの 22.2.6 にもあります）。
 
 | 日付 | コミット | 子コンテンツの道で変わったこと |
 | --- | --- | --- |
@@ -671,7 +671,7 @@ acceptance の `lifecycle` の describe が使う橋です。1033 行目、預�
 
 > **🧪 DEMO — Angular の子の ngOnInit / ngOnDestroy は、いつ呼ばれるか**
 >
-> このページのコンポーネントは、サイトのビルド（AOT、@angular/compiler-cli 22.1.6）で `foreignImports: [miniImport(Drawer)]` ごとコンパイルされ、本物の `ɵɵforeignComponent` と `ɵɵforeignContent` で動いています。`Drawer` は素の DOM で書いた外のコンポーネントで、赤い点線の枠の中のボタンは外の DOM のボタンです。中に渡す Angular のコンポーネント `fgn-ct-child` は、作られたとき・`ngOnInit`・`ngOnDestroy` を記録に書きます（黒が Angular、赤が外）。外から Angular へ知らせる `notify` は props で渡した関数です（`(click)` などのイベント束縛は NG8025 で書けません）。
+> このページのコンポーネントは、サイトのビルド（AOT、@angular/compiler-cli 22.2.6）で `foreignImports: [miniImport(Drawer)]` ごとコンパイルされ、本物の `ɵɵforeignComponent` と `ɵɵforeignContent` で動いています。`Drawer` は素の DOM で書いた外のコンポーネントで、赤い点線の枠の中のボタンは外の DOM のボタンです。中に渡す Angular のコンポーネント `fgn-ct-child` は、作られたとき・`ngOnInit`・`ngOnDestroy` を記録に書きます（黒が Angular、赤が外）。外から Angular へ知らせる `notify` は props で渡した関数です（`(click)` などのイベント束縛は NG8025 で書けません）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/fgn-content)
 

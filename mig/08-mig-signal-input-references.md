@@ -573,7 +573,7 @@ pass 8 は位置の計算だけが違います。37 行目、ホストのプロ�
 >
 > pass 7・8 と同じ処理が `passes/reference_migration/migrate_template_references.ts` と `migrate_host_bindings.ts` にもあり、signal クエリの移行はそちらを使います（第 10 回）。74638cab841（2026-05-08、best effort のときの書き込みの書き換えを直したコミット）は passes/ の 2 つだけを書き換えました。そのコミットで消えた分岐はもともと passes/ の側にしか無かったので、2026-11-03 の時点で 2 組の処理は変数名を除いて同じです（`diff` で確かめました）。直すときは 2 か所あることに気をつけます。
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 で、テンプレートの入力の後ろに () を入れる**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 で、テンプレートの入力の後ろに () を入れる**
 >
 > 「書き換える」を押すと、テンプレートを `parseTemplate`（[ls-overview](../ls/01-ls-overview.md)のデモと同じオプション。マイグレーションはコンパイラが解析済みの AST を使うので、オプションは同じではありません）で解析し、入力の名前の `PropertyRead` を集めて、`{position: 読み出しの終わり, end: 同じ, toInsert: '()'}` の置き換えを作り、`mig-template.ts` の `applyTextUpdates` で当てます。これは pass 7 と `template_reference_visitor.ts` の**簡略版（移植）**です。本物は TCB の記号で「クラスのこの入力か」を決めますが、ここでは「暗黙のレシーバか `this` の読み出しで、名前が一覧にあり、テンプレートの変数（`@for` の `item`・`#ref`・`@let`）と同じ名前ではない」で決めます。書き込みと絞り込みで「移行しない」と決める判定（第 9 回）は、考え方だけを再現しています。
 >

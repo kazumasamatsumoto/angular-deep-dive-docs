@@ -282,7 +282,7 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 ## 5. デモ：いつ DOM から外れるか
 
-> **🧪 DEMO — 本物の animate.leave（Angular 22.1.6）**
+> **🧪 DEMO — 本物の animate.leave（Angular 22.2.6）**
 >
 > 下の 2 つの箱は、同じ `@if (show())` の中にある本物の要素です。上の箱だけに `animate.leave="lr-out"`（0.6 秒の `@keyframes`）と、`ngOnDestroy` でログを書く子コンポーネントがあります。「消す」を押すと、そのときだけ `MutationObserver` と `animationstart` / `animationend` のリスナーを付けて、起きた順に時刻（押してからのミリ秒）を並べます。リスナーは capture で付けています。bubbling で付けると、終わりの `animationend` は届きません（第 10 回の 345 行目の `stopPropagation`）。OS の設定で動きを減らしていても、このデモは動きます。
 >
@@ -398,7 +398,7 @@ INFO: Elapsed time: 3.792s, Critical Path: 1.52s
    「消すかどうか」「いつ消すか」は `node_animations.ts` の `runLeaveAnimationsWithCallback` と `executeLeaveAnimations`、「何を消すか」は `node_manipulation.ts` の `applyToElementOrContainer` の callback です。spec は `acceptance/animation_spec.ts` の `describe('animate.leave')` に足します。
 4. **最新の main との違い**
 
-   最新の main（v22.3.0-next.3）では 2 か所が変わっています。97f8b6af935（#71254）で 50 行目が `injector.get(ANIMATION_QUEUE)` に変わりました。コミットのメッセージは「`ApplicationRef` を壊す途中でアニメーションのある埋め込みビューを壊すと、注入のエラーが出る」で、`INJECTOR` が取れても待ち行列が取れない場合があったことになります。259d1b0de08 では `runLeaveAnimationsWithCallback` が「`animate.*` の命令が 1 度でも動くまでは `callback(false)` を呼ぶだけ」の入口になり、中身は `runLeaveAnimationsWithCallbackImpl` に移りました（アニメーションを使わないアプリから外せるようにするため）。どちらも ../angular（8576f161ae4）とこのサイトの 22.1.6 には入っていません。issue の読み方は[第 20 回](20-animations-issues.md)です。
+   最新の main（v22.3.0-next.3）では 2 か所が変わっています。97f8b6af935（#71254）で 50 行目が `injector.get(ANIMATION_QUEUE)` に変わりました。コミットのメッセージは「`ApplicationRef` を壊す途中でアニメーションのある埋め込みビューを壊すと、注入のエラーが出る」で、`INJECTOR` が取れても待ち行列が取れない場合があったことになります。259d1b0de08 では `runLeaveAnimationsWithCallback` が「`animate.*` の命令が 1 度でも動くまでは `callback(false)` を呼ぶだけ」の入口になり、中身は `runLeaveAnimationsWithCallbackImpl` に移りました（アニメーションを使わないアプリから外せるようにするため）。どちらも ../angular（8576f161ae4）と、この章を書いたときのサイトの 22.1.6 には入っていません。22.2.x の枝には e59a2303dfb（22.2.3）と 3a559ba7cc5（22.2.1）として入っていて、いまのサイトの 22.2.6 にはあります（下のデモの動きは変わりませんでした）。issue の読み方は[第 20 回](20-animations-issues.md)です。
 
 ## 聞かれそうな質問
 

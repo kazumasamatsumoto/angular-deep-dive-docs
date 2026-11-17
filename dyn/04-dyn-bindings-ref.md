@@ -22,7 +22,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 > [!NOTE]
 > **ポイント**
 >
-> この章の「記録」は、`@angular/core` 22.2.6 を Node（JIT のコンパイラと domino の DOM）で動かした結果です。開発モードと、`globalThis.ngDevMode = false` にした本番の分岐の 2 回を取りました。ページの下のデモは、このサイトの依存（22.1.6）の本番ビルドで動く本物です。
+> この章の「記録」は、`@angular/core` 22.2.6 を Node（JIT のコンパイラと domino の DOM）で動かした結果です。開発モードと、`globalThis.ngDevMode = false` にした本番の分岐の 2 回を取りました。ページの下のデモは、このサイトの依存（22.2.6）の本番ビルドで動く本物です。
 
 ## 1. Binding の形：公開の型と内部の型
 

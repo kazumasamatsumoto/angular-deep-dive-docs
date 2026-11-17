@@ -185,7 +185,7 @@ Service Worker（サービスワーカー）は、ページとは別のスレッ
 
 11・14・17 行目の `exports` が、`require.resolve('@angular/service-worker/ngsw-worker.js')` のように中のファイルを指せるようにしています（angular-cli はこの名前でワーカーを探してコピーします）。33〜34 行目の `bin` で、`npx ngsw-config` のコマンドになります。25〜26 行目のとおり、ページの側のコードは `@angular/core` と `rxjs` を必要とします。**ワーカーの 1 本は何にも依存しません**（esbuild がすべてを 1 本に入れるので）。
 
-このサイトの `node_modules/@angular/service-worker`（22.1.6）の `package.json` では、`exports` に `"."`（`fesm2022/service-worker.mjs`）と `"./config"`（`fesm2022/config.mjs`）が足されています。ng\_package が 63〜64 行目から足したものです。`ngsw-worker.js` を開くと、`// packages/service-worker/worker/src/named-cache-storage.js` から `// packages/service-worker/worker/main.ts` までの 16 個のファイルが順に並び、IIFE の最後の 2 行が `new Adapter(…)` と `new Driver(…)` です（2,285 行・84,643 バイト）。
+このサイトの `node_modules/@angular/service-worker`（22.2.6）の `package.json` では、`exports` に `"."`（`fesm2022/service-worker.mjs`）と `"./config"`（`fesm2022/config.mjs`）が足されています。ng\_package が 63〜64 行目から足したものです。`ngsw-worker.js` を開くと、`// packages/service-worker/worker/src/named-cache-storage.js` から `// packages/service-worker/worker/main.ts` までの 16 個のファイルが順に並び、IIFE の最後の 2 行が `new Adapter(…)` と `new Driver(…)` です（2,285 行・84,643 バイト）。
 
 ## 4. 1 回の更新の流れ
 
@@ -222,7 +222,7 @@ Service Worker（サービスワーカー）は、ページとは別のスレッ
 
 ## 5. デモ：本物のワーカーで 1 回の更新を追う
 
-> **🧪 DEMO — 本物の ngsw-worker.js（@angular/service-worker 22.1.6）を偽物のブラウザで動かす**
+> **🧪 DEMO — 本物の ngsw-worker.js（@angular/service-worker 22.2.6）を偽物のブラウザで動かす**
 >
 > ボタンを押すたびに 1 段ずつ進めます。ワーカーは npm の配布物そのものを、`sw-sandbox.ts` の偽物の `self`（メモリの上のキャッシュとサーバー、偽物のタブ、仮想の時計）の上で動かしています。このページに本物の Service Worker は登録しません。`ngsw.json` は本物の `Generator` で作ります（ファイルは `/index.html`・`/main.js`・`/styles.css` の 3 つ、v1 と v2 で `styles.css` だけ同じ）。
 >

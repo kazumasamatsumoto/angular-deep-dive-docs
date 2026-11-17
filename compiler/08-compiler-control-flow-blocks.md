@@ -902,7 +902,7 @@ html の木を R3 AST に変換するのは `HtmlAstToIvyAst` という visitor�
 58 │ }
 ```
 
-引数の文字列を、先頭の語で見分けるための正規表現が並んでいます。57 行目、`@defer` につながるのは `@placeholder`・`@loading`・`@error` です。50 行目の `name` は、読んでいる 22.2.0-next.7 のソースにはありますが、このサイトが入れている 22.1.6 にはまだありません（下のデモでは「Unrecognized trigger」になります）。
+引数の文字列を、先頭の語で見分けるための正規表現が並んでいます。57 行目、`@defer` につながるのは `@placeholder`・`@loading`・`@error` です。50 行目の `name` は、読んでいる 22.2.0-next.7 のソースにあり、22.2 から入りました。この章を書いたときのサイトの 22.1.6 にはまだ無く、デモでは「Unrecognized trigger」になりましたが、いまのサイトの 22.2.6 には同じ `NAME_PARAMETER_PATTERN` があり、`@defer (name blockA) {…}` もエラーなく `DeferredBlock` になります。
 
 📄 `angular/packages/compiler/src/render3/r3_deferred_blocks.ts` L66–105 （▶ の行: 68–69, 73, 91–97）
 
@@ -1369,7 +1369,7 @@ html の木を R3 AST に変換するのは `HtmlAstToIvyAst` という visitor�
 
 > **🧪 DEMO — parseTemplate でブロックがどのノードになるかを見る**
 >
-> ボタンを押すと `@angular/compiler`（このサイトに入っている 22.1.6）を読み込み、入力を `parseTemplate` に通します。表示は返ってきた `nodes` を歩いて主なフィールドだけを書き出したもの、下はパースエラーの一覧です。
+> ボタンを押すと `@angular/compiler`（このサイトに入っている 22.2.6）を読み込み、入力を `parseTemplate` に通します。表示は返ってきた `nodes` を歩いて主なフィールドだけを書き出したもの、下はパースエラーの一覧です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler-control-flow-blocks)
 

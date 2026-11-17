@@ -333,7 +333,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> 65 行目は `op.expression as ir.Expression` と型を言い切っています。ところが `animate.enter="fade-{{dir}}"` のように**属性に補間を書く**と、パーサーはそれを `BindingType.Animation` の補間として扱い、式は `Interpolation` のまま `VALUE` の道に入ります。このサイトのコンパイラ（22.1.6）で実際にコンパイルすると、70 行目で作った文を後のフェーズ（`saveAndRestoreView`）が辿るところで `error TS500: Error: Unhandled expression kind: Interpolation` が出て止まりました（デモの最後の項目）。../angular の `dist/bin` にあるビルド済みのコンパイラでも同じでした。2026-11-01 に `gh search issues` で探した範囲では、この issue は見つかっていません。`[animate.enter]="'fade-' + dir"` と書けば通ります。
+> 65 行目は `op.expression as ir.Expression` と型を言い切っています。ところが `animate.enter="fade-{{dir}}"` のように**属性に補間を書く**と、パーサーはそれを `BindingType.Animation` の補間として扱い、式は `Interpolation` のまま `VALUE` の道に入ります。このサイトのコンパイラ（22.1.6）で実際にコンパイルすると、70 行目で作った文を後のフェーズ（`saveAndRestoreView`）が辿るところで `error TS500: Error: Unhandled expression kind: Interpolation` が出て止まりました（デモの最後の項目）。../angular の `dist/bin` にあるビルド済みのコンパイラでも同じでした。依存を上げたあと（2026-11-17）に、いまのサイトの compiler-cli 22.2.6 の ngc で同じテンプレートをコンパイルしても、同じ `Unhandled expression kind: Interpolation`（`transformExpressionsInExpression` から）で止まりました。2026-11-01 に `gh search issues` で探した範囲では、この issue は見つかっていません。`[animate.enter]="'fade-' + dir"` と書けば通ります。
 
 ## 7. reify：op を命令の呼び出しにする
 

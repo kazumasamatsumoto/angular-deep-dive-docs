@@ -10,7 +10,7 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 タブは「並んだタブのうち 1 つを選ぶと、対応するパネルだけが見える」部品です。Angular Aria のタブは、**選ぶこと**を第 7 回の `ListSelection` ではなく、第 10 回の `ListExpansion`（1 つしか開けない設定）で表します。この章では、`TabListPattern` が `ListFocus`・`ListNavigation`・`ListExpansion` を組む行、`selectionMode` でフォーカスと選択を分ける行、タブとパネルを `value` の文字列で結んで `aria-controls`・`aria-labelledby` を書く行、パネルの `tabindex` を読みます。最後に、`pointerdown` から `click` への変更（#32971）と、**選んだタブを消すと Tab キーで入れなくなる**開いている issue #33961 を、ページの上の本物で確かめます。
 
-読む対象は `src/aria/private/tabs/tabs.ts` と、`src/aria/tabs/tabs.ts`・`tab-list.ts`・`tab.ts`・`tab-panel.ts` です。どれも 22.1.8 と e81c398a86 で同じです。
+読む対象は `src/aria/private/tabs/tabs.ts` と、`src/aria/tabs/tabs.ts`・`tab-list.ts`・`tab.ts`・`tab-panel.ts` です。どれも、この章を書いたときのサイトの 22.1.8 とも、いまのサイトの 22.2.7 とも、e81c398a86 と同じです。
 
 1. [1. 全体像](01-aria-overview.md)
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -573,13 +573,13 @@ spec には tabs.spec.ts の `describe('Dynamic tabs')` に「アクティブな
 
 ## 5. デモ：本物のタブで #33961 が出るか
 
-> **🧪 DEMO — このページの @angular/aria 22.1.8 のタブ**
+> **🧪 DEMO — このページの @angular/aria 22.2.7 のタブ**
 >
 > 本物の `ngTabs` / `ngTabList` / `ngTab` / `ngTabPanel` / `ngTabContent` です。`[(selectedTab)]` の初期値は `'a'` です。キーボードで操作できます。Tab でタブの列に入り、←→・Home・End で動きます（explicit のときは Enter / Space で選びます）。キーやクリックやボタンのあと 50ms 待って、各タブの `tabindex`・`aria-selected`、`inert` の付いていないパネル、フォーカスのある要素を読みます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-tabs)
 
-2026-11-02 にヘッドレスの Chrome で操作して記録しました。**22.1.8 で #33961 の症状は出ました**。
+2026-11-02 にヘッドレスの Chrome で操作して記録しました。**22.1.8 で #33961 の症状は出ました**。サイトを 22.2.7 に上げたあと（2026-11-17）に、起動直後・B をクリック・「tabindex="0" のタブを消す」・「最初に戻す」を押し直しても、下と同じ値が出ました（#33961 は開いたままです）。
 
 - **起動直後**：`タブA=0✓ タブB=-1 タブC=-1`、見えているパネルは `[a]`。プリレンダーでは全部 -1 だったものが、137〜139 行目で A に止まりました。
 - **タブ B をクリック**：`タブB=0✓`、`selectedTab = b`、見えているパネル `[b]`。
@@ -683,7 +683,7 @@ Aria の外の話です。src/aria はルーターを import していません�
 - follow は移動のたびに `open()`、explicit は Space / Enter とクリックのときだけ `open()`。クリックは常に開く（L174-198、L291-296）。
 - タブとパネルは `value` の文字列で `ngTabs` の 2 つの Map を引き合い、`aria-controls`・`aria-labelledby` を書く。見えているパネルは `tabindex="0"`（L98-104）。
 - `selectedTab` は文字列と Pattern の間を `linkedSignal` と `afterRenderEffect` で往復する。選ばれているタブを消すと `undefined` になり、どのパネルも見えない（tab-list.ts L108-149）。
-- #33961：触ったあとでアクティブなタブを消すと、`setDefaultStateEffect` が返るので止まり場所が無くなる。22.1.8 のデモでも出る（L248-252）。
+- #33961：触ったあとでアクティブなタブを消すと、`setDefaultStateEffect` が返るので止まり場所が無くなる。22.1.8 でも 22.2.7 でもデモで出る（L248-252）。
 
 ---
 

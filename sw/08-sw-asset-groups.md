@@ -910,7 +910,7 @@ Generator は `resources.files` の glob をビルドの出力に当てて、具
 
 > **🧪 DEMO — installMode と updateMode で、v1 → v2 の更新に何が届くか**
 >
-> 本物の `ngsw-worker.js`（@angular/service-worker 22.1.6 の配布物）を、偽物のブラウザの上で動かします（偽物にしたものは `sw-sandbox.ts` の先頭のコメント）。グループ app（`/index.html`・`/main.js`、prefetch）と、モードを選べるグループ assets（`/assets/a〜d.svg`）。v1 → v2 で **a と c が変わり、b と d は同じ**です。v1 を入れて 6 秒進めたあと tab-1 が a と b を使い、v2 は tab-1 からの `CHECK_FOR_UPDATES` で入れます。
+> 本物の `ngsw-worker.js`（@angular/service-worker 22.2.6 の配布物）を、偽物のブラウザの上で動かします（偽物にしたものは `sw-sandbox.ts` の先頭のコメント）。グループ app（`/index.html`・`/main.js`、prefetch）と、モードを選べるグループ assets（`/assets/a〜d.svg`）。v1 → v2 で **a と c が変わり、b と d は同じ**です。v1 を入れて 6 秒進めたあと tab-1 が a と b を使い、v2 は tab-1 からの `CHECK_FOR_UPDATES` で入れます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-asset-groups)
 

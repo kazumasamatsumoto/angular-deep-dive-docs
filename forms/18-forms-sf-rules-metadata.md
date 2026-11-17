@@ -836,7 +836,7 @@ reducer は 68 行目の `reduce` と 70 行目の `getInitial` の組です。�
 
 > **🧪 DEMO — disabled（when 付き）・hidden・readonly と metadata**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。根に `disabled(p, {when})`、nickname に `hidden`、note に `readonly`、name と nickname に `required`、age に `min(18)`・`max(120)`。自作のキーは 2 つ：`PLACEHOLDER = createMetadataKey<string>()` と `HINTS = createMetadataKey(MetadataReducer.list<string>())`。入力欄の `placeholder` は `[formField]` ではなく、テンプレートで `f.name().metadata(PLACEHOLDER)?.()` を読んで付けています。
+> 本物の `@angular/forms/signals`（22.2.6）です。根に `disabled(p, {when})`、nickname に `hidden`、note に `readonly`、name と nickname に `required`、age に `min(18)`・`max(120)`。自作のキーは 2 つ：`PLACEHOLDER = createMetadataKey<string>()` と `HINTS = createMetadataKey(MetadataReducer.list<string>())`。入力欄の `placeholder` は `[formField]` ではなく、テンプレートで `f.name().metadata(PLACEHOLDER)?.()` を読んで付けています。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-sf-rules-metadata)
 

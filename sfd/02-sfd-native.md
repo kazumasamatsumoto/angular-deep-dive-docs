@@ -330,7 +330,7 @@ $ git show 3524de29f34 -- packages/forms/signals/src/directive/control_native.ts
 📄 `打った文字と、描画の後の DOM の value`
 
 ```
-# DEMO の n の行（number | null、type="number"）に 1 文字ずつ打った記録（headless Chrome 157、サイトの 22.1.6）
+# DEMO の n の行（number | null、type="number"）に 1 文字ずつ打った記録（headless Chrome 157、記録したときのサイトの 22.1.6）
 # event: input イベントの時点の DOM の value / after: 描画の後の DOM の value
 --- "-0" と打つ
 event: value=""   badInput=true     after: ""        # "-" だけでは数でない → parse エラー、モデルはそのまま
@@ -600,13 +600,13 @@ $ git show 9e37a58e14b -- packages/forms/signals/src/directive/control_native.ts
 > [!WARNING]
 > **ハマりどころ**
 >
-> これが開いている #71443（2026-10-20）の内容です。DEMO の select の行（モデルは `"two"`、option は `one` と `{{ label() }}`）で、「2 つ目の option の文字を two に」を押しても `value` は `""`・`selectedIndex=-1` のままです。続けて「option two を足す」を押すと、子の追加（`childList`）で 91 行目が走り、`value="two"`・`selectedIndex=1`（文字を変えた 2 つ目の option）になります。サイトの 22.1.6 の `isRelevantSelectMutation` も同じ形です。
+> これが開いている #71443（2026-10-20）の内容です。DEMO の select の行（モデルは `"two"`、option は `one` と `{{ label() }}`）で、「2 つ目の option の文字を two に」を押しても `value` は `""`・`selectedIndex=-1` のままです。続けて「option two を足す」を押すと、子の追加（`childList`）で 91 行目が走り、`value="two"`・`selectedIndex=1`（文字を変えた 2 つ目の option）になります。サイトの 22.2.6 の `isRelevantSelectMutation` も同じ形です。
 
 ## 8. DEMO：type とモデルの型の組み合わせ
 
 > **🧪 DEMO — 打った文字・モデルの値・DOM の value**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。`form(signal({ s: '42', n: 5, d: null, sel: 'two', r: 'selected' }), p => { min(p.n, 0); max(p.n, 10) })` の 5 つのフィールドを、`[type]` を束縛した input・select・radio につないでいます。表は操作の後に 1 回だけ DOM を読み直したものです。「打った文字」は `input` イベントの時点の DOM の value（`badInput` ならその印）です。number | null のモデルを text の input につなぐ組み合わせは、欄を空にすると開発モードで NG01921 が出る（2 節）ので、この DEMO には入れていません。
+> 本物の `@angular/forms/signals`（22.2.6）です。`form(signal({ s: '42', n: 5, d: null, sel: 'two', r: 'selected' }), p => { min(p.n, 0); max(p.n, 10) })` の 5 つのフィールドを、`[type]` を束縛した input・select・radio につないでいます。表は操作の後に 1 回だけ DOM を読み直したものです。「打った文字」は `input` イベントの時点の DOM の value（`badInput` ならその印）です。number | null のモデルを text の input につなぐ組み合わせは、欄を空にすると開発モードで NG01921 が出る（2 節）ので、この DEMO には入れていません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sfd-native)
 

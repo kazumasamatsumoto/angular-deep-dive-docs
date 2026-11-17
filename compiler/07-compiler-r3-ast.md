@@ -917,7 +917,7 @@ HTML のコメントは 354 行目で常に `null` を返すので、**R3 AST �
 
 > **🧪 DEMO — テンプレートの R3 AST をインデント表示する**
 >
-> 「解析」を押すと `@angular/compiler`（インストール版 22.1.6）を読み込み、`parseTemplate(template, 'demo.html', {}).nodes` を表示します。TemplateElementBoundTextTextContent を色分けしています。
+> 「解析」を押すと `@angular/compiler`（インストール版 22.2.6）を読み込み、`parseTemplate(template, 'demo.html', {}).nodes` を表示します。TemplateElementBoundTextTextContent を色分けしています。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler-r3-ast)
 

@@ -465,7 +465,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — ワーカーを動かしたあとの Cache Storage と、db の表の中身**
 >
-> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.1.6 の配布物）を、偽物のブラウザ（`sw-sandbox.ts`。Cache Storage・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。下の表はその偽物の Cache Storage の中身で、`db:` の付いた表のエントリーを押すと、`cacheEntry(名前, パス)` で本文（JSON）を読みます。このページの本物の Cache Storage には何も書きません。
+> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.2.6 の配布物）を、偽物のブラウザ（`sw-sandbox.ts`。Cache Storage・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。下の表はその偽物の Cache Storage の中身で、`db:` の付いた表のエントリーを押すと、`cacheEntry(名前, パス)` で本文（JSON）を読みます。このページの本物の Cache Storage には何も書きません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-database)
 

@@ -31,7 +31,7 @@ R3 AST の `t.LetDeclaration` が、テンプレートの関数の `ɵɵdeclareL
 | 2026-01-19 | ce80136e7b9 | @let を読まないリスナーの `restoreView` / `resetView` を消す（issue #66286） | 8 節 |
 | 2026-10-28 | 9fe64d48d29（angular-main だけ） | 宣言より前の読みを `undefined` ではなく `ɵɵinvalid()` に | 3 節 |
 
-a6b7b9b8c5e と 8f2874e86d8 は 20.1.0、ce80136e7b9 は 21.2.0 から入っています（`git tag --contains`）。どれもこのサイトの 22.1.6 に入っているので、DEMO の出力はこの章の今のコードの結果です。
+a6b7b9b8c5e と 8f2874e86d8 は 20.1.0、ce80136e7b9 は 21.2.0 から入っています（`git tag --contains`）。どれもこのサイトの 22.2.6 に入っているので、DEMO の出力はこの章の今のコードの結果です。
 
 ## 2. ingest が置く 2 つの op
 
@@ -925,7 +925,7 @@ i18n のブロックの中の @let も、同じビューだけで読むなら 4 
 
 > **🧪 DEMO — compileComponentFromMetadata の出力で @let の命令を数える**
 >
-> ボタンを押すと `@angular/compiler`（22.1.6）を読み込み、`parseTemplate` の結果から `R3ComponentMetadata` を作って `compileComponentFromMetadata` に通し、出てきた式を文字列にします（評価はしません）。ngtsc もテンプレートの関数は同じ関数で作る（compiler-cli の `annotations/component/src/handler.ts`）ので、Node で compiler-cli を動かす記録ではなく、ページの上の本物にしました。文字列は JIT の出力の書き方なので、compliance の期待（`const`）と違い `var` で出ます。pipe（`uppercase`）は宣言していないので、名前のまま `ɵɵpipe` に入ります。
+> ボタンを押すと `@angular/compiler`（22.2.6）を読み込み、`parseTemplate` の結果から `R3ComponentMetadata` を作って `compileComponentFromMetadata` に通し、出てきた式を文字列にします（評価はしません）。ngtsc もテンプレートの関数は同じ関数で作る（compiler-cli の `annotations/component/src/handler.ts`）ので、Node で compiler-cli を動かす記録ではなく、ページの上の本物にしました。文字列は JIT の出力の書き方なので、compliance の期待（`const`）と違い `var` で出ます。pipe（`uppercase`）は宣言していないので、名前のまま `ɵɵpipe` に入ります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/letd-pipeline)
 

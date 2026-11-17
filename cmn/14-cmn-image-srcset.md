@@ -437,7 +437,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の NgOptimizedImage に width・sizes・ngSrcset・fill を渡して、srcset と sizes を見る**
 >
-> 「作る」を押すと、`<img [ngSrc] [width] [height] [sizes] [ngSrcset] [fill] [disableOptimizedSrcset] [loading]>` を 1 つ持つ小さなコンポーネントを `createComponent` で作り、このサイトの本物の `NgOptimizedImage`（22.1.6）に属性を書かせて読み、すぐ destroy します（画面には描きません。読み込みが始まる前に片付けるので、読み込み後の検査も通信も起きません）。`IMAGE_LOADER` は、受け取った `config` を記録して、その大きさの SVG を `data:` の URL で返す関数に差し替えています。「ローダーが受け取った config」の表は、本物のディレクティブが渡した値そのものです。「通った分かれ」だけは、入力から条件を言葉にした移植です（ディレクティブの中は覗けないため）。
+> 「作る」を押すと、`<img [ngSrc] [width] [height] [sizes] [ngSrcset] [fill] [disableOptimizedSrcset] [loading]>` を 1 つ持つ小さなコンポーネントを `createComponent` で作り、このサイトの本物の `NgOptimizedImage`（22.2.6）に属性を書かせて読み、すぐ destroy します（画面には描きません。読み込みが始まる前に片付けるので、読み込み後の検査も通信も起きません）。`IMAGE_LOADER` は、受け取った `config` を記録して、その大きさの SVG を `data:` の URL で返す関数に差し替えています。「ローダーが受け取った config」の表は、本物のディレクティブが渡した値そのものです。「通った分かれ」だけは、入力から条件を言葉にした移植です（ディレクティブの中は覗けないため）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-image-srcset)
 
@@ -570,7 +570,7 @@ Finished in 0.13 seconds
 ### 直すとしたら
 
 - 候補の作り方は `getRewrittenSrcset`・`getResponsiveSrcset`・`getFixedSrcset`（639〜708 行目）、作るかどうかは `shouldGenerateAutomaticSrcset`（710〜722 行目）、sizes は 508〜522 行目です。spec は describe `automatic srcset generation` の形（ローダーを渡して `img.getAttribute('srcset')` を比べる）で足します。
-- **手元の木より新しい修正**：issue #49335（2023 年。`disableOptimizedSrcset` と `[srcset]` のバインドを一緒に使うと srcset が付かない）は、main の 2cecc4aa608（2026-09-29 にマージ）で閉じました。`[srcset]` は第 13 回で見た `@internal` の `srcset` の入力に入ってしまい `img` に届かないので、`updateSrcAndSrcset` の 693〜695 行目の `if (rewrittenSrcset)` に 「`else if (this.disableOptimizedSrcset && this.srcset)` なら利用者の値をそのまま書く」を足し、spec を 16 行足しています。手元の木（8576f161ae4、2026-09-06）にも、このサイトの 22.1.6 にも入っていません。
+- **手元の木より新しい修正**：issue #49335（2023 年。`disableOptimizedSrcset` と `[srcset]` のバインドを一緒に使うと srcset が付かない）は、main の 2cecc4aa608（2026-09-29 にマージ）で閉じました。`[srcset]` は第 13 回で見た `@internal` の `srcset` の入力に入ってしまい `img` に届かないので、`updateSrcAndSrcset` の 693〜695 行目の `if (rewrittenSrcset)` に 「`else if (this.disableOptimizedSrcset && this.srcset)` なら利用者の値をそのまま書く」を足し、spec を 16 行足しています。手元の木（8576f161ae4、2026-09-06）には入っていませんが、22.2.x には ad2f291ba0 として 22.2.1 から入っていて、このサイトの 22.2.6 にもあります（node\_modules の `fesm2022/common.mjs` の 966 行目）。この章の DEMO は `[srcset]` をバインドしないので、DEMO の結果は変わりません。
 - c1312da1832（7 節）は spec を足していない修正です。destroy の後に `loading` 属性が無いことを見る it は、describe `sizes attribute` に「描いて `fixture.destroy()` して `img.hasAttribute('loading')` を見る」形で書けます（DEMO の「destroy の後」の列が同じことを見ています）。
 - open の issue：#59495（`assertNoComplexSizes` を外してほしい）、#57145（自分で書いた srcset と一緒に使いたい）、#54100（大きさが分からない画像で密度の候補を柔軟に）、#51261（`ngSrcset` が偽のときに既定に戻る）。どれも 6 節と 2 節の分かれのどこを変える話かを当ててから読むと速く読めます（[第 20 回](20-cmn-issues.md)）。
 - 本家に PR を出すことは勧めません。issue を読むときに、DEMO で同じ入力を入れて「どの分かれを通ったか」を先に確かめる手がかりにします。

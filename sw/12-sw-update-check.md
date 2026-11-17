@@ -365,7 +365,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — v1 から v2 への更新の確認と、タブに届く知らせ**
 >
-> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.1.6 の配布物）を、偽物のブラウザ（`sw-sandbox.ts`。キャッシュ・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。v1 を入れたあと、tab1 だけをナビゲーションして v1 に割り当て、tab2 は開いているだけ（一度も要求を送っていない）にします。サーバーを替えてから、tab1 が `CHECK_FOR_UPDATES` を送ります。
+> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.2.6 の配布物）を、偽物のブラウザ（`sw-sandbox.ts`。キャッシュ・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。v1 を入れたあと、tab1 だけをナビゲーションして v1 に割り当て、tab2 は開いているだけ（一度も要求を送っていない）にします。サーバーを替えてから、tab1 が `CHECK_FOR_UPDATES` を送ります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-update-check)
 

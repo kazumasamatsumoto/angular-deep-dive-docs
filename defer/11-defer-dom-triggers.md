@@ -465,7 +465,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — on interaction と on hover（ライブ）**
 >
-> このページの中に本物の `@defer` の塊を 4 つ置いています（@angular/core 22.1.6）。本体の部品 `defer-dom-panel` は塊の中でしか使っていないので、別の chunk になり、発火してから `import()` で読み込まれます（2026-11-06 の本番ビルドで、この部品は 699 バイトの chunk に入り、章の chunk の依存の関数（`() => [import(…).then(…)]`）から読まれていることを確かめました。chunk の名前はビルドごとに変わります）。トリガーの要素には、この章の側でも `(click)`・`(keydown)`・`(mouseenter)`・`(mouseover)`・`(focusin)` のリスナーを付け、届いたイベントを記録します。@defer のリスナーは capture で付くので、同じ要素ではこの章のリスナーより先に動きます。そこで章のリスナーの中で `ɵgetDeferBlocks`（@angular/core の内部の関数）を読み、そのイベントの間に塊の `TRIGGER_CLEANUP_FNS`（LDeferBlockDetails の 4 番の欄。interfaces.ts の 240 行目）が `null` になったら「このイベントで発火した」と書きます。**内部の形を読んでいるだけで、塊を動かすことはしません。**欄の位置は `lView[tNode.index + 1]`（utils.ts の `getDeferBlockDataIndex`）、状態は 1 番の欄（237 行目の `DEFER_BLOCK_STATE`）です（欄の全体は [第 3 回](03-defer-details.md)）。
+> このページの中に本物の `@defer` の塊を 4 つ置いています（@angular/core 22.2.6）。本体の部品 `defer-dom-panel` は塊の中でしか使っていないので、別の chunk になり、発火してから `import()` で読み込まれます（2026-11-06 の本番ビルドで、この部品は 699 バイトの chunk に入り、章の chunk の依存の関数（`() => [import(…).then(…)]`）から読まれていることを確かめました。chunk の名前はビルドごとに変わります）。トリガーの要素には、この章の側でも `(click)`・`(keydown)`・`(mouseenter)`・`(mouseover)`・`(focusin)` のリスナーを付け、届いたイベントを記録します。@defer のリスナーは capture で付くので、同じ要素ではこの章のリスナーより先に動きます。そこで章のリスナーの中で `ɵgetDeferBlocks`（@angular/core の内部の関数）を読み、そのイベントの間に塊の `TRIGGER_CLEANUP_FNS`（LDeferBlockDetails の 4 番の欄。interfaces.ts の 240 行目）が `null` になったら「このイベントで発火した」と書きます。**内部の形を読んでいるだけで、塊を動かすことはしません。**欄の位置は `lView[tNode.index + 1]`（utils.ts の `getDeferBlockDataIndex`）、状態は 1 番の欄（237 行目の `DEFER_BLOCK_STATE`）です（欄の全体は [第 3 回](03-defer-details.md)）。
 >
 > 「塊を描く」を押すと、4 つの塊が placeholder の状態で現れます。ページを開いただけでは何も描きません。
 >

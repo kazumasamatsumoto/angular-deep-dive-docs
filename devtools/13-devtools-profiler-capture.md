@@ -579,7 +579,7 @@ src/defer/rendering.ts:245:  profiler(ProfilerEvent.DeferBlockStateStart);
 110 │   }
 ```
 
-`ɵsetProfiler` が無い古い版の Angular では、core に出来事を出してもらえません。そこで 89 行目で、コンポーネントの `tView.template`（テンプレート関数）を自分の関数で差し替え、102 行目で開始を知らせ、103 行目で元の関数（84 行目で取っておいたもの）を呼び、105 行目で終了を知らせます。いまの Angular（このサイトの 22.1.6 も）では `ɵsetProfiler` があるので、こちらは使われません。
+`ɵsetProfiler` が無い古い版の Angular では、core に出来事を出してもらえません。そこで 89 行目で、コンポーネントの `tView.template`（テンプレート関数）を自分の関数で差し替え、102 行目で開始を知らせ、103 行目で元の関数（84 行目で取っておいたもの）を呼び、105 行目で終了を知らせます。いまの Angular（このサイトの 22.2.6 も）では `ɵsetProfiler` があるので、こちらは使われません。
 
 ## 4. startProfiling：フックを subscribe する
 

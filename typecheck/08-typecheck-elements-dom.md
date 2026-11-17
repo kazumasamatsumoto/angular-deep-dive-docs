@@ -828,7 +828,7 @@ if ((true /*hostBindingsBlockGuard*/)) {
 >
 > 要素ごとに checkElement、\[prop\] ごとに checkTemplateElementProperty。TCB には式の文だけが残る
 >
-> ボタンを押すと、このサイトに入っている @angular/compiler 22.1.6 の generateTypeCheckBlock が動きます。位置のコメントは消して表示します。
+> ボタンを押すと、このサイトに入っている @angular/compiler 22.2.6 の generateTypeCheckBlock が動きます。位置のコメントは消して表示します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-elements-dom)
 

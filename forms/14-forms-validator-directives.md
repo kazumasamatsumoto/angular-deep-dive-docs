@@ -526,7 +526,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — \[required\]・\[minlength\] と自作の検証ディレクティブ**
 >
-> 本物の `ReactiveFormsModule`（@angular/forms 22.1.6）です。`ctrl = new FormControl('ab')`（検証は何も渡していない）を `<input [formControl]="ctrl" [required]="required()" [minlength]="minlength()" [appVdForbidden]="word()">` に付けています。`appVdForbidden` は、値に禁止語が含まれると `{ forbidden: 語 }` を返す自作のディレクティブで、`registerOnValidatorChange` を実装し、入力が変わったら受け取った関数を呼びます（4 節の 165 行目と同じ形）。
+> 本物の `ReactiveFormsModule`（@angular/forms 22.2.6）です。`ctrl = new FormControl('ab')`（検証は何も渡していない）を `<input [formControl]="ctrl" [required]="required()" [minlength]="minlength()" [appVdForbidden]="word()">` に付けています。`appVdForbidden` は、値に禁止語が含まれると `{ forbidden: 語 }` を返す自作のディレクティブで、`registerOnValidatorChange` を実装し、入力が変わったら受け取った関数を呼びます（4 節の 165 行目と同じ形）。
 >
 > `registerOnValidatorChange` は最初の描画で 1 回だけ呼ばれ、そのあと何を変えても増えません（3 節の 212 行目は setUp のときだけ）。禁止語を変えると、自作の `ngOnChanges` → 受け取った関数 → `updateValueAndValidity` → 全部の `validate`、の順にログが出ます。`[required]` や `[minlength]` を変えたときも自作の `validate` が呼ばれるのは、組み込みのディレクティブも同じ `updateValueAndValidity` を起こすからです。
 >

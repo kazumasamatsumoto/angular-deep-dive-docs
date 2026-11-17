@@ -359,7 +359,7 @@ f9f24fc6699（2026-03-27、PR #67943）のときは、`NG_VALIDATORS` を `FormF
 > [!WARNING]
 > **ハマりどころ**
 >
-> この predicate は「空かどうか」しか見ないので、**利用者が書いた名前と、`[formField]` が前に書いた自動の名前を区別しません**。1 回目の更新で自動の名前（`root.items.1.v`）を書くと、その CVA の `name` はもう空でないので、あとで道のりが変わっても書き直されません。8576f161ae4 の作業木に spec を 1 つ足して確かめると、配列 `items` の先頭を消したあと、残った行のネイティブの input の `name` は `root.items.0.v` に変わり、同じ行の CVA の `name` は `root.items.1.v` のままでした。さらに末尾に 1 行足すと、新しい行の CVA も `root.items.1.v` を受け取り、2 つの CVA が同じ名前になりました（下のデモの「name の追従」で同じことが見られます。22.1.6 も同じコードです）。CVA が中で radio を作るなら、2 つの行の radio が 1 つのグループになります。gh の検索では、この形の issue と PR は見つかりませんでした（近いのは、min・max などの制約の input を CVA で上書きしない #70970、開いている PR）。
+> この predicate は「空かどうか」しか見ないので、**利用者が書いた名前と、`[formField]` が前に書いた自動の名前を区別しません**。1 回目の更新で自動の名前（`root.items.1.v`）を書くと、その CVA の `name` はもう空でないので、あとで道のりが変わっても書き直されません。8576f161ae4 の作業木に spec を 1 つ足して確かめると、配列 `items` の先頭を消したあと、残った行のネイティブの input の `name` は `root.items.0.v` に変わり、同じ行の CVA の `name` は `root.items.1.v` のままでした。さらに末尾に 1 行足すと、新しい行の CVA も `root.items.1.v` を受け取り、2 つの CVA が同じ名前になりました（下のデモの「name の追従」で同じことが見られます。サイトの 22.2.6 も同じコードです）。CVA が中で radio を作るなら、2 つの行の radio が 1 つのグループになります。gh の検索では、この形の issue と PR は見つかりませんでした（近いのは、min・max などの制約の input を CVA で上書きしない #70970、開いている PR）。
 
 ## 5. 標準の forms の setUpControl との違い
 
@@ -455,7 +455,7 @@ f9f24fc6699（2026-03-27、PR #67943）のときは、`NG_VALIDATORS` を `FormF
 
 > **🧪 DEMO — CVA に呼ばれたメソッドの順**
 >
-> 本物の `@angular/forms/signals` と `@angular/forms`（22.1.6）です。章の中の小さな CVA（`sfdcva-box`）は、4 つのメソッドと、デコレーターの `@Input` の `name`・`pattern` の setter が呼ばれるたびに記録します。左は `form(model, s, {name: 'demo'})` の `f.text`（`disabled(p.text, {when: lock})`）、右は `new FormControl('あ')` です。ボタンは両方に同じ操作をします。
+> 本物の `@angular/forms/signals` と `@angular/forms`（22.2.6）です。章の中の小さな CVA（`sfdcva-box`）は、4 つのメソッドと、デコレーターの `@Input` の `name`・`pattern` の setter が呼ばれるたびに記録します。左は `form(model, s, {name: 'demo'})` の `f.text`（`disabled(p.text, {when: lock})`）、右は `new FormControl('あ')` です。ボタンは両方に同じ操作をします。
 >
 > `@for (item of f.items; track item)` の各行に、同じ CVA と、ネイティブの `<input [formField]>` を並べています。表は描画のあとに、フィールドの `name()`・CVA の `name`・DOM の `name` を読んだものです。
 >
@@ -529,7 +529,7 @@ CVA です。`ɵngControlCreate` は `controlValueAccessor` があればそれ�
 
 **Q. debounce を付けたら CVA に古い値が書き戻されました。**
 
-2e0cb52dbf0（2026-06-19）より前の版です。2e9aeea0fed で 44 行目が入ったあと、93 行目が `value()`（debounce 前の古い値）と比べていたので「違う」と判断して `writeValue` していました。今は 91 行目で `controlValue()` を読みます。サイトの 22.1.6 には入っています。
+2e0cb52dbf0（2026-06-19）より前の版です。2e9aeea0fed で 44 行目が入ったあと、93 行目が `value()`（debounce 前の古い値）と比べていたので「違う」と判断して `writeValue` していました。今は 91 行目で `controlValue()` を読みます。サイトの 22.2.6 には入っています。
 
 **Q. CVA の中で NgControl を inject して statusChanges を購読できますか？**
 

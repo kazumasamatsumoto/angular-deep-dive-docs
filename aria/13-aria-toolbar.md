@@ -2,13 +2,13 @@
 
 # Toolbar：ウィジェットの集まりと、22.1.8 からの書き換え
 
-> ToolbarPattern が ToolbarWidget と ToolbarWidgetGroup を 1 本の List として並べ、ラジオのような group の中と外で矢印キーの意味を変える行。このサイトの 22.1.8 と読んでいる 22.2.0-next.5 の差（選択の Behavior を外した #33747）を diff で読み、同じ API 名でも中身が変わったことを確かめる。
+> ToolbarPattern が ToolbarWidget と ToolbarWidgetGroup を 1 本の List として並べ、ラジオのような group の中と外で矢印キーの意味を変える行。22.1.8 にあった選択の Behavior を #33747 が外した差を diff で読み、同じ API 名でも中身が変わったことを確かめる。サイトは 22.2.7 で、デモは選択の無い形で動く。
 
 angular/components · 読了 約 12 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/aria-toolbar)
 
 ---
 
-ツールバー（`role="toolbar"`）は、ボタンやラジオの集まりを「Tab では 1 か所だけ止まり、中は矢印キーで動く」ひとかたまりにする部品です。この章では、`ToolbarPattern` がすべてのウィジェットを 1 本の列として `ListFocus` と `ListNavigation` に渡し、**今いるウィジェットが group の中にあるときだけ**、もう一方の向きの矢印キーを「group の中を回る」キーとして足す行を読みます。そのあと、このサイトに入れた `@angular/aria` 22.1.8 と、読んでいる snapshot（22.2.0-next.5）の差、つまり選択の仕組みを外した #33747 を diff で読みます。
+ツールバー（`role="toolbar"`）は、ボタンやラジオの集まりを「Tab では 1 か所だけ止まり、中は矢印キーで動く」ひとかたまりにする部品です。この章では、`ToolbarPattern` がすべてのウィジェットを 1 本の列として `ListFocus` と `ListNavigation` に渡し、**今いるウィジェットが group の中にあるときだけ**、もう一方の向きの矢印キーを「group の中を回る」キーとして足す行を読みます。そのあと、このサイトが前に入れていた `@angular/aria` 22.1.8 と、読んでいる snapshot（22.2.0-next.5）の差、つまり選択の仕組みを外した #33747 を diff で読みます。
 
 読む対象は `src/aria/private/toolbar/toolbar.ts`（`ToolbarPattern`）、`toolbar-widget.ts`（`ToolbarWidgetPattern`）、`toolbar-widget-group.ts`（`ToolbarWidgetGroupPattern`）と、公開ディレクティブの `src/aria/toolbar/toolbar.ts`・`toolbar-widget.ts`・`toolbar-widget-group.ts` です（../components、e81c398a86）。
 
@@ -36,7 +36,7 @@ angular/components · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> toolbar は、このサイトの 22.1.8 と本文の snapshot とで**中身がいちばん違う部品**です。本文の引用は snapshot、ページの上のデモは 22.1.8 で動きます。デモは Enter / Space やクリックで「選択」を切り替えますが、snapshot ではその仕組みごと消えています。違いは 7 節で diff を見せます。
+> toolbar は、22.1.8 と本文の snapshot とで**中身がいちばん違う部品**です。22.1.8 には Enter / Space やクリックで切り替わる「選択」がありましたが、snapshot ではその仕組みごと消えています。違いは 7 節で diff を見せます。この章を書いたときのサイトは 22.1.8 で、デモも「選択」を見せていました。今のサイトは 22.2.7 に上げてあり、デモは snapshot と同じ、選択の無い形で動きます。
 
 ## 1. ToolbarPattern が持つもの
 
@@ -655,23 +655,23 @@ angular/components · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 >
 > #33684（2026-08-14、`feat(aria/toolbar): Support Select/Comboboxes in the toolbar`、2026-09-02 に COMPLETED で閉じた）は、ツールバーの中の `<select>` がクリックでも Enter / Space でも開かず、`<input type="number">` の上下も効かない、という報告でした。上の 3 つ（pointerdown の `preventDefault`、Enter / Space の `select()`、group の外でも受ける ArrowUp / ArrowDown）がちょうどその原因に当たり、#33747 がその 3 つを外しています。#33747 は `toolbar-select-and-combobox` の例（`<select ngToolbarWidget>`、`<input ngToolbarWidget type="number">`、Combobox）も足しました。
 
-## 8. デモ：本物の ngToolbar（22.1.8）
+## 8. デモ：本物の ngToolbar（22.2.7）
 
-> **🧪 DEMO — ボタン 3 つと、ラジオの group（このサイトの @angular/aria 22.1.8）**
+> **🧪 DEMO — ボタン 3 つと、ラジオの group（このサイトの @angular/aria 22.2.7）**
 >
-> Tab でツールバーに入り、← / → で動きます。「揃え」の group の中では ↑ / ↓ でも動きます。Enter / Space やクリックのあと、`#tb="ngToolbar"` の `value()`（22.1.8 にだけある選択の model）と各ウィジェットの tabindex をログに出します。22.1.8 なので、Enter / Space で value が変わります（snapshot では変わらない。7 節）。
+> Tab でツールバーに入り、← / → で動きます。「揃え」の group の中では ↑ / ↓ でも動きます。22.2.7 は #33747 のあとなので、ツールバーは選択を持ちません。「揃え」と「太字」の状態は、このページが signal と `(click)` で持っています（#33747 の例の `SimpleToolbarToggleButton` と同じ形）。キーやクリックのあと、今のフォーカス、ページが持つ状態、各ウィジェットの tabindex をログに出します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-toolbar)
 
-2026-11-02 にヘッドレスの Chrome でこのページを開き、本物のキー入力（CDP の `Input.dispatchKeyEvent`）で確かめた結果です。
+2026-11-17 にヘッドレスの Chrome でこのページを開き、本物のキー入力（CDP の `Input.dispatchKeyEvent`）で確かめた結果です。このサイトの依存を 22.2.7 に上げたあとの記録です。22.1.8 のときの記録（2026-11-02）では、Enter / Space で `value()` が変わり、group の外の ↓ でページが動きませんでした。
 
-- Tab で入ると「元に戻す」に止まり、tabindex が 0 なのはそれだけです（1 本の列の最初。5 節の 228 行目）。
+- 最初のウィジェット「元に戻す」だけ tabindex が 0 です（1 本の列の最初。5 節の 228 行目）。
 - → を 2 回で「左」へ入り、そのまま → で「中央」「右」「太字」と、group をまたいで進みます（2 節の 118 行目）。「太字」で → を押すと、`wrap` が true なので「元に戻す」へ戻ります。
 - 「右」で ↓ を押すと「左」へ、「左」で ↑ を押すと「右」へ回ります（3 節の 141〜146 行目と、その逆向き）。
-- group の外の「元に戻す」で ↓ を押しても動かず、ページもスクロールしませんでした。22.1.8 は group の外でも ↓ を表に入れていて、`preventDefault` するからです（7 節）。snapshot なら表に無いので、ページがスクロールします。
-- 「中央」で Space を押すと value が `["center"]`、続けて「右」で Space なら `["right"]` です。group は multi でないので、22.1.8 の `select()` が group の中を先に外します。「元に戻す」で Space なら `"undo"` が足されて `["right","undo"]` になります。
+- group の外の「元に戻す」で ↓ を押すと、フォーカスは動かず、ページが 40px スクロールしました。22.2.7 は group の外では ↓ を表に入れないので、`preventDefault` しません（7 節）。
+- 「中央」で Space を押すと、ツールバーは何もせず、ボタンの合成の click が届いて、このページの `align` が `center` になります。Enter も同じです。「太字」で Space なら `bold` が true です。
 - Tab でツールバーの外（「ログをクリア」）へ出て、Shift+Tab で戻ると、最後にいた「元に戻す」に止まります。
-- コンソールには開発モードの起動の 2 行（`console.log`）のほか、警告もエラーも出ませんでした。
+- コンソールには警告もエラーも出ませんでした。
 
 ## 9. 呼び出しの連なり（group の中で ↓）
 
@@ -802,7 +802,7 @@ snapshot の例（`toolbar-select-and-combobox`）は、Listbox を直接ウィ�
 
 **Q. 22.1.8 から 22.2 に上げると壊れますか？**
 
-diff の範囲で、壊れる書き方があります。`[(value)]` を `ngToolbar` に、`[multi]` を `ngToolbarWidgetGroup` に、`w.selected()` を `ngToolbarWidget` の参照に書いていると、その input / メソッドが無くなるのでコンパイルが通りません。`Toolbar<string>` のような型引数も消えました。`value="x"` を静的な属性で書いただけなら、`<button>` の素の属性として残るだけです。動きも変わります。Enter / Space で選択が切り替わらなくなり、ボタンの合成の click が届くようになります。押した状態は自分で持つ必要があります（7 節）。
+diff の範囲で、壊れる書き方があります。`[(value)]` を `ngToolbar` に、`[multi]` を `ngToolbarWidgetGroup` に、`w.selected()` を `ngToolbarWidget` の参照に書いていると、その input / メソッドが無くなるのでコンパイルが通りません。`Toolbar<string>` のような型引数も消えました。`value="x"` を静的な属性で書いただけなら、`<button>` の素の属性として残るだけです。動きも変わります。Enter / Space で選択が切り替わらなくなり、ボタンの合成の click が届くようになります。押した状態は自分で持つ必要があります（7 節）。このサイトでも、22.2.7 に上げたときに 8 節のデモがちょうどこれで止まりました。`TS2315: Type 'Toolbar' is not generic.` と `TS2339: Property 'selected' does not exist on type 'ToolbarWidget'.` の 2 種類です。`w.selected()` を signal と `(click)` に置き換えて直しました。
 
 **Q. group の中で ↓ を押し続けると外に出ますか？**
 
@@ -817,7 +817,7 @@ snapshot にはありません。`ToolbarPattern` の Behavior は `ListFocus` �
 - `ToolbarPattern` は全ウィジェットを 1 本の列にして、`ListFocus`（roving 固定）と `ListNavigation` で動かす（L189-198）。
 - group は範囲の印。今いるウィジェットが group の中のときだけ、もう一方の向きの矢印が「group の中を回る」キーになる（L123-126、L141-146）。
 - snapshot のツールバーは Enter / Space に触らず、pointerdown も止めない。だから中の select やボタンがふつうに動く。
-- このサイトの 22.1.8 は #33747 の前。value / selected / multi があり、Enter / Space とクリックで選択していた。
+- 22.1.8 は #33747 の前で、value / selected / multi があり、Enter / Space とクリックで選択していた。このサイトは 22.2.7 に上げたので、デモは #33747 のあとの形（状態は使う側が持つ）で動く。
 
 ---
 

@@ -32,7 +32,7 @@ esbuild がバンドルに入れる JavaScript は、読み込まれた直後に
 > [!WARNING]
 > **ハマりどころ**
 >
-> 読むソースは 22.2.0-next.6 です。このサイトをビルドしている `@angular/build` 22.1.7 でも、本番の 4 つの変換はすでに oxc です（22.1.0 で Babel から移行）。違うのはリンカーで、22.1 ではまだ Babel のリンカーが使われています（oxc のリンカーは 22.2.0-next.1 から）。
+> 読むソースは 22.2.0-next.6 です。本番の 4 つの変換は 22.1.0 で Babel から oxc に移りました。リンカーは 22.1 ではまだ Babel で、oxc のリンカーは 22.2.0-next.1 から（22.2.0 の変更履歴の「migrate Angular Linker to oxc-parser and magic-string」）です。このサイトをビルドしている `@angular/build` は 22.2.7 なので、リンカーも oxc です。`javascript-transformer-worker.js` は、環境変数 `NG_BUILD_BABEL_LINKER` が真のときだけ `@angular/compiler-cli/linker/babel` を読み、それ以外は `oxc-transform.js` の `transform` に `link: true` を渡します（node\_modules の 22.2.7 で確かめた）。
 
 ## 0. 全体の流れ
 
@@ -1000,7 +1000,7 @@ TypeScript の `enum` は、41〜45 行目の 2 つの文になります。2 つ
 648 ▶     pure: ['forwardRef'],
 ```
 
-書き換えたコードを esbuild が束ね、645〜647 行目で minify します。648 行目、`forwardRef(...)` の呼び出しは、注釈が無くても純粋として扱わせます。印・IIFE・`void 0` は esbuild への**伝言**で、出力に残す目的のものではありません。このサイトの本番の出力には、コードとしての `@__PURE__` 注釈は 1 つも残っていません（下のデモ）。
+書き換えたコードを esbuild が束ね、645〜647 行目で minify します。648 行目、`forwardRef(...)` の呼び出しは、注釈が無くても純粋として扱わせます。印・IIFE・`void 0` は esbuild への**伝言**で、出力に残す目的のものではありません。この章を書いたとき（@angular/build 22.1.7）のこのサイトの本番の出力には、コードとしての `@__PURE__` 注釈は 1 つも残っていませんでした（下のデモ）。
 
 > **🧪 DEMO — このサイトの本番の JS を数える**
 >

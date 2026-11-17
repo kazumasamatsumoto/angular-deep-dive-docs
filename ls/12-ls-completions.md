@@ -979,7 +979,7 @@ resolve では 92 行目で印を読み、105 行目で 6 節の `getCompletionE
 
 > **🧪 CompletionBuilder の振り分けの移植**
 >
-> テンプレートの好きな位置にカーソルを置いて、ボタンを押してください（押したときだけ動きます）。カーソルの下のノードは ls-template.ts の `findNodePath`（getTargetAtPosition の簡略版）で、このサイトの @angular/compiler 22.1.6 で解析します。そのノードを completions.ts の 193〜217 行目と同じ順で判定し、どの分岐に入るかを示します。本物との違い：nodeContext（TargetNodeKind）を作らないので、要素の名前と属性は区別しません。また TypeScript を動かさないので、候補そのものは出ません。
+> テンプレートの好きな位置にカーソルを置いて、ボタンを押してください（押したときだけ動きます）。カーソルの下のノードは ls-template.ts の `findNodePath`（getTargetAtPosition の簡略版）で、このサイトの @angular/compiler 22.2.6 で解析します。そのノードを completions.ts の 193〜217 行目と同じ順で判定し、どの分岐に入るかを示します。本物との違い：nodeContext（TargetNodeKind）を作らないので、要素の名前と属性は区別しません。また TypeScript を動かさないので、候補そのものは出ません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ls-completions)
 

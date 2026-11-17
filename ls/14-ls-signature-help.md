@@ -501,7 +501,7 @@ angular/angular · 読了 約 11 分 · 中核 · [サイトで読む（デモ�
 
 ## 7. デモ：本物の parseTemplate の要素から、名前の範囲を出す
 
-> **🧪 DEMO — getLinkedTagNameRanges の移植 + 本物の parseTemplate（@angular/compiler 22.1.6）**
+> **🧪 DEMO — getLinkedTagNameRanges の移植 + 本物の parseTemplate（@angular/compiler 22.2.6）**
 >
 > テンプレートを本物の `parseTemplate`（ngtsc の言語サービス向けの解析と同じオプション）で R3 AST にし、すべての要素について `linked_editing_range.ts` の 121〜145 行目と 70〜84 行目の判定を移植したもので範囲を出します。本物はカーソルの位置の要素 1 つだけを見ます（`getTargetAtPosition` を通る）が、ここでは全部の要素を並べます。範囲の 2 つの文字列が違えば赤くします。
 >

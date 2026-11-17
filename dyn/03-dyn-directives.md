@@ -217,7 +217,7 @@ host directive があるときの順を固めているのが次の spec です�
 
 ## 3. DEMO：ディレクティブを選んで作り直す
 
-ページの上の本物（`@angular/core` 22.1.6）で、`DdHost`（`hostDirectives: [DdHostHD]` を持つコンポーネント）に渡すディレクティブを選んで作り直します。ライフサイクルの記録は、各ディレクティブが `inject(DD_LOG)` した関数に書きます。`DD_LOG` は `elementInjector` に渡した `Injector.create` にだけあるトークンです（[第 2 回](02-dyn-factory-create.md)の 2 節）。
+ページの上の本物（`@angular/core` 22.2.6）で、`DdHost`（`hostDirectives: [DdHostHD]` を持つコンポーネント）に渡すディレクティブを選んで作り直します。ライフサイクルの記録は、各ディレクティブが `inject(DD_LOG)` した関数に書きます。`DD_LOG` は `elementInjector` に渡した `Injector.create` にだけあるトークンです（[第 2 回](02-dyn-factory-create.md)の 2 節）。
 
 > **🧪 DEMO — directives の組み合わせとライフサイクルの順**
 >

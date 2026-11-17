@@ -766,7 +766,7 @@ R3 AST の `Icu` ノード（[R3 AST の章](../compiler/07-compiler-r3-ast.md)�
 
 ## 10. デモ：サブメッセージと後処理の表、ID のつながり
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 で ICU をコンパイルし、@angular/localize 22.1.6 の ɵparseMessage で ID を数える**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 で ICU をコンパイルし、@angular/localize 22.2.6 の ɵparseMessage で ID を数える**
 >
 > 「コンパイルする」を押すと、`compileI18nTemplate`（legacy ID なし）で JS を作り、consts の `$localize` を 1 つずつ取り出して、本物の `ɵparseMessage`（`$localize` が実行時に使う関数）で ID を数えます。`ɵɵi18nPostprocess` の表と、親の `:ICU@@…:` の ID がサブメッセージの ID と同じかも並べます。翻訳は読み込みません。
 >

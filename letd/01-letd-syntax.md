@@ -35,7 +35,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 | 2026-04-27 | 6bd17216627 | 宣言の span が終わりの `;` を含んでいなかったのを直す | 6 節 |
 | 2026-07-15 | 68ac2040746 | 値を読むループを `_attemptUntilIgnoreQuotes` に切り出す（処理命令 `<? … ?>` を無視する修正のついで） | 4 節 |
 
-このサイトの `@angular/compiler` は 22.1.6 で、上のコミットはすべて入っています（`git tag --contains` で、いちばん新しい 68ac2040746 も v22.1.0 から）。../angular（22.2.0-next.7）と v22.1.6 の間で、この章の行（`ml_parser/` の @let の部分と `visitLetDeclaration`）は変わっていません。
+このサイトの `@angular/compiler` は 22.2.6 で、上のコミットはすべて入っています（`git tag --contains` で、いちばん新しい 68ac2040746 も v22.1.0 から）。../angular（22.2.0-next.7）と v22.2.6 の間で、この章の行（`ml_parser/` の @let の部分と `visitLetDeclaration`）の中身は変わっていません（v22.2.6 の `r3_template_transform.ts` は前の部分が 9 行増え、7 節の `NonBindableVisitor` の `visitLetDeclaration` が 1268 行目から 1277 行目にずれています）。
 
 ## 2. tokenizeLet：今はどこで決まるか
 
@@ -203,7 +203,7 @@ Node の記録です。`parseTemplate`（公開 API）を、heap の上限 64 MB
 | `<span ngNonBindable>@let</span>` | false / true | ERR\_WORKER\_OUT\_OF\_MEMORY（200 ms で heap が尽きた） |
 | `mail: a@letter.example` | false / true | ERR\_WORKER\_OUT\_OF\_MEMORY（300 ms で heap が尽きた） |
 
-`a@letter.example` のようなメールアドレスでも、`@let` で始まる部分があれば同じです。この組み合わせを作る呼び手は、2 節の trace のリンカーです。部分コンパイルの宣言の `version` が 18.0.x だと、ブロックは true、@let は false になります。サイトの `@angular/compiler-cli` 22.1.6 のリンカー（Babel のプラグイン）に、`version` だけを変えた `ɵɵngDeclareComponent` を渡した記録です（heap の上限 96 MB の Worker）。
+`a@letter.example` のようなメールアドレスでも、`@let` で始まる部分があれば同じです。この組み合わせを作る呼び手は、2 節の trace のリンカーです。部分コンパイルの宣言の `version` が 18.0.x だと、ブロックは true、@let は false になります。`@angular/compiler-cli` 22.1.6 のリンカー（Babel のプラグイン）に、`version` だけを変えた `ɵɵngDeclareComponent` を渡した記録です（heap の上限 96 MB の Worker）。
 
 | 宣言の version | テンプレート | 結果 |
 | --- | --- | --- |

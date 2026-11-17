@@ -1039,7 +1039,7 @@ clone()     : GET document
 | タブ | fetch やメッセージの clientId から自動で作る（203〜205 行目） | `addClient` で自分で足す |
 | イベントの登録 | 種類ごとに 1 つ（Map の `set`） | 種類ごとに配列 |
 | respondWith の拒否 | `event.response` が拒否になり、spec の `await` で例外 | `world.fetch` が `error` を入れて返す作りだが、今の sandbox では例外として投げる（第 17 回のデモで捕まえている） |
-| Driver version | `0.0.0-PLACEHOLDER` | `22.1.6` |
+| Driver version | `0.0.0-PLACEHOLDER` | `22.2.6` |
 | 走る場所 | bazel の jasmine（Node、zoneless）。`//packages/service-worker/worker/test:test` | このページのボタン（ブラウザの中。登録はしない） |
 
 > [!NOTE]

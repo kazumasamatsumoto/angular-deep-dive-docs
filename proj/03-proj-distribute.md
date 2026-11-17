@@ -186,7 +186,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 >
 > `ngProjectAs=""`（空）だと、[第 2 回](02-proj-compile.md)の 7 節のとおり定数の 5 の次が `undefined` です。307 行目は `undefined` を返し、3 節の 49 行目の `ngProjectAsAttrVal === null` は偽なので、347 行目の `selector.length` で `TypeError: Cannot read properties of undefined (reading 'length')` になります（`'*'` 以外の枠が 1 つでもあるとき）。DEMO の最後の項目で確かめられます。
 
-📄 `再現（このサイトの 22.1.6。DEMO の最後の項目と同じ形）` L1–12
+📄 `再現（このサイトの 22.2.6。DEMO の最後の項目と同じ形）` L1–12
 
 ```
  1 │ @Component({
@@ -322,7 +322,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 79〜80 行目の `isInlineTemplate` は「コンテナで、タグ名が `ng-template` でない」もの、つまり `*ngIf` や `@if` で写されたタグ名を持つ入れ物です。86〜92 行目のとおり、ディレクティブの照合ではその写したタグ名を使いません（同じディレクティブに 2 回合ってしまうから）が、**投影の照合では使います**。属性も 213〜227 行目の表の 220 行目（Inline + Projection）のとおり、ふつうの属性とバインディングの属性を見ます。だから `@if (on) { <h2>…</h2> }` の入れ物は `h2` の枠に入ります（DEMO の G）。
 
 - **ルートが 2 つ**：写しが無いので入れ物の `value` は `null` で、`*` の枠です（DEMO の H。第 2 回の NG8011 の場合）。
-- **@if の中の svg**：このサイトの 22.1.6 では、入れ物のタグ名が名前空間つきの `":svg:svg"` のまま写るので `select="svg"` に合わず、`*` の枠に入ります。`@if` の外の `<svg>` の TNode の `value` は `"svg"` なので、そちらは `svg` の枠です（DEMO の 2 つの svg）。新しい本家（angular-main）の 2026-10-03 の 0244a1cb312（#71163、issue #71162）は、2168 行目の前で名前空間を外すように直しています。
+- **@if の中の svg**：手元の版（22.2.0-next.7）と 22.1.x では、入れ物のタグ名が名前空間つきの `":svg:svg"` のまま写るので `select="svg"` に合わず、`*` の枠に入ります。`@if` の外の `<svg>` の TNode の `value` は `"svg"` なので、そちらは `svg` の枠です。新しい本家（angular-main）の 2026-10-03 の 0244a1cb312（#71163、issue #71162）は、2168 行目の前で名前空間を外すように直しました。22.2 系には 725ffcf4fa6 として v22.2.2 から入っているので、このサイトの 22.2.6 の DEMO では、`@if` の中の svg の入れ物も `value="svg"` になり、`svg` の枠に入ります（DEMO の 2 つの svg がどちらも枠 3）。
 
 ### ng-container：ElementContainer のノード
 
@@ -340,7 +340,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 外の側の子を選び、本物の ɵɵprojectionDef に振り分けさせる**
 >
-> 「組み立てて描く」を押すと、このサイトの `@angular/compiler`（22.1.6）を読み込み（それまでは読み込みません）、選んだ子を並べた外の側のテンプレートを、**そのたびに新しいコンポーネントとしてコンパイル**して描きます。コンパイルは JIT の入口 `CompilerFacadeImpl.compileComponent` に、本物の `JitEvaluator` と、core の本物の命令（`ɵɵprojectionDef` など）を渡して行い、できた ɵcmp をクラスに付けて `ViewContainerRef.createComponent` で描きます。新しいクラスは新しい TView なので、ホストの TNode も新しく、振り分けは毎回 1 回目です（1 節の 99 行目）。中の側は 4 つの枠 `[header]`・`h2, .title`・`*`・`svg` を持ちます。描いたあと、外の側の TView の中のホストの TNode を探して、`projection` と `projectionNext`、`child` と `next` を読みます（このサイトの 22.1.6 の非公開の形。確かめるためだけに読む）。
+> 「組み立てて描く」を押すと、このサイトの `@angular/compiler`（22.2.6）を読み込み（それまでは読み込みません）、選んだ子を並べた外の側のテンプレートを、**そのたびに新しいコンポーネントとしてコンパイル**して描きます。コンパイルは JIT の入口 `CompilerFacadeImpl.compileComponent` に、本物の `JitEvaluator` と、core の本物の命令（`ɵɵprojectionDef` など）を渡して行い、できた ɵcmp をクラスに付けて `ViewContainerRef.createComponent` で描きます。新しいクラスは新しい TView なので、ホストの TNode も新しく、振り分けは毎回 1 回目です（1 節の 99 行目）。中の側は 4 つの枠 `[header]`・`h2, .title`・`*`・`svg` を持ちます。描いたあと、外の側の TView の中のホストの TNode を探して、`projection` と `projectionNext`、`child` と `next` を読みます（このサイトの 22.2.6 の非公開の形。確かめるためだけに読む）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/proj-distribute)
 

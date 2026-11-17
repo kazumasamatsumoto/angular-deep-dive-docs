@@ -27,13 +27,13 @@ Angular のアニメーションは今 2 つあります。v20.2 で core に入
 9. [要素を消すのを遅らせる：runLeaveAnimationsWithCallback](09-animations-leave-removal.md)  
    ビューを外すとき node\_manipulation.ts の Detach と Destroy が、すぐ removeChild せずに runLeaveAnimationsWithCallback へ「消す関数」を渡す行。leave アニメーションが無ければその場で消し、あれば待ち行列に executeLeaveAnimations を積み、すべての Promise が終わってから消す流れ。インジェクタが壊れたあとの逃げ道と、enter を取り消す行。
 10. [animate.leave のクラス：付けて、終わりを待って、消す](10-animations-leave-classes.md)  
-   animateLeaveClassRunner が動いている enter を止め、クラスを付けて offsetWidth で再計算させ、いちばん長いアニメーションの終わりで LView に置いた resolvers を全部呼ぶ仕組み。次のフレームでアニメーションが無いと分かったときの即時の片付けと、終わりのイベントが来ないとき長さ + 50 ms で片付ける setTimeout、ng-content を持つコンポーネントのホスト要素だけクラスを外す理由。22.1.6 の配布物では offsetWidth の行が rollup の設定で消えていること。
+   animateLeaveClassRunner が動いている enter を止め、クラスを付けて offsetWidth で再計算させ、いちばん長いアニメーションの終わりで LView に置いた resolvers を全部呼ぶ仕組み。次のフレームでアニメーションが無いと分かったときの即時の片付けと、終わりのイベントが来ないとき長さ + 50 ms で片付ける setTimeout、ng-content を持つコンポーネントのホスト要素だけクラスを外す理由（22.2.6 は af2c7e386d8 でいつも外す）。22.1.6・22.2.6 の配布物では offsetWidth の行が rollup の設定で消えていること。
 11. [入れ子の leave：子孫と埋め込みビューのアニメーションを集めて待つ](11-animations-leave-nested.md)  
-   外す要素の子孫で leave を持つものを、同じ LView の leave の Map から親をたどって探す aggregateDescendantAnimations、埋め込みビューへ降りて集める collectNestedViewAnimations と collectAllViewLeaveAnimations（子コンポーネントのビューには降りない）、すべてを待ってから消す runAfterLeaveAnimations。入れ子の leave が入って、戻されて、コンポーネントの境目で絞って入れ直された経緯（#67552・#67633）と、集めるだけのつもりで関数を呼んでしまう判定。
+   外す要素の子孫で leave を持つものを、同じ LView の leave の Map から親をたどって探す aggregateDescendantAnimations、埋め込みビューへ降りて集める collectNestedViewAnimations と collectAllViewLeaveAnimations（子コンポーネントのビューには降りない）、すべてを待ってから消す runAfterLeaveAnimations。入れ子の leave が入って、戻されて、コンポーネントの境目で絞って入れ直された経緯（#67552・#67633）と、集めるだけのつもりで関数を呼んでしまう判定（22.2.6 では af2c7e386d8 で呼ばない判定になった）。
 12. [並べ替えと出し直し：leave の途中で戻ってきた要素](12-animations-leave-reorder.md)  
    @for の並べ替えでビューを外してすぐ入れ直すとき、leavingNodes・cancelLeavingNodes・reusedNodes が「消える途中の要素」を取り消したり重複を消したりする仕組み、control\_flow.ts の clearDetachAnimationList と detachedLeaveAnimationFns で待ち行列から関数を抜く行。acceptance の「animation element duplication」の spec。
 13. [スタイルの後片付け：leave の間はコンポーネントの CSS を消さない](13-animations-styles-teardown.md)  
-   コンポーネントが壊されるとき NoneEncapsulationDomRenderer.destroy がスタイルを外す行と、allLeavingAnimations（leave 中の LView の ID の Set）が空でない間は外さない理由、命令・node\_animations.ts・control\_flow.ts が ID を足し引きする 7 か所。(animate.leave) は要素を作った時点で足すため、スタイルのタグが残り続ける開いている issue #66244 と、どこを直せばよいかの入口。
+   コンポーネントが壊されるとき NoneEncapsulationDomRenderer.destroy がスタイルを外す行と、allLeavingAnimations（leave 中の LView の ID の Set）が空でない間は外さない理由、命令・node\_animations.ts・control\_flow.ts が ID を足し引きする 7 か所。(animate.leave) は要素を作った時点で足すため、スタイルのタグが残り続ける開いている issue #66244 と、どこを直せばよいかの入口（22.2.6 は 596a40061fa で leave が始まったときに足す形になり、デモの結果が変わる）。
 14. [旧 @angular/animations の入口：provideAnimations と AnimationRenderer](14-animations-legacy-setup.md)  
    provideAnimations・provideAnimationsAsync・provideNoopAnimations が入れるもの、AnimationRendererFactory が DomRendererFactory2 を包み、\[@trigger\] の setProperty と (@trigger.done) の listen を横取りする行、begin / end で変更検知の終わりにエンジンを flush する仕組み、provideAnimationsAsync がエンジンを別のチャンクで後から読む流れ。
 15. [旧 DSL がキーフレームになるまで：trigger から timeline へ](15-animations-legacy-dsl.md)  

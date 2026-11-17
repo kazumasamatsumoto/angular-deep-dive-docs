@@ -257,7 +257,7 @@ TCB を作る側（`@angular/compiler`）が受け取るのは `TypeCheckingConf
 
 > **🧪 DEMO — 同じテンプレートを、TypeCheckingConfig を変えて generateTypeCheckBlock に通す**
 >
-> 左は strict の表の値、右はチェックボックスで選んだ値で作った TCB です。右の TCB で、左に同じ行が無い行に色を付けます。`<user-card>` は入力 `size`（readonly の想定）と `title`、出力 `changed` を持つコンポーネント、`*ngFor` は `ngTemplateContextGuard` を持つジェネリックなディレクティブ、`date` は pipe として登録してあります。チェックボックスを変えるとすぐ作り直します（@angular/compiler 22.1.6）。
+> 左は strict の表の値、右はチェックボックスで選んだ値で作った TCB です。右の TCB で、左に同じ行が無い行に色を付けます。`<user-card>` は入力 `size`（readonly の想定）と `title`、出力 `changed` を持つコンポーネント、`*ngFor` は `ngTemplateContextGuard` を持つジェネリックなディレクティブ、`date` は pipe として登録してあります。チェックボックスを変えるとすぐ作り直します（@angular/compiler 22.2.6）。
 >
 > 「TCB を作る」を押すか、チェックボックスを変えてください。
 >
@@ -279,7 +279,7 @@ TCB を作る側（`@angular/compiler`）が受け取るのは `TypeCheckingConf
    `if (NgForOf.ngTemplateContextGuard(_t5, _t6))` がただの `{ … }` になります。`_t6` は `any` のままなので、`u` も `any` です（[第 14 回](14-typecheck-template-guards.md)）。
 5. **`honorAccessModifiersForInputBindings` を入れる**
 
-   既定では readonly の `size` に対して `var _t3 = null! as (typeof _t2)["size"]; _t3 = …` と、型だけ借りた別の変数へ代入します（代入の型は見るが、readonly は破らない）。入れると `_t2.size = …` と直接代入し、TypeScript が readonly への代入をエラーにします。このサイトの設定（3 節）はこちらです。
+   既定では readonly の `size` に対して `var _t3 = null! as (typeof _t2)["size"]; _t3 = …` と、型だけ借りた別の変数へ代入します（代入の型は見るが、readonly は破らない）。いまのサイトの 22.2.6 のデモでは、その下に `null! as typeof _t2.size;` の 1 行も出ます。言語サービスが readonly な入力の参照を探せるように 22.2.4 の 646e9723db1 で足された文で、診断は無視されます（[第 10 回](10-typecheck-inputs.md)）。入れると `_t2.size = …` と直接代入し、TypeScript が readonly への代入をエラーにします。このサイトの設定（3 節）はこちらです。
 
 ## 5. extendedDiagnostics との関係
 

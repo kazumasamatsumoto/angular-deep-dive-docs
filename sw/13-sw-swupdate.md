@@ -561,7 +561,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — CHECK\_FOR\_UPDATES と ACTIVATE\_UPDATE を nonce 付きで送り、タブに届いたものを分ける**
 >
-> **本物の ngsw-worker.js（@angular/service-worker 22.1.6 の配布物）を、偽物のブラウザの上で動かしています**。偽物にしたのは `self` の caches・fetch・clients とタイマーで、このページに本物の Service Worker は登録しません（`sw-sandbox.ts` の先頭のコメント）。タブ a の `postMessage` に届いたものを、**アプリの側のどの Observable が拾うかで色分け**します。この分け方は 3〜5 節の行（200 行目・245/247 行目・260〜266 行目・67〜73 行目）を文字列の比較で写した**移植**で、アプリの側のクラスは動かしていません。
+> **本物の ngsw-worker.js（@angular/service-worker 22.2.6 の配布物）を、偽物のブラウザの上で動かしています**。偽物にしたのは `self` の caches・fetch・clients とタイマーで、このページに本物の Service Worker は登録しません（`sw-sandbox.ts` の先頭のコメント）。タブ a の `postMessage` に届いたものを、**アプリの側のどの Observable が拾うかで色分け**します。この分け方は 3〜5 節の行（200 行目・245/247 行目・260〜266 行目・67〜73 行目）を文字列の比較で写した**移植**で、アプリの側のクラスは動かしていません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-swupdate)
 

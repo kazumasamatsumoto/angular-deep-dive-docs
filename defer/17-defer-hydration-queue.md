@@ -436,7 +436,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 > [!NOTE]
 > **さらに深く**
 >
-> 544 行目は、もとは `for (const dehydratedBlockId in hydrationQueue)` でした。配列に `for…in` を使うと、値ではなく番号の文字列（`'0'`・`'1'`…）が回るので、`blocksBeingHydrated.get('0')` は何も見つけず、reject は 1 度も呼ばれていませんでした。565dbb2fe54（2026-08-07、fix(core): incorrect loop in defer blocks、#70113）がこの 1 行を `for…of` に直しました。`git show` で読むと、変わったのはこの 1 行だけで、spec は足されていません。サイトが使う 22.1.6 の配布物（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs`）にもこの直しが入っています。
+> 544 行目は、もとは `for (const dehydratedBlockId in hydrationQueue)` でした。配列に `for…in` を使うと、値ではなく番号の文字列（`'0'`・`'1'`…）が回るので、`blocksBeingHydrated.get('0')` は何も見つけず、reject は 1 度も呼ばれていませんでした。565dbb2fe54（2026-08-07、fix(core): incorrect loop in defer blocks、#70113）がこの 1 行を `for…of` に直しました。`git show` で読むと、変わったのはこの 1 行だけで、spec は足されていません。サイトが使う 22.2.6 の配布物（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs`）にもこの直しが入っています。
 
 ## 5. 済んだあと：登録簿から消すのは「最後の塊」が登録簿にあるときだけ
 

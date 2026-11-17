@@ -754,24 +754,27 @@ angular/components · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 
 1286・1293 行目で、継いだクラスを**もう一度**トークンとして provide しています。`providers` は継承されないからです（../angular の `inherit_definition_feature.ts` は親の features のうち `ngInherit` が付いたものだけを走らせ、`ɵɵProvidersFeature` には `ngInherit` が付いていない。grep で確かめた）。
 
-📄 `このサイトの 22.1.8`
+📄 `このサイトの 22.1.8 と 22.2.7`
 
 ```
-// node_modules/@angular/aria/types/grid.d.ts（22.1.8）
+// node_modules/@angular/aria/types/grid.d.ts（22.1.8。この章を書いたとき）
 export { Grid, GridCell, GridCellWidget, GridRow };
+
+// node_modules/@angular/aria/types/grid.d.ts（22.2.7。いまのサイト）
+export { GRID, GRID_CELL, GRID_ROW, Grid, GridCell, GridCellWidget, GridRow };
 ```
 
-このサイトの 22.1.8 にはこの変更が入っていません（`git merge-base --is-ancestor 8d3da9ea36 v22.1.8` が偽）。インストールした `types/grid.d.ts` の export は上の 4 クラスだけで、`import {GRID_ROW} from '@angular/aria/grid'` は 22.1.8 ではコンパイルが通りません。ソースの grid-tokens.ts は 22.1.8 でも同じ中身（3 つのトークンがある）なので、違うのは public-api.ts の 1 行だけです（インストールした fesm2022 の sourcemap から戻したソースには public-api.ts が入っていないので、ソースどうしを比べてもこの差は見えません）。
+この章を書いたときのサイトの 22.1.8 にはこの変更が入っていませんでした（`git merge-base --is-ancestor 8d3da9ea36 v22.1.8` が偽）。インストールした `types/grid.d.ts` の export は上の 4 クラスだけで、`import {GRID_ROW} from '@angular/aria/grid'` は 22.1.8 ではコンパイルが通りません。8d3da9ea36 は 22.2.0 の変更履歴に「export aria injection tokens to support custom subclasses」として載っていて、いまのサイトの 22.2.7 では `types/grid.d.ts` の export に `GRID`・`GRID_CELL`・`GRID_ROW` が並び、`fesm2022/grid.mjs` の最後の export も同じです。ソースの grid-tokens.ts は 22.1.8 でも同じ中身（3 つのトークンがある）なので、違うのは public-api.ts の 1 行だけです（インストールした fesm2022 の sourcemap から戻したソースには public-api.ts が入っていないので、ソースどうしを比べてもこの差は見えません）。
 
 ## 7. デモ：セルの中のボタンと入力欄
 
-> **🧪 DEMO — 名前・ボタン（simple）・入力欄（editable）の 3 列（このサイトの @angular/aria 22.1.8。grid は snapshot と同じ中身）**
+> **🧪 DEMO — 名前・ボタン（simple）・入力欄（editable）の 3 列（このサイトの @angular/aria 22.2.7。grid.ts は snapshot と同じ中身）**
 >
 > Tab で grid に入り、矢印キーでセルを動きます。入力欄のセルで Enter（または英数字のキー）を押すと activate し、矢印キーが入力欄の中のカーソルを動かすようになります。Escape（または Enter）で出ます。キーのあと、フォーカスがどこにあるか、`data-active-control="widget"` のウィジェット、`(activated)` / `(deactivated)` / `(click)` をログに出します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-grid-cells)
 
-2026-11-02 にヘッドレスの Chrome でこのページを開き、本物のキー入力で確かめた結果です。
+2026-11-02 にヘッドレスの Chrome でこのページを開き、本物のキー入力で確かめた結果です（サイトが 22.1.8 だったとき）。いまの 22.2.7 の grid-cell-widget.ts は、host に `'ngGridCellWidget': ''` の 1 行が足されたところだけが引用と違います（c00b72e178、#34077「activate composed widgets when child inputs receive focus」、22.2.7）。ウィジェットを `hostDirectives` で付けたときにも属性が付くようにするもので、テンプレートに `ngGridCellWidget` と書いているこのデモの動きは変わりません。そのぶん、grid-cell-widget.ts の 44 行目より後の行番号は 22.2.7 では 2 つ下にずれます。
 
 - 触る前の tabindex="0" は「りんご」の名前のセルだけで、ウィジェットのあるセル（`<td>`）とボタン・入力欄はどれも -1 でした。
 - Tab で「りんご」のセルに入り、→ でボタンへ。フォーカスはセルではなくボタンに行きます（4 節の 102〜107 行目、155 行目）。
@@ -895,7 +898,7 @@ Finished running tests in 0.4s, all tests passed!
 
 **Q. セルを別のコンポーネントに分けるには？**
 
-2 つ気をつけます。1 つ目は DI です。`ngGridCell` は 3 節の 67 行目で `inject(GRID_ROW)` するので、セルの要素は `ngGridRow` の要素の中で**宣言**されている必要があります（行のテンプレートの外の `ng-template` で宣言して、行の中に描くのはだめ。#32603）。2 つ目は、ウィジェットを `contentChild`（59 行目）で探すことです。セルのコンポーネントの**自分のテンプレートの中**に書いた `ngGridCellWidget` は、そのセルの content ではないので見つかりません。`GridCell` を継いだコンポーネントにする方法は 8d3da9ea36 で公開されたトークンを使い、6 節の spec のように `providers: [{provide: GRID_CELL, useExisting: 自分}]` を書き直します（22.2 以降。このサイトの 22.1.8 では使えない）。
+2 つ気をつけます。1 つ目は DI です。`ngGridCell` は 3 節の 67 行目で `inject(GRID_ROW)` するので、セルの要素は `ngGridRow` の要素の中で**宣言**されている必要があります（行のテンプレートの外の `ng-template` で宣言して、行の中に描くのはだめ。#32603）。2 つ目は、ウィジェットを `contentChild`（59 行目）で探すことです。セルのコンポーネントの**自分のテンプレートの中**に書いた `ngGridCellWidget` は、そのセルの content ではないので見つかりません。`GridCell` を継いだコンポーネントにする方法は 8d3da9ea36 で公開されたトークンを使い、6 節の spec のように `providers: [{provide: GRID_CELL, useExisting: 自分}]` を書き直します（22.2 以降。この章を書いたときのサイトの 22.1.8 では使えず、いまの 22.2.7 では使える）。
 
 **Q. 入力欄の中で矢印キーを押したらどうなりますか？**
 
@@ -919,7 +922,7 @@ activate していなければ、グリッドがセルを動かします。グ�
 - ウィジェットのあるセルは tabindex -1 で、セルの tabindex はウィジェットに渡る（cell.ts L102-107・L162）。
 - simple は Enter / Space を知らせるだけ。complex / editable は Enter（editable は英数字も）で activate し、そのあいだグリッドはキーを受けない（`pauseNavigation`）。Escape で出る。
 - activate / deactivate は signal を書くだけで、emit とフォーカスの移動は描画のあとの effect でする（f4e9a87357）。
-- NG0201 GRID\_ROW は「セルが行の外で宣言された」。継いだ部品を作るためのトークンの公開（8d3da9ea36）は 22.2 からで、このサイトの 22.1.8 には無い。
+- NG0201 GRID\_ROW は「セルが行の外で宣言された」。継いだ部品を作るためのトークンの公開（8d3da9ea36）は 22.2 からで、この章を書いたときの 22.1.8 には無く、いまのサイトの 22.2.7 にはある。
 
 ---
 

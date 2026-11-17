@@ -596,7 +596,7 @@ CSS の側は、ブラウザが popover に付ける既定のスタイルを打�
 > [!NOTE]
 > **ポイント**
 >
-> ソース（22.2.0-next.5）でも、このサイトに入っている 22.1.8 でも、67〜68 行目の既定は `true` です。アプリ全体で切るには `{provide: OVERLAY_DEFAULT_CONFIG, useValue: {usePopover: false}}` を providers に足します。このトークンは CHANGELOG では 21.0.0 の「overlay: add DI token to opt out of popovers」で入っています。
+> ソース（22.2.0-next.5）でも、このサイトに入っている 22.2.7 でも、67〜68 行目の既定は `true` です。アプリ全体で切るには `{provide: OVERLAY_DEFAULT_CONFIG, useValue: {usePopover: false}}` を providers に足します。このトークンは CHANGELOG では 21.0.0 の「overlay: add DI token to opt out of popovers」で入っています。
 
 > **🧪 DEMO — 本物の Overlay を開いて DOM を読む**
 >

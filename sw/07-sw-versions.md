@@ -594,7 +594,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 開いているタブは v1 のまま、新しいタブは v2**
 >
-> 本物の `ngsw-worker.js`（@angular/service-worker 22.1.6 の配布物）を、偽物のブラウザの上で動かします（偽物にしたものは `sw-sandbox.ts` の先頭のコメント）。アプリは `/index.html` と `/main.js` の 2 つ（prefetch）。各段のあとに `/ngsw/state` の「=== Version ===」と「Clients:」を読み、最新の版を赤で示します。偽物のブラウザでは、ナビゲーションの `resultingClientId` を自分で決めて渡します。
+> 本物の `ngsw-worker.js`（@angular/service-worker 22.2.6 の配布物）を、偽物のブラウザの上で動かします（偽物にしたものは `sw-sandbox.ts` の先頭のコメント）。アプリは `/index.html` と `/main.js` の 2 つ（prefetch）。各段のあとに `/ngsw/state` の「=== Version ===」と「Clients:」を読み、最新の版を赤で示します。偽物のブラウザでは、ナビゲーションの `resultingClientId` を自分で決めて渡します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-versions)
 

@@ -529,7 +529,7 @@ f76e8a98c10（2026-06-16）は、サーバーで受けた応答に `Set-Cookie` 
 75 ▶   includeNonCacheableRequests?: boolean;
 ```
 
-318 行目の `!options.includeNonCacheableRequests` が 75 行目の options です。72 行目のとおり、`Set-Cookie` もこの 1 つで戻ります。キーの作り方は変えていません。新しい本家では bc22890f537 が `hasUncacheableCacheControl` を `headers.get` から `headers.getAll` に変え、`Cache-Control` が複数あるときに 2 つ目以降の `no-store` も見るようにしました（22.2.0-next.7 では最初の 1 つだけを見ます）。
+318 行目の `!options.includeNonCacheableRequests` が 75 行目の options です。72 行目のとおり、`Set-Cookie` もこの 1 つで戻ります。キーの作り方は変えていません。新しい本家では bc22890f537 が `hasUncacheableCacheControl` を `headers.get` から `headers.getAll` に変え、`Cache-Control` が複数あるときに 2 つ目以降の `no-store` も見るようにしました（22.2.0-next.7 では最初の 1 つだけを見ます）。22.2 系には 2251098d52 として v22.2.4 から入っていて、このサイトの 22.2.6 の配布物も `getAll` です。
 
 ## 6. #70947：リダイレクトの情報が運ばれない
 
@@ -578,7 +578,7 @@ f76e8a98c10（2026-06-16）は、サーバーで受けた応答に `Set-Cookie` 
 
 > **🧪 DEMO — 2 つのリクエストは同じキーになるか（ライブ）**
 >
-> ボタンを押すと、このサイトの依存の `@angular/common/http`（22.1.6）を `import()` で読み、`provideHttpClient()` と `ɵwithHttpTransferCache({includePostRequests: true})`（`provideClientHydration` が足すのと同じ関数）で注入器を作ります。`TransferState` は、`get(key)` の key を書き留めるように継承したものに差し替えます。リクエストを送ると、本物の `transferCacheInterceptorFn` がキーを作って `get` を呼ぶので、そのキーが見えます。「サーバー役」は、サーバーの 327〜333 行目と同じ形（112〜117 行目の 1 文字の名前）で、A の応答を A のキーに書きます。そのあと B を送ります。ネットワークには出ません。
+> ボタンを押すと、このサイトの依存の `@angular/common/http`（22.2.6）を `import()` で読み、`provideHttpClient()` と `ɵwithHttpTransferCache({includePostRequests: true})`（`provideClientHydration` が足すのと同じ関数）で注入器を作ります。`TransferState` は、`get(key)` の key を書き留めるように継承したものに差し替えます。リクエストを送ると、本物の `transferCacheInterceptorFn` がキーを作って `get` を呼ぶので、そのキーが見えます。「サーバー役」は、サーバーの 327〜333 行目と同じ形（112〜117 行目の 1 文字の名前）で、A の応答を A のキーに書きます。そのあと B を送ります。ネットワークには出ません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/httpx-transfer-cache-key)
 

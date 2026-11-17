@@ -219,7 +219,7 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 ## 6. デモ：並べ替えたあと、↓ の順は DOM の順になるか
 
-> **🧪 DEMO — このページの @angular/aria（22.1.8）の ngListbox を @for で並べ替える**
+> **🧪 DEMO — このページの @angular/aria（22.2.7）の ngListbox を @for で並べ替える**
 >
 > 本物の `ngListbox`（`selectionMode="explicit"`）です。キーボードで操作できます。Tab でリストに入り、↑ ↓ で動きます。「↓ で巡る」は `gotoFirst()`（Listbox の公開メソッド）のあと、`ul` に `keydown`（ArrowDown）を `dispatchEvent` で 3 回送り、そのたびに `document.activeElement` の文字を読みます。並べ替えのボタンは、描画のあとに DOM の `li` の順をログに出します。
 >
@@ -230,6 +230,13 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 - **逆順に並べ替える → ↓ で巡る**：DOM の順が `D C B A` になり、巡る順も `D → C → B → A` です。ディレクティブは作り直されていないので、順が直ったのは 4 節の 54 行目（version）のおかげです。
 - **逆順にして、描画の直後とそのあとに巡る**：描画の直後（`afterNextRender` の read の中）に巡ると、DOM はもう逆順なのに、巡る順は**並べ替える前の順**のままでした。`setTimeout` のあとに巡ると DOM の順に直っています。MutationObserver のコールバックは DOM が変わったその場ではなく、あとのマイクロタスクで呼ばれるので、そのあいだは `orderedItems` が古い並びを返す、ということです。
 - **先頭に足す / 先頭を消す**：新しい `ngOption` が作られて `ngOnInit` で `register` されるので、Set が変わって並べ直されます（3 節）。
+
+> [!NOTE]
+> **ポイント**
+>
+> この記録はサイトが 22.1.8 だったときのものです。いまのサイトの 22.2.7 の collection.ts は、引用（e81c398a86）と違います。1edc5bfd7c「fix(aria/menu): avoid re-rendering when unrelated elements are added」（#33996、2026-10-22、22.2.5）で、`orderedItems` が computed から `_sortedItems` という signal の読み取り専用の顔（`asReadonly()`）に替わりました。`_items` はただの `Set` になり、`register` / `unregister` はその場で並べ直して `set` します。MutationObserver のコールバックは `_version` を進める代わりに並べ直し、**前と並びが違うときだけ**`set` します（[第 18 回](18-aria-menu.md)の 10 節）。
+>
+> 22.2.7 に上げたあと（2026-11-17）、同じボタンをヘッドレスの Chrome で押しても、上の 3 つは同じ結果でした。並べ替えたあとに巡る順は DOM の順になり、描画の直後に巡ると並べ替える前の順、`setTimeout` のあとなら DOM の順です。直す役がコールバックの中の `set` に替わっただけで、マイクロタスクを待つまで古い並びが返ることは変わりません。
 
 ## 7. contentChildren から置き換えた変更
 

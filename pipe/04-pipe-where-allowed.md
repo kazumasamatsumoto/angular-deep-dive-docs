@@ -465,7 +465,7 @@ ngtsc はデコレーターを解析するときに `verifyHostBindings` を呼�
 
 > **🧪 DEMO — 書いた場所ごとに、受け付けるか・エラーの文・できた木**
 >
-> ボタンを押すと、このサイトの `@angular/compiler`（22.1.6）をその場で読み込み、テンプレートは `parseTemplate`、ホストは `parseHostBindings` → `makeBindingParser()` の `createDirectiveHostEventAsts`・`createBoundHostProperties`（4 節の 594〜595 行目と同じ順）にかけます。木は `Pipe(名前)[左辺, 引数…]` の形で 1 行にしました。入力を書き換えて試せます。
+> ボタンを押すと、このサイトの `@angular/compiler`（22.2.6）をその場で読み込み、テンプレートは `parseTemplate`、ホストは `parseHostBindings` → `makeBindingParser()` の `createDirectiveHostEventAsts`・`createBoundHostProperties`（4 節の 594〜595 行目と同じ順）にかけます。木は `Pipe(名前)[左辺, 引数…]` の形で 1 行にしました。入力を書き換えて試せます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/pipe-where-allowed)
 

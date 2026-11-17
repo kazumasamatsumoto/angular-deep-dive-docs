@@ -705,7 +705,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の FakeNavigation を 1 つ持ち続けて、push・replace・back・forward・go・traverseTo を混ぜる**
 >
-> 「始める」を押すと、このページで、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の `FakeNavigation` の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`new ɵFakeNavigation(createHTMLDocument(''), 'https://example.com/')` を 1 つ作ります。navigate・currententrychange・navigatesuccess・navigateerror・`'disposed'` は navigation に、popstate と hashchange は `fake.window`（div）にリスナーを付けています。このページの `window` にも popstate と hashchange を数えるだけのリスナーを付けています（デモを閉じると外します）。このページの URL と履歴は変わりません。
+> 「始める」を押すと、このページで、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の `FakeNavigation` の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`new ɵFakeNavigation(createHTMLDocument(''), 'https://example.com/')` を 1 つ作ります。写しの元は 22.1.6 です。このサイトの今の依存 22.2.6 の `fesm2022/testing.mjs` の `FakeNavigation` は、a8233232f5a（v22.2.0 から）で仕様に合わせて書き換わっているので、写しは前の形のままにしてあります。navigate・currententrychange・navigatesuccess・navigateerror・`'disposed'` は navigation に、popstate と hashchange は `fake.window`（div）にリスナーを付けています。このページの `window` にも popstate と hashchange を数えるだけのリスナーを付けています（デモを閉じると外します）。このページの URL と履歴は変わりません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/navx-fake-traverse)
 

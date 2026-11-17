@@ -462,7 +462,7 @@ input でないものが 3 つあります。123 行目の `touch` は `OutputRe
 
 > **🧪 DEMO — FormValueControl と FormCheckboxControl に何がいつ書かれるか**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。`count` と `late` は章の中で書いた `FormValueControl<number>`（＋と−）、`agree` は `FormCheckboxControl`（スイッチ）です。スキーマは `min(p.count, 0)`・`max(p.count, 3)`・`disabled(p.count, { when: lock })`・`debounce(p.late, 'blur')`。コントロールの input はどれも `transform` で「書かれた」ことを記録し、`value()` の変化は `effect` で記録しています。モデルの変化はページの側の `effect` です。
+> 本物の `@angular/forms/signals`（22.2.6）です。`count` と `late` は章の中で書いた `FormValueControl<number>`（＋と−）、`agree` は `FormCheckboxControl`（スイッチ）です。スキーマは `min(p.count, 0)`・`max(p.count, 3)`・`disabled(p.count, { when: lock })`・`debounce(p.late, 'blur')`。コントロールの input はどれも `transform` で「書かれた」ことを記録し、`value()` の変化は `effect` で記録しています。モデルの変化はページの側の `effect` です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sfd-custom-control)
 

@@ -2,7 +2,7 @@
 
 # エラーの包み方：value() が投げるとき、ResourceValueError と rethrowFatalErrors
 
-> loader が投げた値が Error でないときに包む encapsulateResourceError と isErrorLike（22.1.6 では null を投げると TypeError になる）、error の状態で value() を読むと ResourceValueError が投げられる行と hasValue() の型、rethrowFatalErrors が投げ直すのは NG0992 だけであること。rxResource の Observable が値を出さずに終わったときの NG0991（-991 にした 8975b4346d5）、stream が Observable を返す前に投げたときの後片付けの修正（9ae98753849）。テンプレートで value() を読むときに何が起きるかをページの上で確かめる。
+> loader が投げた値が Error でないときに包む encapsulateResourceError と isErrorLike（22.1.6 では null を投げると TypeError になる。22.2.6 の isErrorLike は null を先に弾く）、error の状態で value() を読むと ResourceValueError が投げられる行と hasValue() の型、rethrowFatalErrors が投げ直すのは NG0992 だけであること。rxResource の Observable が値を出さずに終わったときの NG0991（-991 にした 8975b4346d5）、stream が Observable を返す前に投げたときの後片付けの修正（9ae98753849）。テンプレートで value() を読むときに何が起きるかをページの上で確かめる。
 
 angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/resx-errors)
 
@@ -173,7 +173,7 @@ loadEffect の `catch` の入口です。498 行目で 4 節の `rethrowFatalErr
 - **835a6431619（2025-06、#61861 に関連）**：判定を `isErrorLike` にして、`name` と `message` を持つオブジェクト（`HttpErrorResponse` など）も通すようにしました。このときの `isErrorLike` には `error !== null` がありませんでした。
 - **54ed62d2405（ErrorBoundary の実装、v22.2.0-next.6 から）**：`isErrorLike` を error\_handler.ts に移しました。移った先の 120 行目には `error !== null` があります（同じ PR の f6afb807c1e が書いたもの）。
 
-そのため、**このサイトの 22.1.6 では、loader が `null` を投げると包む関数の中で `TypeError` が起きます**。`typeof null` が `'object'` なので、`null.name` を読みに行くからです。下の記録では、`error()` が `TypeError「Cannot read properties of null (reading 'name')」` になっています。`getLoader` の `catch` の中で起きたこの例外を、loadEffect の `catch`（497 行目）がもう一度受け、今度は `TypeError` なので包まずにしまったものです。22.2 系では 120 行目で `null` が弾かれ、`ResourceWrappedError`（`cause` は `null`）になります。
+そのため、**22.1.x（記録の 22.1.6）では、loader が `null` を投げると包む関数の中で `TypeError` が起きます**。`typeof null` が `'object'` なので、`null.name` を読みに行くからです。下の記録では、`error()` が `TypeError「Cannot read properties of null (reading 'name')」` になっています。`getLoader` の `catch` の中で起きたこの例外を、loadEffect の `catch`（497 行目）がもう一度受け、今度は `TypeError` なので包まずにしまったものです。22.2 系では 120 行目で `null` が弾かれ、`ResourceWrappedError`（`cause` は `null`）になります。このサイトの今の依存 22.2.6 もこちらの形で、7 節の DEMO の `null` の行がそれです。
 
 📄 `resx-demo/a/record-errors.mjs dev と prod の出力（@angular/core 22.1.6、Node）`
 
@@ -368,7 +368,7 @@ loadEffect の `catch` の入口です。498 行目で 4 節の `rethrowFatalErr
 
 rxResource は Observable の最初の値か最初のエラーで resource を落ち着かせます（流れは [httpResource と rxResource](../signals/16-signals-http-resource.md) の章）。121〜122 行目、何も出さずに `complete` したら、123〜126 行目でエラーを送ります。`catchError(() => EMPTY)` のように「失敗したら何も出さずに終わる」Observable を返すと、こうなります。この `RuntimeError` は `Error` なので 2 節では包まれず、`error()` がそのまま返します。
 
-2026 年 8 月の 8975b4346d5 は、34〜38 行目の doc コメントと NG0991 の説明ページを足し、errors.ts 159 行目のコードを `991` から `-991` にしました。コードが負だと、開発ビルドではメッセージの末尾に「Find more at …/errors/NG0991」が付きます（負のコードの扱いは [contrib-coding-standards](../contrib/13-contrib-coding-standards.md) の章）。記録の最後の行がそれです。このサイトの 22.1.6 にもすでに入っています。コミットの本文によると、httpResource でも同じエラーになることがあり、その場合はたいてい interceptor が `EMPTY` を返して応答を飲み込んでいます。
+2026 年 8 月の 8975b4346d5 は、34〜38 行目の doc コメントと NG0991 の説明ページを足し、errors.ts 159 行目のコードを `991` から `-991` にしました。コードが負だと、開発ビルドではメッセージの末尾に「Find more at …/errors/NG0991」が付きます（負のコードの扱いは [contrib-coding-standards](../contrib/13-contrib-coding-standards.md) の章）。記録の最後の行がそれです。22.1.6 にも、このサイトの今の依存 22.2.6 にも入っています。コミットの本文によると、httpResource でも同じエラーになることがあり、その場合はたいてい interceptor が `EMPTY` を返して応答を飲み込んでいます。
 
 ### テンプレートで value() を読むと
 
@@ -429,7 +429,7 @@ rxResource の `stream` の関数が、Observable を返す前に投げた場合
 
 - **文字列・`{code: 42}`・`undefined`**：`error()` の `cause` が投げたもの（607 行目で包まれた）。`name` は `Error`（`ResourceWrappedError` は `name` を決めていない）。
 - **`new Error`・`{name, message}`**：`error()` が投げたものそのもの（604 行目）。
-- **`null`**：22.1.6 では `TypeError`（2 節）。
+- **`null`**：このサイトの 22.2.6 では、文字列と同じく包まれる（`cause` が `null`、本番の `message` は「null」）。22.1.6 では `TypeError` でした（2 節）。
 - **どの行も**：`value()` は投げ、その `cause` は `error()` と同じもの（616 行目）。`hasValue()` は `false` を返して投げない。テンプレートで `value()` をそのまま読むと `detectChanges()` が投げ、`@if (hasValue())` で守ると描ける。
 - **rxResource で EMPTY**：`error()` は `code` が `-991` の `RuntimeError`、本番ではメッセージは「NG0991」だけ。
 

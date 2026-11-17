@@ -1404,7 +1404,7 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 属性を書いて parseTemplate に通す**
 >
-> 「解析」を押すと `@angular/compiler`（インストール版 22.1.6）を読み込み、`<タグ 属性></タグ>` を `parseTemplate` で解析して、R3 AST の `attributes` / `inputs` / `outputs` / `references`、`*` があれば外側の `Template` の `templateAttrs` / `variables` を並べます。
+> 「解析」を押すと `@angular/compiler`（インストール版 22.2.6）を読み込み、`<タグ 属性></タグ>` を `parseTemplate` で解析して、R3 AST の `attributes` / `inputs` / `outputs` / `references`、`*` があれば外側の `Template` の `templateAttrs` / `variables` を並べます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler-binding-parser)
 

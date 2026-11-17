@@ -173,7 +173,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO 1 — どの印をどの文脈に渡すと通るか**
 >
-> このページの本物の `DomSanitizer`（@angular/platform-browser 22.1.6）で、値を 5 種類の印に包み、5 つの SecurityContext の `sanitize` に渡した結果です。結果は表に文字列で出すだけで、DOM には入れません。ページの CSP や Trusted Types の設定は変えません。
+> このページの本物の `DomSanitizer`（@angular/platform-browser 22.2.6）で、値を 5 種類の印に包み、5 つの SecurityContext の `sanitize` に渡した結果です。結果は表に文字列で出すだけで、DOM には入れません。ページの CSP や Trusted Types の設定は変えません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-trusted-types)
 
@@ -693,7 +693,7 @@ Angular は自分の d.ts に `@types/trusted-types` への依存を出さない
 
 > **🧪 DEMO 2 — 本物の ɵɵvalidateAttribute をテンプレートの外で呼ぶ**
 >
-> @angular/core 22.1.6 の `ɵɵvalidateAttribute('x', タグ, 属性)` を、ボタンのクリックの中（テンプレートの外）で呼びます。このときは選ばれている TNode が無いので（343〜344 行目で `null`）、iframe を外す処理も `attributeName` の読み取りも飛ばして、表で ATTRIBUTE\_NO\_BINDING なら 386 行目の例外になります。名前空間は `':svg:set'` の形で渡すと、[前の章](17-domr-sanitization.md)の `resolveElement` が接頭辞として分けます。
+> @angular/core 22.2.6 の `ɵɵvalidateAttribute('x', タグ, 属性)` を、ボタンのクリックの中（テンプレートの外）で呼びます。このときは選ばれている TNode が無いので（343〜344 行目で `null`）、iframe を外す処理も `attributeName` の読み取りも飛ばして、表で ATTRIBUTE\_NO\_BINDING なら 386 行目の例外になります。名前空間は `':svg:set'` の形で渡すと、[前の章](17-domr-sanitization.md)の `resolveElement` が接頭辞として分けます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-trusted-types)
 

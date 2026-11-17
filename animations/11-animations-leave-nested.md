@@ -2,7 +2,7 @@
 
 # 入れ子の leave：子孫と埋め込みビューのアニメーションを集めて待つ
 
-> 外す要素の子孫で leave を持つものを、同じ LView の leave の Map から親をたどって探す aggregateDescendantAnimations、埋め込みビューへ降りて集める collectNestedViewAnimations と collectAllViewLeaveAnimations（子コンポーネントのビューには降りない）、すべてを待ってから消す runAfterLeaveAnimations。入れ子の leave が入って、戻されて、コンポーネントの境目で絞って入れ直された経緯（#67552・#67633）と、集めるだけのつもりで関数を呼んでしまう判定。
+> 外す要素の子孫で leave を持つものを、同じ LView の leave の Map から親をたどって探す aggregateDescendantAnimations、埋め込みビューへ降りて集める collectNestedViewAnimations と collectAllViewLeaveAnimations（子コンポーネントのビューには降りない）、すべてを待ってから消す runAfterLeaveAnimations。入れ子の leave が入って、戻されて、コンポーネントの境目で絞って入れ直された経緯（#67552・#67633）と、集めるだけのつもりで関数を呼んでしまう判定（22.2.6 では af2c7e386d8 で呼ばない判定になった）。
 
 angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/animations-leave-nested)
 
@@ -220,7 +220,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> 第 9 回の 65〜76 行目は、同じビューの子孫に leave が 0 件のとき、69 行目で `collectNestedViewAnimations(lView, tNode, nestedPromises)` を呼び、`nestedPromises.length > 0` かどうかだけを使います。でも 237 行目のとおり、集めるときに関数を**呼んで**しまうので、入れ子のビューの leave は、**変更検知の途中で（待ち行列を通らずに）1 回目が始まり**、待ち行列が流れたとき `executeLeaveAnimations` の 171 行目でもう 1 回呼ばれます。最新の main の 7e678e0ed72 では、この判定が「関数を呼ばずに Map の有無だけを見る」`hasNestedViewAnimations` に置き換わっています。下のデモの B で、1 回目がいつ始まるかを見られます。
+> 第 9 回の 65〜76 行目は、同じビューの子孫に leave が 0 件のとき、69 行目で `collectNestedViewAnimations(lView, tNode, nestedPromises)` を呼び、`nestedPromises.length > 0` かどうかだけを使います。でも 237 行目のとおり、集めるときに関数を**呼んで**しまうので、入れ子のビューの leave は、**変更検知の途中で（待ち行列を通らずに）1 回目が始まり**、待ち行列が流れたとき `executeLeaveAnimations` の 171 行目でもう 1 回呼ばれます。最新の main の 7e678e0ed72 では、この判定が「関数を呼ばずに Map の有無だけを見る」`hasNestedViewAnimations` に置き換わっています。22.2.x の枝にも af2c7e386d8（22.2.0）として入っていて、いまのサイトの 22.2.6 はこの形です。下のデモの B で、1 回目がいつ始まるかを見られます（22.1.6 と 22.2.6 で違います）。
 
 ## 4. 待ち終わったら：runAfterLeaveAnimations
 
@@ -255,11 +255,13 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 
 ## 5. デモ：親を消したとき、誰を待つか
 
-> **🧪 DEMO — 本物の animate.leave（Angular 22.1.6）**
+> **🧪 DEMO — 本物の animate.leave（Angular 22.2.6）**
 >
 > A と B は、それぞれ外側に leave の無い `div` を持つ `@if` です。A の中には、A-1 同じテンプレートの子孫（0.5 秒）、A-2 入れ子の `@if` の中（0.9 秒）、A-3 子コンポーネント（そのテンプレートに 0.9 秒の leave）、A-4 子コンポーネントへ投影した要素（0.7 秒）があります。B の中には、入れ子の `@if` の中の B-1（0.6 秒）だけがあります。消すボタンは `show.set(false)` のあと `ChangeDetectorRef.detectChanges()` で変更検知を同期で走らせ、その直後に各要素の leave のクラスを読みます （`detectChanges` は `afterNextRender` を流さないので、ここでクラスが付いていれば待ち行列を通っていない）。OS の設定で動きを減らしていても、このデモは動きます。
 >
 > ヘッドレスの Chromium（chrome-headless-shell）で動かした記録です。**A を消す**: `detectChanges` の直後はどの要素にも leave のクラスが無く（同じビューに A-1 があるので第 9 回の 65 行目の分岐に入らない）、+30 ms に A-1・A-4・A-2 の `animationstart`、+530 ms A-1、+730 ms A-4、+930 ms A-2 の `animationend`、そして +930 ms に外側の div が外れました。A-3 の中（子コンポーネントのテンプレート）の span には `animationstart` が来ず、待たれていません。外側の div は、いちばん長い A-2 に合わせて外れています。**B を消す**: `detectChanges` の直後（+0 ms）に B-1 にはもう `ln-mid2` が付いていました。待ち行列（`afterNextRender`）を通る前に、第 9 回の 69 行目 → 237 行目で関数が呼ばれた跡です。+33 ms `animationstart`、+616 ms `animationend` と同時に外側の div が外れました。
+>
+> ここまでは、この章を書いたとき（サイトが 22.1.6）の記録です。22.2.6 に上げたあと（2026-11-17）に B を消すと、**`detectChanges` の直後の B-1 は「（なし）」**で、leave のクラスはまだ付いていませんでした。次のフレームのあと +20 ms に `animationstart`、+605 ms に `animationend` と同時に外側の div が外れます。22.2.6 は `hasNestedViewAnimations` で有無だけを見て関数を呼ばないので、B-1 の leave も待ち行列を通ってから 1 回だけ始まります。A の記録は同じでした。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/animations-leave-nested)
 
@@ -267,7 +269,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 
 - `runLeaveAnimationsWithCallback(lView, tNode, …)` — node\_animations.ts L39 — *第 9 回*
   - `aggregateDescendantAnimations()` — L106 — *同じ LView の leave の Map を上向きに照合*
-  - `collectNestedViewAnimations(lView, tNode, nestedPromises)` — L69 — *0 件のときだけ。関数を呼んでしまう*
+  - `collectNestedViewAnimations(lView, tNode, nestedPromises)` — L69 — *0 件のときだけ。関数を呼んでしまう（22.2.6 では hasNestedViewAnimations で呼ばない）*
   - `addToAnimationQueue(executeLeaveAnimations)` — L80
 - `executeLeaveAnimations()` — L144 — *afterNextRender のあと*
   - Map の要素の `animateFns` を呼ぶ — L161-164
@@ -346,7 +348,7 @@ acceptance の `animation_spec.ts` で「コンポーネントの境目で止ま
 
 **Q. 親と子のどちらの leave が先に始まりますか？**
 
-外す要素とその子孫（同じビュー）の leave は、1 つの `executeLeaveAnimations` の中で、161〜164 行目（Map の要素）→ 171 行目（入れ子のビュー）の順に、同じフレームのうちに呼ばれます。つまり「親が終わってから子」のような順番はなく、ほぼ同時に始まります。例外は第 9 回の 69 行目を通る場合で、そのときは入れ子のビューの leave が変更検知の途中で先に始まります（3 節の注意）。
+外す要素とその子孫（同じビュー）の leave は、1 つの `executeLeaveAnimations` の中で、161〜164 行目（Map の要素）→ 171 行目（入れ子のビュー）の順に、同じフレームのうちに呼ばれます。つまり「親が終わってから子」のような順番はなく、ほぼ同時に始まります。例外は第 9 回の 69 行目を通る場合で、そのときは入れ子のビューの leave が変更検知の途中で先に始まります（3 節の注意。22.1.6 まで。いまのサイトの 22.2.6 では起きません）。
 
 **Q. 子のアニメーションのほうが長いとどうなりますか？**
 
@@ -366,7 +368,7 @@ acceptance の `animation_spec.ts` で「コンポーネントの境目で止ま
 - 入れ子の埋め込みビュー（`@if` / `@for` の中）は、コンテナから降りて Map の全部の関数を呼ぶ（207〜217・234〜240 行目）。
 - 子コンポーネントのテンプレートには降りない（204〜205 行目）。投影した要素は書いた側のビューなので待たれる。
 - すべてを `allSettled` で待ち、`running` が自分のときだけ片付けて `callback(true)`（255〜264 行目）。
-- 子孫が 0 件のときの判定（第 9 回の 69 行目）は関数を呼んでしまう。最新の main は 7e678e0ed72 で呼ばない判定に変えた。
+- 子孫が 0 件のときの判定（第 9 回の 69 行目）は関数を呼んでしまう。最新の main は 7e678e0ed72 で呼ばない判定に変えた（22.2.x では af2c7e386d8。いまのサイトの 22.2.6 のデモでは、B-1 のクラスは detectChanges の直後には付かない）。
 
 ---
 

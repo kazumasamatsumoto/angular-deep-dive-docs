@@ -79,7 +79,7 @@ angular/angular · 読了 約 11 分 · 基礎 · [サイトで読む（デモ�
 14 ▶ export const VERSION = /* @__PURE__ */ new Version('0.0.0-PLACEHOLDER');
 ```
 
-`index.ts` は 14 行目で `public_api` をそのまま出すだけで、9〜12 行目のとおりエディタと検証のためのファイルです。`version.ts` の 14 行目の `'0.0.0-PLACEHOLDER'` は配布物を作るときに置き換わり、このサイトに入っている配布物 （`node_modules/@angular/elements/fesm2022/elements.mjs`、296 行）では `new Version('22.1.6')` になっています。
+`index.ts` は 14 行目で `public_api` をそのまま出すだけで、9〜12 行目のとおりエディタと検証のためのファイルです。`version.ts` の 14 行目の `'0.0.0-PLACEHOLDER'` は配布物を作るときに置き換わり、このサイトに入っている配布物 （`node_modules/@angular/elements/fesm2022/elements.mjs`、296 行）では `new Version('22.2.6')` になっています。
 
 ### ファイルの分担
 
@@ -353,7 +353,7 @@ angular/angular · 読了 約 11 分 · 基礎 · [サイトで読む（デモ�
 
 > **🧪 DEMO — &lt;el-overview-greet&gt; に届いた順番**
 >
-> 入力 `userName = input('だれか')` と出力 `liked = output<number>()` を持つ小さなコンポーネントを、このページに入っている本物の `@angular/elements` 22.1.6 の `createCustomElement` でカスタム要素にします。最初のボタンを押したときに `@angular/elements` を読み込み、`customElements.define` します（取り消せないので、このページで 1 回だけ）。記録のために、`createCustomElement` が返したクラスを継承して、`connectedCallback` など 3 つのメソッドと strategy の getter で「呼ばれた」と書いてから `super` を呼んでいます。中身には手を入れていません。
+> 入力 `userName = input('だれか')` と出力 `liked = output<number>()` を持つ小さなコンポーネントを、このページに入っている本物の `@angular/elements` 22.2.6 の `createCustomElement` でカスタム要素にします。最初のボタンを押したときに `@angular/elements` を読み込み、`customElements.define` します（取り消せないので、このページで 1 回だけ）。記録のために、`createCustomElement` が返したクラスを継承して、`connectedCallback` など 3 つのメソッドと strategy の getter で「呼ばれた」と書いてから `super` を呼んでいます。中身には手を入れていません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/elements-overview)
 

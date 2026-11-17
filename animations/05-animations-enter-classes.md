@@ -317,7 +317,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 ## 7. デモ：本物の animate.enter で、親と子のイベントを並べる
 
-> **🧪 DEMO — このページの Angular（22.1.6）で animate.enter を動かす**
+> **🧪 DEMO — このページの Angular（22.2.6）で animate.enter を動かす**
 >
 > これは再現ではなく本物です。親の `div` に `[animate.enter]="enterClass()"`、子の `span` には常に CSS アニメーション `aec-pop` が付いています。「出す」を押すと、外枠（stage）に MutationObserver と、`animationstart` / `animationend` / `animationcancel` のリスナーを capture（捕獲）と bubble（泡立ち）の 2 段で張り、3 秒間だけ記録します。OS の設定で動きを減らしていても、このデモは動きます（[第 8 回](08-animations-disabled.md)）。
 >

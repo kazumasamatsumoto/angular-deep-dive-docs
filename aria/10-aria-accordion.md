@@ -2,15 +2,15 @@
 
 # Accordion：ListExpansion で開いて閉じる
 
-> ListExpansion の open / close / toggle / openAll が expanded の値を書く行と、multiExpandable が偽なら他を閉じる仕組み。AccordionGroup・AccordionTrigger・AccordionPanel が aria-expanded・aria-controls・role="region" をどう結ぶか、トリガーが別のコンポーネントの中にあっても見つかる理由。パネルの中で Enter を押すと開閉してしまう開いている issue。
+> ListExpansion の open / close / toggle / openAll が expanded の値を書く行と、multiExpandable が偽なら他を閉じる仕組み。AccordionGroup・AccordionTrigger・AccordionPanel が aria-expanded・aria-controls・role="region" をどう結ぶか、トリガーが別のコンポーネントの中にあっても見つかる理由。パネルの中で Enter を押すと開閉してしまう issue #34011（22.2.6 の #34053 でリスナーがトリガーに移って直り、いまのサイトの 22.2.7 のデモでは出ない）。
 
 angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/aria-accordion)
 
 ---
 
-アコーディオンは「見出しのボタンを押すと、その下のパネルが開いたり閉じたりする」部品です。開閉の状態を書き換えるのは `ListExpansion` という小さな Behavior で、`AccordionGroupPattern` がそれに `ListFocus` と `ListNavigation` を足して、キーとクリックを受けます。この章では、`expanded` を書く行、`multiExpandable` が偽のとき他を閉じる行、トリガーとパネルが `aria-expanded`・`aria-controls`・`role="region"`・`aria-labelledby` で結ばれる行、そして**パネルの中で Enter を押すと開閉してしまう**開いている issue #34011 の原因の行を読みます。
+アコーディオンは「見出しのボタンを押すと、その下のパネルが開いたり閉じたりする」部品です。開閉の状態を書き換えるのは `ListExpansion` という小さな Behavior で、`AccordionGroupPattern` がそれに `ListFocus` と `ListNavigation` を足して、キーとクリックを受けます。この章では、`expanded` を書く行、`multiExpandable` が偽のとき他を閉じる行、トリガーとパネルが `aria-expanded`・`aria-controls`・`role="region"`・`aria-labelledby` で結ばれる行、そして**パネルの中で Enter を押すと開閉してしまう** issue #34011（22.2.6 で直った）の原因の行を読みます。
 
-読む対象は `src/aria/private/behaviors/expansion/expansion.ts`、`src/aria/private/accordion/accordion.ts`、`src/aria/accordion/accordion-group.ts`・`accordion-trigger.ts`・`accordion-panel.ts` です。ページの上のデモは @angular/aria 22.1.8 で、このうち `accordion-trigger.ts` だけが引用（22.2.0-next.5 の e81c398a86）と違います（5 節）。
+読む対象は `src/aria/private/behaviors/expansion/expansion.ts`、`src/aria/private/accordion/accordion.ts`、`src/aria/accordion/accordion-group.ts`・`accordion-trigger.ts`・`accordion-panel.ts` です。ページの上のデモは @angular/aria 22.2.7 で、引用（22.2.0-next.5 の e81c398a86）とは `accordion-group.ts`・`accordion-trigger.ts`・`private/accordion/accordion.ts` の 3 つが違います（5 節）。この章を書いたとき（サイトが 22.1.8 だったとき）はデモで #34011 が出ましたが、22.2.6 の #34053 で直り、いまのデモでは出ません（7 節）。
 
 1. [1. 全体像](01-aria-overview.md)
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -518,12 +518,12 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 パネルは 52 行目で `role="region"`、54 行目の `aria-labelledby` は `_pattern?.id()`、つまり 125 行目で入れてもらったトリガーの id です。これで「トリガーの `aria-controls` → パネルの id」「パネルの `aria-labelledby` → トリガーの id」が双方向に結ばれます。パネル自身には Pattern がありません（77〜80 行目のコメント）。74 行目の `visible` はトリガーの `expanded()` で、55 行目で見えないときは `inert` 属性を付けます。`inert` はフォーカスと支援技術から外すだけで、**見た目は消えません**。デモでは章の CSS で `[inert] { display: none }` を当てています。85〜89 行目で `visible()` を `DeferredContentAware.contentVisible` に写し、45〜50 行目の `hostDirectives` から `preserveContent` 入力を外に出します。中身を作る・消す側は[第 11 回](11-aria-deferred-content.md)で読みます。
 
-## 5. 22.1.8 との差：ngAccordionTrigger 属性
+## 5. このページの 22.2.7 との差：ngAccordionTrigger 属性と、トリガーに移ったリスナー
 
 📄 `accordion/accordion-trigger.ts の host（scratchpad/aria-22.1.8-vs-snapshot.diff から）`
 
 ```
---- 22.1.8（このサイトの node_modules から復元）
+--- 22.1.8（この章を書いたときのサイトの node_modules から復元）
 +++ 22.2.0-next.5（../components の e81c398a86）
 @@ -52,11 +52,6 @@
      '[attr.aria-disabled]': '_pattern.disabled()',
@@ -538,9 +538,11 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
  })
 ```
 
-このサイトに入れた 22.1.8 には、引用（e81c398a86、2026-09-10）に無い host の属性 `'ngAccordionTrigger': ''` があります。これは snapshot の後に main に入った 6a9f2d05ec「fix(aria/accordion): ensure right attribute is set when used as a host directive（#33839、2026-09-18）」で、22.1.8 に取り込まれています。トリガーを自作コンポーネントの `hostDirectives` で付けると、テンプレートに `ngAccordionTrigger` と書かないので属性が無く、2 節の 158 行目の `closest('[ngAccordionTrigger]')` がトリガーの中の子要素から上へたどれませんでした（#33810「custom trigger click」。2026-09-19 に「#33839 で直った」として閉じた）。このデモはテンプレートに `ngAccordionTrigger` と書いているので、この差で動きは変わりません。
+この章を書いたときにサイトに入れていた 22.1.8 には、引用（e81c398a86、2026-09-10）に無い host の属性 `'ngAccordionTrigger': ''` がありました（いまの 22.2.7 にもあります）。これは snapshot の後に main に入った 6a9f2d05ec「fix(aria/accordion): ensure right attribute is set when used as a host directive（#33839、2026-09-18）」で、22.1.8 に取り込まれています。トリガーを自作コンポーネントの `hostDirectives` で付けると、テンプレートに `ngAccordionTrigger` と書かないので属性が無く、2 節の 158 行目の `closest('[ngAccordionTrigger]')` がトリガーの中の子要素から上へたどれませんでした（#33810「custom trigger click」。2026-09-19 に「#33839 で直った」として閉じた）。このデモはテンプレートに `ngAccordionTrigger` と書いているので、この差で動きは変わりません。
 
-## 6. 開いている #34011：パネルの中の Enter / Space で開閉する
+もう 1 つの差は 22.2.6 に入った 883fd65024「fix(aria/accordion): move listeners to trigger（#34053、2026-11-04。本文の Fixes #34011）」で、こちらはデモの動きを変えます。22.2.7 の accordion-group.ts には 4 節の 65〜67 行目の `host`（`keydown`・`click`・`focusin`）が無く、代わりに accordion-trigger.ts の `host` が `(keydown)`・`(click)`・`(focus)` を自分の `_pattern`（`AccordionTriggerPattern`）に渡します。キーの表（2 節の 95〜97 行目の `keydown`）とクリックの表も `AccordionGroupPattern` から `AccordionTriggerPattern` へ移り、`toggle()` はアクティブな項目ではなく**そのトリガー自身**を開閉します。リスナーがトリガーの要素にしか無いので、パネルの中で押したキーは泡立ってもどこにも受けられません。`_findTriggerPattern` と `closest('[ngAccordionTrigger]')` もこのとき消えました。（node\_modules の `fesm2022/_accordion-chunk.mjs.map` から戻した .ts と `git show v22.2.7:src/aria/...` が同じであることを確かめました。）
+
+## 6. #34011：パネルの中の Enter / Space で開閉する（22.2.6 で直った）
 
 #34011（2026-10-24、@angular/aria 22.2.4 と 22.1.6 で報告）は「開いたパネルの中のリンクで Enter、ボタンで Space を押すと、それが動かずにパネルが閉じる。入力欄で Home を押すとトリガーへフォーカスが飛ぶ」というものです。ここまでの行で説明できます。
 
@@ -572,13 +574,15 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 ## 7. デモ：本物のアコーディオンで #34011 が出るか
 
-> **🧪 DEMO — このページの @angular/aria 22.1.8 のアコーディオン**
+> **🧪 DEMO — このページの @angular/aria 22.2.7 のアコーディオン**
 >
 > 本物の `ngAccordionGroup` / `ngAccordionTrigger` / `ngAccordionPanel` / `ngAccordionContent` です。キーボードで操作できます。Tab で見出しのボタンに入り、↑↓・Home・End で見出しの間を動き、Enter / Space で開閉します。「1. 入力欄とボタンのある項目」を開いて、中の入力欄・ボタンにフォーカスを移し、Enter・Space・Home を押してみてください。外枠で `keydown` を capture（捕獲。子に届く前に外側で受ける）で記録し、50ms 後に `event.defaultPrevented` と各トリガーの `aria-expanded`、フォーカスのある要素を読みます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-accordion)
 
-2026-11-02 にヘッドレスの Chrome でこのページを開き、キーを 1 つずつ押して記録した結果です。**22.1.8 で #34011 の症状は出ました**。
+サイトの依存を 22.2.7 に上げたあと（2026-11-17）、同じ手順をヘッドレスの Chrome で押しました。**22.2.7 では #34011 の症状は出ません**。トリガー 1 の Enter は `defaultPrevented=true` で開きます。入力欄の a と Space、中のボタンの Enter / Space、入力欄の Home は、どれも `defaultPrevented=false` で、パネルは開いたまま、フォーカスも動きません。入力欄には空白が入り（メモが「a 」）、中のボタンでは Enter でも Space でも「パネルの中のボタンの click が来た」と出ます。トリガー 2 を開いたあとパネル 1 のボタンで Enter を押しても、`1=true 2=true` のままです。5 節のとおり、パネルの中のキーを受ける人がもういないからです。
+
+次は、この章を書いたとき（2026-11-02、サイトが 22.1.8 だったとき）の記録です。**22.1.8 で #34011 の症状は出ました**。
 
 - **トリガー 1 で Enter**：`defaultPrevented=true`、`aria-expanded 1=true`。正しい動きです。
 - **入力欄で a、続けて Space**：a は `defaultPrevented=false` で入力されます（表に無いキー）。Space は `defaultPrevented=true` で、`1=false`（パネル 1 が閉じた）、フォーカスは `body` になり、メモは「a」のままでした。閉じると `ngAccordionContent` の中身が消える（第 11 回）ので、フォーカスのあった入力欄ごと無くなります。
@@ -653,7 +657,7 @@ INFO: Elapsed time: 2.237s, Critical Path: 1.18s
    ターゲットを絞る引数は無いので、accordion.spec.ts の全部（42 本）が走ります。Pattern を単体で動かす `//src/aria/private/accordion:unit_tests_chromium`（27 本）と `//src/aria/private/behaviors/expansion:unit_tests_chromium`（33 本）は、シリーズでまとめて走らせた記録の数です（この章では走らせていません）。
 2. **直すとしたら**
 
-   #34011 の入口は `AccordionGroupPattern.onKeydown`（private/accordion/accordion.ts 95 行目）です。PR #34012 はここで発生元を確かめています。振る舞いの spec は accordion/accordion.spec.ts に、Pattern の spec は private/accordion/accordion.spec.ts に足します。
+   #34011 の入口は `AccordionGroupPattern.onKeydown`（private/accordion/accordion.ts 95 行目）です。PR #34012 はここで発生元を確かめています。実際に入った直しは別の 883fd65024（#34053、22.2.6）で、発生元を確かめるのではなく、リスナーをグループからトリガーへ移しました（5 節）。振る舞いの spec は accordion/accordion.spec.ts に、Pattern の spec は private/accordion/accordion.spec.ts に足します。
 3. **issue を読むときの手がかり**
 
    「パネルの中で何かが効かない」報告なら、グループの要素で受けている 3 つのイベント（65〜67 行目）のどれが泡立って来ているかを分けて見ます。クリックは 86〜87 行目で弾かれ、`focusin` は 107 行目で返り、`keydown` だけが素通りします。閉じた issue と PR の流れは[第 20 回](20-aria-issues.md)にまとめます。#34011 には既に外部の PR が付いているので、手元で症状と行を確かめるところまでにします。
@@ -682,7 +686,7 @@ INFO: Elapsed time: 2.237s, Critical Path: 1.18s
 - `AccordionGroupPattern` は `List` を使わず、ListFocus・ListNavigation・ListExpansion を直接組む。トリガーは全部 `tabindex="0"`（accordion.ts L196-198）。
 - トリガーは `ngOnInit` でパネルの `_pattern` に自分を入れ、DI でたどったグループに登録する。だから別のコンポーネントの中でも見つかる（accordion-trigger.ts L118-127）。
 - パネルは `role="region"`・`aria-labelledby`・閉じたら `inert`。見た目は CSS で隠す（accordion-panel.ts L52-55）。
-- #34011：グループの `onKeydown` は発生元を見ないので、パネルの中の Enter / Space / Home がアクティブなトリガーに効く。22.1.8 のデモでも出る（accordion.ts L95-97）。
+- #34011：グループの `onKeydown` は発生元を見ないので、パネルの中の Enter / Space / Home がアクティブなトリガーに効く（accordion.ts L95-97）。22.1.8 のデモでは出た。22.2.6 の #34053 でリスナーがトリガーに移り、22.2.7 のデモでは出ない。
 
 ---
 

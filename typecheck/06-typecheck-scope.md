@@ -498,7 +498,7 @@ Scope は作られるときに guard（`@if` の条件のような、型を絞�
 >
 > 補間の op が先に実行され、その中で #r の op と要素の op が呼ばれる
 >
-> ボタンを押すと、このサイトに入っている @angular/compiler 22.1.6 の generateTypeCheckBlock が動きます。
+> ボタンを押すと、このサイトに入っている @angular/compiler 22.2.6 の generateTypeCheckBlock が動きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-scope)
 
@@ -564,7 +564,7 @@ Ran 239 of 1747 specs
 
 1. **確かめられていない所**
 
-   type\_check\_block\_spec.ts を `_ctor1(null!)` や `(null!)` で grep しても、5 節の 2 つ目の形（`TcbDirectiveCtorCircularFallbackOp` が働く形）の期待値は見つかりませんでした。デモでは 22.1.6 で `var _t3 = _ctor_Dir(null!)` が出ます。spec を足すなら、`describe('type constructors')` にジェネリックな Dir と `[a]="x" [b]="d"` のテンプレートで `tcb()` を呼ぶ it が入口です。
+   type\_check\_block\_spec.ts を `_ctor1(null!)` や `(null!)` で grep しても、5 節の 2 つ目の形（`TcbDirectiveCtorCircularFallbackOp` が働く形）の期待値は見つかりませんでした。デモでは `var _t3 = _ctor_Dir(null!)` が出ます（22.1.6 でも、いまのサイトの 22.2.6 でも）。spec を足すなら、`describe('type constructors')` にジェネリックな Dir と `[a]="x" [b]="d"` のテンプレートで `tcb()` を呼ぶ it が入口です。
 2. **直すとしたら**
 
    名前の探し方は scope.ts の `resolve`（313 行目）と `resolveLocal`（404 行目）、実行の順は `resolveOp`（451 行目）と `executeOp`（466 行目）、新しいノードの op を積むのは `appendNode` です。形の確かめは `tcb()` の `toContain` で、番号（`_t1`・`_t2`）まで含めた文字列で書くのがこの spec の書き方です。
@@ -586,9 +586,9 @@ Ran 239 of 1747 specs
 
 名前で探していないので「どちらか」ではなく、BoundTarget がその式に結び付けたノードが使われます。resolve は 315 行目で自分の Scope の表をノードで引き、無ければ 320 行目で親へ回ります。例外は `@let` で、407〜408 行目のとおり名前で引きます。
 
-**Q. 22.1.6（このサイトのデモ）と読んでいる版で scope.ts は何が違いますか？**
+**Q. 22.1.6（この章を書いたときのサイトのデモ）と読んでいる版で scope.ts は何が違いますか？**
 
-diff（262 行）の scope.ts の部分を見ると、読んでいる版にだけ `@boundary`（`BoundaryBlock` と `BoundaryErrorBlock`。forNodes の子の変数の登録と、appendNode の `TcbBoundaryOp`）と、keyed defer のブロック名を見て `deferredComponentUsedEagerly` に渡す行があります（f7597cb7d93・7d9f55da113。[第 13 回](13-typecheck-control-flow.md)）。残りは import の並べ替えです。だからデモでは `@boundary` の TCB は作れません。この章で扱った resolve・resolveLocal・executeOp は同じです。
+diff（262 行）の scope.ts の部分を見ると、読んでいる版にだけ `@boundary`（`BoundaryBlock` と `BoundaryErrorBlock`。forNodes の子の変数の登録と、appendNode の `TcbBoundaryOp`）と、keyed defer のブロック名を見て `deferredComponentUsedEagerly` に渡す行があります（f7597cb7d93・7d9f55da113。[第 13 回](13-typecheck-control-flow.md)）。残りは import の並べ替えです。だから 22.1.6 のデモでは `@boundary` の TCB は作れませんでした。この章で扱った resolve・resolveLocal・executeOp は同じです。いまのサイトの 22.2.6 の scope.ts は、読んでいる版と `TcbUnclaimedOutputsOp` を作る 1 か所（312e1d80890 の strictUnclaimedEventNames のために、`hasDirectives` と `hasComponent` の 2 つの引数を足した）だけが違い、`@boundary` も keyed defer の行も入っています。
 
 ## 読み終えて
 

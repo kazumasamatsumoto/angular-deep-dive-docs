@@ -282,7 +282,7 @@ constructor の 108 行目で、スケジューラは注入器から `ChangeDete
 
 ## 6. DEMO：同じ値を 2 回、違う値を 3 回
 
-> **🧪 DEMO — 入力を入れて、ngOnChanges と DOM の書き換えを数える（ライブ。@angular/elements 22.1.6 の createCustomElement）**
+> **🧪 DEMO — 入力を入れて、ngOnChanges と DOM の書き換えを数える（ライブ。@angular/elements 22.2.6 の createCustomElement）**
 >
 > 「要素を作ってつなぐ」を押すと、`createCustomElement(ElIcdLabel, { injector })` で作ったクラスを `el-inputs-cd-label` の名前で登録し（2 回目からは登録済みのものを使います）、`document.createElement` で作った要素を下の枠に入れます。`ElIcdLabel` は `@Input() value` を 1 つ持ち、`changeDetection` を書いていない（v22 の既定の OnPush の）コンポーネントです。表の「時刻」はボタンを押してからのミリ秒です。「DOM」の行は、要素に付けた `MutationObserver` が要素の中の書き換えを見つけたときに出ます。
 >

@@ -395,7 +395,7 @@ Pattern が持つべきメソッドは、private/ui-pattern-rules.md に決ま�
 
 `spyOn(console, 'warn')` を使う spec は accordion・grid・listbox・menu・tabs・toolbar・tree の 7 ファイルで（grep）、33593e781b が変えた部品と同じです。
 
-> **🧪 DEMO — わざと違反した本物の ngMenu を描く（このサイトの 22.1.8）**
+> **🧪 DEMO — わざと違反した本物の ngMenu を描く（このサイトの 22.2.7）**
 >
 > ボタンを押すと、下の枠の中に違反した使い方の `ngMenu` / `ngMenuItem` を描きます。描く直前から 500ms だけ `console.warn` を横取りして、呼ばれた中身をここに出し、そのあと元に戻します（ブラウザのコンソールには出ません）。このページのビルドでは **ngDevMode = 偽（本番ビルド）** です。偽なら 194 行目の `if` の中が無いので、何も捕まりません。「validate() を直接呼ぶ」は開発モードかどうかに関係なく、Pattern の返り値を見ます。描いた項目には Tab で入れます。
 >

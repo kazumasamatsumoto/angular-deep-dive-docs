@@ -441,7 +441,7 @@ PR #71597（同じ人、開いている）は 400 行目の `if` の中で、ret
 
    finishNavigation が呼ぶ `commitUrl()` の Promise にも `.catch(() => {})` を付けています。
 
-コミットの本文は「仕様では traverse に redirect は使えない（`InvalidStateError`）。History API と同じ振る舞いにするため、まず traverse を commit し、それから Router がリダイレクト先へ replace の navigate をする」。22.2.x の枝にも b8383a1987a として入っています（gh で 22.2.x のコミットを見て確かめました）。../angular（22.2.0-next.7）とサイトの依存の 22.1.6 には入っていません。
+コミットの本文は「仕様では traverse に redirect は使えない（`InvalidStateError`）。History API と同じ振る舞いにするため、まず traverse を commit し、それから Router がリダイレクト先へ replace の navigate をする」。22.2.x の枝にも b8383a1987a として入っています（gh で 22.2.x のコミットを見て確かめました）。../angular（22.2.0-next.7）と、記録を取ったときのサイトの依存 22.1.6 には入っていません。22.2 系では v22.2.4 から入っていて、今のサイトの依存 22.2.6 にもあります。
 
 📄 `angular/packages/router/test/with_platform_navigation.spec.ts` L170–180 （▶ の行: 172, 176–179）
 

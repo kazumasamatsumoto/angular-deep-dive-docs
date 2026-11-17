@@ -207,7 +207,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 @keyframes am-fade-slide-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(16px); } }
 ```
 
-> **🧪 DEMO — 本物の animate.enter / animate.leave（このページの Angular 22.1.6）**
+> **🧪 DEMO — 本物の animate.enter / animate.leave（このページの Angular 22.2.6）**
 >
 > 最初は何も表示していません。ボタンを押したときだけ、毎フレーム DOM を読んで記録します（3 秒で止める）。OS の設定で動きを減らしていても、このデモは動きます。
 >
@@ -502,7 +502,7 @@ grep -rln "animate\.enter\|animate\.leave" packages/core/schematics   # 0 件
    `adev/src/content/examples/animations/` の例は、ガイドの中で `<docs-code-multifile preview>` として動く見本で、framework の spec ではありません。書き直したあとの振る舞い（クラスが付く・外れる・要素が残る）を確かめる spec は、core の `packages/core/test/acceptance/animation_spec.ts` の `describe('animate.enter')`（995 行目、27 本）と `describe('animate.leave')`（76 行目、17 本）にあります。数えたコマンドは[第 19 回](19-animations-testing.md)です。
 2. **手元で確かめるなら**
 
-   この章のデモは、このサイト（@angular/core 22.1.6）の上の本物です。ブラウザで動きを見て、仕組みを確かめたいときは `acceptance_web_chromium`（2743 本、6.8s。第 19 回）に、自分の作業コピーで同じ形の it を足します（私たちは ../angular を変えないので試していない）。jsdom の ng test では `animate.enter` / `animate.leave` が何もしないので、移行後の見た目は確かめられません（第 19 回の表）。
+   この章のデモは、このサイト（@angular/core 22.2.6）の上の本物です。ブラウザで動きを見て、仕組みを確かめたいときは `acceptance_web_chromium`（2743 本、6.8s。第 19 回）に、自分の作業コピーで同じ形の it を足します（私たちは ../angular を変えないので試していない）。jsdom の ng test では `animate.enter` / `animate.leave` が何もしないので、移行後の見た目は確かめられません（第 19 回の表）。
 3. **直すとしたら**
 
    「ガイドに params / AnimationBuilder の節が無い」はドキュメントの話で、ファイルは `adev/src/content/guide/animations/migration.md` です。#71703 は JeanMeche が「非推奨の文言を直す」と書いた段階で、`needs: clarification` が付いています。読むときは、上の表のように「どの章の、どの行の振る舞いの話か」を分けておくと、ドキュメントで足りる話と、仕組みの足りない話を区別できます（[第 20 回](20-animations-issues.md)）。

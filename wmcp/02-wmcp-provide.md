@@ -475,7 +475,7 @@ exit=0
 
 ## 7. DEMO：環境の注入器を作って壊す
 
-> **🧪 DEMO — 本物の provideExperimentalWebMcpTools（22.1.6）と作り物の modelContext**
+> **🧪 DEMO — 本物の provideExperimentalWebMcpTools（22.2.6）と作り物の modelContext**
 >
 > 「注入器を作る」は `createEnvironmentInjector([provideExperimentalWebMcpTools([search, open])], 親)` を呼びます。作る間だけ `document.modelContext` に作り物を置き、作り終えたら消します。ブラウザに本物の `modelContext` があるときは動かしません。本物のブラウザと spec の polyfill は、同じ名前の 2 回目を `InvalidStateError` で reject します。この作り物は reject せず、「登録しない」と記録するだけです（理由は下の注意）。
 >

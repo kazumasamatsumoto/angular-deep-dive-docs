@@ -242,7 +242,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
    式に `// i18n(ph="…")` があればその名前、無ければ `INTERPOLATION` です（次の引用）。
 4. **名前をもらう（306 行目）**
 
-   2 つめの引数（署名の材料）は**式の生の文字列**です。だから同じメッセージの中の `{{a}}` と `{{ a }}` は、空白が違うだけで別の名前（`INTERPOLATION` と `INTERPOLATION_1`）になります。このページの compiler 22.1.6 で `<p i18n>{{a}} {{ a }} {{a}}</p>` を読ませると、文は `{$INTERPOLATION} {$INTERPOLATION_1} {$INTERPOLATION}` でした。
+   2 つめの引数（署名の材料）は**式の生の文字列**です。だから同じメッセージの中の `{{a}}` と `{{ a }}` は、空白が違うだけで別の名前（`INTERPOLATION` と `INTERPOLATION_1`）になります。compiler 22.1.6（依存を上げる前のこのサイトの版）で `<p i18n>{{a}} {{ a }} {{a}}</p>` を読ませると、文は `{$INTERPOLATION} {$INTERPOLATION_1} {$INTERPOLATION}` でした。
 5. **元の文字列を表に入れる（308〜321 行目）**
 
    `preserveExpressionWhitespace` が true（ngtsc の既定）なら 310 行目で 3 つの部品をそのままつなぎ、313 行目の `Placeholder` の値も生の式です。false なら 315 行目で式を一度解析して書き直し（[第 4 回](04-loc-message-id.md)）、317・320 行目でその形を使います。この表の文字列が、XLIFF の `equiv-text` や `goog.getMsg` の `original_code` になります。
@@ -382,7 +382,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物のコンパイラの出力から、:名前: と実行時の印の対応を表にする**
 >
-> 「並べる」を押すと、`compileI18nTemplate`（このページの @angular/compiler 22.1.6、legacyIds は false）でコンパイルし、`$localize` の部品を @angular/localize の `ɵparseMessage` で読んで、`placeholderNames` と、それぞれの直前の引数（実行時の印）を並べます。「元の文字列」は本物の `parseTemplate` の `Message.placeholders`（i18n\_parser.ts の `placeholderToContent`）から、名前を 5 節の形にそろえて引きます。「印の意味」の列はこの章の .ts の簡単な読み取りです。
+> 「並べる」を押すと、`compileI18nTemplate`（このページの @angular/compiler 22.2.6、legacyIds は false）でコンパイルし、`$localize` の部品を @angular/localize の `ɵparseMessage` で読んで、`placeholderNames` と、それぞれの直前の引数（実行時の印）を並べます。「元の文字列」は本物の `parseTemplate` の `Message.placeholders`（i18n\_parser.ts の `placeholderToContent`）から、名前を 5 節の形にそろえて引きます。「印の意味」の列はこの章の .ts の簡単な読み取りです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/loc-placeholders)
 

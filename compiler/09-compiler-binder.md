@@ -1041,7 +1041,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO 1 — SelectorMatcher に登録して、要素と照合する**
 >
-> 左に 1 行 1 セレクタ、右に要素を書きます。ボタンを押すと `@angular/compiler`（22.1.6）を読み込み、1 節と同じく `addSelectables(CssSelector.parse(sel), sel)` で登録し、要素は `parseTemplate` → `createCssSelectorFromNode` → `match` の順に通します。
+> 左に 1 行 1 セレクタ、右に要素を書きます。ボタンを押すと `@angular/compiler`（22.2.6）を読み込み、1 節と同じく `addSelectables(CssSelector.parse(sel), sel)` で登録し、要素は `parseTemplate` → `createCssSelectorFromNode` → `match` の順に通します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler-binder)
 

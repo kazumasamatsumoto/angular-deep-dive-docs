@@ -10,7 +10,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 v14 からリアクティブフォームは型を持ちます。`new FormControl('')` は `FormControl<string | null>` になり、`FormGroup` の `value` は `Partial` になります。この章では、その型がどの型の計算から出てくるかを 1 つずつ追い、`nonNullable` が型だけでなく実行時の `reset` をどう変えるか、`FormBuilder` が引数をどう読んで control を作るかを見ます。
 
-読む対象は `packages/forms/src/model/form_control.ts`（型とコンストラクタの宣言）、`form_group.ts` と `form_array.ts` の先頭の型、`abstract_model.ts` の `ɵTypedOrUntyped`・`ɵValue`・`ɵRawValue`、`packages/forms/src/form_builder.ts` です。型の主張は、このサイトに入っている @angular/forms 22.1.6 と TypeScript 6.0.3 で `tsc` にかけて確かめました（7 節）。
+読む対象は `packages/forms/src/model/form_control.ts`（型とコンストラクタの宣言）、`form_group.ts` と `form_array.ts` の先頭の型、`abstract_model.ts` の `ɵTypedOrUntyped`・`ɵValue`・`ɵRawValue`、`packages/forms/src/form_builder.ts` です。型の主張は、この章を書いたときにこのサイトに入っていた @angular/forms 22.1.6 と TypeScript 6.0.3 で `tsc` にかけて確かめました（7 節）。
 
 1. [1. 全体像](01-forms-overview.md)
 2. [2. AbstractControl](02-forms-abstract-control.md)
@@ -597,7 +597,7 @@ FormArray の型引数は「要素 1 つの control の型」で、35 行目の 
    doc のとおり、`fb.nonNullable.group({who: new FormControl('Alex')})` の `who` は nullable のままです。同じ理由で、`fb.nonNullable.group` の中に**ふつうの `fb.array([…])`** を書くと、その配列の要素は 373 行目で nullable に作られています。427 行目でそのまま使われるので、`reset()` すると要素が `null` になります（下のデモ）。中も `fb.nonNullable.array` にします。
 3. **454 行目：NonNullableFormBuilder を inject すると**
 
-   `factory: () => inject(FormBuilder).nonNullable` なので、`inject(NonNullableFormBuilder)` は「注入器の `FormBuilder` の `nonNullable`」です。464 行目のように、`group` の戻り値の型が `ɵNonNullableFormControls<T>` になります（次の引用）。`FormBuilder` と `NonNullableFormBuilder` は `@Service` デコレーターで書かれていて、インストール版 22.1.6 の fesm2022 でも同じく `ɵɵngDeclareService` と、この `factory` になっています。
+   `factory: () => inject(FormBuilder).nonNullable` なので、`inject(NonNullableFormBuilder)` は「注入器の `FormBuilder` の `nonNullable`」です。464 行目のように、`group` の戻り値の型が `ɵNonNullableFormControls<T>` になります（次の引用）。`FormBuilder` と `NonNullableFormBuilder` は `@Service` デコレーターで書かれていて、インストール版 22.1.6 の fesm2022 でも（いまのサイトの 22.2.6 でも）同じく `ɵɵngDeclareService` と、この `factory` になっています。
 
 📄 `angular/packages/forms/src/form_builder.ts` L56–75 （▶ の行: 60, 63, 71–74）
 
@@ -673,7 +673,7 @@ FormArray の型引数は「要素 1 つの control の型」で、35 行目の 
 
 ## 7. 型を tsc で確かめる
 
-型はデモでは見えないので、scratchpad に小さな `.ts` を置き、このサイトの node\_modules の @angular/forms 22.1.6 を読ませて `tsc --noEmit`（`strict: true`）にかけました。`assertType<Equals<A, B>>()` は、A と B が同じ型でなければ型エラーになる小さな道具です。`@ts-expect-error` の行は「ここで型エラーになる」ことを確かめています（エラーにならなければ逆に tsc が落ちます）。
+型はデモでは見えないので、scratchpad に小さな `.ts` を置き、当時のこのサイトの node\_modules の @angular/forms 22.1.6 を読ませて `tsc --noEmit`（`strict: true`）にかけました。`assertType<Equals<A, B>>()` は、A と B が同じ型でなければ型エラーになる小さな道具です。`@ts-expect-error` の行は「ここで型エラーになる」ことを確かめています（エラーにならなければ逆に tsc が落ちます）。
 
 📄 `scratchpad/b-typecheck/typed.ts`
 
@@ -750,7 +750,7 @@ sanity.ts(5,12): error TS2344: Type 'false' does not satisfy the constraint 'tru
 
 > **🧪 DEMO — reset で初期値に戻るか、null になるか**
 >
-> @angular/forms 22.1.6 の本物の `FormControl` と `FormBuilder`（`inject(FormBuilder)`）です。型は見えないので、実行時の `value` だけを並べます。
+> @angular/forms 22.2.6 の本物の `FormControl` と `FormBuilder`（`inject(FormBuilder)`）です。型は見えないので、実行時の `value` だけを並べます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-typed-forms)
 

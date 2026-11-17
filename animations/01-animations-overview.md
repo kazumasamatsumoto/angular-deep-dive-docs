@@ -72,7 +72,7 @@ Angular には要素の出入りに動きを付ける仕組みが 2 つありま
 
 > **🧪 デモ：本物の animate.enter / animate.leave と classList**
 >
-> このページはブラウザで動く本物の Angular（@angular/core 22.1.6）です。ボタンを押すと `show` が切り替わり、`@if` の中の要素が `animate.enter="aov-in"` / `animate.leave="aov-out"`（どちらも 0.6 秒）で出入りします。押した瞬間から 1.5 秒のあいだ、毎フレーム要素の `className` を読み、変わったフレームだけを記録します。`animationstart` / `animationend` は要素に付けたイベントで記録します。OS の設定で動きを減らしていても、このデモは動きます。
+> このページはブラウザで動く本物の Angular（@angular/core 22.2.6）です。ボタンを押すと `show` が切り替わり、`@if` の中の要素が `animate.enter="aov-in"` / `animate.leave="aov-out"`（どちらも 0.6 秒）で出入りします。押した瞬間から 1.5 秒のあいだ、毎フレーム要素の `className` を読み、変わったフレームだけを記録します。`animationstart` / `animationend` は要素に付けたイベントで記録します。OS の設定で動きを減らしていても、このデモは動きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/animations-overview)
 

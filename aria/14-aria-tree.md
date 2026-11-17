@@ -10,7 +10,7 @@ angular/components · 読了 約 13 分 · 発展 · [サイトで読む（デ�
 
 ツリー（`role="tree"`）は入れ子の項目ですが、Angular Aria の中では**入れ子を 1 本の平らなリストとして**動かします。この章では、`Tree` Behavior が `ListFocus` を継いで「見えている項目だけに止まる」ようにし、→ で「開く、開いていれば最初の子へ」、← で「閉じる、閉じていれば親へ」と動く行、`TreeItemPattern` が `aria-level`・`aria-setsize`・`aria-posinset` を親から計算する行、ディレクティブが子の項目を `TreeItemGroup` 経由でつなぐ行を読みます。
 
-読む対象は `src/aria/private/behaviors/tree/tree.ts`（`Tree`、327 行）、`src/aria/private/tree/tree.ts`（`TreePattern` と `TreeItemPattern`、490 行）、`src/aria/tree/tree.ts`・`tree-item.ts`・`tree-item-group.ts` です（../components、e81c398a86）。tree のファイルは、このサイトの 22.1.8 と同じ中身です。
+読む対象は `src/aria/private/behaviors/tree/tree.ts`（`Tree`、327 行）、`src/aria/private/tree/tree.ts`（`TreePattern` と `TreeItemPattern`、490 行）、`src/aria/tree/tree.ts`・`tree-item.ts`・`tree-item-group.ts` です（../components、e81c398a86）。tree のファイルは、この章を書いたときのサイトの 22.1.8 と同じ中身でした。いまのサイトの 22.2.7 では、`tree-item.ts` と `tree-item-group.ts` だけが違います（fdfca0b277「fix(aria/tree): avoid errors when destroyed before initialization」、#34059、22.2.7）。登録（`_register` と `_collection.register`）と外す処理が `ngOnInit` / `ngOnDestroy` からコンストラクタの `effect`（と `onCleanup`）に移り、初期化の前に壊されても外す相手が無くて落ちることがなくなりました。そのぶん tree-item.ts の行番号が下にずれます（124 行目の `contentVisible` は 22.2.7 では 141 行目）。tree.ts と private/tree/ は同じです。
 
 1. [1. 全体像](01-aria-overview.md)
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -761,13 +761,13 @@ angular/components · 読了 約 13 分 · 発展 · [サイトで読む（デ�
 
 ## 8. デモ：本物の ngTree（入れ子 3 段）
 
-> **🧪 DEMO — src / app / main.ts の 3 段（このサイトの @angular/aria 22.1.8。tree は snapshot と同じ中身）**
+> **🧪 DEMO — src / app / main.ts の 3 段（このサイトの @angular/aria 22.2.7。tree.ts は snapshot と同じ中身）**
 >
 > Tab でツリーに入り、↑ / ↓ で動き、→ / ← で開閉します。Home / End、`Shift + *`、文字のキー（例 r）も試せます。キーやクリックのあと、次の描画が終わってさらに 50ms 待ってから（子のビューは開いた次の描画で作られるため）、今いる項目の level と posinset / setsize、開ける項目の `aria-expanded`、DOM にある treeitem の数、`[(value)]` をログに出します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-tree)
 
-2026-11-02 にヘッドレスの Chrome でこのページを開き、本物のキー入力で確かめた結果です。
+2026-11-02 にヘッドレスの Chrome でこのページを開き、本物のキー入力で確かめた結果です（サイトを 22.2.7 に上げたあと、2026-11-17 に 1〜3 つ目の → / ← の流れを押し直し、treeitem の数 3 → 5 → 7 → 5 と level・位置が同じことを確かめました）。
 
 - ページを開いた直後（触る前）、DOM の treeitem は src・docs・README.md の 3 個だけで、src だけが tabindex="0" でした。閉じた項目の子は作られていません（7 節の 124 行目）。README.md には `aria-expanded` がありません（113〜115 行目）。
 - src で → を押すと src が開き（464〜465 行目）、子の app と index.html が作られて treeitem が 5 個になります。もう一度 → で app へ（467 行目）。app で → で開き、→ で main.ts（level 3、1/2）。main.ts で → を押しても動きません（子が無い）。

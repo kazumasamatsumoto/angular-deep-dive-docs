@@ -672,6 +672,8 @@ signal の計算は同期です。`await` の後で読んだ signal は依存に
 
 もう 1 つ、ログを見ると気づくことがあります。'b' が `resolved` になった**後**に reload を押しても、「abort イベント（'b'）」が出ます。512〜516 行目の `finally` が外すのは `PendingTasks` の仕事だけで、`this.pendingController` は次の読み込みまで残っているからです。次の loadEffect の 428 行目が、終わった読み込みの `AbortController` にも `abort()` を呼びます。終わった `fetch` に abort が届いても何も起きないので実害はありませんが、loader の中で abort イベントにログや後片付けを書くときは、「終わった後にも呼ばれることがある」と考えておきます。
 
+ただし、これは本文の snapshot（と、この章を書いたときのサイトの 22.1.6）の話です。今のサイトの 22.2.6 では、上のデモでこの「abort イベント（'b'）」は出ません。c489b852a5（2026-10-23、`perf(core): avoid unnecessary aborts and reuse abort reason during resource teardown`、v22.2.6 から）が、`finally` の中で、streaming でない読み込みが終わったら `pendingController` を `undefined` に戻すようにしたからです。同じ commit で、`abort()` に渡す理由（`DOMException` の `AbortError`）も 1 つを使い回すようになりました。2026-11-17 に、今のサイトのこのページで、'b' → resolved → reload() と押して、abort の行が出ないことを確かめました。
+
 ## 8. snapshot・resourceFromSnapshots・debounced
 
 📄 `angular/packages/core/src/resource/resource.ts` L145–166 （▶ の行: 147, 149, 153, 157–158, 160–161, 163）

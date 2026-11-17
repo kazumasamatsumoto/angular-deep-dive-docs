@@ -668,7 +668,7 @@ reify（IR の op を ɵɵ 命令の呼び出しにするフェーズ。[compile
 | 2024-03-11 8997837f3c5 | refactor(compiler): pass default content to projection instruction（#54854） | 6 節の 435〜439 行目、2 節の既定の内容のビュー |
 | 2024-03-14 a600a39d0cf | feat(core): add support for fallback content in ng-content（#54854。v18 の機能） | 実行時の側（第 4 回） |
 | 2024-04-24 97eea8d50ea | fix(core): resolve error for multiple component instances that use fallback content（#55478） | 2 節の 520〜521 行目 |
-| 2026-10-03 0244a1cb312（angular-main だけ） | fix(compiler): match namespaced root nodes of control flow blocks against ng-content tag selectors（#71163、issue #71162） | `@if { <svg> }` のタグ名が `:svg:svg` のまま写り、`select="svg"` に合わなかった（第 3 回で確かめる） |
+| 2026-10-03 0244a1cb312（angular-main。22.2 系は 725ffcf4fa6 で v22.2.2 から） | fix(compiler): match namespaced root nodes of control flow blocks against ng-content tag selectors（#71163、issue #71162） | `@if { <svg> }` のタグ名が `:svg:svg` のまま写り、`select="svg"` に合わなかった（第 3 回で確かめる） |
 | 2026-10-04 439d495aaa5（angular-main だけ） | fix(compiler): ignore `@let` declarations in the control flow content projection diagnostic（issue #71172） | 8 節の 136〜153 行目 |
 | 2026-10-04 d9bd68258dc（angular-main だけ） | fix(compiler): check `@boundary` blocks in the control flow content projection diagnostic | 8 節の型検査の対象 |
 
@@ -689,7 +689,7 @@ reify（IR の op を ɵɵ 命令の呼び出しにするフェーズ。[compile
 
 > **🧪 DEMO — このページの上の @angular/compiler で、セレクタの解析済みの形を見る**
 >
-> 左の欄の 1 行 1 行を `<ng-content select="…" />` にした中の側と、右の欄の 1 行 1 行を `<div ngProjectAs="…">` にした外の側を、それぞれ本物の `CompilerFacadeImpl.compileComponent`（このサイトの 22.1.6。押したときに読み込む）にかけ、評価する直前の JS を受け取ります。「解析済みの形」と「定数」は出力をそのまま読んだもので、「読み方」の列だけはこのページが 5 節のビットの意味で言葉にしたものです。空の行は飛ばし、`""` だけの行は空の文字列として渡します。
+> 左の欄の 1 行 1 行を `<ng-content select="…" />` にした中の側と、右の欄の 1 行 1 行を `<div ngProjectAs="…">` にした外の側を、それぞれ本物の `CompilerFacadeImpl.compileComponent`（このサイトの 22.2.6。押したときに読み込む）にかけ、評価する直前の JS を受け取ります。「解析済みの形」と「定数」は出力をそのまま読んだもので、「読み方」の列だけはこのページが 5 節のビットの意味で言葉にしたものです。空の行は飛ばし、`""` だけの行は空の文字列として渡します。
 >
 > 欄を書き換えて「コンパイルする」を押してください。
 >

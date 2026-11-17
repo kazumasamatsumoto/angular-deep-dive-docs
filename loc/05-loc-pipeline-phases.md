@@ -1176,7 +1176,7 @@ update の op を前から見て、`I18nExpressionOp` ごとに 49 行目で「�
 
 ## 14. デモ：subTemplateIndex と印を並べる
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 でコンパイルし、ɵɵi18nStart と印の表を抜き出す**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 でコンパイルし、ɵɵi18nStart と印の表を抜き出す**
 >
 > 「コンパイルする」を押すと、`loc-compile.ts` の `compileI18nTemplate`（本物の `parseTemplate` → `compileComponentFromMetadata`。legacy ID は付けない）で JS を作り、出力から `ɵɵi18nStart(…)` の呼び出しと、`goog.getMsg` の第 2 引数（名前 → 印の表）を正規表現で抜き出します。印の「意味」の列は 12 節の 260 行目を逆に読んだものです。ngtsc の出力とは括弧や改行の付き方が少し違います。`*ngIf` はディレクティブが無くてもテンプレートになるので、そのまま試せます。
 >

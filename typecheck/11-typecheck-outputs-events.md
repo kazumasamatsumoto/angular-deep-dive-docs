@@ -379,9 +379,9 @@ checkTypeOfDomEvents が偽なら、242〜243 行目で `($event: any) => ...` �
 
 ## 8. デモ：同じ go($event) がどう書かれるか
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock**
 >
-> ボタンでテンプレートと設定を切り替えて TCB を作ります。強調した行が `$event` を受けるハンドラの始まりです。`/*T:EP*/` は「イベントの引数」の印（[第 16 回](16-typecheck-diagnostics-mapping.md)）です。events.ts は 22.1.6 と読んでいるソースで同じです。
+> ボタンでテンプレートと設定を切り替えて TCB を作ります。強調した行が `$event` を受けるハンドラの始まりです。`/*T:EP*/` は「イベントの引数」の印（[第 16 回](16-typecheck-diagnostics-mapping.md)）です。events.ts は、この章を書いたときのサイトの 22.1.6 と読んでいるソースで同じでした。いまのサイトの 22.2.6 の events.ts には、312e1d80890（strictUnclaimedEventNames、22.2.0）の `checkUnclaimedEventNames` の分岐が足されていますが、デモの設定はこの値を持たないので、出力は変わりません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-outputs-events)
 

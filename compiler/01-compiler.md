@@ -571,7 +571,7 @@ template 関数とは別に、ngtsc はテンプレートを**型検査専用の
 
 > **🧪 DEMO — parseTemplate を実際に呼んで R3 AST を数える**
 >
-> ボタンを押すと `@angular/compiler`（このサイトにインストールされている 22.1.6）をその場で読み込み、入力したテンプレートを `parseTemplate(text, 'demo.html', { preserveWhitespaces: false })` に通して、R3 AST のノードを種類ごとに数えます。空白だけのテキストは消えるので Text には数えられません。
+> ボタンを押すと `@angular/compiler`（このサイトにインストールされている 22.2.6）をその場で読み込み、入力したテンプレートを `parseTemplate(text, 'demo.html', { preserveWhitespaces: false })` に通して、R3 AST のノードを種類ごとに数えます。空白だけのテキストは消えるので Text には数えられません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler)
 

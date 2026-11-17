@@ -2,7 +2,7 @@
 
 # 早期の契約：JS が来る前のイベントを貯める
 
-> contract\_binary.ts を esbuild（event-dispatch/BUILD.bazel の contract\_bundle\_min）で束ねた 476 バイトの event-dispatch-contract.min.js と、platform-server がそれを消すか window.\_\_jsaction\_bootstrap(document.body, appId, 泡立つ種類, 捕獲の種類) の 1 行を足す行（packages/platform-server/src/utils.ts）。earlyeventcontract.ts・bootstrap\_app\_scoped.ts・bootstrap\_global.ts が window.\_ejsas\[appId\]・window.\_ejsa に貯め場所を置く行、アプリが起動したあとに取り出して片付ける関数と、Angular が &lt;body&gt; のリスナーを外さないこと（#71518）・registerAppScopedDispatcher が流れを変えないこと。
+> contract\_binary.ts を esbuild（event-dispatch/BUILD.bazel の contract\_bundle\_min）で束ねた 476 バイトの event-dispatch-contract.min.js と、platform-server がそれを消すか window.\_\_jsaction\_bootstrap(document.body, appId, 泡立つ種類, 捕獲の種類) の 1 行を足す行（packages/platform-server/src/utils.ts）。earlyeventcontract.ts・bootstrap\_app\_scoped.ts・bootstrap\_global.ts が window.\_ejsas\[appId\]・window.\_ejsa に貯め場所を置く行、アプリが起動したあとに取り出して片付ける関数と、Angular が &lt;body&gt; のリスナーを外さないこと（#71518）とその直し（6b257f59b42、22.2.6）・registerAppScopedDispatcher が流れを変えないこと。
 
 angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-early-contract)
 
@@ -380,12 +380,12 @@ SSR のページでは、アプリの JS が届く前にユーザーがボタン
    写しではなく同じ配列です。`_ejsas[appId]` が無ければ空の配列を返します。
 2. **bootstrap\_app\_scoped.ts 75 行目：消すのは置き場所の欄だけ**
 
-   `_ejsas[appId] = undefined` にします。鍵は残り、`<body>` の `h` も外しません。
+   `_ejsas[appId] = undefined` にします。引用の木（8576f161ae4）では、鍵は残り、`<body>` の `h` も外しません。このサイトの依存の 22.2.6 では、75 行目の前に `removeAllEventListeners(dataContainer._ejsas[appId])` の 1 行が入り、`h` を外してから欄を消します（6b257f59b42、下の #71518 の直し）。
 3. **bootstrap\_app\_scoped.ts 64 行目 → earlyeventcontract.ts 129〜130 行目：リスナーを外すのは別の関数**
 
    `et` の種類は泡立ちの段、`etc` の種類は捕獲の段（140 行目の第 3 引数）で外します。付けたときと同じ段で外さないと、ブラウザは別のリスナーとみなして外しません。64 行目は `_ejsas?.[appId]` から引くので、75 行目で消したあとに呼ぶと、何も外せません。
 
-Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedEventInfos` → `eventContract.replayEarlyEventInfos` → `clearAppScopedEarlyEventContract`」の順で呼びます（[event-replay の章](../platform/14-event-replay.md)の 6 節の 217〜219 行目）。**`removeAllAppScopedEventListeners` は呼びません**（`grep` すると、packages の中で呼んでいる所はありません）。比べるために、`_ejsa` の側の取り出しを見ます。
+Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedEventInfos` → `eventContract.replayEarlyEventInfos` → `clearAppScopedEarlyEventContract`」の順で呼びます（[event-replay の章](../platform/14-event-replay.md)の 6 節の 217〜219 行目）。**`removeAllAppScopedEventListeners` は呼びません**（`grep` すると、packages の中で呼んでいる所はありません。22.2.6 の配布物の core.mjs でも、呼んでいるのは `clearAppScopedEarlyEventContract` だけです）。比べるために、`_ejsa` の側の取り出しを見ます。
 
 📄 `angular/packages/core/primitives/event-dispatch/src/eventcontract.ts` L187–205 （▶ の行: 192, 195, 200, 203–204）
 
@@ -411,7 +411,7 @@ Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedE
 205 │   }
 ```
 
-`EventContract.replayEarlyEvents` は、200 行目で渡したあと、203 行目でリスナーを外し、204 行目で `_ejsa` を消します。`_ejsas` の側では、Angular がこの 203 行目にあたる処理を飛ばしているので、ハイドレーションのあとも `<body>` の `h` が残り、クリックのたびに、もう誰も読まない `q` にイベントと要素が積まれ続けます。これは開いている issue #71518（2026-10-21、Event replay: early event contract listeners on &lt;body&gt; are never removed after hydration）が報告している形で、下の DEMO で確かめられます。
+`EventContract.replayEarlyEvents` は、200 行目で渡したあと、203 行目でリスナーを外し、204 行目で `_ejsa` を消します。引用の木の `_ejsas` の側では、Angular がこの 203 行目にあたる処理を飛ばしていたので、ハイドレーションのあとも `<body>` の `h` が残り、クリックのたびに、もう誰も読まない `q` にイベントと要素が積まれ続けました。これが issue #71518（2026-10-21、Event replay: early event contract listeners on &lt;body&gt; are never removed after hydration）の報告した形です。直しは Angular の側ではなく、`clearAppScopedEarlyEventContract` の中に入りました。6b257f59b42（v22.2.6、fix(core): remove early event listeners after replay。main の 74260b298fe の cherry-pick）が、欄を消す前に `removeAllEventListeners(dataContainer._ejsas[appId])` を呼ぶ 1 行を足し、bootstrap\_global.ts の `clearGlobalEarlyEventContract` にも同じ 1 行を足しました。#71518 は 2026-11-10 に閉じられています。このサイトの依存の 22.2.6 の fesm2022/primitives-event-dispatch.mjs でも、`clearAppScopedEarlyEventContract` は 762 行目でリスナーを外し、763 行目で欄を消します。`initEventReplay` の呼ぶ順は変わらないまま、203 行目にあたる処理が clear の中で走る形です。下の DEMO で確かめられます。
 
 もう 1 つ、114〜122 行目の `registerDispatcher`（`registerAppScopedDispatcher` の中身）は、121 行目で `earlyJsactionData.d` の欄を差し替えます。ところが 3 節の 74 行目の `h` が呼ぶのは 70 行目の局所の `d` で、この欄ではありません。**差し替えても、イベントは `q` に積まれ続け、渡した関数は呼ばれません**。Angular はこの関数を呼ばないので、Angular のアプリには影響しません。DEMO の段 2 で確かめられます。
 
@@ -427,7 +427,7 @@ Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedE
 | `chapter/jsaction-contract/index.html` | あり | はい | `window.__jsaction_bootstrap(document.body,"ng",["click"],[]);` |
 | `series/jsaction/index.html` | あり | はい | `window.__jsaction_bootstrap(document.body,"ng",["click","change","input"],[]);` |
 
-この章のページの第 3 引数が `["click","change"]` なのは、テンプレートに `(click)` のボタンと、DEMO のチェックボックスの `(change)` があるからです（DEMO の部品は `@if` の中ではないので、プリレンダーの HTML にも描かれ、サーバーがそのリスナーを集めます）。チェックボックスの無い[第 6 回](06-jsaction-contract.md)のページは `["click"]` だけです。捕獲の種類（第 4 引数）はどのページも空でした。ハイドレーションが済むと、`window._ejsas.ng` は `undefined` になります（DEMO を始めたときの「このページの window.\_ejsas」の表で見えます）。インクリメンタルハイドレーションが有効なので、Angular が `<body>` に作った本物の `EventContract` はアプリが終わるまで残ります（[defer-hydrate-events の章](../defer/18-defer-hydrate-events.md)の 1 節）。そして 5 節のとおり、早期の契約の `h` も残っています。
+この章のページの第 3 引数が `["click","change"]` なのは、テンプレートに `(click)` のボタンと、DEMO のチェックボックスの `(change)` があるからです（DEMO の部品は `@if` の中ではないので、プリレンダーの HTML にも描かれ、サーバーがそのリスナーを集めます）。チェックボックスの無い[第 6 回](06-jsaction-contract.md)のページは `["click"]` だけです。捕獲の種類（第 4 引数）はどのページも空でした。ハイドレーションが済むと、`window._ejsas.ng` は `undefined` になります（DEMO を始めたときの「このページの window.\_ejsas」の表で見えます）。インクリメンタルハイドレーションが有効なので、Angular が `<body>` に作った本物の `EventContract` はアプリが終わるまで残ります（[defer-hydrate-events の章](../defer/18-defer-hydrate-events.md)の 1 節）。早期の契約の `h` は、22.2.6 では 5 節の `clearAppScopedEarlyEventContract` の中で外されます（このページで安定のあとに押しても、`window._ejsas.ng` にあった箱の `q` は 0 件のままでした。2026-11-17、ヘッドレスの Chrome で、消される前の箱を控えて数えました）。
 
 ## 7. DEMO：自分専用の appId で、貯まる・渡される・片付く（ライブ）
 
@@ -437,7 +437,7 @@ Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedE
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-early-contract)
 
-ヘッドレスの Chrome（本番ビルド）で、CDP の `Input` で本物のクリックとキーを送って確かめた結果です。
+ヘッドレスの Chrome（本番ビルド）で、CDP の `Input` で本物のクリックとキーを送って確かめた結果です（22.2.6 のビルドで 2026-11-17 に確かめ直しました）。
 
 1. **段 1 のあと：押すたびに q が伸びる**
 
@@ -448,9 +448,9 @@ Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedE
 3. **段 3：q の分が EventContract の queuedEventInfos に移り、isReplay が true になる**
 
    `replayEarlyEventInfos` が 1 件ずつ複製して `handleEventInfo` に入れ、dispatcher がまだ無いので積まれます（[第 6 回](06-jsaction-contract.md)）。`window._ejsas` のデモの鍵は `undefined` になります。
-4. **段 3 のあとに押すと：Angular の順では、もう読まれない q も伸びる**
+4. **段 3 のあとに押しても：q は伸びない**
 
-   チェックを外した（Angular と同じ）ときは「clear のあとに q に増えた数」が押すたびに増えます。チェックを付けて `removeAllAppScopedEventListeners` を先に呼んだときは 0 のままです。新しいクリックは EventContract の queuedEventInfos にだけ積まれます。
+   22.2.6 では、チェックを外した（Angular と同じ順）ときも付けたときも、「clear のあとに q に増えた数」は 0 のままです。`clearAppScopedEarlyEventContract` が欄を消す前にリスナーを外すからです（5 節の 6b257f59b42）。新しいクリックは EventContract の queuedEventInfos にだけ積まれます。直しの入る前の 22.1.6 で確かめたときは、チェックを外すと押すたびに増え、付けたときだけ 0 でした。
 5. **段 4：積んであった分が、積んだ順に dispatcher に届く**
 
    早期の契約の分（isReplay: true）が先に届き、queuedEventInfos は `null` になります。そのあとのクリックは、その場で届きます（isReplay: 無し）。
@@ -509,7 +509,7 @@ console.log(JSON.stringify({ core, minBytes, html }, null, 2));
 - `initEventReplay` — core/src/hydration/event\_replay.ts 204 — *アプリが安定したあと*
   - `getAppScopedQueuedEventInfos(appId)` → `getQueuedEventInfos` — bootstrap\_app\_scoped.ts 40・earlyeventcontract.ts 109
   - `eventContract.replayEarlyEventInfos(eventInfos)` — eventcontract.ts 211 — *第 6 回*
-  - `clearAppScopedEarlyEventContract(appId)` — bootstrap\_app\_scoped.ts 68 — *欄を undefined にするだけ。h は残る（#71518）*
+  - `clearAppScopedEarlyEventContract(appId)` — bootstrap\_app\_scoped.ts 68 — *22.2.6 では h を外してから欄を undefined にする（6b257f59b42、#71518）*
 
 ## テストと直し方
 
@@ -599,7 +599,7 @@ console.log(JSON.stringify({ core, minBytes, html }, null, 2));
 465 │     });
 ```
 
-1 つ目は `_ejsa` の側の通しの it です。404〜405 行目で `documentElement` に早期の契約を置き、407 行目のクリックが 411 行目で q に 1 件積まれ、421 行目の `replayEarlyEvents()` のあと、423 行目で `_ejsa` が消え、424 行目でリスナーが 1 回外されたことを確かめています（5 節の 203〜204 行目）。2 つ目は 436 行目で `window` の代わりに普通のオブジェクトを入れ物にし、440 行目で focus を捕獲の段で登録しています。458 行目で外されたことを確かめます。**`_ejsas` の側（Angular が使う側）で、「clear のあとにリスナーが残らないこと」を確かめる it はありません**。223 行目の it が見ているのは、`_ejsas[appId]` が `undefined` になることだけです。
+1 つ目は `_ejsa` の側の通しの it です。404〜405 行目で `documentElement` に早期の契約を置き、407 行目のクリックが 411 行目で q に 1 件積まれ、421 行目の `replayEarlyEvents()` のあと、423 行目で `_ejsa` が消え、424 行目でリスナーが 1 回外されたことを確かめています（5 節の 203〜204 行目）。2 つ目は 436 行目で `window` の代わりに普通のオブジェクトを入れ物にし、440 行目で focus を捕獲の段で登録しています。458 行目で外されたことを確かめます。引用の木（8576f161ae4）には、**`_ejsas` の側（Angular が使う側）で、「clear のあとにリスナーが残らないこと」を確かめる it はありません**。223 行目の it が見ているのは、`_ejsas[appId]` が `undefined` になることだけです。6b257f59b42 が、event\_replay\_spec.ts に `should stop queueing events in the early event contract once the app is stable` と `… when the app is destroyed before it is stable` の 2 つの it（控えた箱の `q` が 0 件のまま）を、eventcontract\_test.ts の `early events` に `_ejsa` の側の it `clearing the global early event contract removes its event listeners` を足しています。
 
 ### 手元で走らせた結果
 
@@ -640,10 +640,10 @@ Ran 1 of 23 specs
 
 ### 直すとしたら
 
-- **#71518（`<body>` の `h` が残る）**：issue の本文は、原因を「`initEventReplay` と `appRef.onDestroy` の中で `clearAppScopedEarlyEventContract` を呼ぶが `removeAllAppScopedEventListeners` を呼ばない」と書いています。この章の 5 節で読んだ行と同じです。付いている PR #71519（2026-10-21、fix(core): remove early event listeners after replay）は、2026-11-06 の時点で承認済み（APPROVED）で、まだ開いています。`gh pr diff` で読むと、Angular の側ではなく bootstrap\_app\_scoped.ts の `clearAppScopedEarlyEventContract` の 75 行目の前に `removeAllEventListeners(dataContainer._ejsas[appId])` を足し、bootstrap\_global.ts の `clearGlobalEarlyEventContract` にも同じ 1 行を足す形です。spec は eventcontract\_test.ts の `early events` の describe に「clear のあとにクリックしても q が 1 件のまま」の it を、event\_replay\_spec.ts に「安定したあと・安定する前に壊したあとに q が伸びない」の 2 つの it を足しています。DEMO のチェックを付けたときと同じ効き目です。
+- **#71518（`<body>` の `h` が残る）は直りました**：issue の本文は、原因を「`initEventReplay` と `appRef.onDestroy` の中で `clearAppScopedEarlyEventContract` を呼ぶが `removeAllAppScopedEventListeners` を呼ばない」と書いていました。この章の 5 節で読んだ行と同じです。付いていた PR #71519（2026-10-21、fix(core): remove early event listeners after replay）は 2026-11-10 に main へ 74260b298fe として入り、22.2.x へは 6b257f59b42 として cherry-pick されて v22.2.6（2026-11-11）に入りました。`gh api` で diff を読むと、Angular の側ではなく bootstrap\_app\_scoped.ts の `clearAppScopedEarlyEventContract` の 75 行目の前に `removeAllEventListeners(dataContainer._ejsas[appId])` を足し、bootstrap\_global.ts の `clearGlobalEarlyEventContract` にも同じ 1 行を足す形です。spec は eventcontract\_test.ts の `early events` の describe に「clear のあとにクリックしても q が 1 件のまま」の it を、event\_replay\_spec.ts に「安定したあと・安定する前に壊したあとに q が伸びない」の 2 つの it を足しています。22.1.6 の DEMO でチェックを付けたときと同じ効き目で、22.2.6 の DEMO ではチェックを外しても同じになります。手元の木（8576f161ae4）と、新しい本家の木（74961c66242）には、まだこの commit が入っていません。
 - **`registerAppScopedDispatcher` が効かない**：5 節の 121 行目と 3 節の 74 行目の食い違いです。`gh search issues` と `gh search prs` で `registerAppScopedDispatcher`・`registerGlobalDispatcher` を探すと（2026-11-06）、この関数の issue は無く、出てくるのは d072791f131（2026-01-17、refactor(core): remove unused restriction parameter）の PR #66625 だけです。`git show` で読むと、この commit は 2 つの関数から使っていない第 1 引数 `restriction` を消しただけで、中身の 1 行（bootstrap\_app\_scoped.ts 56 行目・bootstrap\_global.ts 36 行目）は変えていません。手元で確かめるなら、eventcontract\_test.ts の `early events` の describe に「`bootstrapAppScopedEarlyEventContract` → `registerAppScopedDispatcher` → クリック → 渡した関数が呼ばれたか」を見る it を書く形になります。確かめ方は DEMO の段 2 と同じで、DEMO では渡した関数が 0 回でした（この it を本家の手元で走らせたわけではありません）。直す場所は earlyeventcontract.ts の `createEarlyJsactionData` の 74 行目（局所の `d` ではなく欄の `d` を呼ぶ）か、使われていない `registerDispatcher` の側です。Angular はこの関数を使っていないので、どちらに寄せるかから考えることになります。
 - earlyeventcontract.ts の最後の `export {};`（144〜145 行目）は bb628d8b508（2026-03-12）で足された行で、`declare global` のあるファイルを Rollup が .d.ts にするときのエラーよけです。動きには関係しません。
-- 本家に PR を出すことは勧めません。issue を読むときは、DEMO と同じように「どの配列に、いつ積まれ、誰が読むか」を並べて確かめます（[第 12 回](12-jsaction-tests-issues.md)）。
+- issue を読むときは、DEMO と同じように「どの配列に、いつ積まれ、誰が読むか」を並べて確かめます（[第 12 回](12-jsaction-tests-issues.md)）。
 
 ## 聞かれそうな質問
 
@@ -661,7 +661,7 @@ contract\_binary.ts（11 行目で `__jsaction_bootstrap` を置く 2 行）を�
 
 **Q. アプリが起動したあと、早期の契約は全部片付きますか？**
 
-置き場所の欄は片付きますが、`<body>` のリスナーは残ります。Angular は `clearAppScopedEarlyEventContract`（bootstrap\_app\_scoped.ts 75 行目で欄を `undefined` にするだけ）を呼び、`removeAllAppScopedEventListeners` を呼ばないからです。開いている #71518 がこれを報告していて、PR #71519 が承認済みで開いています。
+22.2.6 では片付きます。Angular が呼ぶのは `clearAppScopedEarlyEventContract` だけで、`removeAllAppScopedEventListeners` は呼びませんが、6b257f59b42 で clear の中に `removeAllEventListeners` の 1 行が入り、`<body>` のリスナーを外してから欄を消すようになりました（配布物の primitives-event-dispatch.mjs 762〜763 行目）。引用の木（8576f161ae4）と 22.1.6 では、75 行目で欄を `undefined` にするだけで、リスナーは残っていました（#71518、2026-11-10 に閉じられた）。
 
 **Q. `registerAppScopedDispatcher` で、早期の契約から直接イベントを受けられますか？**
 
@@ -672,7 +672,7 @@ contract\_binary.ts（11 行目で `__jsaction_bootstrap` を置く 2 行）を�
 - 早期の契約のスクリプトは、contract\_binary.ts を esbuild で束ねた 476 バイトの即時関数で、中身は 4 つの関数だけです。
 - CLI が `<body>` の直後に入れ、platform-server が消すか `__jsaction_bootstrap(document.body, appId, 泡立つ, 捕獲)` の 1 行を足します。
 - JS が届く前のイベントは `window._ejsas[appId].q` に積まれるだけで、行き先はまだ決めません。
-- Angular は安定したあと q を取り出して `EventContract` に渡し、置き場所を消しますが、`<body>` のリスナーは外しません（#71518）。
+- Angular は安定したあと q を取り出して `EventContract` に渡し、置き場所を消します。`<body>` のリスナーは、22.2.6 から clear の中で外されます（6b257f59b42、#71518）。
 - `registerAppScopedDispatcher` は欄を差し替えるだけで、イベントの流れを変えません。
 
 ---

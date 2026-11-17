@@ -214,7 +214,7 @@ renderer から呼ばれる入口の `EventManager.addEventListener` は、`_fin
 
 > **🧪 DEMO 1 — このページの EventManager の並び**
 >
-> このサイトの本物の `EventManager`（`@angular/platform-browser` 22.1.6、root の環境インジェクタにある 1 つ）の private な `_plugins` を型を外して読みます。何も登録しません。
+> このサイトの本物の `EventManager`（`@angular/platform-browser` 22.2.6、root の環境インジェクタにある 1 つ）の private な `_plugins` を型を外して読みます。何も登録しません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-event-manager)
 

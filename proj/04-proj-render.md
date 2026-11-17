@@ -465,7 +465,7 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 2 段の再投影と既定の内容（5 つのケース）**
 >
-> 「描く」を押すと、最初に見せた prr-stage をこのページに出し、描き終わったあとで 3 つを読みます。表 1 は DOM の文字、表 3 は葉の DOM の親と `inject` の結果です。表 2 は、`prr-stage` と `prr-middle` が `inject(ChangeDetectorRef)` で受けた ViewRef の `_lView` から TView を取り、ホストの TNode の `projection` と `projectionNext` をそのまま並べたものです。これらは公開の API ではなく、このサイトの 22.1.6 の名前を**確かめるためだけ**に読んでいます（本番ビルドでも同じ名前で残っています）。
+> 「描く」を押すと、最初に見せた prr-stage をこのページに出し、描き終わったあとで 3 つを読みます。表 1 は DOM の文字、表 3 は葉の DOM の親と `inject` の結果です。表 2 は、`prr-stage` と `prr-middle` が `inject(ChangeDetectorRef)` で受けた ViewRef の `_lView` から TView を取り、ホストの TNode の `projection` と `projectionNext` をそのまま並べたものです。これらは公開の API ではなく、このサイトの 22.2.6 の名前を**確かめるためだけ**に読んでいます（本番ビルドでも同じ名前で残っています）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/proj-render)
 

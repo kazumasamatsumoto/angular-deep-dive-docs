@@ -1099,7 +1099,7 @@ NG8113 の診断は 2 通りの場所に付きます。配列の中の 1 つが�
 
 > **🧪 import の候補・\[(x)\] の組み替え・必須の入力の差し込み位置**
 >
-> このサイトの @angular/compiler 22.1.6 の `parseTemplate`（共通部品の `parseLsTemplate`）と `CssSelector`・`SelectorMatcher` を使い、テンプレートの最初の要素について 3 つを出します（ボタンを押したときだけ）。import の候補は utils/index.ts の `getDirectiveMatchesForElementTag` の**簡略版**、残りの 2 つは 4 節の 120〜133 行目と 7 節の 66〜70・197〜220 行目の**書き写し**です。本物との違い：本物はディレクティブの一覧を `getPotentialTemplateDirectives` から、必須の入力をディレクティブのメタデータから取り、診断（NG8001・NG8101・NG8008）が出た位置でだけ動きます。ここではどちらも手で入れます。
+> このサイトの @angular/compiler 22.2.6 の `parseTemplate`（共通部品の `parseLsTemplate`）と `CssSelector`・`SelectorMatcher` を使い、テンプレートの最初の要素について 3 つを出します（ボタンを押したときだけ）。import の候補は utils/index.ts の `getDirectiveMatchesForElementTag` の**簡略版**、残りの 2 つは 4 節の 120〜133 行目と 7 節の 66〜70・197〜220 行目の**書き写し**です。本物との違い：本物はディレクティブの一覧を `getPotentialTemplateDirectives` から、必須の入力をディレクティブのメタデータから取り、診断（NG8001・NG8101・NG8008）が出た位置でだけ動きます。ここではどちらも手で入れます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ls-code-fixes)
 

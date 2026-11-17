@@ -347,7 +347,7 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — ハッシュが合わない・ファイルが消えた・先読みの最中に切れた**
 >
-> 本物の `ngsw-worker.js`（npm の `@angular/service-worker` 22.1.6 の配布物そのもの）を、偽物のブラウザ（`sw-sandbox.ts`。キャッシュ・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。ngsw.json も本物の Generator で作ります。外には通信せず、このページの本物の Service Worker やキャッシュには触りません。ボタンを押すたびに新しい世界を作ります。
+> 本物の `ngsw-worker.js`（npm の `@angular/service-worker` 22.2.6 の配布物そのもの）を、偽物のブラウザ（`sw-sandbox.ts`。キャッシュ・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。ngsw.json も本物の Generator で作ります。外には通信せず、このページの本物の Service Worker やキャッシュには触りません。ボタンを押すたびに新しい世界を作ります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-hash-integrity)
 

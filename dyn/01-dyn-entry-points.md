@@ -130,7 +130,7 @@ ViewContainerRef の方も、最後は同じ `new ComponentFactory(...)` の `cr
 
 ## 3. DEMO：同じコンポーネントを 2 つの入口から作る
 
-「どこに付くか」の違いを、ページの上の本物（`@angular/core` 22.1.6）で見ます。作るのは `DepBadge` という小さなコンポーネントで、自分の `n`（signal）を表示し、中の「+1」ボタンで増やします。A と B は関数の `createComponent` で、この章の中の枠に置いた要素を `hostElement` に渡します。A だけ `appRef.attachView` します。C はこの章のテンプレートにある `<ng-container #anchorC>` の `ViewContainerRef` から作ります。
+「どこに付くか」の違いを、ページの上の本物（`@angular/core` 22.2.6）で見ます。作るのは `DepBadge` という小さなコンポーネントで、自分の `n`（signal）を表示し、中の「+1」ボタンで増やします。A と B は関数の `createComponent` で、この章の中の枠に置いた要素を `hostElement` に渡します。A だけ `appRef.attachView` します。C はこの章のテンプレートにある `<ng-container #anchorC>` の `ViewContainerRef` から作ります。
 
 > **🧪 DEMO — createComponent と ViewContainerRef.createComponent**
 >

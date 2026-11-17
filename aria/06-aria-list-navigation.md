@@ -278,7 +278,7 @@ peek 系を「動かずに覗く」目的で使っているのは、src/aria で
 
 > **🧪 DEMO — ngListbox の wrap・softDisabled・orientation・dir を切り替えて矢印キーで動く**
 >
-> 本物の `ngListbox`（@angular/aria 22.1.8）です。「3」と「5」は `[disabled]="true"`。外側の `div` に CDK の `Dir` ディレクティブ（`[dir]`）を付けています。Tab でリストに入り、矢印キー・Home・End を押してください。キーを押すたびに、押す前と描画のあとの「今の項目」（`data-active="true"` の項目）を下に出します（新しい行が上）。
+> 本物の `ngListbox`（@angular/aria 22.2.7）です。「3」と「5」は `[disabled]="true"`。外側の `div` に CDK の `Dir` ディレクティブ（`[dir]`）を付けています。Tab でリストに入り、矢印キー・Home・End を押してください。キーを押すたびに、押す前と描画のあとの「今の項目」（`data-active="true"` の項目）を下に出します（新しい行が上）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-list-navigation)
 

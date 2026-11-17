@@ -273,7 +273,7 @@ TView と LView の言葉を 1 つずつ。**TView** は同じテンプレート
 
 > **🧪 DEMO — このページの上の @angular/compiler で、クエリの関数を出す**
 >
-> 「コンパイルする」を押すと、このサイトの `@angular/compiler`（22.1.6）をその場で読み込み（それまでは読み込みません）、JIT の入口 `CompilerFacadeImpl.compileComponent` を呼んで、**評価する直前の JS の文字列**を受け取ります。`viewQuery` と `contentQueries` を組み立てているのは本物の query\_generation.ts です。欄の 1 行 1 行を R3QueryMetadata にするところだけは、TypeScript を読めないこのページが、ngtsc と同じ既定値と並べ方（[第 2 回](02-qry-compile.md)）で真似しています。JIT の書き出しなので、型の述語が `i0.resolveForwardRef(Item)` で包まれます（なぜ包まれるかも第 2 回）。テンプレートの側は依存（dependencies）を渡していないので、要素が `ɵɵdomElementStart` になります（1 節の記録は `Item` を使うので `ɵɵelementStart`）。
+> 「コンパイルする」を押すと、このサイトの `@angular/compiler`（22.2.6）をその場で読み込み（それまでは読み込みません）、JIT の入口 `CompilerFacadeImpl.compileComponent` を呼んで、**評価する直前の JS の文字列**を受け取ります。`viewQuery` と `contentQueries` を組み立てているのは本物の query\_generation.ts です。欄の 1 行 1 行を R3QueryMetadata にするところだけは、TypeScript を読めないこのページが、ngtsc と同じ既定値と並べ方（[第 2 回](02-qry-compile.md)）で真似しています。JIT の書き出しなので、型の述語が `i0.resolveForwardRef(Item)` で包まれます（なぜ包まれるかも第 2 回）。テンプレートの側は依存（dependencies）を渡していないので、要素が `ɵɵdomElementStart` になります（1 節の記録は `Item` を使うので `ɵɵelementStart`）。
 >
 > 例を選ぶか欄を書き換えて、「コンパイルする」を押してください。
 >

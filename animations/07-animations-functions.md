@@ -351,7 +351,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
    273 行目で呼んだ結果がまた関数だったときなどは、274 行目も 275 行目も当たらず `null` になり、アニメーションは何もしません。
 
-最後の場合が問題でした。`[animate.enter]="mySignal"` や `[animate.enter]="myFn"` のように、signal や関数**そのもの**を渡すと、包みの関数を 1 回呼んだ結果が signal（＝関数）になり、黙って何も起きません。最新の main の 9a06a739076（2026-09-17、`fix(core): support function and signal bindings in animate.enter and animate.leave`、`Fixes #70764`）は、273 行目のあとに `while (typeof classes === 'function') { classes = classes(); }` を足して、関数でなくなるまで呼び続けるようにしました。型も `AnimationClassValue`（関数を入れ子にできる型）に変わっています。../angular（8576f161ae4）にも、このサイトの `@angular/core` 22.1.6 にも入っていません（22.1.6 の `getClassListFromValue` は上の 272〜282 行目と同じでした）。下のデモ 2 で確かめられます。
+最後の場合が問題でした。`[animate.enter]="mySignal"` や `[animate.enter]="myFn"` のように、signal や関数**そのもの**を渡すと、包みの関数を 1 回呼んだ結果が signal（＝関数）になり、黙って何も起きません。最新の main の 9a06a739076（2026-09-17、`fix(core): support function and signal bindings in animate.enter and animate.leave`、`Fixes #70764`）は、273 行目のあとに `while (typeof classes === 'function') { classes = classes(); }` を足して、関数でなくなるまで呼び続けるようにしました。型も `AnimationClassValue`（関数を入れ子にできる型）に変わっています。../angular（8576f161ae4）にも、この章を書いたときのサイトの `@angular/core` 22.1.6 にも入っていません（22.1.6 の `getClassListFromValue` は上の 272〜282 行目と同じでした）。22.2.x の枝には de5889ec4fa として入り（22.2.0 の変更履歴の「support function and signal bindings in animate.enter and animate.leave」）、いまのサイトの 22.2.6 の `fesm2022/_debug_node-chunk.mjs` には同じ `while` ループがあります。違いは下のデモ 2 で見られます。
 
 ## 8. デモ
 
@@ -367,13 +367,13 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 - **呼ばない**：600ms で見た目は消えますが、要素は DOM に残り、**約 4000ms** で消えます（出口 1、475〜485 行目）。`element.animate()`（Web Animations API）は CSS の `animationend` イベントを出さないので、出口 3 も使われません。ログに `animationend` が出ないことで分かります。
 - **CSS クラス**：`animationComplete` を呼ばなくても、`afn-out` の `animationend`（約 600ms）で消えます（出口 3、502〜520 行目）。
 
-> **🧪 DEMO 2 — \[animate.enter\] に関数そのものを渡す（このサイトの 22.1.6）**
+> **🧪 DEMO 2 — \[animate.enter\] に関数そのものを渡す（このサイトの 22.2.6）**
 >
 > 左は `[animate.enter]="sigClass()"`（呼んだ結果の文字列）、右は `[animate.enter]="clsFn"`（`clsFn = () => 'afn-sig-in'` という関数そのもの）。どちらも行き着く値は `'afn-sig-in'` です。「出す」を押すと、それぞれにクラスが付いたかを MutationObserver で 1 秒間見ます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/animations-functions)
 
-22.1.6 では、左にだけクラスが付き、右には付きません（ヘッドレスの Chrome で確かめた）。右の包みの関数は `ctx.clsFn`（関数）を返し、273 行目で 1 回呼んだ結果が関数のままなので、274〜280 行目のどれにも当たらず `null` になるからです。ここに signal そのもの（`[animate.enter]="sigClass"`）を書いても同じで、こちらはビルドで拡張診断 NG8109（`sigClass is a function and should be invoked`）の警告が出ます。ふつうの関数には警告が出ないので、右の書き方はビルドも通り、実行時に黙って何も起きません（このページは警告を出さないよう関数で見せています）。9a06a739076 の while ループがあれば、右の値も 2 回目の呼び出しで文字列になります。main ではその形を `it('should support function expressions, function references, and signals in [animate.enter] and [animate.leave]')` が確かめています（このサイトの版では確かめられません）。
+サイトを 22.2.6 に上げたあと（2026-11-17）は、**左にも右にもクラスが付きます**（ヘッドレスの Chrome のログは「sigClass() に afn-sig-in が付いた」「clsFn に afn-sig-in が付いた」の 2 行）。9a06a739076 と同じ while ループが入ったからです。この章を書いたときのサイトの 22.1.6 では、左にだけクラスが付き、右には付きませんでした（ヘッドレスの Chrome で確かめた）。右の包みの関数は `ctx.clsFn`（関数）を返し、273 行目で 1 回呼んだ結果が関数のままなので、274〜280 行目のどれにも当たらず `null` になるからです。ここに signal そのもの（`[animate.enter]="sigClass"`）を書いても同じで、こちらはビルドで拡張診断 NG8109（`sigClass is a function and should be invoked`）の警告が出ます。ふつうの関数には警告が出ないので、右の書き方はビルドも通り、実行時に黙って何も起きません（このページは警告を出さないよう関数で見せています）。9a06a739076 の while ループがあれば、右の値も 2 回目の呼び出しで文字列になります。main ではその形を `it('should support function expressions, function references, and signals in [animate.enter] and [animate.leave]')` が確かめています（いまのサイトの 22.2.6 のデモの右が、その形です）。
 
 ## 9. 呼び出しの連なり（(animate.leave)）
 
@@ -507,7 +507,7 @@ Finished running tests in 6.3s, all tests passed!
 - `(animate.enter)` は待ち行列から関数を 1 回呼ぶだけ。`animationComplete` は何もしない（L236）。
 - `(animate.leave)` は Promise の resolve を resolvers に積み（L463）、resolve されたときに要素が消える。
 - 出口は 3 つ：`animationComplete()`（L489）、要素の最初の `animationend`（L504-517）、`MAX_ANIMATION_TIMEOUT` の setTimeout（L475-485、既定 4000 ms）。
-- クラス名の関数は待ち行列が動いたときに 1 回だけ呼ばれる（utils.ts L273）。signal そのものを渡すと 22.1.6 では何も起きない。main の 9a06a739076 で直った。
+- クラス名の関数は待ち行列が動いたときに 1 回だけ呼ばれる（utils.ts L273）。signal そのものを渡すと 22.1.6 では何も起きない。main の 9a06a739076（22.2.x では de5889ec4fa、22.2.0 から）で直り、いまのサイトの 22.2.6 のデモ 2 では右にもクラスが付く。
 
 ---
 

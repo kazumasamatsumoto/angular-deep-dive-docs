@@ -881,7 +881,7 @@ combine は 139 行目の「ファイル・位置・終わり・入れる文字�
 
 > **🧪 ExpressionMigrator と TmplVisitor（移植）**
 >
-> safe-optional-chaining/migration.ts の 300〜504 行目と 602〜773 行目を、このサイトに入っている本物の `@angular/compiler`（22.1.6）の `RecursiveAstVisitor` と `TmplAstRecursiveVisitor` を継承して移植したものです。解析は 102〜107 行目と同じオプションの `parseTemplate` です。ホストバインディング・.ts の中の位置の計算・combine の重複の除去はありません。ソースの版（22.2.0-next.7）とコンパイラの版が違うので、新しい構文の解析は違うことがあります。
+> safe-optional-chaining/migration.ts の 300〜504 行目と 602〜773 行目を、このサイトに入っている本物の `@angular/compiler`（22.2.6）の `RecursiveAstVisitor` と `TmplAstRecursiveVisitor` を継承して移植したものです。解析は 102〜107 行目と同じオプションの `parseTemplate` です。ホストバインディング・.ts の中の位置の計算・combine の重複の除去はありません。ソースの版（22.2.0-next.7）とコンパイラの版が違うので、新しい構文の解析は違うことがあります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/mig-v22-safe-navigation)
 

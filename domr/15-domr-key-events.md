@@ -262,7 +262,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 名前を入れて、キーを押す**
 >
-> 名前は本物の `ɵKeyEventsPlugin.parseEventName`（22.1.6 の静的メソッド）でその場で読みます。「この名前で付ける」を押すと、このサイトの本物の `EventManager` に下の入力欄と名前を渡して `addEventListener` します。テンプレートの `(keydown.…)` と同じ道です。同じ入力欄には、その後ろでふつうの `keydown`・`keyup` のリスナーも付け、押したキーごとに 1 行を足します。「match」は本物の `matchEventFullKeyCode` の答え、「呼ばれた」は `EventManager` 経由のハンドラーがその同じイベントで呼ばれたか、「作った文字列」は 155〜177 行目を表示用に移植した関数の結果です。
+> 名前は本物の `ɵKeyEventsPlugin.parseEventName`（22.2.6 の静的メソッド）でその場で読みます。「この名前で付ける」を押すと、このサイトの本物の `EventManager` に下の入力欄と名前を渡して `addEventListener` します。テンプレートの `(keydown.…)` と同じ道です。同じ入力欄には、その後ろでふつうの `keydown`・`keyup` のリスナーも付け、押したキーごとに 1 行を足します。「match」は本物の `matchEventFullKeyCode` の答え、「呼ばれた」は `EventManager` 経由のハンドラーがその同じイベントで呼ばれたか、「作った文字列」は 155〜177 行目を表示用に移植した関数の結果です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-key-events)
 

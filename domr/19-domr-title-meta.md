@@ -300,7 +300,7 @@ Angular のアプリは `<body>` の中の 1 つの要素に描かれるので�
 
 > **🧪 DEMO — 別の Document に本物の Meta と Title で書く**
 >
-> 最初にボタンを押したとき、`document.implementation.createHTMLDocument('最初の題')` で別の Document を作り、`createEnvironmentInjector([{ provide: DOCUMENT, useValue: その Document }, Meta, Title], …)` の小さなインジェクタから、@angular/platform-browser 22.1.6 の本物の `Meta` と `Title` を取ります（spec の `beforeEach` と同じ作り方）。下に出るのはその Document の `<head>` の outerHTML です。**このページの本物の &lt;head&gt; は変えません**（一番下に、このページの meta の数と題を出しています）。
+> 最初にボタンを押したとき、`document.implementation.createHTMLDocument('最初の題')` で別の Document を作り、`createEnvironmentInjector([{ provide: DOCUMENT, useValue: その Document }, Meta, Title], …)` の小さなインジェクタから、@angular/platform-browser 22.2.6 の本物の `Meta` と `Title` を取ります（spec の `beforeEach` と同じ作り方）。下に出るのはその Document の `<head>` の outerHTML です。**このページの本物の &lt;head&gt; は変えません**（一番下に、このページの meta の数と題を出しています）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-title-meta)
 

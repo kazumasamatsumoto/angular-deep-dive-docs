@@ -593,7 +593,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 デモ：\*ngIf を @if に（buildIfBlock の簡略版）**
 >
-> このサイトに入っている本物の `@angular/compiler` 22.1.6 の `HtmlParser`（`parseMigHtml`）で `*ngIf` の要素を集め、`buildIfBlock` と `getMainBlock` の**簡略版**（移植）で置き換えを作り、`applyTextUpdates` で当てます。本物との違い：本物は要素を外側から 1 つずつ丸ごと作り直して `offset` を足し引きしますが、このデモは「要素の前に `@if (…) {` を入れる・属性を消す・要素の後ろに `}` を入れる」の 3 つの置き換えを、すべて元の文字列の位置で作ります（だから重なりません）。`else`・`then`・`as`・`let` のある `*ngIf`、`[ngIf]`、`i18n` 付きの `ng-template`、整形（`formatTemplate`）は扱いません。
+> このサイトに入っている本物の `@angular/compiler` 22.2.6 の `HtmlParser`（`parseMigHtml`）で `*ngIf` の要素を集め、`buildIfBlock` と `getMainBlock` の**簡略版**（移植）で置き換えを作り、`applyTextUpdates` で当てます。本物との違い：本物は要素を外側から 1 つずつ丸ごと作り直して `offset` を足し引きしますが、このデモは「要素の前に `@if (…) {` を入れる・属性を消す・要素の後ろに `}` を入れる」の 3 つの置き換えを、すべて元の文字列の位置で作ります（だから重なりません）。`else`・`then`・`as`・`let` のある `*ngIf`、`[ngIf]`、`i18n` 付きの `ng-template`、整形（`formatTemplate`）は扱いません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/mig-control-flow)
 

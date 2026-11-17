@@ -21,7 +21,7 @@ ng test を走らせると、spec の前後で TestBed が何かを作って壊�
 6. [入力の渡し方：setInput と bindings（inputBinding・outputBinding・twoWayBinding）](06-testing-component-bindings.md)  
    fixture.componentRef.setInput が入力を書き込み、OnPush のビューに印を付ける流れと、createComponent の bindings に inputBinding / outputBinding / twoWayBinding を渡すと、signal の値がテンプレートのバインディングのように入力へ流れ続ける仕組み（dynamic\_bindings.ts）。componentInstance に直接代入してはいけない理由。
 7. [createDirective と DirectiveFixture：ディレクティブだけをテストする](07-testing-directive-fixture.md)  
-   最新のソースに入った TestBed.createDirective（このサイトの 22.1.6 には未収録）が、セレクタからタグ名を決め、DirectiveTestHost という空のホストにディレクティブを載せて DirectiveFixture を返す手順。複数のタグ名を持つセレクタのエラー、directiveInstance と onDestroy、これまでのテスト用ホストコンポーネントを書く方法との比較。
+   22.2 で入った TestBed.createDirective（この章を書いたときのサイトの 22.1.6 には未収録、いまの 22.2.6 には収録）が、セレクタからタグ名を決め、DirectiveTestHost という空のホストにディレクティブを載せて DirectiveFixture を返す手順。複数のタグ名を持つセレクタのエラー、directiveInstance と onDestroy、これまでのテスト用ホストコンポーネントを書く方法との比較。
 8. [DebugElement と By：テストから DOM とコンポーネントを覗く](08-testing-debug-element.md)  
    fixture.debugElement が getDebugNode で DOM の節に DebugElement を 1 つだけ作って貼る仕組み、query / queryAll が TNode の木・子コンポーネントのビュー・DOM の子孫の順に歩くことと By.css・By.directive（providers のトークンにも一致）・By.all の述語、injector・componentInstance・properties・attributes が LView から読まれ、styles・classes は DOM だけを読む行、triggerEventHandler が DOM イベントを出さずに cleanup に記録されたリスナーを呼ぶこと。nativeElement との使い分け。
 9. [fixture.detectChanges：zoneless では appRef.tick、zone では detectChanges](09-testing-detect-changes.md)  

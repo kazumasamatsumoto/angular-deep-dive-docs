@@ -2,13 +2,13 @@
 
 # declareExperimentalWebMcpTool：1 つのツールを登録して取り消すまで
 
-> types.ts の ToolDescriptor と vendor した @mcp-b/webmcp-types（5387e13b10d、API Extractor のため）の JSON Schema からの型推論、declare\_tool.ts が document.modelContext（683172b39a6 で navigator から移った）を探し、registerTool が関数かを確かめ（8cf7731468f）、execute を注入コンテキストで包み（77ec83782f2）、注入器の destroy とブラウザの取り消しを AbortSignal.any で合わせる（e041f9483e5）までを 1 行ずつ。非同期になった登録（f908140d718）と、登録の途中で壊れたときの AbortError を飲む枝（98960556a6d、spec なし）、素通しの annotations（91a2bf84250）、angular-main の公式 webmcp-types（38afab7a244）。ページの上で本物の 22.1.6 の関数を、作り物の modelContext につないで動かす。
+> types.ts の ToolDescriptor と vendor した @mcp-b/webmcp-types（5387e13b10d、API Extractor のため）の JSON Schema からの型推論、declare\_tool.ts が document.modelContext（683172b39a6 で navigator から移った）を探し、registerTool が関数かを確かめ（8cf7731468f）、execute を注入コンテキストで包み（77ec83782f2）、注入器の destroy とブラウザの取り消しを AbortSignal.any で合わせる（e041f9483e5）までを 1 行ずつ。非同期になった登録（f908140d718）と、登録の途中で壊れたときの AbortError を飲む枝（98960556a6d、spec なし）、素通しの annotations（91a2bf84250）、angular-main の公式 webmcp-types（38afab7a244）。ページの上で本物の 22.2.6 の関数を、作り物の modelContext につないで動かす。
 
 angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/wmcp-declare)
 
 ---
 
-WebMCP は、ページが `document.modelContext.registerTool()` を呼んで、ブラウザの中の AI のエージェントに「呼べる道具（ツール）」を渡す、提案中の仕組みです。この章では、Angular がその上にかぶせた `declareExperimentalWebMcpTool` が、**1 つのツールを登録してから取り消すまでに、どの行で何をしているか**を 1 行ずつ追います。ツールの形（`ToolDescriptor`）と、JSON Schema から `execute` の引数の型を作る仕組み（vendor した `@mcp-b/webmcp-types`）も読み、ページの上で本物の 22.1.6 の関数を作り物の `modelContext` につないで動かします。
+WebMCP は、ページが `document.modelContext.registerTool()` を呼んで、ブラウザの中の AI のエージェントに「呼べる道具（ツール）」を渡す、提案中の仕組みです。この章では、Angular がその上にかぶせた `declareExperimentalWebMcpTool` が、**1 つのツールを登録してから取り消すまでに、どの行で何をしているか**を 1 行ずつ追います。ツールの形（`ToolDescriptor`）と、JSON Schema から `execute` の引数の型を作る仕組み（vendor した `@mcp-b/webmcp-types`）も読み、ページの上で本物の 22.2.6 の関数を作り物の `modelContext` につないで動かします。
 
 読む対象は `packages/core/src/webmcp/types.ts`・`declare_tool.ts`、`packages/core/third_party/@mcp-b/webmcp-types/`、公開 API の golden（`goldens/public-api/core/index.api.md`）、spec は `packages/core/test/webmcp/declare_tool_spec.ts` です。注入器が壊れたときに `onDestroy` のコールバックが呼ばれる仕組みは [di-destroy](../di/14-di-destroy.md)、注入コンテキストそのものは [di-injection-context](../di/03-di-injection-context.md) で読みました。ここでは再説明しません。
 
@@ -366,13 +366,13 @@ infer-222.ts(30,24): error TS18046: 'args.arg1' is of type 'unknown'.
 infer-222.ts(36,24): error TS18046: 'args.arg2' is of type 'unknown'.
 ```
 
-17 行目のエラーの文に出ている型が、`required: ['q']` の `q` は必須の `string`、`limit` は `number | undefined` の省略可、という推論の結果です。22.1.6 だけ `readonly` が付くのは、サイトの 22.1.6 が持っている webmcp-types が 5.1.0 より前の版（MVP と書かれた部分集合の推論）だからです。5.1.0 の 28・30 行目は `-readonly` で外しています。30・36 行目の 2 つは[第 2 回](02-wmcp-provide.md)で読む #70125 です。
+17 行目のエラーの文に出ている型が、`required: ['q']` の `q` は必須の `string`、`limit` は `number | undefined` の省略可、という推論の結果です。22.1.6 だけ `readonly` が付くのは、22.1.6 が持っている webmcp-types が 5.1.0 より前の版（MVP と書かれた部分集合の推論）だからです。5.1.0 の 28・30 行目は `-readonly` で外しています。30・36 行目の 2 つは[第 2 回](02-wmcp-provide.md)で読む #70125 です。
 
 | 版 | 型の出どころ | InputSchema の制約 |
 | --- | --- | --- |
-| 22.1.6（サイト） | vendor した `@mcp-b/webmcp-types`（5.1.0 より前） | JSON Schema の部分集合のユニオン（`type` が必須） |
+| 22.1.6（書いたときのサイト） | vendor した `@mcp-b/webmcp-types`（5.1.0 より前） | JSON Schema の部分集合のユニオン（`type` が必須） |
 | 8576f161ae4（22.2.0-next.7） | vendor した `@mcp-b/webmcp-types` 5.1.0（98960556a6d で v5 に） | `@modelcontextprotocol/server` のスタブ＝どんなオブジェクトでも |
-| angular-main・22.2.6 | 公式の `webmcp-types` 0.1.10（38afab7a244、#71268） | `object`。`inputSchema` は省略可に |
+| angular-main・22.2.6（今のサイト） | 公式の `webmcp-types` 0.1.10（38afab7a244、#71268） | `object`。`inputSchema` は省略可に |
 
 📄 `git show 38afab7a244（angular-main、2026-10-28。types.ts と third_party/webmcp-types/index.d.ts）`
 
@@ -967,7 +967,7 @@ index 08e84fcd008..10b740a6ecf 100644
 > [!WARNING]
 > **ハマりどころ**
 >
-> この catch は、依存の更新のコミット（コミットの作者は Angular Robot。同じ件名の自動の PR #70399 は閉じられ、メンテナーが開いた PR #70400 でマージされた）の中で入りました。コミットの件名からは見えない変更で、**この枝を確かめる spec はありません**（「テストと直し方」で、外しても既存の 13 個の spec が通ることを確かめました）。サイトの 22.1.6 にはこの枝がまだ無く、DEMO の「登録の途中で destroy する」では、`declareExperimentalWebMcpTool` の Promise が `AbortError` で reject されます。
+> この catch は、依存の更新のコミット（コミットの作者は Angular Robot。同じ件名の自動の PR #70399 は閉じられ、メンテナーが開いた PR #70400 でマージされた）の中で入りました。コミットの件名からは見えない変更で、**この枝を確かめる spec はありません**（「テストと直し方」で、外しても既存の 13 個の spec が通ることを確かめました）。22.1.6 にはこの枝がまだ無く、「登録の途中で destroy する」と `declareExperimentalWebMcpTool` の Promise が `AbortError` で reject されていました。サイトの 22.2.6 にはこの枝が入っている（v22.2.0 から）ので、DEMO では Promise が resolve し、表のツールは 0 個です。
 
 比べるために、最初の実装（b2c0c91f8f6）を置いておきます。
 
@@ -1049,7 +1049,7 @@ export function declareWebMcpTool<const InputSchema extends JsonSchemaForInferen
 78 │ }
 ```
 
-91a2bf84250（2026-08-31、PR #70496）で入った `Annotations` は、ツールの性質をエージェントに伝える印です。71 行目の `readOnlyHint` は「ユーザーに見える状態を変えない」、77 行目の `untrustedContentHint` は「ツールの作者から見て信用できない内容（利用者が書いた文など）を返すことがある」という印です。62 行目のとおり `@experimental 22.2` で、ほかの型（`@experimental 22.0`）より後から入りました。サイトの 22.1.6 の `ToolDescriptor` にはまだ `annotations` が無く、DEMO のツールにも付けていません（付けると型エラーの TS2353 になります）。Angular はこれを解釈せず、3-3 の 61 行目の `...tool` で `registerTool` に渡すだけです。どう使うかはブラウザとエージェントが決めます。
+91a2bf84250（2026-08-31、PR #70496）で入った `Annotations` は、ツールの性質をエージェントに伝える印です。71 行目の `readOnlyHint` は「ユーザーに見える状態を変えない」、77 行目の `untrustedContentHint` は「ツールの作者から見て信用できない内容（利用者が書いた文など）を返すことがある」という印です。62 行目のとおり `@experimental 22.2` で、ほかの型（`@experimental 22.0`）より後から入りました。22.1.6 の `ToolDescriptor` にはまだ `annotations` が無く、付けると型エラーの TS2353 になりました。サイトの 22.2.6 では公式の webmcp-types の `ModelContextTool` が `annotations?: ToolAnnotations` を持つので付けられますが、DEMO のツールには付けていません。Angular はこれを解釈せず、3-3 の 61 行目の `...tool` で `registerTool` に渡すだけです。どう使うかはブラウザとエージェントが決めます。
 
 📄 `angular/packages/core/test/webmcp/declare_tool_spec.ts` L68–96 （▶ の行: 71, 79–81, 87, 89）
 
@@ -1089,7 +1089,7 @@ spec も「`registerTool` に同じ `annotations` が渡る」だけを確かめ
 
 ## 5. DEMO：登録 → 呼ぶ → destroy
 
-> **🧪 DEMO — 本物の declareExperimentalWebMcpTool（22.1.6）と作り物の modelContext**
+> **🧪 DEMO — 本物の declareExperimentalWebMcpTool（22.2.6）と作り物の modelContext**
 >
 > ボタンを押したときだけ `document.modelContext` に作り物（`registerTool` を記録し、signal の abort で表から消す小さなオブジェクト）を置き、呼び終えたら消します。ブラウザに本物の `modelContext` があるときは動かしません。「3. execute を呼ぶ」は、エージェントの代わりに作り物の表から登録されたツールを取り出して `execute` を呼びます。ツールの `execute` は `inject()` で注入器の値（`'こんにちは'`）を読みます。
 >
@@ -1104,7 +1104,7 @@ spec も「`registerTool` に同じ `annotations` が渡る」だけを確かめ
 | 4. 終わらない execute | ツールが受け取った signal はクライアントのものと別物（`false`） | 66 行目の `AbortSignal.any` |
 | 5. クライアントが取り消す | ツールの `signal.aborted=true`、表のツールは残る | 66 行目。登録の signal（59 行目）は abort されない |
 | 6. 注入器を destroy | `registerTool` に渡した signal が `aborted=true`、表のツール 0 個 | 79 行目 → 82 行目で渡した signal |
-| 登録の途中で destroy | `AbortError` で reject、表 0 個 | 22.1.6 には 84〜89 行目が無い（98960556a6d より前） |
+| 登録の途中で destroy | resolve、表 0 個 | 84〜89 行目で `AbortError` を飲む（98960556a6d より前の 22.1.6 では `AbortError` で reject） |
 | 注入コンテキストの外 | NG0203 で reject、`registerTool` 0 回 | 49 行目（開発）/ 54 行目（本番）。82 行目より前 |
 | modelContext が無い・registerTool が無い | どちらも何もせず resolve（`undefined`） | 46 行目 |
 
@@ -1357,7 +1357,7 @@ types.ts の 49 行目の `InferArgsFromInputSchema<InputSchema>` と、declare\
 - `ToolDescriptor` は name・description（必須、c121407c0da）・inputSchema・execute・annotations。execute の引数の型は inputSchema から推論し、その型は API Extractor のために vendor している
 - declare\_tool.ts は、副作用の前に失敗しうるもの（modelContext の有無、`registerTool` が関数か、`Injector` と `DestroyRef`）を済ませ、最初の `await` の前に `registerTool` まで同期で進む
 - 1 つの `AbortController` が、注入器の destroy を「登録の取り消し」と「実行中の execute の取り消し」の両方につなぐ。ブラウザの `client.signal` とは `AbortSignal.any` で合わせる
-- 登録の途中で壊れたときの `AbortError` を飲む枝（98960556a6d）は依存の更新のコミットで入り、spec で固められていない。22.1.6 には無い
+- 登録の途中で壊れたときの `AbortError` を飲む枝（98960556a6d）は依存の更新のコミットで入り、spec で固められていない。22.1.6 には無く、サイトの 22.2.6 にはある
 - annotations は Angular から見れば素通し。angular-main では consequentialHint・debugging が足され、型は公式の webmcp-types に移った
 
 ---

@@ -262,7 +262,7 @@ hmr\_spec では、`useValue` に**ただのオブジェクト**を渡してい�
 
 > **🧪 DEMO — 長押しのプラグインを本物の EventManager に入れて、テンプレートの (longpress.600) を動かす**
 >
-> 「作って描く」を押すと、`createEnvironmentInjector` で小さな木を作ります。中身は `EVENT_MANAGER_PLUGINS` に `ɵDomEventsPlugin`・`ɵKeyEventsPlugin`・この章の `LongPressPlugin`（この順で multi）、本物の `EventManager`、それを使う本物の `ɵDomRendererFactory2`（@angular/platform-browser 22.1.6）です。その木で、テンプレートに `(longpress.600)` と `(click)` を書いた本物のコンポーネントを、共通部品 `domr-probe.ts` の記録係で包んで描きます。ページの root の `EventManager` には何も足しません。`LongPressPlugin` は `pointerdown`（またはボタンにフォーカスして Enter / Space を押し始めたとき）から 600 ミリ秒数え、途中で離すか外れると止めます。
+> 「作って描く」を押すと、`createEnvironmentInjector` で小さな木を作ります。中身は `EVENT_MANAGER_PLUGINS` に `ɵDomEventsPlugin`・`ɵKeyEventsPlugin`・この章の `LongPressPlugin`（この順で multi）、本物の `EventManager`、それを使う本物の `ɵDomRendererFactory2`（@angular/platform-browser 22.2.6）です。その木で、テンプレートに `(longpress.600)` と `(click)` を書いた本物のコンポーネントを、共通部品 `domr-probe.ts` の記録係で包んで描きます。ページの root の `EventManager` には何も足しません。`LongPressPlugin` は `pointerdown`（またはボタンにフォーカスして Enter / Space を押し始めたとき）から 600 ミリ秒数え、途中で離すか外れると止めます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-custom-plugin)
 

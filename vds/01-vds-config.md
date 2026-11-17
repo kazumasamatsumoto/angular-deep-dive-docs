@@ -113,7 +113,7 @@ $ git show 5d21812aae -- packages/angular/build/src/builders/dev-server   # 2026
 +    strictPort: serverOptions.strictPort ?? true,
 ```
 
-型も変わっています。`NormalizedDevServerOptions`（`private.ts` から外にも出している型）から `strictPort` を外し、`?` 付き（省略できる）で足し直しました。`vite/server.ts` の側は `?? true` で受けます（5 節の 59 行目）。サイトの依存の `@angular/build` 22.1.7 にはこのコミットが入っておらず、`vite/server.js` は `strictPort: true` のままです。8 節の記録の「--port 0」は、借りた port（58466）と `strictPort: true` が Vite に渡った形です。
+型も変わっています。`NormalizedDevServerOptions`（`private.ts` から外にも出している型）から `strictPort` を外し、`?` 付き（省略できる）で足し直しました。`vite/server.ts` の側は `?? true` で受けます（5 節の 59 行目）。記録に使った `@angular/build` 22.1.7 にはこのコミットが入っておらず、`vite/server.js` は `strictPort: true` のままです（今のサイトの依存の 22.2.7 には v22.2.0 から入っていて、`options.js` が `strictPort: port !== 0` を返します）。8 節の記録の「--port 0」は、借りた port（58466）と `strictPort: true` が Vite に渡った形です。
 
 origin/main（8b26efa1ba）ではさらに 3123cf2e99（2026-11-11、#34686、外の人の PR）が、コメントにされていた 3 行を戻しました。Vite の側が直った（vitejs/vite#23158）ので、0 は借りずにそのまま Vite に渡り、`strictPort` は 130 行目のとおり `false` です。
 
@@ -788,7 +788,7 @@ target は `packages/angular/build/BUILD.bazel` の `jasmine_test(name = "dev-se
 
 **Q. `--port 0` で Vite に渡る port は 0 ですか？**
 
-44129f66a3 では 0 ではありません。`checkPort` の 18〜22 行目（0 をそのまま返す行）がコメントなので、OS から借りた番号が渡ります。8 節の記録（22.1.7）でも 58466 でした。origin/main の 3123cf2e99 からは 0 のまま渡ります。
+44129f66a3 では 0 ではありません。`checkPort` の 18〜22 行目（0 をそのまま返す行）がコメントなので、OS から借りた番号が渡ります。8 節の記録（22.1.7）でも 58466 でした。origin/main の 3123cf2e99 からは 0 のまま渡ります。22.2.x にも 699ede4535 として移され（v22.2.7 から）、今のサイトの依存の 22.2.7 の `check-port.js` は 0 をそのまま返します。
 
 **Q. prebundle を有効にしたのに効いていない気がします。何を見ればよいですか？**
 

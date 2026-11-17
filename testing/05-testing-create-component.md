@@ -36,7 +36,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!NOTE]
 > **ポイント**
 >
-> この章の引用は `../angular`（22.2.0-next.7）です。このサイトの `@angular/core` は 22.1.6 で、`createComponent` の中身が少し違います（22.1.6 には `createComponentRef` への切り出しが無く、id の番号を増やす行が「コンパイル済みか」の確認より前にある）。切り出しはコミット 05c4d5a8354（`TestBed.createDirective` の追加、[第 7 回](07-testing-directive-fixture.md)）で入りました。違いが結果に出るところは、その都度書きます。
+> この章の引用は `../angular`（22.2.0-next.7）です。この章を書いたときのサイトの `@angular/core` は 22.1.6 で、`createComponent` の中身が少し違いました（22.1.6 には `createComponentRef` への切り出しが無く、id の番号を増やす行が「コンパイル済みか」の確認より前にある）。切り出しはコミット 05c4d5a8354（`TestBed.createDirective` の追加、[第 7 回](07-testing-directive-fixture.md)）で入りました。違いが結果に出るところは、その都度書きます。いまのサイトの 22.2.6 にはこのコミットが入っていて（22.2.0 の変更履歴の「add utility for testing directives」）、`fesm2022/testing.mjs` の `createComponent` と `createComponentRef` は引用と同じ形です。
 
 ## 1. createComponent の全体
 
@@ -147,7 +147,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 214 │ 
 ```
 
-213 行目、`_nextRootElementId` は**モジュールの一番外側の変数**です。`TestBedImpl` のフィールドではないので、`resetTestingModule` でも 0 に戻りません（`test_bed.ts` の中で代入しているのは 875 行目の `++` だけ）。このサイトの ng test では、1 つ目の `it` で `root0`〜`root4` まで使ったあと、2 つ目の `it` の最初の `createComponent` は `root5` になりました （22.1.6 では「コンパイルされていない」で投げる場合も番号を 1 つ使います。番号を増やす行が確認より前にあるため）。
+213 行目、`_nextRootElementId` は**モジュールの一番外側の変数**です。`TestBedImpl` のフィールドではないので、`resetTestingModule` でも 0 に戻りません（`test_bed.ts` の中で代入しているのは 875 行目の `++` だけ）。このサイトの ng test では、1 つ目の `it` で `root0`〜`root4` まで使ったあと、2 つ目の `it` の最初の `createComponent` は `root5` になりました （22.1.6 では「コンパイルされていない」で投げる場合も番号を 1 つ使います。番号を増やす行が確認より前にあるため。いまの 22.2.6 は引用と同じく、確認のあとの `createComponentRef` で番号を増やすので、投げる場合は番号を使いません）。
 
 ### renderer の型と、DOM 用の実装
 

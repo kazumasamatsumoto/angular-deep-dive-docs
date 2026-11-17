@@ -324,7 +324,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
    第 17 回の `PathLocationStrategy.onPopState` は同じ関数を両方に付けるので、# の後ろが変わる戻るでは `Location` の `_subject` に 2 回流れます。
 3. **225 行目：進むの上限が 1 つずれている**
 
-   `back` の 234 行目と `historyGo` の 244 行目は範囲の中かを確かめますが、`forward` の 225 行目は `urlChangeIndex < urlChanges.length` です。最後の要素にいるときも 226 行目で 1 つ進み、配列の外を指します。228 行目の `emitEvents` が 267 行目で `getState()`（`urlChanges[urlChangeIndex].state`）を読み、`TypeError` になります。DEMO で go のあと forward を押すと、本物（22.1.6）がそう投げます。
+   `back` の 234 行目と `historyGo` の 244 行目は範囲の中かを確かめますが、`forward` の 225 行目は `urlChangeIndex < urlChanges.length` です。最後の要素にいるときも 226 行目で 1 つ進み、配列の外を指します。228 行目の `emitEvents` が 267 行目で `getState()`（`urlChanges[urlChangeIndex].state`）を読み、`TypeError` になります。DEMO で go のあと forward を押すと、本物（22.2.6）がそう投げます。
 
 ## 4. MockLocationStrategy：URL の文字列の配列
 
@@ -719,7 +719,7 @@ provide\_location\_mocks\_spec.ts は it が 1 つで、19〜20 行目で 2 つ�
 
 > **🧪 DEMO — 本物の偽物で、履歴を動かす**
 >
-> ボタンを押すと、章の中だけの小さな DI の木を作ります。「MockPlatformLocation」は、本物の `MockPlatformLocation`・本物の `PathLocationStrategy`（`APP_BASE_HREF` は `/`）・本物の `Location`（22.1.6）。「provideLocationMocks」は、本物の `provideLocationMocks()` だけ（`Location` は `SpyLocation`）。どちらも `location.subscribe` と `location.onUrlChange` を 1 つずつ付け、届いた順に下のログに足します。表の配列と位置は、表示のためだけに private のフィールド（`urlChanges`・`urlChangeIndex`・`_history`・`_historyIndex`）を読んでいます。このページの URL と履歴は変わりません。
+> ボタンを押すと、章の中だけの小さな DI の木を作ります。「MockPlatformLocation」は、本物の `MockPlatformLocation`・本物の `PathLocationStrategy`（`APP_BASE_HREF` は `/`）・本物の `Location`（22.2.6）。「provideLocationMocks」は、本物の `provideLocationMocks()` だけ（`Location` は `SpyLocation`）。どちらも `location.subscribe` と `location.onUrlChange` を 1 つずつ付け、届いた順に下のログに足します。表の配列と位置は、表示のためだけに private のフィールド（`urlChanges`・`urlChangeIndex`・`_history`・`_historyIndex`）を読んでいます。このページの URL と履歴は変わりません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-location-testing)
 

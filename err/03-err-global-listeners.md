@@ -496,7 +496,7 @@ Randomized with seed 09897 (jasmine --random=true --seed=09897)
 
 ## 7. デモ：本物のリスナーを偽の window で動かす
 
-window に投げる代わりに、`DOCUMENT` を差し替えて **ライブ**にしました。193 行目が `inject(DOCUMENT).defaultView` を読むので、`createApplication` の providers で `{provide: DOCUMENT, useValue: {defaultView: 偽の window}}` にすれば、本物の factory がその偽物に付けます。このアプリはコンポーネントを描かないので、`DOCUMENT` を使う描画の部品は作られません。Node の記録にしなかったのは、ページの上の 22.1.6 の本物（201・216 行目の `preventDefault` と、DOM の `cancelable` の決まり）をそのまま見せたかったからです。
+window に投げる代わりに、`DOCUMENT` を差し替えて **ライブ**にしました。193 行目が `inject(DOCUMENT).defaultView` を読むので、`createApplication` の providers で `{provide: DOCUMENT, useValue: {defaultView: 偽の window}}` にすれば、本物の factory がその偽物に付けます。このアプリはコンポーネントを描かないので、`DOCUMENT` を使う描画の部品は作られません。Node の記録にしなかったのは、ページの上の 22.2.6 の本物（201・216 行目の `preventDefault` と、DOM の `cancelable` の決まり）をそのまま見せたかったからです。
 
 > **🧪 DEMO — 本物のリスナーを偽の window で動かす**
 >

@@ -35,9 +35,9 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 1. 問題：命令の順番はテンプレートの順のまま
 
-この章のデモの子コンポーネント（`loc-runtime-dom-demo.ts`）のテンプレートを、このページの `@angular/compiler` 22.1.6 でコンパイルした出力です。
+この章のデモの子コンポーネント（`loc-runtime-dom-demo.ts`）のテンプレートを、`@angular/compiler` 22.1.6（依存を 22.2.6 に上げる前のこのサイトの版）でコンパイルした出力です。
 
-📄 `コンパイラの出力（このページの @angular/compiler 22.1.6。goog.getMsg の枝と 2 つめの配列は省略）`
+📄 `コンパイラの出力（@angular/compiler 22.1.6。goog.getMsg の枝と 2 つめの配列は省略）`
 
 ```
 var def = ɵɵdefineComponent({type: Demo, selectors: [['app-demo']], decls: 5, vars: 4, consts: () => {

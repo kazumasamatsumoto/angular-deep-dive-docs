@@ -2,7 +2,7 @@
 
 # Menu と MenuBar：入れ子のメニューを開いて閉じる
 
-> MenuPattern・MenuBarPattern・MenuTriggerPattern（private/menu/menu.ts、883 行）が、サブメニューを開く・閉じる・ホバーで移る・頭文字で移るを受け持つ行。項目が後から来てもフォーカスを中へ移す修正、サブメニューの中の DOM が変わるとたたまれていた問題。22.1.8 との差と、CDK Menu（cdk-menu）との違い。
+> MenuPattern・MenuBarPattern・MenuTriggerPattern（private/menu/menu.ts、883 行）が、サブメニューを開く・閉じる・ホバーで移る・頭文字で移るを受け持つ行。項目が後から来てもフォーカスを中へ移す修正、サブメニューの中の DOM が変わるとたたまれていた問題。22.1.8・いまのサイトの 22.2.7 との差と、CDK Menu（cdk-menu）との違い。
 
 angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/aria-menu)
 
@@ -36,7 +36,9 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> menu は、このサイトに入れた 22.1.8 と引用の snapshot（22.2.0-next.5）で**中身が違う**部品です。差は cd9c7da8b6（2026-08-26、#33682「`ngMenuItem` の value が必須なのに読まれていない」）の 1 つだけでした。22.1.8 では `MenuItem` の `value` が `input.required<V>()`、`itemSelected` が `output<V>()`、`validate()` は `undefined` を除かずに重複を数えます。snapshot では value を省けて、省いた項目は `undefined` を出します（10 節）。ページの上のデモはすべての項目に `value` を書いているので、この差では動きが変わりません。ほかの修正（pendingFocus の 46b918edaf など）は 22.1.x にも入っていて、22.1.8 と snapshot で同じです。
+> menu は、この章を書いたときにサイトに入れていた 22.1.8 と引用の snapshot（22.2.0-next.5）で**中身が違う**部品でした。差は cd9c7da8b6（2026-08-26、#33682「`ngMenuItem` の value が必須なのに読まれていない」）の 1 つだけでした。22.1.8 では `MenuItem` の `value` が `input.required<V>()`、`itemSelected` が `output<V>()`、`validate()` は `undefined` を除かずに重複を数えます。snapshot では value を省けて、省いた項目は `undefined` を出します（10 節）。ほかの修正（pendingFocus の 46b918edaf など）は 22.1.x にも入っていて、22.1.8 と snapshot で同じです。
+>
+> いまのサイトの 22.2.7 には cd9c7da8b6 が入っていて（22.2.0 の変更履歴の「make MenuItem value optional」）、この点は snapshot と同じです。代わりに snapshot より後の 3 つの修正で、menu.ts・menu-item.ts・menu-trigger.ts・private/menu/menu.ts が引用と違います。9 節の #33996（collection.ts、22.2.5）、トリガーの `tabindex` を `tabIndex` という computed にして外へ見せる 53daf4a9d9（#34084、22.2.7）、サブメニューの中身を見えているときだけ作る e2189c4d5e（#34104、22.2.7。menu.ts の `contentVisible` から `|| parent()._pattern.hasBeenInteracted()` が外れ、menu-item.ts のコンストラクタに `pendingFocusEffect` の effect が足された）です。ページの上のデモはすべての項目に `value` を書き、`ngMenuContent` を使わず、トリガーも無いので、どの差でも動きは変わりません（5 節のデモの記録のあとに書いた確かめを見てください）。
 
 ## 1. 4 つのディレクティブと、親子のつなぎ方
 
@@ -1007,7 +1009,7 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 
 メニューバーのホバー（579〜585 行目）にはタイマーがありません。583 行目の `goto` で今の項目にするだけで、608〜611 行目、**前の項目が開いていたときだけ**、それを閉じて新しい項目を開きます。だから一度クリックで開くと、あとはホバーで「File」「Edit」を行き来でき、何も開いていなければホバーしても開きません。クリック（567〜576 行目）は開閉の切り替えです。キーの次・前（622〜641 行目）も同じ形で、前の項目が開いていたら閉じて、新しい項目を `{first: true}` で開きます。645 行目の `close()` は、メニューバーにフォーカスがあるときだけ今の項目へフォーカスを戻します。
 
-> **🧪 DEMO — 本物の ngMenuBar + ngMenu（このサイトの 22.1.8）**
+> **🧪 DEMO — 本物の ngMenuBar + ngMenu（このサイトの 22.2.7）**
 >
 > Tab でメニューバーに入り、左右の矢印で「File」「Edit」を移り、ArrowDown か Enter で開きます。開いたメニューの中は上下の矢印、「Export」で ArrowRight を押すとサブメニュー、ArrowLeft で戻り、Escape で全部閉じます。頭文字（N・O・E・P など）でも移れます（項目に `searchTerm` を渡しています）。マウスでは、クリックで開き、開いたあとは「File」と「Edit」の間をホバーで移れます。「Export」にマウスを乗せると、下で選んだ時間のあとにサブメニューが開きます。キー・クリック・ホバー（乗った項目が変わったときだけ）のときを 0ms として、`aria-expanded` が変わった時刻と、250ms 後に開いている項目・フォーカスのある項目を出します。Aria のキーのハンドラは伝わりを止めるので、ログは外側の要素で捕捉段階（`addEventListener(..., true)`）で聞いています。
 >
@@ -1021,6 +1023,8 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 - `expansionDelay` を 500 にすると、「Export」の `aria-expanded` が true になったのは **504ms** 後でした。開いたまま「Edit」へホバーすると、1ms で「File」と「Export」が閉じて「Edit」が開きました（608〜611 行目、メニューバーにはタイマーが無い）。
 - 頭文字：メニューバーで `e` を押すと「Edit」へ、開いた「Edit」の中で `p` を押すと「Paste」へ移りました。「File」を Enter で開いて「New」で ArrowLeft を押すと、「File」が閉じて（巻き戻って）「Edit」が開きました（431 行目 → 633〜640 行目）。
 - 「PDF」をクリックすると `itemSelected: pdf` がメニューバーから出て、「File」と「Export」が閉じました（6 節）。コンソールに警告やエラーは出ませんでした。
+
+サイトを 22.2.7 に上げたあと（2026-11-17、本番ビルド）に、キーの流れ（「File」で ArrowDown → 「New」、「Export」で ArrowRight → 「PDF」、ArrowLeft → 「Export」、「PDF」の上の ArrowRight → 「Edit」が開いて「Undo」、Escape → 「Edit」、開いた「Edit」で p → 「Paste」）と、クリックで「PDF」を選ぶ流れを押し直し、同じ結果になりました。時間（101ms・504ms）は測り直していません。
 
 ## 6. 選ぶ・閉じる
 
@@ -1274,11 +1278,11 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 
    フォーカスがサブメニューから上のメニューの項目へ移るので、サブメニューの `onFocusOut` の 362〜369 行目で親が閉じます。
 
-外部の PR #33977（lazerg、2026-10-20）が先に付きましたが、閉じられ（2026-10-23）、直したのはメンテナーの PR #33996（crisbeto、2026-10-22 マージ）でした。`gh pr diff 33996 -R angular/components` で読むと、直したのは menu.ts ではなく collection.ts で、`orderedItems` を computed から signal に替え、DOM が変わっても並びが同じなら set しない形です。spec は collection.spec.ts に 1 本。
+外部の PR #33977（lazerg、2026-10-20）が先に付きましたが、閉じられ（2026-10-23）、直したのはメンテナーの PR #33996（crisbeto、2026-10-22 マージ）でした。`gh pr diff 33996 -R angular/components` で読むと、直したのは menu.ts ではなく collection.ts で、`orderedItems` を computed から signal に替え、DOM が変わっても並びが同じなら set しない形です。spec は collection.spec.ts に 1 本。22.2.x の枝には 1edc5bfd7c として入り（22.2.5）、いまのサイトの 22.2.7 の collection.ts はこの形です。
 
-## 10. 22.1.8 との差と、開いている #33964
+## 10. 22.1.8 との差（いまの 22.2.7 には入っている）と、開いている #33964
 
-- cd9c7da8b6（#33682）：`MenuItem.value` が省けるようになり、Pattern の 832 行目は `inputs.value ?? signal(undefined)`、`itemSelected` は `V | undefined` になりました。issue は「value は必須なのに、menu の中では開発モードの重複検査（[第 19 回](19-aria-testing.md)）しか読んでいない。ドキュメントの例も value を書いておらず strictTemplates で通らない」というものでした。22.1.8 ではデモのように全部の項目に value が要ります。
+- cd9c7da8b6（#33682）：`MenuItem.value` が省けるようになり、Pattern の 832 行目は `inputs.value ?? signal(undefined)`、`itemSelected` は `V | undefined` になりました。issue は「value は必須なのに、menu の中では開発モードの重複検査（[第 19 回](19-aria-testing.md)）しか読んでいない。ドキュメントの例も value を書いておらず strictTemplates で通らない」というものでした。22.1.8 ではデモのように全部の項目に value が要りました。22.2.0 から入ったので、いまのサイトの 22.2.7 では省けます（デモは value を書いたままです）。
 - #33964（開いている、2026-10-15）：1 節の 71 行目に `booleanAttribute` が無いので、素の `disabled` 属性が型エラーになります。issue を立てた DuncanFaulkner 自身が 1 分あまり後に PR #33965 を出しました。メンテナーの crisbeto が「CI が落ちている」とコメントし、2026-10-17 に APPROVED。同じ日に ok7sai が「Aria の menu の項目は `aria-disabled` だけの soft-disabled。素の `disabled` を通すと `<button>` では本当に無効になり、フォーカスやスクリーンリーダーへの影響が分からない」と指摘し、crisbeto は「Material では `attr.disabled` の host binding で扱っている」と返しました。作者は 10-21 に host へ `'[attr.disabled]': 'null'` と spec を足し、もう一度見てほしい、`action: merge` を付け直してほしいと書いています（2026-11-02 時点で開いたまま、ラベルは `target: patch` と `area: aria/menu`）。
 
 > [!NOTE]

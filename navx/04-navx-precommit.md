@@ -423,7 +423,7 @@ e8c44a00f9a は、da364d26357 が残した TODO（「URL が未確定のリダ�
 
 > **🧪 DEMO — URL が確定する時機と、イベントの順**
 >
-> ボタンを押すと、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の FakeNavigation の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`ɵFakeNavigation` を `https://app.example/start` から作ります。`@angular/core/testing` そのものは、読み込んだ時点で TestBed と JIT の部品も引き込み、このサイトの初期の JS を約 60 kB 増やすので使いません。渡す Document は `document.implementation.createHTMLDocument('')` で作った別の文書です（`defaultView` が null なので、このページの window には何も配られません）。navigate のリスナーが `intercept({ precommitHandler, handler })` を呼び、precommitHandler は下のボタンで決着をつけるまで保留します。traverse を `setTimeout` で遅らせない設定（`setSynchronousTraversalsForTesting(true)`）にしています。
+> ボタンを押すと、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の FakeNavigation の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`ɵFakeNavigation` を `https://app.example/start` から作ります。`@angular/core/testing` そのものは、読み込んだ時点で TestBed と JIT の部品も引き込み、このサイトの初期の JS を約 60 kB 増やすので使いません。写しの元は 22.1.6 です。このサイトの今の依存 22.2.6 の `fesm2022/testing.mjs` の `FakeNavigation` は、a8233232f5a（v22.2.0 から）で仕様に合わせて書き換わっているので、写しは前の形のままにしてあります。渡す Document は `document.implementation.createHTMLDocument('')` で作った別の文書です（`defaultView` が null なので、このページの window には何も配られません）。navigate のリスナーが `intercept({ precommitHandler, handler })` を呼び、precommitHandler は下のボタンで決着をつけるまで保留します。traverse を `setTimeout` で遅らせない設定（`setSynchronousTraversalsForTesting(true)`）にしています。
 >
 > 「navigate('/page-N') を呼ぶ」を押してください。
 >

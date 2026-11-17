@@ -623,7 +623,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> 2 節で見たとおり、953 行目の `result.signal.aborted` は常に `false` です。取り消されたイベントは `event.abortController` の側だけが abort されます。ふつうの navigate ではここに来る前に commit が済んでいるので困りませんが、**commit が遅れる場合**（precommitHandler の Promise を待っている間に次の navigate が来た場合）、遅れて resolve した precommitHandler のあとにこの commit が走り、**取り消された遷移が、あとから履歴を書き換えます**。手元の Node で、22.1.6 の配布物の `ɵFakeNavigation` を使って次の順に呼ぶと、entries は `[/, /b, /a]`、`currentEntry` は `/a` になりました。
+> 2 節で見たとおり、953 行目の `result.signal.aborted` は常に `false` です。取り消されたイベントは `event.abortController` の側だけが abort されます。ふつうの navigate ではここに来る前に commit が済んでいるので困りませんが、**commit が遅れる場合**（precommitHandler の Promise を待っている間に次の navigate が来た場合）、遅れて resolve した precommitHandler のあとにこの commit が走り、**取り消された遷移が、あとから履歴を書き換えます**。手元の Node で、22.1.6 の配布物の `ɵFakeNavigation` を使って次の順に呼ぶと、entries は `[/, /b, /a]`、`currentEntry` は `/a` になりました。a8233232f5a の入った 22.2.6 の配布物でも、同じ順で呼ぶと同じ結果でした（2026-11-17）。
 >
 > 1. `navigate('/a')` で `intercept({precommitHandler: () => 決着しない Promise})`
 > 2. `navigate('/b')` で `intercept({})`。1 本目は navigateerror で取り消され、`/b` が commit される
@@ -784,7 +784,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — navigate イベントのリスナーで何をするかを選んで、配られる順を見る**
 >
-> ボタンを押すと、このページで、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の `FakeNavigation` の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`new ɵFakeNavigation(createHTMLDocument(''), 'https://example.com/start')` を毎回新しく作って navigate を呼びます。リスナーは `navigate`・`currententrychange`・`navigatesuccess`・`navigateerror` と、`event.signal` の abort に付けています。80 ミリ秒待ってから表を作ります。このページの URL と履歴は変わりません。
+> ボタンを押すと、このページで、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の `FakeNavigation` の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`new ɵFakeNavigation(createHTMLDocument(''), 'https://example.com/start')` を毎回新しく作って navigate を呼びます。写しの元は 22.1.6 です。このサイトの今の依存 22.2.6 の `fesm2022/testing.mjs` の `FakeNavigation` は、a8233232f5a（v22.2.0 から）で仕様に合わせて書き換わっているので、写しは前の形のままにしてあります。リスナーは `navigate`・`currententrychange`・`navigatesuccess`・`navigateerror` と、`event.signal` の abort に付けています。80 ミリ秒待ってから表を作ります。このページの URL と履歴は変わりません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/navx-fake-navigate)
 

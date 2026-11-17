@@ -38,7 +38,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 - このシリーズのソースは ../angular の 8576f161ae4（22.2.0-next.7）です。`git rev-list --count HEAD..origin/main` は 807 で、origin/main（2026-11-03）は 807 commit 先にあります。
 - その 807 のうち `packages/compiler-cli/src/ngtsc` に触れるものは 141 個で、多くは**新しいプリプロセッサー（NGP）**の仕事です。2026-10-09 の 51a127ad7f1（#71313）で ngtsc の結合テストを NGP でも走らせる `ngtsc_ngp` のターゲットができ、HMR（d348fd884a2）・差分ビルド（4501ff813ff）・診断の番号（57905ca4e67）が NGP に移植されています。
 - 第 17 回（HMR）・第 18 回（診断）・第 19 回（テスト）では、main で変わった所を各章の注意に書きました（`git diff HEAD origin/main -- <path>` で確かめた）。この章の commit の表は、手元の木に入っているものだけです。
-- このサイトの DEMO が動かす本物は node\_modules の 22.1.6 です。表の修正が 22.1.6 に入っているかは、`git tag --contains <hash> --sort=creatordate` と、22.1.x のブランチへの cherry-pick（別の hash）で見ます。たとえば 45ebb127e32（main、v22.2.0-next.3）は 22.1.x では 9d8aa3a829c（v22.1.3）です。
+- このサイトの DEMO の記録は node\_modules の 22.1.6 で録ったものです（サイトの依存は今は 22.2.6）。表の修正が記録の 22.1.6 に入っているかは、`git tag --contains <hash> --sort=creatordate` と、22.1.x のブランチへの cherry-pick（別の hash）で見ます。たとえば 45ebb127e32（main、v22.2.0-next.3）は 22.1.x では 9d8aa3a829c（v22.1.3）です。
 
 ## 1. データの取り方
 
@@ -111,7 +111,7 @@ git -C ../angular show --numstat <hash>
    言語サービス（エディター）だけで出るエラーで、`open for contributions` と `P4` が付いていました。閉じたのは atscott の「#68454 で直った。v22 の機能の締め切りに間に合わず、言語サービスの v22.1 で出る」というコメントです。直した 7f0265e43ab は `TraitCompiler.analyzeTrait` の「export していないクラスは解析の結果を捨てる」条件に `!isStandalone` を足し、`shouldSkipResolution` の 1 つの変数にまとめました（[第 7 回](07-ngtsc-trait-analyze.md)）。ふつうの `ngc` は `compileNonExportedClasses` が真なので関係が無く、言語サービスだけが偽で動いていた、という読み方ができます（[ls-compiler-factory](../ls/05-ls-compiler-factory.md)）。**同じコンパイラでも、呼ぶ側の設定で通る道が違う**例です。
 3. **#44650 エラーのリンクを今の版の文書に（2022-01-06 に立ち、2026-02-12 に閉じた、PR #66374）**
 
-   直しは `error_details_base_url.ts` の `DOC_PAGE_BASE_URL` で、版が `-next`・`-rc`・`0.0.0-PLACEHOLDER` なら `next.angular.dev`、それ以外は `v22.angular.dev` のような場所にします（[第 18 回](18-ngtsc-diagnostics-perf.md)の 4 節）。ところが第 18 回で確かめたとおり、配布物 22.1.6 の compiler-cli ではバンドルのときに `'0.0.0' + '-PLACEHOLDER'` が 1 つの文字列になってから版の番号に置き換えられ、いつも `next` を指していました。**issue が閉じていても、配布物で意図どおりに動いているとは限りません**。ソースの行と配布物の行の両方を見るのは、このシリーズの DEMO が 22.1.6 を動かしている理由でもあります。
+   直しは `error_details_base_url.ts` の `DOC_PAGE_BASE_URL` で、版が `-next`・`-rc`・`0.0.0-PLACEHOLDER` なら `next.angular.dev`、それ以外は `v22.angular.dev` のような場所にします（[第 18 回](18-ngtsc-diagnostics-perf.md)の 4 節）。ところが第 18 回で確かめたとおり、配布物 22.1.6 の compiler-cli ではバンドルのときに `'0.0.0' + '-PLACEHOLDER'` が 1 つの文字列になってから版の番号に置き換えられ、いつも `next` を指していました。依存を上げたあとの 22.2.6 の配布物（`bundles/chunk-HRCA6XIV.js` の 151 行目、`full === "22.2.6"`）でも同じです。**issue が閉じていても、配布物で意図どおりに動いているとは限りません**。ソースの行と配布物の行の両方を見るのは、このシリーズの DEMO が配布物（記録は 22.1.6）を動かしている理由でもあります。
 
 ## 5. 修正の spec を手元で走らせる
 
@@ -160,7 +160,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/typecheck/test:test \
 | 初期値の無い enum のメンバーの値が TypeScript と違う。`enum Size { Small = 1, Large }` の `Size.Large` を評価すると 1 になる（TypeScript では 2）。selector に使うと `app-size-1` が出力される | partial\_evaluator/src/interpreter.ts 323 行目（並びの番号 index をそのまま値にする） | PartialEvaluator と NgtscProgram の emit の記録 | [第 5 回](05-ngtsc-partial-evaluator.md) |
 | Angular のクラスで、ほかのデコレーターが付いた `declare` のフィールドが、`useDefineForClassFields: true` のとき JS に `note;` として出る | transform/src/transform.ts 315-316 行目（作り直したノードに NodeFlags.Ambient が無い） | NgtscProgram の emit と、作り直す前後のノードの比較。既存の spec は es2015 で走るので拾わない | [第 12 回](12-ngtsc-ivy-transform.md) |
 | 途中にデコレーターの無い素のクラスを挟むと、継承した入力が型チェックで見えなくなり NG8002 になる（実行時は ɵɵInheritDefinitionFeature で親の入力が効く） | metadata/src/inheritance.ts 50-56 行目（'dynamic' で止まる） | 継承の連なりの記録（plainMiddle の場面） | [第 10 回](10-ngtsc-metadata-registry.md) |
-| 配布物 22.1.6 では、エラーの説明へのリンクが v22 ではなく next.angular.dev を指す。ソースでは版の判定の文字列を 2 つに分けて書いているが、配布物では 1 つにまとまったあとで版の番号に置き換わり、`full === "22.1.6"` になっている | diagnostics/src/error\_details\_base\_url.ts 14 行目と、配布物の chunk-NPM4D5UO.js 147 行目 | 記録した診断のリンクと、配布物の中身 | [第 18 回](18-ngtsc-diagnostics-perf.md) |
+| 配布物 22.1.6（22.2.6 でも同じ）では、エラーの説明へのリンクが v22 ではなく next.angular.dev を指す。ソースでは版の判定の文字列を 2 つに分けて書いているが、配布物では 1 つにまとまったあとで版の番号に置き換わり、`full === "22.1.6"` になっている | diagnostics/src/error\_details\_base\_url.ts 14 行目と、配布物の chunk-NPM4D5UO.js 147 行目（22.2.6 では chunk-HRCA6XIV.js 151 行目） | 記録した診断のリンクと、配布物の中身 | [第 18 回](18-ngtsc-diagnostics-perf.md) |
 | （不具合とはしない）resourceChangeTicket の道のあとに emit すると、出力のテンプレートが古いまま。この道を使うのは emit しない言語サービスだけ | annotations/component/src/handler.ts 1547 行目（analysis.template だけ書き換える）と 1602 行目（compileFull は analysis.meta を使う） | チケットの記録 | [第 3 回](03-ngtsc-compiler-ticket.md) |
 | （テスト）hmr\_spec.ts 378-392 行目の it は「HMR に対応しない Angular のクラス」を試す名前だが、`Directive` を import して `@Component` と書いているため、実際はデコレーターの無いクラスの道を通っている | test/ngtsc/hmr\_spec.ts 378-392 行目 | 同じ入力の記録（spec-directive と real-directive の場面） | [第 17 回](17-ngtsc-hmr.md) |
 | （テスト）ngtsc\_spec.ts 1754 行目の it は名前が @ContentChild なのに、1755 行目で 'ContentChildren' を渡している。@ContentChild そのものを試す it が無い | test/ngtsc/ngtsc\_spec.ts 1754-1755 行目 | spec の行を読む | [第 9 回](09-ngtsc-directive-handler.md) |

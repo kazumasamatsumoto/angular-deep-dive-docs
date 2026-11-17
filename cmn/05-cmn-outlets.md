@@ -153,7 +153,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
        });
 ```
 
-修正の前は `ngTemplateOutletInjector ?? undefined` を直接渡していて、「置いた場所の注入器」を渡す方法がありませんでした。後は `inject(Injector)` を 1 行足し、`_getInjector()` を通すだけです。同じコミットで spec に it `should be able to inherit outlet injector`（今の 364 行目）と、再帰するテンプレートで深さを数える it（375 行目）が足されています。v21.2.0 から入っていて、このサイトの 22.1.6 にもあります。
+修正の前は `ngTemplateOutletInjector ?? undefined` を直接渡していて、「置いた場所の注入器」を渡す方法がありませんでした。後は `inject(Injector)` を 1 行足し、`_getInjector()` を通すだけです。同じコミットで spec に it `should be able to inherit outlet injector`（今の 364 行目）と、再帰するテンプレートで深さを数える it（375 行目）が足されています。v21.2.0 から入っていて、このサイトの 22.2.6 にもあります。
 
 ## 3. 作り直す条件と、作り直さない仕組み
 
@@ -224,7 +224,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の NgTemplateOutlet に、テンプレート・context・injector を渡す**
 >
-> このサイトの本物の `NgTemplateOutlet`（@angular/common 22.1.6）で、この章で定義した 2 つの `<ng-template>`（A と B）のどちらかを描きます。テンプレートの中には小さなコンポーネント `cmn-outlets-probe` があり、作られるたびに番号（#1、#2…）が進み、壊されると記録します。ボタンを押すと値を変え、デモの部品の `detectChanges()` を 1 回だけ走らせて、番号が変わったか（＝ビューが作り直されたか）を表示します。token は probe が `inject()` で読んだ値で、どの注入器から来たかが分かります。
+> このサイトの本物の `NgTemplateOutlet`（@angular/common 22.2.6）で、この章で定義した 2 つの `<ng-template>`（A と B）のどちらかを描きます。テンプレートの中には小さなコンポーネント `cmn-outlets-probe` があり、作られるたびに番号（#1、#2…）が進み、壊されると記録します。ボタンを押すと値を変え、デモの部品の `detectChanges()` を 1 回だけ走らせて、番号が変わったか（＝ビューが作り直されたか）を表示します。token は probe が `inject()` で読んだ値で、どの注入器から来たかが分かります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-outlets)
 

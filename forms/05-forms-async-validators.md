@@ -255,7 +255,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の AsyncValidatorFn（800ms 後に答える）**
 >
-> @angular/forms 22.1.6 の `FormControl` に、`of(結果).pipe(delay(800))` を返す検証関数を `asyncValidators` で渡しています（外部通信はしません）。`admin`・`root`・`angular` は使用済み扱いです。検証関数の中で「開始」、`finalize` で「打ち切り」、`tap` で「完了」をログに出します。
+> @angular/forms 22.2.6 の `FormControl` に、`of(結果).pipe(delay(800))` を返す検証関数を `asyncValidators` で渡しています（外部通信はしません）。`admin`・`root`・`angular` は使用済み扱いです。検証関数の中で「開始」、`finalize` で「打ち切り」、`tap` で「完了」をログに出します。
 >
 > 2 つ目：1 回 `null` を流すが complete しない検証関数を、単体で渡すか配列で渡すか（作った直後の status）。
 >

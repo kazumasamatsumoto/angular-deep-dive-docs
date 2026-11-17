@@ -411,7 +411,7 @@ diff --git a/packages/common/http/src/resource.ts b/packages/common/http/src/res
 
 ```
 
-`httpResource` の `onAbort`（381〜383 行目）は、63886758787 の後の `rxResource` と違って自分を外しません。`unsubscribe()` では `error` も `complete` も呼ばれないので、abort で終わった道では受け手が残ります。5128dec0ca1 は `addEventListener` に `{once: true}` を付けて、1 回呼ばれたら外れるようにしました。コミットの本文は、受け手が付いた `AbortSignal` が abort されるまで回収されない WebKit の不具合（bugs.webkit.org の 298499）にも触れています。手元の 8576f161ae4 と、このサイトの 22.1.6 には入っていません。
+`httpResource` の `onAbort`（381〜383 行目）は、63886758787 の後の `rxResource` と違って自分を外しません。`unsubscribe()` では `error` も `complete` も呼ばれないので、abort で終わった道では受け手が残ります。5128dec0ca1 は `addEventListener` に `{once: true}` を付けて、1 回呼ばれたら外れるようにしました。コミットの本文は、受け手が付いた `AbortSignal` が abort されるまで回収されない WebKit の不具合（bugs.webkit.org の 298499）にも触れています。手元の 8576f161ae4 と 22.1.6 には入っていません。22.2 系には b9de99db716 として v22.2.0 から入っていて、このサイトの今の依存 22.2.6 の `@angular/common` の `fesm2022/http.mjs` にも `{once: true}` があります。
 
 ## 5. まだ残っていた穴：params が使えなくなったとき（origin/main の efbab16e567）
 
@@ -508,11 +508,11 @@ diff --git a/packages/core/src/resource/resource.ts b/packages/core/src/resource
 
 ```
 
-[resource の章](../signals/15-resource.md)の DEMO で見た「resolved になった後の reload でも abort イベントが出る」は、`finally` が `pendingController` を残していたからでした。833c1f2c96c（#71422、2026-11-10 取り込み）は、stream でない loader なら、終わった読み込みの `pendingController` を `finally` で消します。`rxResource` のような stream は、壊すときに abort で購読をやめる必要があるので残します。もう 1 つ、`abort()` に理由を渡さないと毎回 `DOMException` が作られ、V8 ではそのたびに呼び出し履歴を取るので、深いコンポーネントの木を壊すと遅くなる、という理由で、理由のオブジェクトを 1 つ作って使い回すようにしました。
+[resource の章](../signals/15-resource.md)の DEMO で見た「resolved になった後の reload でも abort イベントが出る」は、`finally` が `pendingController` を残していたからでした。833c1f2c96c（#71422、2026-11-10 取り込み）は、stream でない loader なら、終わった読み込みの `pendingController` を `finally` で消します。`rxResource` のような stream は、壊すときに abort で購読をやめる必要があるので残します。22.2 系には c489b852a5 として v22.2.6 から入っていて、このサイトの今の依存 22.2.6 でも動きます（6 節の DEMO）。もう 1 つ、`abort()` に理由を渡さないと毎回 `DOMException` が作られ、V8 ではそのたびに呼び出し履歴を取るので、深いコンポーネントの木を壊すと遅くなる、という理由で、理由のオブジェクトを 1 つ作って使い回すようにしました。
 
 ## 6. DEMO：読み込み中に params を変える・壊す・set する
 
-> **🧪 DEMO — このサイトの @angular/core 22.1.6 の resource と rxResource（ページの上の本物）**
+> **🧪 DEMO — このサイトの @angular/core 22.2.6 の resource と rxResource（ページの上の本物）**
 >
 > 子 A は `resource({ params: () => query(), loader })` を持つコンポーネントで、loader は外へ通信せず、選んだ時間だけ `setTimeout` で待つ Promise を返します。「loader が abortSignal を見て止まる」を外すと、abort されても Promise は時間どおりに解決します。子 B は `rxResource` で、stream は 1 秒ごとに値を出し続ける Observable です。数は loader と Observable の中から数えています。`PendingTasks` の仕事はページの上からは数えられないので、「まだ解決していない Promise」を見ます（resource の仕事は、abort されるか Promise が解決するまで外れません）。
 >
@@ -520,8 +520,8 @@ diff --git a/packages/core/src/resource/resource.ts b/packages/core/src/resource
 
 - 子 A を作り、'a' を押してすぐ 'b' を押すと、「abort イベント #1」が出て、まだ解決していない Promise は 1 つのままです（#1 は止まり、#2 が待っている）。
 - 'a' を押してすぐ `params = undefined` を押すと、status はすぐ `idle` になりますが、**abort イベントは出ず**、Promise は時間が来るまで残ります。その間、この読み込みの `PendingTasks` の仕事も外れません（5 節の穴。作業木の spec で確かめた）。4 秒にすると分かりやすくなります。
-- 読み込み中に「子 A を壊す」と、`destroy()` から abort が出ます。解決した後に壊すと「もう解決していた」の abort が出ます（5 節の 833c1f2c96c が消すもの）。
-- 子 B を作って 'x' → 'y' と押すと、'x' の購読が unsubscribe されてから 'y' を subscribe します。'set-in-subscribe' は e0e902a8fa9 の spec と同じ形で、subscribe の途中で `set()` します。22.1.6 では直っているので、生きている購読は 0 に戻り、value は set した値です。
+- 読み込み中に「子 A を壊す」と、`destroy()` から abort が出ます。解決した後に壊しても、22.2.6 では abort は出ません（「うち解決した後の abort」は 0 のまま）。5 節の 833c1f2c96c と同じ差分が v22.2.6 に入っているからで、22.1.6 では「もう解決していた」の abort が出ていました。
+- 子 B を作って 'x' → 'y' と押すと、'x' の購読が unsubscribe されてから 'y' を subscribe します。'set-in-subscribe' は e0e902a8fa9 の spec と同じ形で、subscribe の途中で `set()` します。22.1.0 から直っているので（22.2.6 でも同じ）、生きている購読は 0 に戻り、value は set した値です。
 - 子 B で 'x' の後に「rx の params = undefined」を押すと、status は `idle` なのに**生きている購読は 1 のまま**で、ログに unsubscribe が出ません。次に 'y' を押すと、そこで初めて「unsubscribe（'x'）」が出ます（5 節の穴の、`rxResource` での見え方）。
 
 ## 全体の流れ
@@ -751,11 +751,11 @@ loader が `abortSignal` を `fetch` に渡していれば止まります。`Des
 
 **Q. params を undefined にすれば、前の読み込みは止まりますか？**
 
-8576f161ae4 と 22.1.6 では止まりません。loadEffect が `abortInProgressLoad()` より前に帰るからです（5 節）。DEMO では、Promise の loader に abort イベントが届かず、`rxResource` の Observable の購読も残ります。origin/main の efbab16e567（2026-11-10）で、帰る前に止めるようになりました。
+8576f161ae4・22.1.6・22.2.6 では止まりません。loadEffect が `abortInProgressLoad()` より前に帰るからです（5 節）。DEMO では、Promise の loader に abort イベントが届かず、`rxResource` の Observable の購読も残ります。origin/main の efbab16e567（2026-11-10）で、帰る前に止めるようになりました。
 
 **Q. 終わった読み込みにも abort イベントが来るのはなぜですか？**
 
-8576f161ae4 の `finally` は `PendingTasks` の仕事だけを外し、`pendingController` を残すので、次の読み込みや `destroy()` の `abortInProgressLoad()` が終わった読み込みの `AbortController` も abort します。origin/main の 833c1f2c96c が、stream でない loader についてこれを消しました（5 節）。
+8576f161ae4 の `finally` は `PendingTasks` の仕事だけを外し、`pendingController` を残すので、次の読み込みや `destroy()` の `abortInProgressLoad()` が終わった読み込みの `AbortController` も abort します。origin/main の 833c1f2c96c が、stream でない loader についてこれを消しました（5 節。22.2 系は v22.2.6 から）。
 
 ## 読み終えて
 
@@ -763,7 +763,7 @@ loader が `abortSignal` を `fetch` に渡していれば止まります。`Des
 - abort を受けて購読をやめるのは stream の側の `onAbort`。`rxResource` と `httpResource` の漏れの修正はここに集まっている
 - e0e902a8fa9・63886758787 は、subscribe の途中の abort を旗で覚え、subscribe が返った後に `unsubscribe()` する（rx 134〜135、http 437〜438 行目）
 - 63886758787 の httpResource の it と PendingTask の 3 つの it は、作業木で修正を消しても通った
-- params が使えなくなったときに前の読み込みを止めない穴は、origin/main の efbab16e567 で直った（手元の木と 22.1.6 には残っている）
+- params が使えなくなったときに前の読み込みを止めない穴は、origin/main の efbab16e567 で直った（手元の木と 22.1.6・22.2.6 には残っている）
 
 ---
 

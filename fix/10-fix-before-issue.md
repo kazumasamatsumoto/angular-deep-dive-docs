@@ -238,7 +238,7 @@ commit message の本文については、ガイドラインがこう書いて�
 | EventDispatcher に同じ Event を 2 回渡すと「Cannot redefine property: stopPropagation」 | event\_dispatcher.ts（configurable: false の defineProperty） | Angular のアプリ 2 つでの再現をまだ作っていない（jsaction のシリーズでも「試していない」と書いた）。先に再現を作るのが順番 |
 | registerAppScopedDispatcher が効かない | earlyeventcontract.ts | Angular の中では呼ばれていない。使う人のいない API の直しは優先が低い |
 | `@Input() declare` が JS に出る（第 7 回の残り） | compiler-cli の transform.ts | 内部の API が要るので、issue で方針を聞くのが先 |
-| #71518（早期の契約のリスナーが外されない） | jsaction の早期の契約 | 承認済みの PR #71519 がある |
+| #71518（早期の契約のリスナーが外されない） | jsaction の早期の契約 | PR #71519 が 2026-11-10 に入り、v22.2.6 に 6b257f59b42 として入った（もう候補ではない） |
 
 ## 6. なぜこのシリーズでは出さないのか
 

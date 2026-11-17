@@ -457,7 +457,7 @@ Signal Forms の `validateAsync` と `validateHttp` の `debounce` オプショ�
 
 > **🧪 DEMO — 打った回数・タイマー・loader の回数を数える**
 >
-> 「作って動かす」で、このページの `@angular/core` 22.1.6 の本物の `debounced(text, wait, { injector })` と、`params: ({ chain }) => chain(deb)` の `resource` を、新しく作った注入器の中に作ります。loader は通信せず、400 ms 後に解決する Promise です。タイマーは、debounce\_spec.ts の `describe('timer cleanup')` と同じ考え方で数えます。動かしている間だけ `setTimeout` と `clearTimeout` を包み、待ち時間が 777 ms のものだけを記録します（「注入器を壊す」で元に戻します）。
+> 「作って動かす」で、このページの `@angular/core` 22.2.6 の本物の `debounced(text, wait, { injector })` と、`params: ({ chain }) => chain(deb)` の `resource` を、新しく作った注入器の中に作ります。loader は通信せず、400 ms 後に解決する Promise です。タイマーは、debounce\_spec.ts の `describe('timer cleanup')` と同じ考え方で数えます。動かしている間だけ `setTimeout` と `clearTimeout` を包み、待ち時間が 777 ms のものだけを記録します（「注入器を壊す」で元に戻します）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/resx-debounced)
 

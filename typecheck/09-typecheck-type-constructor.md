@@ -860,7 +860,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 9. デモ：本物の generateTypeCheckBlock で型コンストラクタを見る
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock**
 >
 > プリセットを押すと、テンプレートとディレクティブの定義を切り替えて TCB を作ります。テンプレートは書き換えてから「TCB を作る」を押しても動きます。ディレクティブの定義は固定です。強調した行が、この章で読んだ op の出力です。この 3 ファイル（directive\_constructor.ts・directive\_type.ts・scope.ts の getDirectiveOp）は 22.1.6 と読んでいるソースで同じです。
 >

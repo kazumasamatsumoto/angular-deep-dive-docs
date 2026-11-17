@@ -971,7 +971,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の 3 つのパイプと 3 つの関数に、同じ値を渡す**
 >
-> 「書く」を押すと、このサイトの本物（@angular/common 22.1.6）の `DecimalPipe`・`PercentPipe`・`CurrencyPipe` を `new` して value を*文字列のまま*渡し、`formatNumber`・`formatPercent`・`formatCurrency` には `Number(value)` を渡します。「書式を読んだ結果」は 307〜363 行目、「parseNumber」は 401〜455 行目を表示用に移植した関数の結果で、書式の文字列そのものは本物の `getLocaleNumberFormat` から取ります。ja・fr・de・hi・ar は押したときにこの章で `registerLocaleData` します。display に `true`・`false` は入れられません（292 行目の `console.warn` が出るため）。
+> 「書く」を押すと、このサイトの本物（@angular/common 22.2.6）の `DecimalPipe`・`PercentPipe`・`CurrencyPipe` を `new` して value を*文字列のまま*渡し、`formatNumber`・`formatPercent`・`formatCurrency` には `Number(value)` を渡します。「書式を読んだ結果」は 307〜363 行目、「parseNumber」は 401〜455 行目を表示用に移植した関数の結果で、書式の文字列そのものは本物の `getLocaleNumberFormat` から取ります。ja・fr・de・hi・ar は押したときにこの章で `registerLocaleData` します。display に `true`・`false` は入れられません（292 行目の `console.warn` が出るため）。
 >
 > 試すと分かること：`NaN` はパイプでは例外（3 節）、関数では `'NaN'`（45〜50 行目）。`''` はパイプでは `null`、`Number('')` は 0。currencyCode に `JPY`、DEFAULT\_CURRENCY\_CODE に `JPY` として 3 行目と 4 行目を比べると、1 節の警告の違いが出ます。
 >

@@ -23,7 +23,7 @@
 7. [小さな pipe たち：JsonPipe・SlicePipe・大文字小文字・I18nSelectPipe](07-cmn-simple-pipes.md)  
    JsonPipe が pure: false である理由と JSON.stringify の引数、SlicePipe が配列と文字列だけを受け取る行（supports）、TitleCasePipe の単語の切り方の正規表現、UpperCasePipe・LowerCasePipe、I18nSelectPipe が Object.hasOwn で mapping を引く行（2026 年 6 月の修正 311aff05aa2）と other への戻り方。
 8. [KeyValuePipe：オブジェクトと Map を並べる](08-cmn-keyvalue-pipe.md)  
-   KeyValuePipe が KeyValueDiffers で入力の変化を確かめ、変わったときだけ配列を作り直して compareFn で並べる行、defaultComparator が数・文字列・それ以外をどう比べるか、compareFn に null を渡したときの並び（途中で null に変えると並びが戻らない点も）、2026 年 8 月の型の修正（46d2cb7ff04）と signal を渡したときの警告（97ed3d9e859）。ページの上で本物の KeyValuePipe に値を渡すデモ。
+   KeyValuePipe が KeyValueDiffers で入力の変化を確かめ、変わったときだけ配列を作り直して compareFn で並べる行、defaultComparator が数・文字列・それ以外をどう比べるか、compareFn に null を渡したときの並び（手元の木では途中で null に変えても並びが戻らないこと、22.2.6 の fb705aad90 で入力の順に戻るようになったこと）、2026 年 8 月の型の修正（46d2cb7ff04）と signal を渡したときの警告（97ed3d9e859）。ページの上で本物の KeyValuePipe に値を渡すデモ。
 9. [DatePipe：transform から formatDate まで](09-cmn-date-pipe.md)  
    DatePipe のコンストラクタが LOCALE\_ID・DATE\_PIPE\_DEFAULT\_TIMEZONE・DATE\_PIPE\_DEFAULT\_OPTIONS を受け取る行、transform が null・空・NaN を null にし、format・timezone・locale の既定を決めて formatDate を呼び、例外を invalidPipeArgumentError に包む流れ。DatePipeConfig と provide の書き方。ページの上で本物の DatePipe と formatDate に値を渡すデモ。
 10. [formatDate の書式の読み方：toDate・名前つきの書式・DATE\_FORMATS\_SPLIT](10-cmn-format-date.md)  

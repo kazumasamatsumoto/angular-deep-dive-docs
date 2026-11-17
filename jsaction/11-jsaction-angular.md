@@ -2,7 +2,7 @@
 
 # Angular の側：イベントの記録と再生・hydrate の道とのつながり
 
-> core の event\_delegation\_utils.ts と hydration/event\_replay.ts のうち event-replay の章で読んでいない行（起動のときの守り・使わないアプリでは空の預ける口・アプリが壊れたときの片付け）、サーバーが jsaction を付ける条件（hydration/annotate.ts）、render3/view/listeners.ts と invokeListeners で本物のリスナーと再生の二重の呼び出しを防ぐ行、最近の修正（d5fd51e9569 二重の呼び出し・3583c01bf9a イベントでない値の守りと関数の同一性・30e9c62bdfb メモリリーク）と、開いている #71518・#66506 の形を Node の記録で確かめる。
+> core の event\_delegation\_utils.ts と hydration/event\_replay.ts のうち event-replay の章で読んでいない行（起動のときの守り・使わないアプリでは空の預ける口・アプリが壊れたときの片付け）、サーバーが jsaction を付ける条件（hydration/annotate.ts）、render3/view/listeners.ts と invokeListeners で本物のリスナーと再生の二重の呼び出しを防ぐ行、最近の修正（d5fd51e9569 二重の呼び出し・3583c01bf9a イベントでない値の守りと関数の同一性・30e9c62bdfb メモリリーク）と、22.2.6 で直った #71518・#66506 の形を Node の記録で確かめる。
 
 angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-angular)
 
@@ -298,7 +298,7 @@ window.__jsaction_bootstrap(document.body,"ng",["click"],["load"]);
 
 `git show` で 2 つの修正を読むと、d5fd51e9569 は最初、listeners.ts で `renderer.listen` に **別の関数**（`domListener` という、印を付けてから包んだ関数を呼ぶ関数）を渡していました。3583c01bf9a（同じ日）のコミットのメッセージは、その形だと `DebugElement.triggerEventHandler` がハンドラーを 2 回呼んだと書いています。`triggerEventHandler` は、Angular が持っている包んだ関数と、Zone.js が覚えているリスナーの関数が同じかで重複を除くので、関数が 2 つになると除けなかったのです。そこで、関数を分けずに、包んだ関数そのものに `__ngNativeEl__` を貼り（178〜179 行目）、包んだ関数の中で印を付ける（57〜59 行目）形に直しています。
 
-## 5. アプリが壊れたあとに残るもの（30e9c62bdfb と、開いている 2 件）
+## 5. アプリが壊れたあとに残るもの（30e9c62bdfb と、#71518・#66506）
 
 📄 `angular/packages/core/src/hydration/tokens.ts` L42–65 （▶ の行: 46, 50, 55–57, 60, 63）
 
@@ -331,7 +331,7 @@ window.__jsaction_bootstrap(document.body,"ng",["click"],["load"]);
 
 `@defer` の塊のイベントを積む列は、30e9c62bdfb（2026-01-07、#59261）で、モジュールの変数 `blockEventQueue` から、60〜65 行目のアプリごとの注入トークン `EVENT_REPLAY_QUEUE` に移りました。`git show` で読むと、それまでは `let blockEventQueue: {event: Event; currentTarget: Element}[] = []` がモジュールに 1 つあり、アプリを壊しても、積んだイベントと要素が残っていました。いまは 63 行目の factory がインジェクタごとに配列を作るので、アプリのインジェクタと一緒に手放されます（列の使い方は defer-hydrate-events の章の 3〜4 節）。46〜50 行目は 2 節の `IS_EVENT_REPLAY_ENABLED` の定義で、どこからも provide されなければ `false`（50 行目）です。
 
-いまも開いている 2 件は、どちらも「再生が済んだあとも動き続けるもの」の話です。記録で確かめた形を並べます。
+次の 2 件は、どちらも「再生が済んだあとも動き続けるもの」の話です。記録（22.1.6）で確かめた形を並べます。どちらも 2026-11 に閉じられ、直しはどちらもこのサイトの依存の 22.2.6 に入っています。
 
 📄 `angular/packages/core/src/hydration/event_replay.ts` L217–223 （▶ の行: 217–219, 223）
 
@@ -345,8 +345,8 @@ window.__jsaction_bootstrap(document.body,"ng",["click"],["load"]);
 223 ▶   registerDispatcher(eventContract, dispatcher);
 ```
 
-- **#71518（2026-10-21）：早期の箱の &lt;body&gt; のリスナーが外されない。** 217〜219 行目で、箱の中身を取り出し、渡し、`window._ejsas[appId]` を消します。けれど、箱が `<body>` に付けたリスナーを外す `removeAllAppScopedEventListeners`（[第 5 回](05-jsaction-early-contract.md)）はどこでも呼んでいません。リスナーは箱の `q` に積み続けます。記録の after-stable の場面では、安定のあとに 2 回押すと、手元で控えておいた箱の `q` が 0 件から 2 件に増えました。issue に付いた PR #71519 は開いたままです（2026-11-06）。
-- **#66506（2026-01-13）：安定のあとに作った要素が預け先の表に残る。** 3 節のとおり、預ける口はページが続く間ずっと本物のままで、アプリの預け方も壊れるまで登録されたままです（event-replay の章の 5 節の 112〜126 行目）。だから安定のあとに作った要素も、`__jsaction_fns` に関数を預けられ、`JSACTION_BLOCK_ELEMENT_MAP` の `''` の組に入ります。`''` の組を消すのは安定したときの 1 回だけです（同じく 6 節の 177〜178 行目）。記録の late の場面では、安定のあとに `@if` で作った `button#late` が `''` の組に入り、`@if` を偽にして DOM から外したあとも組に残りました。issue に付いた PR は、#66594 が開いたまま、#66613 と #66627 は閉じられています（2026-11-06）。
+- **#71518（2026-10-21）：早期の箱の &lt;body&gt; のリスナーが外されない（22.2.6 で直った）。** 217〜219 行目で、箱の中身を取り出し、渡し、`window._ejsas[appId]` を消します。けれど、箱が `<body>` に付けたリスナーを外す `removeAllAppScopedEventListeners`（[第 5 回](05-jsaction-early-contract.md)）はどこでも呼んでいません。22.1.6 では、219 行目の `clearAppScopedEarlyEventContract` も欄を消すだけだったので、リスナーは箱の `q` に積み続けました。記録の after-stable の場面では、安定のあとに 2 回押すと、手元で控えておいた箱の `q` が 0 件から 2 件に増えました。直しは、Angular の側のこの行ではなく、219 行目が呼ぶ `clearAppScopedEarlyEventContract` の中に入りました。PR #71519 が 2026-11-10 に main へ 74260b298fe として入り、6b257f59b42 として v22.2.6 に入っています。欄を消す前にリスナーを外すので、2 節の `onDestroy`（156 行目）からの片付けでも外れます。このサイトの依存の 22.2.6 では、このページを開いて安定のあとに押しても、消される前に控えた早期の箱の `q` は 0 件のままでした（2026-11-17、ヘッドレスの Chrome。clear の中身は第 5 回の 5 節）。
+- **#66506（2026-01-13）：安定のあとに作った要素が預け先の表に残る（22.2.6 で直った）。** 3 節のとおり、預ける口はページが続く間ずっと本物のままで、アプリの預け方も壊れるまで登録されたままです（event-replay の章の 5 節の 112〜126 行目）。だから 22.1.6 では、安定のあとに作った要素も、`__jsaction_fns` に関数を預けられ、`JSACTION_BLOCK_ELEMENT_MAP` の `''` の組に入ります。`''` の組を消すのは安定したときの 1 回だけです（同じく 6 節の 177〜178 行目）。記録（22.1.6）の late の場面では、安定のあとに `@if` で作った `button#late` が `''` の組に入り、`@if` を偽にして DOM から外したあとも組に残りました。22.2.6 では、預け方の関数の頭が「要素でない」に加えて「`jsaction` 属性が無い」ときも戻るようになりました（596a40061f、v22.2.6、fix(core): resolve closure and reference retention leaks。main の 5f511541978 の cherry-pick。メッセージに「skipping non-jsaction elements in event replay stashing」）。`jsaction` 属性はサーバーが描いた要素にしか付かないので（1 節）、`button#late` のようにブラウザで作った要素は、預けられず、組にも入りません。配布物の core.mjs では 366 行目の `if` です。issue に付いた PR は、#66613 と #66627 が 2026-01 に、#66594 が 2026-11-12 に、どれも取り込まれずに閉じられ、issue は 2026-11-12 に閉じられました。
 
 ## 6. DEMO：JS の前・安定の前・安定の後（記録の再生）
 
@@ -369,18 +369,18 @@ window.__jsaction_bootstrap(document.body,"ng",["click"],["load"]);
 3. **before-stable：本物のリスナーが 1 回ずつ呼ばれ、安定のときの再生では呼ばれない**
 
    3 段目で、inner（`eventPhase = 2`）と outer（3）の本物のリスナーが呼ばれ、同じクリックが箱の `q` にも入りました。4 段目で安定すると、`EventDispatcher.dispatch` は再生の 1 件を受けましたが、リスナーは呼ばれていません。4 節の 128 行目で止まったからです。
-4. **after-stable：契約は click を受け続けるが、渡す先がない。箱の q は増える**
+4. **after-stable：契約は click を受け続けるが、渡す先がない。22.1.6 では箱の q も増える**
 
-   安定のあとの 2 回の click は、本物のリスナーが受けます。残った契約の `EventDispatcher.dispatch` も呼ばれますが、jsaction は 6 節の片付けで消えているので行き先がなく、何もしません。控えた箱の `q` は 2 件に増えました（5 節の #71518）。
+   安定のあとの 2 回の click は、本物のリスナーが受けます。残った契約の `EventDispatcher.dispatch` も呼ばれますが、jsaction は 6 節の片付けで消えているので行き先がなく、何もしません。この記録（22.1.6）では、控えた箱の `q` は 2 件に増えました（5 節の #71518）。直しの入った 22.2.6 では、箱のリスナーが外れているので増えません。
 5. **load：JS の前の load は 1 回だけ渡った**
 
    捕獲の種類の load も、箱から再生されて `(load)` が 1 回呼ばれました。#59260（2024-12-20）は本物のブラウザで `(load)` が 2 回呼ばれると報告しています。domino は画像を読み込まないので、この記録ではその場面を作れていません。
 6. **destroy：安定の前に壊すと、箱が消える**
 
    2 節の 149〜158 行目で `window._ejsas.ng` が `undefined` になりました。再生は一度も走っていません（`initEventReplay` の記録がない）。
-7. **late：安定のあとに作った要素が表に残る**
+7. **late：安定のあとに作った要素が表に残る（22.1.6）**
 
-   5 節の #66506 の形です。消したあとも `''` の組に「DOM から外れている」`button#late` が残りました。
+   5 節の #66506 の形です。この記録（22.1.6）では、消したあとも `''` の組に「DOM から外れている」`button#late` が残りました。22.2.6 では `jsaction` 属性の無い要素を預けないので、組に入りません（5 節の 596a40061f）。
 8. **null：イベントでない値でも例外にならない**
 
    `triggerEventHandler('click', null)` で、inner の `(click)` は `$event = null` で呼ばれ、例外は出ませんでした。4 節の 114 行目です。
@@ -597,7 +597,7 @@ process.exit(0);
 - 👤 `ユーザーの click（安定の前）` — 要素のリスナーと &lt;body&gt; の箱
   - `wrapListenerIn_markDirtyAndPreventDefault` → `markEventHandledForElement` — listeners.ts 57〜59・event\_delegation\_utils.ts 111
 - `APP_BOOTSTRAP_LISTENER` → `appRef.whenStable()` — event\_replay.ts 133・163 — *2 節の守り*
-  - `initEventReplay` — event\_replay.ts 204〜223 — *removeAllAppScopedEventListeners は呼ばない（#71518）*
+  - `initEventReplay` — event\_replay.ts 204〜223 — *removeAllAppScopedEventListeners は呼ばない。22.2.6 では 219 行目の clear の中で外す（#71518）*
     - `EventDispatcher.dispatchToDelegate` → `invokeRegisteredReplayListeners` → `invokeListeners` — event\_dispatcher.ts 82・event\_replay.ts 275・event\_delegation\_utils.ts 123
       - `handledEventElements.get(event)?.has(currentTarget)` — event\_delegation\_utils.ts 128 — *本物が配っていれば呼ばない*
 - `appRef.onDestroy` → `clearAppScopedEarlyEventContract` — event\_replay.ts 149・156
@@ -723,10 +723,10 @@ INFO: Elapsed time: 1.520s
 
 ### 直すとしたら
 
-- #71518（早期の箱のリスナー）：入口は event\_replay.ts の `initEventReplay`（217〜219 行目のあたり）と、2 節の `onDestroy`（149〜158 行目）です。spec は、event\_replay\_spec.ts に「安定のあとに押しても早期の箱が増えない」it を足す形で、記録の after-stable の場面と同じ確かめになります。開いている PR #71519 があります。
-- #66506（安定のあとの要素）：入口は event\_replay.ts の `ENVIRONMENT_INITIALIZER` の預け方（event-replay の章の 5 節の 112〜126 行目）と、3 節の預ける口です。記録の late の場面が、spec にするときの順です。
+- #71518（早期の箱のリスナー）：6b257f59b42（v22.2.6）で直りました。入口の event\_replay.ts の `initEventReplay`（217〜219 行目）と 2 節の `onDestroy`（149〜158 行目）はそのままで、どちらも呼ぶ bootstrap\_app\_scoped.ts の `clearAppScopedEarlyEventContract` に 1 行が足されました。spec は event\_replay\_spec.ts に、`should stop queueing events in the early event contract once the app is stable` と `… when the app is destroyed before it is stable` の 2 つの it が足され、記録の after-stable・destroy の場面と同じ確かめ（控えた箱の `q` が 0 件のまま）になっています。
+- #66506（安定のあとの要素）：596a40061f（v22.2.6）で、event\_replay.ts の `ENVIRONMENT_INITIALIZER` の預け方（event-replay の章の 5 節の 112〜126 行目）の頭に、`jsaction` 属性を見る条件が足されました。3 節の預ける口はそのままです。記録の late の場面が、spec にするときの順です。
 - #59260（`(load)` が 2 回）：本物のブラウザでの確かめが要ります。失敗する spec を足す PR #68131 は 2026-04-13 に閉じられ、直す PR #68178 は 2026-09-23 に作者が「The approach is wrong」と書いて閉じています。
-- 本家に PR を出すことは勧めません。記録と同じ順で手元の spec を書き、issue の本文の説明が今の行と合っているかを確かめるところまでにします（[第 12 回](12-jsaction-tests-issues.md)の表）。
+- 記録と同じ順で手元の spec を書き、issue の本文の説明が今の行と合っているかを確かめるところまでにします（[第 12 回](12-jsaction-tests-issues.md)の表）。
 
 ## 聞かれそうな質問
 
@@ -748,14 +748,14 @@ core の `withIncrementalHydration()` が providers に `withEventReplay()` を�
 
 **Q. アプリを壊すと、イベントの再生が持っていたものは手放されますか？**
 
-早期の箱は event\_replay.ts 156 行目で `window._ejsas[appId]` から外され、塊のイベントの列は tokens.ts 60〜65 行目のアプリごとのトークンなのでインジェクタと一緒に手放されます（30e9c62bdfb）。一方で、早期の箱が `<body>` に付けたリスナーは外されず（#71518）、安定のあとに作った要素は預け先の表に残ります（#66506）。どちらも開いています。
+早期の箱は event\_replay.ts 156 行目で `window._ejsas[appId]` から外され、塊のイベントの列は tokens.ts 60〜65 行目のアプリごとのトークンなのでインジェクタと一緒に手放されます（30e9c62bdfb）。早期の箱が `<body>` に付けたリスナーも、22.2.6 では 156 行目の `clearAppScopedEarlyEventContract` の中で外されます（6b257f59b42、#71518）。22.1.6 では外されませんでした。安定のあとに作った要素が預け先の表に残る形（#66506）も、22.2.6 では `jsaction` 属性の無い要素を預けなくなったので起きません（596a40061f）。
 
 ## 読み終えて
 
 - サーバーは、再生が有効で、DOM のリスナーがある要素にだけ jsaction を付けます。このサイトも `withIncrementalHydration()` 経由でイベントの再生を使っています。
 - ブラウザでは、アプリごとに 1 回だけ始め、壊れたら早期の箱を消します。預ける口は使わないアプリでは空の関数です。
 - 安定の前に本物のリスナーが配ったイベントは、(イベント, 要素) の印で再生しません。印は包んだ関数そのものの中で付けます。
-- 塊のイベントの列はアプリごとのトークンになりました。早期の箱のリスナーと、安定のあとに作った要素の預け先は、まだ残ります（#71518・#66506）。
+- 塊のイベントの列はアプリごとのトークンになりました。早期の箱のリスナーは 22.2.6 から clear の中で外されます（#71518）。安定のあとに作った要素も、22.2.6 からは預けられません（#66506）。
 
 ---
 

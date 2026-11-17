@@ -767,7 +767,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 ## 6. デモ：自己終了タグの判定と書き換え
 
-> **🧪 DEMO — self-closing-tags の判定の簡略版（移植）を、このページの @angular/compiler 22.1.6 で動かす**
+> **🧪 DEMO — self-closing-tags の判定の簡略版（移植）を、このページの @angular/compiler 22.2.6 で動かす**
 >
 > 「判定して書き換える」を押すと、`parseMigHtml`（parse\_html.ts と同じオプションの `HtmlParser`）でテンプレートを解析し、すべての要素について 2 節の 92〜94 行目の 3 つの条件を表にします。「知っている HTML の要素か」は本物の `DomElementSchemaRegistry` で調べます。対象の要素には 56 行目と同じ正規表現を当て、長さが変わったものだけを `applyTextUpdates` で当てます。これは to-self-closing-tags.ts の **移植**で、本物は 35〜49 行目のように `changedOffset` を足しながら文字列を順に作り直します。対象の要素同士は入れ子にならないので、結果は同じです。
 >

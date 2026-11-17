@@ -91,7 +91,7 @@ angular/angular · 読了 約 11 分 · 中核 · [サイトで読む（デモ�
 
 `@angular/core` の入口のファイルです。79 行目の `ForeignComponent`、115 行目の `provideForeignRootContext`、116 行目の `foreignImport` は、どれも行の頭が `// g3-only` の**コメント**です。TypeScript から見ればただのコメントなので、npm のパッケージには出ません。一方、命令の 3 つ（`ɵɵforeignComponent`・`ɵɵforeignContent`・`ɵɵforeignContentFn`）は `core_render3_private_export.ts` から `ɵɵ` の名前で出ています。コンパイラが出したコードが呼ぶので、出ていないと動きません。
 
-このサイトの `node_modules/@angular/core`（22.1.6）で確かめた記録です。
+このサイトの `node_modules/@angular/core`（22.1.6）で確かめた記録です。今の依存の 22.2.6 で同じコマンドを走らせても、行番号のほかは同じでした（2026-11-17）。
 
 📄 `記録：サイトの node_modules/@angular/core（22.1.6）`
 
@@ -413,7 +413,7 @@ v22.1.5
    0a9b19454d0 は書いた日（author date）が 03-25、main に入った日が 05-15 です。残りはほぼ leonsenft さんのコミットで、6 月 3〜8 日の 1 週間に core の中身の大半が入りました。
 2. **22.1.0 で全体がそろい、22.2 の 3 つも 22.1.x に入った**
 
-   描く時機を変えた 34817da7354 も、22.1.5 に同じ差分（60f8a785fd2）が入っています。このサイトが使う 22.1.6 の `ɵɵforeignComponent` は、22.2.6 のものと同じ形（`createViewEffect` で 1 回だけ描く）です。違いが見えるのは 22.1.4 との間で、[第 3 回](03-fgn-instruction.md)で 3 つの版を並べて動かします。
+   描く時機を変えた 34817da7354 も、22.1.5 に同じ差分（60f8a785fd2）が入っています。このサイトが使う 22.2.6 の `ɵɵforeignComponent` は、22.1.6 のものと同じ形（`createViewEffect` で 1 回だけ描く）です。違いが見えるのは 22.1.4 との間で、[第 3 回](03-fgn-instruction.md)で 3 つの版を並べて動かします。
 3. **名前に foreign が付いても別の話のもの**
 
    ef09d108f23（devtools、09-09）は「ページの中にある、別のアプリの root の要素」を扱う修正で、外のコンポーネントとは関係ありません。56847dc77a5（devtools）と cd656701b07 は SVG の `<foreignObject>`、06b004ec5c4 は ngtsc の `ForeignFunctionResolver` の話です。
@@ -423,9 +423,9 @@ v22.1.5
 
 ## 6. デモ：本物の命令が、外の部品の何を読みに来るか
 
-この章のデモの部品は、`foreignImports: [miniImport(MiniBadge)]` を `// @ts-ignore` 付きで書き、サイトのビルド（AOT、compiler-cli 22.1.6）で本当にコンパイルしています。`miniImport` は**仕組みを見るための手作りの橋で、本家の使い方ではありません**。外に出ていない Symbol のキーを、Proxy の `get` で受けて `key.description`（`'RENDER'` など）で振り分け、素の DOM で描く小さな関数を返します。受けたキーと呼ばれた関数を、すべて順に記録します。
+この章のデモの部品は、`foreignImports: [miniImport(MiniBadge)]` を `// @ts-ignore` 付きで書き、サイトのビルド（AOT、compiler-cli 22.2.6）で本当にコンパイルしています。`miniImport` は**仕組みを見るための手作りの橋で、本家の使い方ではありません**。外に出ていない Symbol のキーを、Proxy の `get` で受けて `key.description`（`'RENDER'` など）で振り分け、素の DOM で描く小さな関数を返します。受けたキーと呼ばれた関数を、すべて順に記録します。
 
-DEMO — 本物の ɵɵforeignComponent が、外の部品の何を読みに来るか この枠の中の `<MiniBadge>` は、この章のコンポーネントの `foreignImports` に 手作りの橋 `miniImport(MiniBadge)` を入れて、サイトの AOT（compiler-cli 22.1.6）で本当にコンパイルしたものです。橋は Proxy で、読まれたキーと呼ばれた関数を順に書き出します。外の部品を置く場所（記録はありません。ページを開いた直後の記録は、最初に描き終えたあとに表示します）
+DEMO — 本物の ɵɵforeignComponent が、外の部品の何を読みに来るか この枠の中の `<MiniBadge>` は、この章のコンポーネントの `foreignImports` に 手作りの橋 `miniImport(MiniBadge)` を入れて、サイトの AOT（compiler-cli 22.2.6）で本当にコンパイルしたものです。橋は Proxy で、読まれたキーと呼ばれた関数を順に書き出します。外の部品を置く場所（記録はありません。ページを開いた直後の記録は、最初に描き終えたあとに表示します）
 
 1. **ページを開いた時点の 3 行：`Symbol(Symbol.toPrimitive)`・`"toString"`・`Symbol(Symbol.toStringTag)`**
 

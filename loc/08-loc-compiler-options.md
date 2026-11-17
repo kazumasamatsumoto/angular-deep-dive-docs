@@ -872,7 +872,7 @@ compiler-cli には `ngc` のほかに、`ng-xi18n` というコマンドがあ�
 
 ## 9. デモ：古い道で 3 つの形式に書く
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 の MessageBundle で集め、Xliff・Xliff2・Xmb で書く（古い道）**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 の MessageBundle で集め、Xliff・Xliff2・Xmb で書く（古い道）**
 >
 > 「書き出す」を押すと、`loc-compile.ts` の `extractMessages` が 6 節の `MessageBundle`（`updateFromTemplate` → `write`）を本物のまま呼びます。ロケールは `en`、ファイル名は `demo.html` です。これは **ng-xi18n の道**で、`ng extract-i18n` の出力ではありません（ID の数え方もプレースホルダーの書き方も違うことがあります。いまの道は[第 16 回](16-loc-serializers.md)のデモ）。7 節のコメントの印を使うと出る `console.warn` は、この画面に出します。
 >

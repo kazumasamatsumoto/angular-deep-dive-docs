@@ -111,7 +111,7 @@ DevTools の Components タブに出る木は、パネルが持っているも�
 道は 2 つです。689 行目、`window.ng` に `getComponentForest` があれば、木そのものをフレームワークに作ってもらいます。無ければ 703 行目で、ルートの要素を集めて（3 節）戦略に渡します（4 節）。
 
 - `getComponentForest` の道は 50c0ce8275b（2026-03-20、refactor）で足されました。`git show` で読むと、そのときの差分は 689〜690 行目にあたる 4 行だけで、コミットのメッセージは「DOM にメタデータを書かずにフレームワークが木を渡せるようにする。DOM を描かないコンポーネントも出せるようにする」です。続く 3c255bccc18（2026-04-13）が、691〜700 行目のループ（Angular 以外のフレームワークが返す木に、無い欄の既定値を入れる）を足しました。そのときは `element` と `hydration` も埋めていましたが、6b3e46a8722（2026-06-03）で欄の名前が `tagName` に変わり、695 行目の形になっています。
-- `packages/core` には `getComponentForest` がありません（`grep -rn getComponentForest packages/core/src` で 0 件）。このサイトの `@angular/core` 22.1.6 にもありません。記録（7 節）でも `hasGetComponentForest` は 4 つの場面すべてで `false` でした。**Angular のアプリでは、いつも 703 行目の道を通ります。**
+- `packages/core` には `getComponentForest` がありません（`grep -rn getComponentForest packages/core/src` で 0 件）。このサイトの `@angular/core` 22.2.6 にもありません。記録（7 節）でも `hasGetComponentForest` は 4 つの場面すべてで `false` でした。**Angular のアプリでは、いつも 703 行目の道を通ります。**
 - 696 行目は `node.component!` と書いているので、このループは「どのノードにも `component` がある」木を前提にしています。
 
 ## 3. ルートの要素を探す：getRootElements と getAppRoots
@@ -878,7 +878,7 @@ render-tree.ts 81 行目が `getDirectiveMetadata(component)?.name` を使い、
 
 ## 読み終えて
 
-- 木は、パネルが頼むたびにバックエンドが `buildDirectiveForest` で集め直します。`ng.getComponentForest` の道は Angular 以外のフレームワーク向けで、22.1.6 にも core にもありません。
+- 木は、パネルが頼むたびにバックエンドが `buildDirectiveForest` で集め直します。`ng.getComponentForest` の道は Angular 以外のフレームワーク向けで、22.1.6 にも 22.2.6 にも core にもありません。
 - ルートは `ng-version` の付いた要素と、`body` から探したルートの外のコンポーネントです。戦略はルートごとに選びます。
 - 22 のアプリでは `RTreeStrategy` が DOM の順にたどり、コンポーネントかディレクティブのある要素だけを残します。HTML だけの要素の中身は 1 段上に詰まります。
 - `LTreeStrategy` は LView を読む古い版向けの戦略で、ただの要素のディレクティブを落とし、投影された子を兄弟として出します。

@@ -561,9 +561,9 @@ TcbDirectiveInputsOp が見た `coercedInputFields`・`restrictedInputFields`・
 
 ## 8. デモ：同じ \[size\]="n" の代入先を切り替える
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock**
 >
-> ボタンでディレクティブ `Chip` の入力 `size` の性質と設定を切り替えて、TCB を作ります。強調した行が代入の文です。デモ部品は、ngtsc が 6 節で作る集合（coerced・restricted など）をボタンごとに直接渡しています。inputs.ts と bindings.ts は 22.1.6 と読んでいるソースで同じです。
+> ボタンでディレクティブ `Chip` の入力 `size` の性質と設定を切り替えて、TCB を作ります。強調した行が代入の文です。デモ部品は、ngtsc が 6 節で作る集合（coerced・restricted など）をボタンごとに直接渡しています。inputs.ts と bindings.ts は、この章を書いたときのサイトの 22.1.6 と読んでいるソースで同じでした。いまのサイトの 22.2.6 の inputs.ts には後から入った行があり、出力が 1 行増えます（表の下）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-inputs)
 
@@ -580,6 +580,8 @@ TcbDirectiveInputsOp が見た `coercedInputFields`・`restrictedInputFields`・
 | required を書かない | （文なし）oob に `missingRequiredInputs` |
 | strictNullInputTypes: false | `_t1.size = ((((this).n))!);` |
 | strictInputTypes: false | `_t1.size = (((((this).n)) as any));` |
+
+サイトを 22.2.6 に上げたあと（2026-11-17）にデモのボタンを全部押すと、「readonly（既定）」と「readonly な input()」の 2 つだけが変わり、一時変数の宣言のすぐ後ろに `null! as typeof _t1.size /*D:ignore*/;` の文が 1 行足されました。ほかのボタンの出力は同じです。これは 646e9723db1「fix(language-service): resolve symbols for inputs with restricted access」（22.2.4）で inputs.ts に入った行です。`(typeof _t1)["size"]` の文字列のキーは TypeScript からはクラスのメンバーへの参照に見えないので、言語サービスが readonly な入力の参照を探せるように、`typeof _t1.size` という型の問い合わせを別に置きます。private / protected の入力ではこの読み取りがエラーになるので、診断は無視の印（`D:ignore`）を付け、代入の型の検査は一時変数のほうで続けます。
 
 「普通の @Input」と「readonly + strictInputAccessModifiers」は、TCB の文字列としては同じです。違いはクラスの宣言にあり、後者は TypeScript が readonly への代入をエラーにします。
 

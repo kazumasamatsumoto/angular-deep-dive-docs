@@ -155,7 +155,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 > [!NOTE]
 > **さらに深く**
 >
-> この正規表現の先頭には `^` がありません。だから 101 行目の `exec` は、`format` の先頭で当たらなければ、*後ろのほうで当たる場所*を探します。103 行目の `match.slice(1)` はかっこの中身だけなので、当たった場所より前の文字は `parts` に入らず、黙って消えます。先頭で当たらないのは、閉じていない `'` のときだけです（記号でも `'` でもない文字は 1 つめの選択肢が、記号はどれも 3 つめが拾う）。このサイトの本物（22.1.6）で `formatDate(d, "xy'z", 'en-US', 'UTC')` は `'x2026GMT+0'`、つまり `'` だけが消え、`z` はタイムゾーンとして書かれました。デモの `xy'z` と `'abc` で確かめられます。
+> この正規表現の先頭には `^` がありません。だから 101 行目の `exec` は、`format` の先頭で当たらなければ、*後ろのほうで当たる場所*を探します。103 行目の `match.slice(1)` はかっこの中身だけなので、当たった場所より前の文字は `parts` に入らず、黙って消えます。先頭で当たらないのは、閉じていない `'` のときだけです（記号でも `'` でもない文字は 1 つめの選択肢が、記号はどれも 3 つめが拾う）。このサイトの本物（22.2.6）で `formatDate(d, "xy'z", 'en-US', 'UTC')` は `'x2026GMT+0'`、つまり `'` だけが消え、`z` はタイムゾーンとして書かれました。デモの `xy'z` と `'abc` で確かめられます。
 
 ## 4. getNamedFormat：名前をロケールの書式に
 
@@ -481,11 +481,11 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 > [!NOTE]
 > **ポイント**
 >
-> 閉じた issue #69863（2026-07）は「`format` に配列 `['y'.repeat(300)]` を渡すと、139 行目の `format.length` は 1 なので長さの検査をすり抜ける」というものでした。PR #69864 とともに「型（`format: string`）が契約。ほかのものを渡したら自己責任」として Not planned で閉じられています。元の DoS の報告 #69534 も、修正が入ったあと Not planned で閉じています。このサイトの 22.1.6 には 3 つの修正がすべて入っていました（node\_modules の `_common_module-chunk.mjs` で `MAX_DATE_FORMAT_LENGTH`・`Object.hasOwn(opt_values`・`Object.create(null)` を確認）。
+> 閉じた issue #69863（2026-07）は「`format` に配列 `['y'.repeat(300)]` を渡すと、139 行目の `format.length` は 1 なので長さの検査をすり抜ける」というものでした。PR #69864 とともに「型（`format: string`）が契約。ほかのものを渡したら自己責任」として Not planned で閉じられています。元の DoS の報告 #69534 も、修正が入ったあと Not planned で閉じています。このサイトの 22.2.6 には 3 つの修正がすべて入っていました（node\_modules の `_common_module-chunk.mjs` で `MAX_DATE_FORMAT_LENGTH`・`Object.hasOwn(opt_values`・`Object.create(null)` を確認）。
 
 > **🧪 DEMO — 書式を部品に切って、本物の formatDate と並べる**
 >
-> 「書く」を押すと、このサイトの本物の `formatDate`（@angular/common 22.1.6）で全体を書きます。「名前の展開」は `getNamedFormat` の switch を移植したもの（中の `getLocaleDateFormat` などは本物）、「exec の列」「部品」は 38〜39 行目の正規表現と 100〜113 行目のループを移植したものです。部品の「出力」は、記号なら*その部品 1 つだけ*を本物の `formatDate` に渡した結果、文字なら 130〜132 行目を移植した結果です。ja だけは extra（`B`・`b` の時間帯）も `registerLocaleData` します。en-US の extra は入れていないので、`B` は `NG02303` になります。
+> 「書く」を押すと、このサイトの本物の `formatDate`（@angular/common 22.2.6）で全体を書きます。「名前の展開」は `getNamedFormat` の switch を移植したもの（中の `getLocaleDateFormat` などは本物）、「exec の列」「部品」は 38〜39 行目の正規表現と 100〜113 行目のループを移植したものです。部品の「出力」は、記号なら*その部品 1 つだけ*を本物の `formatDate` に渡した結果、文字なら 130〜132 行目を移植した結果です。ja だけは extra（`B`・`b` の時間帯）も `registerLocaleData` します。en-US の extra は入れていないので、`B` は `NG02303` になります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-format-date)
 

@@ -770,7 +770,7 @@ deprecated の文言は 2026-04 の commit 28d38b582cc（refactor(common): updat
 
 > **🧪 DEMO — 本物の IterableDiffer が出す操作の列**
 >
-> このページの本物の `IterableDiffers`（`@angular/core` 22.1.6）から `find(前の一覧).create(trackBy)` で differ を作り、前の一覧と次の一覧を順に `diff` させて、`forEachOperation` が渡す値を表にします。「画面の並び」の列は、`NgForOf._applyChanges` と同じ分け方（作る・消す・動かす）で配列を 1 手ずつ書き換えたものです（この部分はデモのための移植です）。要素は空白かカンマで区切ります。「: の前」で追うと `1:red` の `1` を鍵にします。
+> このページの本物の `IterableDiffers`（`@angular/core` 22.2.6）から `find(前の一覧).create(trackBy)` で differ を作り、前の一覧と次の一覧を順に `diff` させて、`forEachOperation` が渡す値を表にします。「画面の並び」の列は、`NgForOf._applyChanges` と同じ分け方（作る・消す・動かす）で配列を 1 手ずつ書き換えたものです（この部分はデモのための移植です）。要素は空白かカンマで区切ります。「: の前」で追うと `1:red` の `1` を鍵にします。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-ng-for-of)
 

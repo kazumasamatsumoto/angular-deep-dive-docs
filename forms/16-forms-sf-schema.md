@@ -1073,7 +1073,7 @@ path が値を持たない理由はここにあります。同じ `p.name` と�
 
 > **🧪 DEMO — schema は 1 回、ルールは行ごとに効く**
 >
-> `applyWhen(p, ({value}) => value().needAddress, (w) => required(w.address))` と `applyEach(p.items, (item) => required(item.name))` です（本物の `@angular/forms/signals` 22.1.6）。schema 関数と applyEach に渡した関数の中で、呼ばれた回数を数えています。
+> `applyWhen(p, ({value}) => value().needAddress, (w) => required(w.address))` と `applyEach(p.items, (item) => required(item.name))` です（本物の `@angular/forms/signals` 22.2.6）。schema 関数と applyEach に渡した関数の中で、呼ばれた回数を数えています。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-sf-schema)
 

@@ -83,7 +83,7 @@ angular/components · 読了 約 12 分 · 基礎 · [サイトで読む（デ�
 
 ### 入口ごとに別のファイルになる
 
-ビルドの結果も入口ごとに分かれます。このサイトに入っている `@angular/cdk` 22.1.8 の `package.json` の `exports` を見ると、`"./overlay"` は `"default": "./fesm2022/overlay.mjs"`、`"types": "./types/overlay.d.ts"` を指しています。入口どうしで共有するコードは `fesm2022/_platform-chunk.mjs` や `_overlay-module-chunk.mjs` のような共有チャンクに切り出されています。さらに `src/cdk/package.json` に `"sideEffects": false` があり、バンドラーは「import しただけで何かが起きるコードは無い」とみなして、使っていない export を捨てられます。
+ビルドの結果も入口ごとに分かれます。このサイトに入っている `@angular/cdk` 22.2.7 の `package.json` の `exports` を見ると、`"./overlay"` は `"default": "./fesm2022/overlay.mjs"`、`"types": "./types/overlay.d.ts"` を指しています。入口どうしで共有するコードは `fesm2022/_platform-chunk.mjs` や `_overlay-module-chunk.mjs` のような共有チャンクに切り出されています。さらに `src/cdk/package.json` に `"sideEffects": false` があり、バンドラーは「import しただけで何かが起きるコードは無い」とみなして、使っていない export を捨てられます。
 
 1. **使う入口のファイルだけが読まれる**
 

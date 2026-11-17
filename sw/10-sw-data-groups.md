@@ -570,7 +570,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 戦略・maxAge・timeout・maxSize を選んで /api を取る**
 >
-> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.1.6 の配布物）を、偽物のブラウザ（`sw-sandbox.ts`。キャッシュ・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。時計は仮想で、「時計を進める」は本物の時間を待たずに `Date.now()` を進めます。偽物のサーバーはすぐに答えるので、**freshness の timeout で時間切れになる場面はこのデモでは作れません**（4 節と 6 節の行で読んでください）。timeout の値は「有るか無いか」だけが効きます。
+> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.2.6 の配布物）を、偽物のブラウザ（`sw-sandbox.ts`。キャッシュ・サーバー・タブ・時計をメモリの上の偽物にしたもの）の上で動かします。時計は仮想で、「時計を進める」は本物の時間を待たずに `Date.now()` を進めます。偽物のサーバーはすぐに答えるので、**freshness の timeout で時間切れになる場面はこのデモでは作れません**（4 節と 6 節の行で読んでください）。timeout の値は「有るか無いか」だけが効きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-data-groups)
 

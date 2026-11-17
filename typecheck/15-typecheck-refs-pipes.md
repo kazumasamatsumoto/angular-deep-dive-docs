@@ -335,7 +335,7 @@ Scope は要素・Template などを足すたびに `checkAndAppendReferencesOfN
    186 行目で帯域外の診断「No pipe found with name」を記録し、189 行目で pipe を `(0 as any)` にします。188 行目のコメントのとおり、**残りの式は検査を続ける**ためです。`{{ total | nopipe }}` でコンポーネントに `total` が無ければ、pipe の診断と `total` の TS2339 の両方が出ます（7 節の手元の結果）。186 行目の `hostIsStandalone` は、`date` のような `@angular/common` の pipe の名前だったときに足す「直し方」の文を、「コンポーネントの imports に足す」と「コンポーネントを宣言する NgModule の imports に足す」で書き分けるために渡しています（メッセージを作る側は[第 17 回](17-typecheck-oob.md)）。
 3. **190〜195 行目：`deferredImports` の pipe を `@defer` の外で使った**
 
-   191 行目でその pipe の呼び出しを囲む `@defer` を集め、1 つも無ければ 194 行目の `deferredPipeUsedEagerly` と `(0 as any)`。`@defer` の中でだけ読み込む pipe を外で使うと、実行時にはまだ読み込まれていないからです。196 行目からは、[第 13 回](13-typecheck-control-flow.md)の 6 節の keyed defer と同じ「名前の付いたブロックに入っているか」の判定です（7d9f55da113 で入った行。このサイトの 22.1.6 では、この分岐は `getEagerlyUsedPipes()` に名前が入っているかだけを見ます）。
+   191 行目でその pipe の呼び出しを囲む `@defer` を集め、1 つも無ければ 194 行目の `deferredPipeUsedEagerly` と `(0 as any)`。`@defer` の中でだけ読み込む pipe を外で使うと、実行時にはまだ読み込まれていないからです。196 行目からは、[第 13 回](13-typecheck-control-flow.md)の 6 節の keyed defer と同じ「名前の付いたブロックに入っているか」の判定です（7d9f55da113 で入った行。この章を書いたときのサイトの 22.1.6 では、この分岐は `getEagerlyUsedPipes()` に名前が入っているかだけを見ていました。いまのサイトの 22.2.6 には 196 行目からの判定が入っています）。
 4. **215・219 行目：ふつうは `env.pipeInst(pipeMeta)`**
 
    pipe のインスタンスを表す変数の名前をもらいます（6 節）。
@@ -456,7 +456,7 @@ Scope は要素・Template などを足すたびに `checkAndAppendReferencesOfN
 
 ## 7. デモ：参照と pipe の TCB
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock で、参照と pipe を書き直す**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock で、参照と pipe を書き直す**
 >
 > どのプリセットでも、`[tip]`（`exportAs: 'tip'`）の `TooltipDir`・コンポーネント `my-cmp`・pipe `upper` と `date` を登録しています。`nopipe` は登録していません。ボタンを押したときだけ動きます。
 >

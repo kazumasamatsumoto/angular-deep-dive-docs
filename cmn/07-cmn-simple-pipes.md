@@ -310,13 +310,13 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 - **`Object.create(null)` で作った mapping**：プロトタイプが無いので `hasOwnProperty` というメソッド自体が無く、`TypeError: mapping.hasOwnProperty is not a function`。
 - **鍵の名前が `hasOwnProperty`**：mapping の値（文字列や関数）がメソッドを隠してしまい、呼べないか、間違った答えを黙って返す。
 
-`Object.hasOwn(mapping, value)` は `Object` の静的メソッドなので、mapping が何を持っていても同じに動きます。一方、`"constructor"`・`"toString"` のような**継承した名前**は、前の `hasOwnProperty` でも「自分のものではない」と判定されていたので、修正の前も後も `other` に行きます。`JSON.parse` で作った mapping に `"__proto__"` という鍵があれば、それは自分のプロパティなので、その値が返ります（DEMO）。同じコミットで spec に it が 2 つ足されました（テストと直し方）。v22.1.0 から入っていて、このサイトの 22.1.6 にもあります。
+`Object.hasOwn(mapping, value)` は `Object` の静的メソッドなので、mapping が何を持っていても同じに動きます。一方、`"constructor"`・`"toString"` のような**継承した名前**は、前の `hasOwnProperty` でも「自分のものではない」と判定されていたので、修正の前も後も `other` に行きます。`JSON.parse` で作った mapping に `"__proto__"` という鍵があれば、それは自分のプロパティなので、その値が返ります（DEMO）。同じコミットで spec に it が 2 つ足されました（テストと直し方）。v22.1.0 から入っていて、このサイトの 22.2.6 にもあります。
 
 ## 6. DEMO：本物の pipe に通す
 
 > **🧪 DEMO — このサイトの本物の pipe のクラスを new して transform を呼ぶ**
 >
-> `new TitleCasePipe()` のように、このサイトの本物の `@angular/common` 22.1.6 の pipe を作り、ボタンを押したときに transform を直接呼びます（テンプレートの変更検知は通さないので、pure かどうかは関係ありません）。throw したら捕まえて、エラーの名前と文を表に出します。I18nSelectPipe の表の「修正前の判定」は、311aff05aa2 の前の 1 行をこの章で移植したものです。
+> `new TitleCasePipe()` のように、このサイトの本物の `@angular/common` 22.2.6 の pipe を作り、ボタンを押したときに transform を直接呼びます（テンプレートの変更検知は通さないので、pure かどうかは関係ありません）。throw したら捕まえて、エラーの名前と文を表に出します。I18nSelectPipe の表の「修正前の判定」は、311aff05aa2 の前の 1 行をこの章で移植したものです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-simple-pipes)
 

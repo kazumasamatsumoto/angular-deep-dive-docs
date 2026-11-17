@@ -200,7 +200,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> このサイトの `@angular/core` 22.1.6 では、918 行目の文は `component` / `components` です（ng test で `2 components threw errors during cleanup` が返った）。../angular のソース（22.2.0-next.7）では `DirectiveFixture` が入ったので、`fixture` / `fixtures` に変わっています。エラー文で検索するときは版に気をつけてください。
+> この章を書いたときのサイトの `@angular/core` 22.1.6 では、918 行目の文は `component` / `components` でした（ng test で `2 components threw errors during cleanup` が返った）。../angular のソース（22.2.0-next.7）では `DirectiveFixture` が入ったので、`fixture` / `fixtures` に変わっています。いまのサイトの 22.2.6 も同じく `fixture` / `fixtures` です（`fesm2022/testing.mjs` の `destroyActiveFixtures`）。22.1 と 22.2 で文が違うので、エラー文で検索するときは版に気をつけてください。
 
 ### 投げ直すかどうか：shouldRethrowTeardownErrors
 

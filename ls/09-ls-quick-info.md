@@ -801,7 +801,7 @@ DomBinding（DOM のプロパティへの束縛。`[title]` など）は、234�
 
 > **🧪 createQuickInfoForBuiltIn の移植**
 >
-> テンプレートの好きな位置にカーソルを置いて、ボタンを押してください（押したときだけ動きます）。カーソルの下のノードは ls-template.ts の `findNodePath`（getTargetAtPosition の簡略版）で探し、このサイトの @angular/compiler 22.1.6 で解析します。一番深いノードが組み込みなら、quick\_info\_built\_ins.ts の 103〜158 行目と同じ順で span を選び、表を引きます（表の文は本物の写し）。本物との違い：組み込みでないノードは本物なら getSymbolOfNode に進みますが、ここでは扱いません。また 22.1.6 には `@boundary` がありません。
+> テンプレートの好きな位置にカーソルを置いて、ボタンを押してください（押したときだけ動きます）。カーソルの下のノードは ls-template.ts の `findNodePath`（getTargetAtPosition の簡略版）で探し、このサイトの @angular/compiler 22.2.6 で解析します。一番深いノードが組み込みなら、quick\_info\_built\_ins.ts の 103〜158 行目と同じ順で span を選び、表を引きます（表の文は本物の写し）。本物との違い：組み込みでないノードは本物なら getSymbolOfNode に進みますが、ここでは扱いません。また、この章を書いたときのサイトの 22.1.6 には `@boundary` がありませんでした（いまの 22.2.6 は解析できますが、組み込みのホバーの表は `@boundary` の言葉を扱いません）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ls-quick-info)
 

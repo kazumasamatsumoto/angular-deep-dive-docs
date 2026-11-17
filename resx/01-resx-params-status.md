@@ -385,7 +385,7 @@ params が `Error` を投げて `error` になった resource に `reload()` す
 
 > **🧪 DEMO — user → orders を chain でつなぎ、1 段目の状態と 2 段目の params を変える**
 >
-> このページの `@angular/core` 22.1.6 の本物の `resource()` です。loader は通信せず、`setTimeout` で遅らせた Promise を返します（abort が来たら止めて数えます）。orders の params は既定で `({ chain }) => chain(this.user)?.id` です（user の値の型が `RpsUser | undefined` なので `?.` を付けています。`resolved` と `local` では必ず値があります）。下の表は 2 つの `status()` を読む `effect` で 1 行ずつ足しているので、1 回の変更検知の間の途中の状態は見えません。orders の値は `snapshot()` から出しています（error でも投げないため。ただし 7 節の idle では投げるので、`try` で読んでいます）。「orders.value() を読むと」の欄だけ、`value()` を `try` で読んでいます。
+> このページの `@angular/core` 22.2.6 の本物の `resource()` です。22.2.6 には 9 節の 5c4b6a48679 が入っているので（22.2 系の fe02c34c3ce、v22.2.4 から）、同じ id を入れ直したときと、偽になる値を投げたときは、5 節・4 節の記録（22.1.6）と違う動きになります。loader は通信せず、`setTimeout` で遅らせた Promise を返します（abort が来たら止めて数えます）。orders の params は既定で `({ chain }) => chain(this.user)?.id` です（user の値の型が `RpsUser | undefined` なので `?.` を付けています。`resolved` と `local` では必ず値があります）。下の表は 2 つの `status()` を読む `effect` で 1 行ずつ足しているので、1 回の変更検知の間の途中の状態は見えません。orders の値は `snapshot()` から出しています（error でも投げないため。ただし 7 節の idle では投げるので、`try` で読んでいます）。「orders.value() を読むと」の欄だけ、`value()` を `try` で読んでいます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/resx-params-status)
 
@@ -408,10 +408,10 @@ params が `Error` を投げて `error` になった resource に `reload()` す
    user は `reloading` で値が残り、orders は `loading` で値が消えます（5 節）。
 6. **「user.set(…)」**
 
-   user は `local`、647 行目で値が返るので orders は読み込み直します。id が同じでも loader の回数が増えます。
+   user は `local` になり、647 行目で新しいオブジェクトが返ります。ただし id が同じなので、22.2.6 では orders の params の computed が同じ値のまま読み手に知らせず、orders は読み込み直しません（loader の回数は増えない。9 節）。22.1.6 では 5 節の記録の \[3\] のとおり、id が同じでも loader の回数が増えます。
 7. **2 段目の params を切り替える**
 
-   `LOADING` を投げると orders は `loading` のまま、loader の回数は増えません（419 行目）。`undefined` を投げると `idle`（4 節の表の最後の行。直前が「new Error を投げる」なら、7 節の「値の欄が投げる idle」になります）。`new Error` を投げてから「orders.reload()」を押すと、`true` が返って `idle` になります（7 節）。
+   `LOADING` を投げると orders は `loading` のまま、loader の回数は増えません（419 行目）。`undefined` を投げると、22.2.6 では `error`（`Error: undefined`。9 節の 2 つ目）です。4 節の表の最後の行の `idle` は、22.1.6 と手元の木の形です。`new Error` を投げてから「orders.reload()」を押すと、`true` が返って `idle` になります（7 節）。
 8. **「new Error を投げる」→「undefined を返す」**
 
    orders は `idle` なのに、値の欄は「snapshot() が投げた」、「orders.value() を読むと」も投げます（7 節の 307 行目）。「chain(user)?.id を返す」に戻すと、普通に読み込み直します。
@@ -470,7 +470,7 @@ params が `Error` を投げて `error` になった resource に `reload()` す
          } else if (!status) {
 ```
 
-2026 年 9 月の 5c4b6a48679（fix(core): avoid reloading a resource when params is unchanged）は、手元の ../angular（22.2.0-next.7）にはまだ無く、新しい本家にあります。2 つ変わっています。
+2026 年 9 月の 5c4b6a48679（fix(core): avoid reloading a resource when params is unchanged）は、手元の ../angular（22.2.0-next.7）にはまだ無く、新しい本家にあります。22.2 系には fe02c34c3ce として v22.2.4 から入っていて、このサイトの今の依存 22.2.6 にもあります（8 節の DEMO はこちらの形で動きます）。2 つ変わっています。
 
 - params を `computed`（`paramsSignal`）に包んでから `extRequest` で読みます。computed は前と同じ値なら読み手に知らせないので、5 節の後半の「同じ `7` なのに読み直す」が起きなくなります。params が投げたときも、computed は投げられたものをしまって同じものを投げ直すので（[computed の章](../signals/06-signals-computed.md)の 6 節）、`===` の比べ方はそのまま効きます。
 - `encapsulateResourceError` を `state` の計算から `extRequest` の `catch` に移しました。偽になる値も包まれて `Error` になるので、4 節の表の最後の行も `error` になります。spec には `should distinguish between returning undefined and throwing undefined in params` などの 3 つの it が足されています。
@@ -623,7 +623,7 @@ pnpm bazel test //packages/core/test/resource:resource --nocache_test_results --
 
 **Q. params がエラーを投げた後に `undefined` を返すと、きれいな `idle` に戻りますか？**
 
-戻りません（22.1.6 と、手元の 2 つの本家の木）。307〜308 行目が `request` の無い 2 つの状態を「同じ要求」と見なし、エラーの stream を引き継ぐので、`status()` は `idle` でも `value()`・`hasValue()`・`snapshot()` が投げます（記録の \[4\]）。一度普通の値を返して読み込めば元に戻ります。
+戻りません（22.1.6・22.2.6 と、手元の 2 つの本家の木）。307〜308 行目が `request` の無い 2 つの状態を「同じ要求」と見なし、エラーの stream を引き継ぐので、`status()` は `idle` でも `value()`・`hasValue()`・`snapshot()` が投げます（記録の \[4\]）。一度普通の値を返して読み込めば元に戻ります。
 
 **Q. params で `undefined` を返すのと `ResourceParamsStatus.IDLE` を投げるのは同じですか？**
 
@@ -648,7 +648,7 @@ pnpm bazel test //packages/core/test/resource:resource --nocache_test_results --
 ## 読み終えて
 
 - params が投げたものは `extRequest` の `catch`（254〜261 行目）で `{status}` か `{error}` になり、`state` の計算（279〜285 行目）で状態になる。2206efa55fc の前は、読んだ人にそのまま投げられていた
-- `LOADING` とエラーでは loader は呼ばれない（419・422 行目）。偽になる値を投げると、22.1.6 では `idle` になる
+- `LOADING` とエラーでは loader は呼ばれない（419・422 行目）。偽になる値を投げると、22.1.6 では `idle` になる（22.2 系は v22.2.4 から `error`）
 - `chain` は `status()` を読んで、`resolved` と `local` 以外は投げる。`reloading` も `LOADING` になるので、先を reload するとこちらは値を失って読み直す
 - NG0992 の印はモジュールに 1 つの真偽値で、`finally` で必ず `false` に戻す。入れ子になると下りてしまう
 - params のエラーの後の `idle` は、307〜308 行目でエラーの stream を引き継ぐ。`undefined` を返しても `reload()` しても（#71585、開いている）、`hasValue()` と `snapshot()` まで投げる

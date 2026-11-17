@@ -808,7 +808,7 @@ CompletionEngine も SymbolBuilder と同じく、getLatestComponentState（940 
 
 > **🧪 位置コメントで TCB の行を探す（再現）**
 >
-> TCB は本物の generateTypeCheckBlock（このサイトの @angular/compiler 22.1.6）で作ります（ボタンを押したときだけ）。そのあと、選んだ文字位置を**含む位置コメントのうち、いちばん狭いもの**を文字列の上で探して強調します。本物の findFirstMatchingNode は TypeScript の構文木を歩き、AST の span と「ぴったり同じ」コメントを持つ節点を探すので、ここで見せているのは考え方の再現です。点線の枠は補完点の行（`T:COMPCOMP`）です。
+> TCB は本物の generateTypeCheckBlock（このサイトの @angular/compiler 22.2.6）で作ります（ボタンを押したときだけ）。そのあと、選んだ文字位置を**含む位置コメントのうち、いちばん狭いもの**を文字列の上で探して強調します。本物の findFirstMatchingNode は TypeScript の構文木を歩き、AST の span と「ぴったり同じ」コメントを持つ節点を探すので、ここで見せているのは考え方の再現です。点線の枠は補完点の行（`T:COMPCOMP`）です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-template-type-checker)
 

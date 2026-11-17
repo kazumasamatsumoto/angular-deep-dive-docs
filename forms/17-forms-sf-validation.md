@@ -854,7 +854,7 @@ issue の付け先です。173 行目、ルールを付けたフィールドか�
 
 > **🧪 DEMO — validate・validateAsync・validateTree・validateStandardSchema**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。username は `validate`（3 文字以上）と `validateAsync` （`resource` の loader が 800 ms の `setTimeout` で答える擬似サーバー。`admin`・`root`・`angular` は使用中）。根に `validateTree`（confirm が password と違えば confirm にエラー）と `validateStandardSchema`。サイトには Zod を依存として入れていないので、Standard Schema は `'~standard'` の interface を満たす手書きのオブジェクトで再現しています（`forms-sf-validation.ts` の `passwordRules`）。
+> 本物の `@angular/forms/signals`（22.2.6）です。username は `validate`（3 文字以上）と `validateAsync` （`resource` の loader が 800 ms の `setTimeout` で答える擬似サーバー。`admin`・`root`・`angular` は使用中）。根に `validateTree`（confirm が password と違えば confirm にエラー）と `validateStandardSchema`。サイトには Zod を依存として入れていないので、Standard Schema は `'~standard'` の interface を満たす手書きのオブジェクトで再現しています（`forms-sf-validation.ts` の `passwordRules`）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-sf-validation)
 

@@ -2,7 +2,7 @@
 
 # Angular Aria の全体像：ディレクティブ・UI Pattern・Behavior の 3 層
 
-> @angular/aria のエントリポイント（accordion・combobox・grid・listbox・menu・tabs・toolbar・tree と private）と、ディレクティブ → UI Pattern → Behavior の 3 層。Listbox ディレクティブが自分の input を \`...this\` で ListboxPattern に渡す行。CDK の a11y（ListKeyManager）や CDK Menu との違い、このサイトに入れた 22.1.8 と読んでいる 22.2.0-next.5 の差。spec の置き場と、ブラウザで走る bazel のテスト。
+> @angular/aria のエントリポイント（accordion・combobox・grid・listbox・menu・tabs・toolbar・tree と private）と、ディレクティブ → UI Pattern → Behavior の 3 層。Listbox ディレクティブが自分の input を \`...this\` で ListboxPattern に渡す行。CDK の a11y（ListKeyManager）や CDK Menu との違い、このサイトの 22.2.7（書いたときは 22.1.8）と読んでいる 22.2.0-next.5 の差。spec の置き場と、ブラウザで走る bazel のテスト。
 
 angular/components · 読了 約 12 分 · 基礎 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/aria-overview)
 
@@ -10,7 +10,7 @@ angular/components · 読了 約 12 分 · 基礎 · [サイトで読む（デ�
 
 `@angular/aria` は、見た目を持たずに「キーボードで動かせる・画面読み上げに正しく伝わる」部品（Listbox・Tabs・Tree など）を作るためのパッケージです。この章では、パッケージがどんなエントリポイント（`import` できる入口）に分かれているか、そして中身が**ディレクティブ → UI Pattern → Behavior の 3 層**になっていることを、実際のファイルで確かめます。最後に、spec がどこにあり、bazel でどう走るかの地図を描きます。
 
-読む対象は `src/aria/config.bzl`・`src/aria/BUILD.bazel`・`src/aria/package.json`・`src/aria/private/public-api.ts`・`src/aria/private/ui-pattern-rules.md`・`src/aria/listbox/listbox.ts`（コンストラクタ）・`tools/bazel/web_test_suite.bzl` です。ソースは angular/components の e81c398a86（2026-09-10、22.2.0-next.5）、このページで動くデモは npm の `@angular/aria` 22.1.8 です。
+読む対象は `src/aria/config.bzl`・`src/aria/BUILD.bazel`・`src/aria/package.json`・`src/aria/private/public-api.ts`・`src/aria/private/ui-pattern-rules.md`・`src/aria/listbox/listbox.ts`（コンストラクタ）・`tools/bazel/web_test_suite.bzl` です。ソースは angular/components の e81c398a86（2026-09-10、22.2.0-next.5）、このページで動くデモは npm の `@angular/aria` 22.2.7 です（この章を書いたときは 22.1.8 でした）。
 
 1. **1. 全体像**（この章）
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -203,7 +203,7 @@ src/aria/private/ui-pattern-rules.md は、Pattern を書く人向けの決ま�
 29 ▶ export * from './combobox/combobox';
 ```
 
-`@angular/aria/private` から出ているのは、各部品の Pattern（9 行目の listbox から 29 行目の combobox まで）と、12 行目の `signal-like`、24〜28 行目の utils です。Behavior（List・ListFocus など）と event-manager は**ここに入っていません**。npm の 22.1.8 の `fesm2022/private.mjs` の export も、Pattern・`SortedCollection`・`signal`・`computed`・`linkedSignal`・`untracked` などで、Behavior の名前はありませんでした。
+`@angular/aria/private` から出ているのは、各部品の Pattern（9 行目の listbox から 29 行目の combobox まで）と、12 行目の `signal-like`、24〜28 行目の utils です。Behavior（List・ListFocus など）と event-manager は**ここに入っていません**。npm の 22.1.8 の `fesm2022/private.mjs` の export も（いまのサイトの 22.2.7 でも同じ）、Pattern・`SortedCollection`・`signal`・`computed`・`linkedSignal`・`untracked` などで、Behavior の名前はありませんでした。
 
 ディレクティブはこの入口から Pattern を取ります（listbox.ts の import 文は `import {ListboxPattern, SortedCollection, tabIndexTransform, reportViolations} from '../private'`）。ただし npm に出たあとの `fesm2022/listbox.mjs` は `@angular/aria/private` を import しておらず、`./_option-chunk.mjs` のような共有のチャンクを直接読んでいます。名前については、#32174（2025-10-24）で `ui-patterns` から `private` へ改名したときの PR の説明に「we don't want to expose these APIs publicly yet（まだ公開 API にしたくない）」とあります。
 
@@ -260,7 +260,7 @@ src/aria/private/ui-pattern-rules.md は、Pattern を書く人向けの決ま�
 34 │ })
 ```
 
-package.json の 15 行目の `0.0.0-PLACEHOLDER` は、packages.bzl の 26 行目でビルドのときに**このパッケージ自身の版**（`STABLE_PROJECT_VERSION`）に置き換わります。つまり `@angular/aria` の peerDependency の `@angular/cdk` は、いつも**同じ版の CDK** です。実際、このサイトの node\_modules/@angular/aria/package.json は `"@angular/cdk": "22.1.8"`、16 行目の `0.0.0-NG`（24 行目で `STABLE_FRAMEWORK_PEER_DEP_RANGE`）は `"^22.0.0 || ^23.0.0"` になっていました。31 行目の `packageGroup` は `ng update` で material・cdk などと一緒に上げるための指定です。
+package.json の 15 行目の `0.0.0-PLACEHOLDER` は、packages.bzl の 26 行目でビルドのときに**このパッケージ自身の版**（`STABLE_PROJECT_VERSION`）に置き換わります。つまり `@angular/aria` の peerDependency の `@angular/cdk` は、いつも**同じ版の CDK** です。実際、このサイトの node\_modules/@angular/aria/package.json は `"@angular/cdk": "22.2.7"`（22.1.8 のときは `"22.1.8"`）、16 行目の `0.0.0-NG`（24 行目で `STABLE_FRAMEWORK_PEER_DEP_RANGE`）は `"^22.0.0 || ^23.0.0"` になっていました。31 行目の `packageGroup` は `ng update` で material・cdk などと一緒に上げるための指定です。
 
 CDK から実際に使っているものを、src/aria の .ts（spec を除く）で grep すると 3 つだけでした。
 
@@ -274,9 +274,9 @@ CDK の同じ役目の部品とは、作りがはっきり違います（どれ�
 - **CDK Menu**（[cdk-menu](../cdk/13-cdk-menu.md)）は menu-base.ts で `FocusKeyManager` を使います。Aria の Menu は `List` Behavior です（表の menu の行）。
 - **CdkTree**（[cdk-tree](../cdk/17-cdk-tree.md)）は `dataSource` を受け取って節を描きます。Aria の tree/\*.ts には `dataSource` が 1 つも無く、項目は利用者がテンプレートに `ngTreeItem` を並べて作ります。
 
-## 6. このページの 22.1.8 と、読んでいる 22.2.0-next.5 の差
+## 6. このページの 22.2.7 と、読んでいる 22.2.0-next.5 の差
 
-npm の 22.1.8 の sourcemap から元の .ts を戻して snapshot と比べると、84 ファイルのうち 71 は同じで、違うのは次の 13 ファイルでした。22.1.8 は 2026-09-23 に 22.1.x の枝から出た版で、snapshot（2026-09-10 の main）より**後**に出ていますが、main にしか入っていない変更もあります。
+この章を書いたとき、サイトは 22.1.8 でした。npm の 22.1.8 の sourcemap から元の .ts を戻して snapshot と比べると、84 ファイルのうち 71 は同じで、違うのは次の 13 ファイルでした。22.1.8 は 2026-09-23 に 22.1.x の枝から出た版で、snapshot（2026-09-10 の main）より**後**に出ていますが、main にしか入っていない変更もあります。
 
 | ファイル | 違い | 元の変更 |
 | --- | --- | --- |
@@ -285,13 +285,28 @@ npm の 22.1.8 の sourcemap から元の .ts を戻して snapshot と比べる
 | toolbar/toolbar.ts・toolbar-widget.ts・toolbar-widget-group.ts・toolbar-tokens.ts、private/toolbar/ の 3 つ | snapshot では toolbar から選択の Behavior が外れている | #33747 0b81ad7e3c（main だけ）。[第 13 回](13-aria-toolbar.md) |
 | version.ts | `'22.1.8'` と `'0.0.0-PLACEHOLDER'` | ビルドの置き換え（5 節） |
 
-この章のデモで使う listbox と、第 2〜4 回で読む signal-like・collection・event-manager は 13 ファイルに入っていないので、デモの動きは引用のコードどおりです。
+22.1.8 では、この章のデモで使う listbox と、第 2〜4 回で読む signal-like・collection・event-manager は 13 ファイルに入っていませんでした。
+
+いまのサイトの 22.2.7（2026-11-11、22.2.x の枝）で同じことをすると、84 ファイルのうち 68 が snapshot と同じで、違うのは次の 16 ファイルでした（戻した .ts は `git show v22.2.7:src/aria/…` と、version.ts を除いて一致）。22.2.x の枝は snapshot より後に main から分かれたので、toolbar の #33747 と menu の #33715 はもう snapshot と同じです。違うのは、snapshot の後に入った修正です。
+
+| ファイル | 22.2.7 での違い | 元の変更 |
+| --- | --- | --- |
+| accordion/accordion-group.ts・accordion-trigger.ts、private/accordion/accordion.ts | キーとクリックのリスナーがグループからトリガーに移った。host に `'ngAccordionTrigger': ''` | #33839（2026-09-18）・#34053（22.2.6）・#34061（22.2.7）。[第 10 回](10-aria-accordion.md) |
+| private/utils/collection.ts | `orderedItems` が computed から signal になり、並びが変わったときだけ set する | #33996（22.2.5）。[第 3 回](03-aria-collection.md) |
+| private/behaviors/event-manager/click-event-manager.ts・keyboard-event-manager.ts | 偽の click の見分け方が `detail`・`screenX`・`screenY` の 3 つになった。`hasOwnProperty` が `Object.hasOwn` に | #34004（22.2.5）・#33843（22.2.0）。[第 4 回](04-aria-events.md) |
+| tree/tree-item.ts・tree-item-group.ts | 登録と外す処理が `ngOnInit` / `ngOnDestroy` からコンストラクタの effect に移った | #34059（22.2.7）。[第 14 回](14-aria-tree.md) |
+| grid/grid-cell-widget.ts | host に `'ngGridCellWidget': ''` | #34077（22.2.7）。[第 16 回](16-aria-grid-cells.md) |
+| combobox/combobox.ts・combobox-popup.ts | キーの中継の `afterRenderEffect` が write 段階でなくなった。壊すときは登録した combobox から外す | #34045（22.2.6）・#33974（22.2.4）。[第 17 回](17-aria-combobox.md) |
+| menu/menu.ts・menu-item.ts・menu-trigger.ts、private/menu/menu.ts | サブメニューの中身は見えているときだけ作る。トリガーの `tabIndex` を外へ見せる | #34104・#34084（22.2.7）。[第 18 回](18-aria-menu.md) |
+| version.ts | `'22.2.7'` と `'0.0.0-PLACEHOLDER'` | ビルドの置き換え（5 節） |
+
+この章のデモで使う listbox（listbox/ と private/listbox/）と、第 2 回の signal-like は 22.2.7 でも snapshot と同じです。listbox が使う collection.ts は違いますが、第 3 回のデモで確かめたとおり、並び順の結果は変わりません。
 
 ## 7. デモ：プリレンダーの tabindex と、起動したあとの tabindex
 
 このサイトはビルドのときに全ページを HTML にしておく（プリレンダー。[ssr-prerender](../platform/06-ssr-prerender.md)）ので、下の listbox も最初は HTML として届きます。このページのビルド出力（`aria-overview/index.html`）を見ると、`ngListbox` の `ul` も 4 つの `li` も、すべて `tabindex="-1"` でした。Listbox の `setDefaultStateEffect` は `afterRenderEffect` の中（ブラウザでしか走らない）で呼ばれるので、プリレンダーの時点では「最初にフォーカスを受ける項目」がまだ決まっていないからです（[第 9 回](09-aria-listbox.md)）。
 
-> **🧪 DEMO — このページの @angular/aria（22.1.8）の ngListbox**
+> **🧪 DEMO — このページの @angular/aria（22.2.7）の ngListbox**
 >
 > これは再現ではなく本物の `ngListbox`（単一選択・`focusMode="roving"`・`selectionMode="follow"`）です。キーボードで操作できます。Tab でリストに入り、↑ ↓ で動きます。「いまの属性を読む」を押すと、`ul` と各 `li` の `tabindex`・`aria-selected`（T / f）、`[(value)]` に結んだ値、`document.activeElement` をログに出します。キーを押したりクリックしたりしたあとも、描画のあとに同じものを読みます。
 >

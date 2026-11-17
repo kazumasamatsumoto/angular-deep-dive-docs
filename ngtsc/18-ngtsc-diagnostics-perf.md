@@ -2,7 +2,7 @@
 
 # 診断と性能の記録：FatalDiagnosticError・ErrorCode・PerfRecorder
 
-> handler が投げる FatalDiagnosticError と、投げずに返す makeDiagnostic・makeRelatedInformation、ErrorCode の数が NG の番号（-99 を前に付けた TypeScript の診断の code）になる行と、ErrorCode の負の値を印にしてエラーの説明のページの URL を足す行（配布物 22.1.6 では URL が next を指していた）。PerfPhase・PerfEvent・PerfCheckpoint と ActivePerfRecorder、tracePerformance の設定で JSON に書き出す方法。
+> handler が投げる FatalDiagnosticError と、投げずに返す makeDiagnostic・makeRelatedInformation、ErrorCode の数が NG の番号（-99 を前に付けた TypeScript の診断の code）になる行と、ErrorCode の負の値を印にしてエラーの説明のページの URL を足す行（配布物（22.1.6・22.2.6）では URL が next を指す）。PerfPhase・PerfEvent・PerfCheckpoint と ActivePerfRecorder、tracePerformance の設定で JSON に書き出す方法。
 
 angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/ngtsc-diagnostics-perf)
 
@@ -397,14 +397,14 @@ URL の前半は版で変わります。13〜14 行目で `-next`・`-rc`・開�
 > [!WARNING]
 > **ハマりどころ**
 >
-> このサイトに入っている配布物 22.1.6 では、この書き分けが効いていませんでした。`node_modules/@angular/compiler-cli/bundles/chunk-NPM4D5UO.js` の該当の行は次のとおりで、`full === "22.1.6"` は 22.1.6 では常に真です。そのため 22.1.6 のエラーのリンクは `v22.angular.dev` ではなく `next.angular.dev` を指します（6 節の DEMO の「Find more at https://next.angular.dev/errors/NG1001」がその結果）。
+> このサイトに入っている配布物では、この書き分けが効いていません。記録を取った 22.1.6（`bundles/chunk-NPM4D5UO.js` の 145〜150 行目、`full === "22.1.6"`）でも、依存を上げたあとの 22.2.6 でも同じです。22.2.6 の `node_modules/@angular/compiler-cli/bundles/chunk-HRCA6XIV.js` の該当の行は次のとおりで、`full === "22.2.6"` は 22.2.6 では常に真です。そのため配布物のエラーのリンクは `v22.angular.dev` ではなく `next.angular.dev` を指します（6 節の DEMO の記録（22.1.6）の「Find more at https://next.angular.dev/errors/NG1001」がその結果）。
 
-📄 `node_modules/@angular/compiler-cli/bundles/chunk-NPM4D5UO.js 145〜150 行目（配布物 22.1.6。repo の外なので文字列で表示）`
+📄 `node_modules/@angular/compiler-cli/bundles/chunk-HRCA6XIV.js 149〜154 行目（配布物 22.2.6。repo の外なので文字列で表示）`
 
 ```
 var DOC_PAGE_BASE_URL = (() => {
   const full = VERSION.full;
-  const isPreRelease = full.includes("-next") || full.includes("-rc") || full === "22.1.6";
+  const isPreRelease = full.includes("-next") || full.includes("-rc") || full === "22.2.6";
   const prefix = isPreRelease ? "next" : `v${VERSION.major}`;
   return `https://${prefix}.angular.dev`;
 })();
@@ -896,7 +896,7 @@ Ran 3 of 6749 specs
 
 **Q. エラーのリンクの版はどう決まりますか？**
 
-`@angular/compiler` の `VERSION.full` が `-next`・`-rc` を含めば `next.angular.dev`、そうでなければ `v22.angular.dev` のような場所です（error\_details\_base\_url.ts の 13〜15 行目）。ただし配布物 22.1.6 ではバンドルのせいで常に `next` になっていました（4 節の注意）。
+`@angular/compiler` の `VERSION.full` が `-next`・`-rc` を含めば `next.angular.dev`、そうでなければ `v22.angular.dev` のような場所です（error\_details\_base\_url.ts の 13〜15 行目）。ただし配布物（22.1.6 と 22.2.6）ではバンドルのせいで常に `next` になります（4 節の注意）。
 
 **Q. ビルドのどこが遅いかを、CLI を通さずに測れますか？**
 
@@ -906,7 +906,7 @@ Ran 3 of 6749 specs
 
 - ngtsc の診断は ts.Diagnostic。FatalDiagnosticError は analyzeTrait が受け止めて解析の結果を捨て、makeDiagnostic を返せば解析の結果が残る。
 - code は ngErrorCode で -99 を前に付けた負の数。表示のときに TS-99 が NG に置き換わる（色つきの書式のときだけ）。
-- ErrorCode が負の値なら説明のページがあり、addMessageTextDetails が URL を足す。URL の版は VERSION で決まるが、22.1.6 の配布物では next を指していた。
+- ErrorCode が負の値なら説明のページがあり、addMessageTextDetails が URL を足す。URL の版は VERSION で決まるが、22.1.6 と 22.2.6 の配布物では next を指す。
 - ActivePerfRecorder は「今いる段」に時間を足し続ける。tracePerformance でその合計を JSON に書く。DelegatingPerfRecorder は記録係を差し替えるための包み。
 
 ---

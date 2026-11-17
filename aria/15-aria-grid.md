@@ -10,7 +10,7 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 
 グリッド（`role="grid"`）は、行と列の 2 次元を矢印キーで動く部品です。リストの Behavior（第 5〜7 回）は 1 次元なので、grid には専用の Behavior が 5 つあります。この章では、`GridData` が rowspan / colspan からセルの座標の表を作り、`GridFocus` が「今いるセル」と「今いる座標」を別々に持ち、`GridNavigation` が 3 種類の折り返し（`continuous` / `loop` / `nowrap`）で次のセルを探し、`GridSelection` が範囲の中のセルを選ぶ行を読みます。最後に、大きな grid で遅かった 2 つの問題と、無効なセルを roving tabindex から外した修正を読みます。
 
-読む対象は `src/aria/private/behaviors/grid/` の `grid-data.ts`・`grid-focus.ts`・`grid-navigation.ts`・`grid-selection.ts`・`grid.ts`、`src/aria/private/grid/grid.ts`（`GridPattern`）、`src/aria/grid/grid.ts`（`ngGrid`）です（../components、e81c398a86。このサイトの 22.1.8 と同じ中身）。セルの中のウィジェットと行・セルのディレクティブは[第 16 回](16-aria-grid-cells.md)で読みます。
+読む対象は `src/aria/private/behaviors/grid/` の `grid-data.ts`・`grid-focus.ts`・`grid-navigation.ts`・`grid-selection.ts`・`grid.ts`、`src/aria/private/grid/grid.ts`（`GridPattern`）、`src/aria/grid/grid.ts`（`ngGrid`）です（../components、e81c398a86。この章を書いたときのサイトの 22.1.8 とも、いまの 22.2.7 とも同じ中身）。セルの中のウィジェットと行・セルのディレクティブは[第 16 回](16-aria-grid-cells.md)で読みます。
 
 1. [1. 全体像](01-aria-overview.md)
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -684,7 +684,7 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> この範囲選択の仕組み（`anchor: true`）は Behavior に残っていますが、**キーやマウスから呼ぶ行は今の `GridPattern` にありません**。2a13f69e03（2026-04-14、PR #33055 `refactor(aria/grid): remove range selection to reduce computational overhead`）が、Shift + 矢印・Shift + Home / End・Shift + クリック・ドラッグ（pointermove）で `anchor: true` を渡す行と、`enableRangeSelection` の入力を消しました。src/aria を `grep -rn "anchor: true"` すると、grid で `anchor: true` を渡しているのは behaviors/grid/grid.spec.ts の ``it('should range select on navigate when `anchor` is true')``（:186 の行）だけでした（ほかに当たる list・list-selection・tree の行は、それぞれの Behavior の既定の引数で、grid とは別のものです）。この変更は v22.1.8 に入っていて（`git merge-base --is-ancestor` で確かめた）、デモでも Shift + 矢印は何もしません。`GridPattern` の `dragging` の signal は、使う行が無いまま残っています。
+> この範囲選択の仕組み（`anchor: true`）は Behavior に残っていますが、**キーやマウスから呼ぶ行は今の `GridPattern` にありません**。2a13f69e03（2026-04-14、PR #33055 `refactor(aria/grid): remove range selection to reduce computational overhead`）が、Shift + 矢印・Shift + Home / End・Shift + クリック・ドラッグ（pointermove）で `anchor: true` を渡す行と、`enableRangeSelection` の入力を消しました。src/aria を `grep -rn "anchor: true"` すると、grid で `anchor: true` を渡しているのは behaviors/grid/grid.spec.ts の ``it('should range select on navigate when `anchor` is true')``（:186 の行）だけでした（ほかに当たる list・list-selection・tree の行は、それぞれの Behavior の既定の引数で、grid とは別のものです）。この変更は v22.1.8 にも、いまのサイトの v22.2.7 にも入っていて（`git merge-base --is-ancestor` で確かめた）、デモでも Shift + 矢印は何もしません。`GridPattern` の `dragging` の signal は、使う行が無いまま残っています。
 
 ## 6. GridPattern：キーとクリック
 
@@ -1018,7 +1018,7 @@ angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デ�
 
 ## 9. デモ：本物の ngGrid（5×5、colspan を 1 つ）
 
-> **🧪 DEMO — enableSelection・multi・selectionMode="explicit"（このサイトの @angular/aria 22.1.8。grid は snapshot と同じ中身）**
+> **🧪 DEMO — enableSelection・multi・selectionMode="explicit"（このサイトの @angular/aria 22.2.7。grid は snapshot と同じ中身）**
 >
 > Tab で grid に入り、矢印キーで動きます。Home / End（行の端）、Ctrl + Home / End、Enter / Space（切り替え）、Shift + Space（行）、Ctrl + Space（列）、Ctrl + A（全部）、Shift + 矢印（何も起きないことを確かめる）を試せます。折り返しの種類は下の選択で変えられます。キーやクリックのあと、今いるセルの `aria-rowindex` / `aria-colindex` と tabindex、`aria-selected="true"` のセルをログに出します。
 >

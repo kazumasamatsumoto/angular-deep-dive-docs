@@ -254,7 +254,7 @@ ee3041325c 2026-09-18 fix(@angular/build): ensure chokidar watcher is ready befo
 972302ac3d 2026-10-15 fix(@angular/build): watch only explicitly added paths in chokidar watcher     # origin/main（Closes #34312）
 ```
 
-b423bc39cd は「`followSymlinks`（= `preserveSymlinks`）なら、symlink をたどれる chokidar（ファイルの監視の package）を使う」変更です。ee3041325c は「chokidar の最初の走査が終わる（`ready`）まで待ってから返す」変更です。コミットメッセージと issue の説明によれば、chokidar は workspace の root 全体を見ていて、`preserveSymlinks` のときは `node_modules` を除く規則も入らないので、最初の走査が `node_modules` の全部をたどり終わるまで、最初のビルドの結果がテストの側に渡りませんでした。22.2.1 の 5194b41531 が import された package 以外の `node_modules` を走査から外し、origin/main の 972302ac3d はさらに「足されたパスだけを見る」形にしています。サイトの依存の 22.1.7 にはこの 4 本のどれも入っていないので、この章の記録では再現しません。
+b423bc39cd は「`followSymlinks`（= `preserveSymlinks`）なら、symlink をたどれる chokidar（ファイルの監視の package）を使う」変更です。ee3041325c は「chokidar の最初の走査が終わる（`ready`）まで待ってから返す」変更です。コミットメッセージと issue の説明によれば、chokidar は workspace の root 全体を見ていて、`preserveSymlinks` のときは `node_modules` を除く規則も入らないので、最初の走査が `node_modules` の全部をたどり終わるまで、最初のビルドの結果がテストの側に渡りませんでした。22.2.1 の 5194b41531 が import された package 以外の `node_modules` を走査から外し、origin/main の 972302ac3d はさらに「足されたパスだけを見る」形にしています。記録に使った 22.1.7 にはこの 4 本のどれも入っていないので、この章の記録では再現しません。今のサイトの依存の 22.2.7 には 4 本とも入っています（972302ac3d は 22.2.x の a057239486 として v22.2.4 から）。
 
 ## 4. 依存を確かめる：DependencyChecker
 
@@ -611,7 +611,7 @@ Vitest の runner の `validateDependencies`（[CLI の章](../cli/12-cli-unit-t
 
 名前が 23 行目の 128 文字を超えると、194 行目から先で、前半と後半を残して真ん中を hash の 8 文字に置き換えます。199 行目の `- 2` は、間に入れる 2 つの `-` の分です。記録の「長いパス」では、202 文字の名前が 128 文字に縮み、接頭辞の `spec-` が付いて 133 文字になりました。`truncateName` は `generateNameFromPath` の中（181 行目、CLI の章の引用）で呼ばれ、接頭辞は 117 行目でその後に付くので、entry の名前は 128 + 接頭辞と区切りの `-` の文字数まで伸びます。22 行目のコメント（entry の名前の最大の長さ）とはずれています。
 
-📄 `../angular-cli で git diff（サイトの依存の版と 44129f66a3）`
+📄 `../angular-cli で git diff（記録に使った版と 44129f66a3）`
 
 ```
 $ git diff v22.1.7 44129f66a3 -- packages/angular/build/src/builders/unit-test/test-discovery.ts
@@ -624,7 +624,7 @@ $ git diff v22.1.7 44129f66a3 -- packages/angular/build/src/builders/unit-test/t
 +  const hash = calculateHash(originalPath).substring(0, 8);
 ```
 
-もう 1 つのずれは hash の種類です。187 行目のコメントは「SHA256 の 8 文字」ですが、44129f66a3 の 198 行目の `calculateHash` は xxhash の 64 ビットの hash（`utils/hash.ts`）で、cda8830710（2026-08-06）で SHA-256 から替わりました。サイトの依存の 22.1.7 はまだ SHA-256 で、記録の短縮した名前の真ん中の `114e2e3b` は、Node で `createHash('sha256')` に同じ相対パスを渡した先頭の 8 文字と一致しました。版が上がると、同じパスでも縮めた名前が変わります。
+もう 1 つのずれは hash の種類です。187 行目のコメントは「SHA256 の 8 文字」ですが、44129f66a3 の 198 行目の `calculateHash` は xxhash の 64 ビットの hash（`utils/hash.ts`）で、cda8830710（2026-08-06）で SHA-256 から替わりました。記録に使った 22.1.7 はまだ SHA-256 で、記録の短縮した名前の真ん中の `114e2e3b` は、Node で `createHash('sha256')` に同じ相対パスを渡した先頭の 8 文字と一致しました。今のサイトの依存の 22.2.7 は cda8830710 の後（v22.2.0 から）の xxhash なので、同じパスでも縮めた名前が変わります。
 
 ## 8. --include で 1 つだけ選んでも、全部をコンパイルしていた（#34089）
 

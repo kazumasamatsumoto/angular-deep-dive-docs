@@ -598,7 +598,7 @@ INFO: Elapsed time: 1.530s, Critical Path: 0.94s
 
 **Q. では、サーバーで中身を描かせる方法はありますか？**
 
-`hydrate` トリガーを付けて、インクリメンタルハイドレーションを有効にします（22.1.6 の `provideClientHydration()` では既定）。triggering.ts 594〜595 行目で hydrate の命令が動き、instructions.ts 420 行目の `triggerDeferBlock(TriggerType.Hydrate, …)` で中身まで描きます。
+`hydrate` トリガーを付けて、インクリメンタルハイドレーションを有効にします（22.2.6 の `provideClientHydration()` では既定）。triggering.ts 594〜595 行目で hydrate の命令が動き、instructions.ts 420 行目の `triggerDeferBlock(TriggerType.Hydrate, …)` で中身まで描きます。
 
 **Q. `hydrate on viewport` を書いたのに、サーバーで placeholder になります。**
 

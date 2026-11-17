@@ -827,7 +827,7 @@ Closure の側の変数名は 400〜406 行目です。`i18nUseExternalIds` が�
 
 ## 9. デモ：設定を変えて consts の関数を見る
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 で consts の関数を作る**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 で consts の関数を作る**
 >
 > 「コンパイルする」を押すと、`loc-compile.ts` の `compileI18nTemplate`（本物の `parseTemplate` → `compileComponentFromMetadata`）で JS を作り、`consts: () => {` の部分だけを切り出します。「i18nUseExternalIds」は 4 節の 400 行目の分岐、「legacy ID」は parseTemplate の `enableI18nLegacyMessageIdFormat`（6 節の 767 行目）に渡ります。出力は JIT の emitter が書いたもので、ngtsc とは違い、タグ付きテンプレートは `$localize(__makeTemplateObject([…], […]), …)` の呼び出しの形、`let` は `var` になり、`goog.getMsg` の前の JSDoc は出ません。
 >

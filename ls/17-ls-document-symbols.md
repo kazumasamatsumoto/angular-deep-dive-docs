@@ -1044,7 +1044,7 @@ TS ファイルでは、49 行目の `getHTMLVirtualContent` でインライン�
 
 > **🧪 outlining\_spans.ts と document\_symbols.ts の規則を、ブラウザの上で**
 >
-> このサイトの @angular/compiler 22.1.6 の `parseTemplate` で解析し（共通部品の `parseLsTemplate`）、本物の `TmplAstRecursiveVisitor` を継承した訪問者で歩きます（ボタンを押したときだけ）。どのブロックを拾うかは 7 節の 93〜104 行目、範囲は 68〜84 行目、行は folding.ts の 38 行目、名前は 4 節の各 visit の**書き写し**です。本物との違い：本物は `NgCompiler` が型チェック用に持つテンプレートを使い、位置は TS ファイルの中の位置になります。また 22.1.6 には `@boundary` が無いので、ここでは解析できません。
+> このサイトの @angular/compiler 22.2.6 の `parseTemplate` で解析し（共通部品の `parseLsTemplate`）、本物の `TmplAstRecursiveVisitor` を継承した訪問者で歩きます（ボタンを押したときだけ）。どのブロックを拾うかは 7 節の 93〜104 行目、範囲は 68〜84 行目、行は folding.ts の 38 行目、名前は 4 節の各 visit の**書き写し**です。本物との違い：本物は `NgCompiler` が型チェック用に持つテンプレートを使い、位置は TS ファイルの中の位置になります。また、この章を書いたときのサイトの 22.1.6 には `@boundary` が無く、解析できませんでした。いまの 22.2.6 では解析はできますが、このデモの訪問者は `visitBoundaryBlock` を書き写していないので、`@boundary` と `@error` は「シンボルにならない」ブロックとして出ます（本物は 533 行目のとおり `Event`）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ls-document-symbols)
 

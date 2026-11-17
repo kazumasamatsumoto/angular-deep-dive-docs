@@ -361,7 +361,7 @@ pipe はもう少し手が込んでいます。104 行目、場所は pipe の�
 > [!NOTE]
 > **さらに深く**
 >
-> このサイトの共通デモ部品（typecheck-tcb.ts）の `STRICT_CONFIG` にはまだ `suggestionsForSuboptimalTypeInference: false` がありますが、22.1.6 の generateTypeCheckBlock もこの値を読みません （scratchpad に復元した 22.1.6 の typecheck/ を grep しても、oob.ts のインタフェースにしか出てきません）。
+> このサイトの共通デモ部品（typecheck-tcb.ts）の `STRICT_CONFIG` にはまだ `suggestionsForSuboptimalTypeInference: false` がありますが、22.1.6 の generateTypeCheckBlock もこの値を読みません （scratchpad に復元した 22.1.6 の typecheck/ を grep しても、oob.ts のインタフェースにしか出てきません。いまのサイトの 22.2.6 の compiler の src では、1 つも出てきません）。
 
 ## 4. 警告になりうる唯一の OOB：content projection
 
@@ -693,7 +693,7 @@ pipe はもう少し手が込んでいます。104 行目、場所は pipe の�
 
 > **🧪 OutOfBandDiagnosticRecorder に呼ばれたメソッド**
 >
-> このサイトに入っている @angular/compiler 22.1.6 の parseTemplate → R3TargetBinder → generateTypeCheckBlock を、ボタンを押したときだけ呼びます。記録係と DomSchemaChecker は「呼ばれたメソッドの名前を残すだけ」の差し替えで、NG 番号の文は 2 節の実装から書き写したもの（実際にはここで作っていない）です。参照はクラス名のまま、pipe は `_pipe_名前` と書く簡易の Environment を使っています（[第 5 回](05-typecheck-environment.md)の本物は import と宣言を足す）。@defer の名前付き deferredImports は 22.1.6 に無いので試せません。content projection の検査は、デモのディレクティブが `ngContentSelectors` を持てないので起きません。
+> このサイトに入っている @angular/compiler 22.2.6 の parseTemplate → R3TargetBinder → generateTypeCheckBlock を、ボタンを押したときだけ呼びます。記録係と DomSchemaChecker は「呼ばれたメソッドの名前を残すだけ」の差し替えで、NG 番号の文は 2 節の実装から書き写したもの（実際にはここで作っていない）です。参照はクラス名のまま、pipe は `_pipe_名前` と書く簡易の Environment を使っています（[第 5 回](05-typecheck-environment.md)の本物は import と宣言を足す）。@defer の名前付き deferredImports は、この章を書いたときのサイトの 22.1.6 に無かったので、デモに入れていません（いまの 22.2.6 には keyed defer の判定がありますが、デモの部品は deferredImports を渡しません）。content projection の検査は、デモのディレクティブが `ngContentSelectors` を持てないので起きません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-oob)
 

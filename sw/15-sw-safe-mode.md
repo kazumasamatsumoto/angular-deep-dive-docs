@@ -250,7 +250,7 @@ Angular を使わない 20 行です。12 行目で待たずに入れ替わり�
 
 > **🧪 DEMO — 本物のワーカーを壊して、Driver state とキャッシュを見る**
 >
-> **本物の ngsw-worker.js（@angular/service-worker 22.1.6）を偽物のブラウザの上で動かしています**（`sw-sandbox.ts` の先頭のコメント）。「Driver state」は本物の `/ngsw/state` の 1 行、キャッシュは偽物の Cache Storage の名前です（ハッシュは先頭 8 文字）。「unregister の回数」は偽物の `registration.unregister()` が呼ばれた回数（`effects.unregistered`）で、938 行目が走ったかどうかが分かります。A の最後の段の `restart()` は、同じキャッシュ・サーバー・タブのまま ngsw-worker.js をもう一度評価する「ブラウザがワーカーを止めて起こし直した」形です（install と activate は来ない）。偽物のサーバーは、ワーカーが横取りしなかったナビゲーションに「ネットワークの /」を返します。
+> **本物の ngsw-worker.js（@angular/service-worker 22.2.6）を偽物のブラウザの上で動かしています**（`sw-sandbox.ts` の先頭のコメント）。「Driver state」は本物の `/ngsw/state` の 1 行、キャッシュは偽物の Cache Storage の名前です（ハッシュは先頭 8 文字）。「unregister の回数」は偽物の `registration.unregister()` が呼ばれた回数（`effects.unregistered`）で、938 行目が走ったかどうかが分かります。A の最後の段の `restart()` は、同じキャッシュ・サーバー・タブのまま ngsw-worker.js をもう一度評価する「ブラウザがワーカーを止めて起こし直した」形です（install と activate は来ない）。偽物のサーバーは、ワーカーが横取りしなかったナビゲーションに「ネットワークの /」を返します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-safe-mode)
 

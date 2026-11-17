@@ -622,7 +622,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の FormArray と FormGroup**
 >
-> @angular/forms 22.1.6 です。各行は `[formControl]` で入力欄につないでいます。行の disable や足し外しのたびに、`arr.events` を受けて下の値を読み直します。
+> @angular/forms 22.2.6 です。各行は `[formControl]` で入力欄につないでいます。行の disable や足し外しのたびに、`arr.events` を受けて下の値を読み直します。
 >
 > 2 つ目：`new FormGroup({name: FormControl('Alex'), age: FormControl(20)})` に `setValue` / `patchValue`。投げたエラーは try/catch で捕まえて表示します。
 >

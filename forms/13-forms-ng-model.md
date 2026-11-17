@@ -559,7 +559,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 登録と writeValue がいつ起きるか**
 >
-> 本物の `FormsModule` と `ReactiveFormsModule`（@angular/forms 22.1.6）です。「作る」を押すと、下の 2 つのフォームを作り、その変更検知を `detectChanges()` で同期に走らせます。`detectChanges()` の中で起きたことを「同期」、返ったあと（microtask 以降）に起きたことを「microtask 以降」と記録します。入力欄はどちらも、呼ばれた `writeValue` をログに出す自作の accessor です。最後の行の probe は `<form>` の最後の子に置いたディレクティブで、`ngOnInit` の時点と、そこから `Promise.then` 1 つ後に `NgForm` を読みます。
+> 本物の `FormsModule` と `ReactiveFormsModule`（@angular/forms 22.2.6）です。「作る」を押すと、下の 2 つのフォームを作り、その変更検知を `detectChanges()` で同期に走らせます。`detectChanges()` の中で起きたことを「同期」、返ったあと（microtask 以降）に起きたことを「microtask 以降」と記録します。入力欄はどちらも、呼ばれた `writeValue` をログに出す自作の accessor です。最後の行の probe は `<form>` の最後の子に置いたディレクティブで、`ngOnInit` の時点と、そこから `Promise.then` 1 つ後に `NgForm` を読みます。
 >
 > 切り替えたら「作る」を押し直す（登録済みの NgModel は options の変化を見ません。286 行目）
 >
@@ -676,7 +676,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 76 │ }
 ```
 
-56〜65 行目が 3 節の 282 行目の警告の文面です。子コンポーネントのテンプレートに `<input name="x" ngModel>` を書いても、`@Host()` は 子コンポーネントの境界で止まるので、親コンポーネントの `<form>` の `NgForm` は見えません。62 行目のとおり、子コンポーネントに `viewProviders: [{ provide: ControlContainer, useExisting: NgForm }]` を書くと、親の `NgForm` が子のテンプレートの `@Host()` から見えるようになります。58 行目のコードは `NGMODEL_IN_CHILD_COMPONENT`（-1354。負の値は、メッセージの最後に angular.dev のエラーの説明ページへのリンクを付ける印です。core の errors.ts の `formatRuntimeError`）で、2026-08-17 のコミット 38d093232c6 で足された警告です（インストール済みの 22.1.6 にも入っています）。67〜76 行目が NG01352、name が無いときのエラーです。
+56〜65 行目が 3 節の 282 行目の警告の文面です。子コンポーネントのテンプレートに `<input name="x" ngModel>` を書いても、`@Host()` は 子コンポーネントの境界で止まるので、親コンポーネントの `<form>` の `NgForm` は見えません。62 行目のとおり、子コンポーネントに `viewProviders: [{ provide: ControlContainer, useExisting: NgForm }]` を書くと、親の `NgForm` が子のテンプレートの `@Host()` から見えるようになります。58 行目のコードは `NGMODEL_IN_CHILD_COMPONENT`（-1354。負の値は、メッセージの最後に angular.dev のエラーの説明ページへのリンクを付ける印です。core の errors.ts の `formatRuntimeError`）で、2026-08-17 のコミット 38d093232c6 で足された警告です（この章を書いたときのサイトの 22.1.6 にも、いまの 22.2.6 にも入っています）。67〜76 行目が NG01352、name が無いときのエラーです。
 
 📄 `angular/packages/forms/src/directives/template_driven_errors.ts` L23–38 （▶ の行: 25, 27–28, 32）
 

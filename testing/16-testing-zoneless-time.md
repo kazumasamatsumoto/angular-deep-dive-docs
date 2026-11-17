@@ -10,7 +10,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 ここまでの 3 回の道具（`fakeAsync`・`tick`・`flush`・`waitForAsync`）は、どれも zone.js の上に立っていました。v22 の新しいアプリは zone.js を読み込みません（[zoneless-default](../zoneless/01-zoneless-default.md)）。この章では、zone.js が無いときにそれらの道具が何を返すのか、そして代わりに `await fixture.whenStable()`・`TestBed.tick()`・Vitest の `vi.useFakeTimers()`・`PendingTasks` がどこまで時間を扱えるのかを、**このサイトの ng test（Vitest 4.1.11 + jsdom、zone.js なし、@angular/core 22.1.6）で実際に走らせた結果**で確かめます。
 
-読む対象は `packages/core/testing/src/fake_async.ts` の冒頭（12〜42 行目）と `async.ts` の冒頭（25〜34 行目）です。残りは ng test の出力と、それを説明するスケジューラの章へのリンクです。サイトの `@angular/core` は 22.1.6、`../angular` のソースは 22.2.0-next.7 ですが、この章で引く 2 ファイルの該当部分とエラー文はインストール版の `fesm2022/testing.mjs` でも同じでした。
+読む対象は `packages/core/testing/src/fake_async.ts` の冒頭（12〜42 行目）と `async.ts` の冒頭（25〜34 行目）です。残りは ng test の出力と、それを説明するスケジューラの章へのリンクです。走らせたときのサイトの `@angular/core` は 22.1.6、`../angular` のソースは 22.2.0-next.7 ですが、この章で引く 2 ファイルの該当部分とエラー文はインストール版の `fesm2022/testing.mjs` でも同じでした。依存を上げたいまのサイトの 22.2.6 の `fesm2022/testing.mjs` でも、`fakeAsync` と `waitForAsync` のエラー文は同じです。
 
 1. [1. 全体像](01-testing-overview.md)
 2. [2. initTestEnvironment](02-testing-init-environment.md)

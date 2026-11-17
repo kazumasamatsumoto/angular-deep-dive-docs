@@ -229,7 +229,7 @@ angular/angular · 読了 約 11 分 · 発展 · [サイトで読む（デモ�
 
 ## 7. DEMO：外す・戻す・移す
 
-> **🧪 DEMO — 外す・戻す・移すで、コンポーネントが作られるか壊れるか（ライブ。@angular/elements 22.1.6 の createCustomElement）**
+> **🧪 DEMO — 外す・戻す・移すで、コンポーネントが作られるか壊れるか（ライブ。@angular/elements 22.2.6 の createCustomElement）**
 >
 > 「作ってつなぐ」を押すと、`createCustomElement(ElDisLife, { injector })` のクラスを、`connectedCallback` と `disconnectedCallback` を記録してから `super` を呼ぶだけの子クラスにして `<el-disconnect-life>` の名前で登録し、作った要素を枠 A に入れます。`ElDisLife` は constructor と `ngOnDestroy` を記録し、テンプレートに自分のインスタンスの番号を出します。「観察」の行は、操作のあと 40 ms（待って戻すときは戻してから 40 ms）で要素の中身を見た結果です。時刻はボタンを押してからのミリ秒です。
 >

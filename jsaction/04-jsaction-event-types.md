@@ -408,7 +408,7 @@ passive を渡す人は誰でしょうか。`EventContract.addEvent(eventType, p
 
 > **🧪 DEMO — EventContractContainer が付けたリスナーと、届いた EventInfo**
 >
-> これはライブです。このページが読み込んだ本物の `@angular/core/primitives/event-dispatch`（22.1.6）の `EventContract` と `EventContractContainer` を、「契約を作る」を押したときだけ、下の点線の箱に作ります。`addEvent('focus')`・`addEvent('click')`・`addEvent('mouseenter')` を呼び、dispatcher には届いた `EventInfo` をそのまま表に足す関数を登録します（Angular の `EventDispatcher` は通さないので、jsaction 属性は読まれません。[第 7 回](07-jsaction-resolver.md)）。「付けたリスナー」の表は、`EventContractContainer` の private の配列 `handlerInfos`（event\_contract\_container.ts 37 行目）を読んだものです。比べるために、箱には素の `focus` のリスナーを泡立ちの段でも 1 つ付けます。
+> これはライブです。このページが読み込んだ本物の `@angular/core/primitives/event-dispatch`（22.2.6）の `EventContract` と `EventContractContainer` を、「契約を作る」を押したときだけ、下の点線の箱に作ります。`addEvent('focus')`・`addEvent('click')`・`addEvent('mouseenter')` を呼び、dispatcher には届いた `EventInfo` をそのまま表に足す関数を登録します（Angular の `EventDispatcher` は通さないので、jsaction 属性は読まれません。[第 7 回](07-jsaction-resolver.md)）。「付けたリスナー」の表は、`EventContractContainer` の private の配列 `handlerInfos`（event\_contract\_container.ts 37 行目）を読んだものです。比べるために、箱には素の `focus` のリスナーを泡立ちの段でも 1 つ付けます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-event-types)
 

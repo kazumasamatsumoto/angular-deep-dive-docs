@@ -523,7 +523,7 @@ signal input の移行（[第 8 回](08-mig-signal-input-references.md)）は、
 
 ## 7. デモ：テンプレートを解析して、ノードの範囲を見る
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 の HtmlParser で、ノードの種類と範囲を出す**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 の HtmlParser で、ノードの種類と範囲を出す**
 >
 > テンプレートを入れて「解析する」を押すと、`parse_html.ts` の `parseTemplate` と同じ 3 つのオプション（66〜69 行目）で `HtmlParser` を呼び、ノードを外側から順に表にします。「テンプレートの開始位置」は `ResolvedTemplate.start` のつもりの数です（外部テンプレートなら 0）。表の「ファイルの中」は、テンプレートの中の位置にこれを足したものです。行と列は `line_mappings.ts` の **移植**で、テンプレートの中の行と列です（インラインのときの本物は 95〜96 行目のとおり .ts 全体の行と列を TypeScript に聞きます）。Attribute と BlockParameter は親の子として 1 段下げて出します。
 >

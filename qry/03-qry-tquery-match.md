@@ -342,20 +342,20 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 照合の結果は 175 行目の `matches` に、**2 つの数で 1 組**で積まれます（interfaces/query.ts 74〜76 行目）。1 つ目はノードの番号で、負なら「`ng-template` を越えた印」（80〜81 行目）。2 つ目は何を読むかで、`-1` はノードの型で決める（86 行目）、`-2` は read の特別なトークン（85 行目）、0 以上はノードの注入器の中の番号（88 行目）です。184 行目の `_declarationNodeIndex` は、コンテンツのクエリなら宣言したホストのノードの番号、ビューのクエリなら `-1`（195 行目の既定）です。
 
-![TQuery 0 番（viewChild('box')）の matches と、ノード・埋め込みビューの関係（番号はこのサイトの 22.1.6 の値）](../assets/qry-tquery-match-1.svg)
+![TQuery 0 番（viewChild('box')）の matches と、ノード・埋め込みビューの関係（番号はこのサイトの 22.2.6 の値）](../assets/qry-tquery-match-1.svg)
 
-*TQuery 0 番（viewChild('box')）の matches と、ノード・埋め込みビューの関係（番号はこのサイトの 22.1.6 の値）*
+*TQuery 0 番（viewChild('box')）の matches と、ノード・埋め込みビューの関係（番号はこのサイトの 22.2.6 の値）*
 
-DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 では、テンプレートの最初のノード `<div #box>` の番号が 27 です）。
+DEMO の表 2 を、この読み方で読みます（このサイトの 22.2.6 では、テンプレートの最初のノード `<div #box>` の番号が 28 です）。
 
-- `box = viewChild('box')` の `[27, -1]`：ノード 27（`<div>`）が合い、読むものは型で決める（要素なので ElementRef）。
-- `boxMark = viewChild('box', {read: QtmMark})` の `[27, 57]`：同じノードで、tView.data の 57 番（QtmMark のディレクティブの定義）のインスタンスを読む。
-- `[-32, 0]`・`[-36, 0]`：ノード 32（`<ng-template #tpl>`）と 36（`@if`）の埋め込みビューの、子の TQuery 0 番の結果をここに差し込む、という印。
+- `box = viewChild('box')` の `[28, -1]`：ノード 28（`<div>`）が合い、読むものは型で決める（要素なので ElementRef）。
+- `boxMark = viewChild('box', {read: QtmMark})` の `[28, 58]`：同じノードで、tView.data の 58 番（QtmMark のディレクティブの定義）のインスタンスを読む。
+- `[-33, 0]`・`[-37, 0]`：ノード 33（`<ng-template #tpl>`）と 37（`@if`）の埋め込みビューの、子の TQuery 0 番の結果をここに差し込む、という印。
 
 > [!WARNING]
 > **ハマりどころ**
 >
-> 番号 27 は、このサイトの `@angular/core` 22.1.6 の LView の頭の大きさ（`HEADER_OFFSET`）が 27 だからです。読んでいる 22.2.0-next.7 の interfaces/view.ts では 28 になっていて（22.2.0-next.6 の「feat(core): add ErrorBoundary programmatic APIs」で LView に `ON_ERROR` が足された）、同じテンプレートなら 28 から始まります。テンプレートの命令の番号（`ɵɵelementStart(0, …)` の 0）に HEADER\_OFFSET を足したものが TNode の番号です（[ivy-lview](../ivy/06-ivy-lview.md)）。
+> 番号 28 は、このサイトの `@angular/core` 22.2.6 の LView の頭の大きさ（`HEADER_OFFSET`）が 28 だからです。読んでいる 22.2.0-next.7 の interfaces/view.ts と同じで、22.2.0-next.6 の「feat(core): add ErrorBoundary programmatic APIs」で LView に `ON_ERROR` が足されて 27 から 28 になりました。22.1.x の配布物（`HEADER_OFFSET = 27`）では、同じテンプレートの番号がどれも 1 つ小さくなります。テンプレートの命令の番号（`ɵɵelementStart(0, …)` の 0）に HEADER\_OFFSET を足したものが TNode の番号です（[ivy-lview](../ivy/06-ivy-lview.md)）。
 
 ## 4. elementStart：まず「このノードを見るか」を決める
 
@@ -499,7 +499,7 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
    文字列は `{ provide: 'Token', … }` のように DI のトークンにもなれるので、同じ名前で `locateDirectiveOrProvider` も呼びます。両方合えば、組が 2 つ積まれます（テストの節）。
 3. **270〜273 行目：`TemplateRef` の述語は、コンテナのノードなら合う**
 
-   `TemplateRef` は provider ではないので、注入器を探さずに、ノードの型が Container（`<ng-template>` と `@if` などのブロック）なら `-1` で合わせます。DEMO の `anyTpl = viewChildren(TemplateRef)` が TemplateRef を **2 つ**返すのはこのためで、2 つ目は `@if` のブロックのテンプレートです（表 2 の 9 番の `[36, -1]`）。
+   `TemplateRef` は provider ではないので、注入器を探さずに、ノードの型が Container（`<ng-template>` と `@if` などのブロック）なら `-1` で合わせます。DEMO の `anyTpl = viewChildren(TemplateRef)` が TemplateRef を **2 つ**返すのはこのためで、2 つ目は `@if` のブロックのテンプレートです（表 2 の 9 番の `[37, -1]`）。
 4. **275〜279 行目：型の述語は、ノードの注入器で探す**
 
    `locateDirectiveOrProvider`（render3/di.ts）は、このノードの providers とディレクティブの範囲（tView.data の中）を見て、`provide` が同じか、ディレクティブの `type` が同じものの番号を返します（[di-resolution-flags](../di/12-di-resolution-flags.md)）。4 つ目と 5 つ目の引数 `false, false` は「viewProviders は見ない」「ホストの特別扱いはしない」です。親の注入器へは上がらないので、**このノードに乗ったもの**だけが合います。
@@ -549,7 +549,7 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
 547 │ }
 ```
 
-参照名の表は、ディレクティブの照合のときに作られます。`#box` のように値の無い参照は名前 `''` で引かれ（113 行目）、表の `''` は、コンポーネントが乗っていればその番号（545 行目）、乗っていなければ `-1`（`resolveDirectives` が表を `{'': -1}` で始める。[ivy-first-create-pass](../ivy/08-ivy-first-create-pass.md)）です。`#f="ngForm"` のような値つきの参照は、`exportAs` の表（540〜542 行目）を引きます。だから DEMO の `first = viewChild('first')` は、`<qtm-item #first>` のコンポーネントの番号 `[30, 67]` になり、結果は QtmItem のインスタンスです。
+参照名の表は、ディレクティブの照合のときに作られます。`#box` のように値の無い参照は名前 `''` で引かれ（113 行目）、表の `''` は、コンポーネントが乗っていればその番号（545 行目）、乗っていなければ `-1`（`resolveDirectives` が表を `{'': -1}` で始める。[ivy-first-create-pass](../ivy/08-ivy-first-create-pass.md)）です。`#f="ngForm"` のような値つきの参照は、`exportAs` の表（540〜542 行目）を引きます。だから DEMO の `first = viewChild('first')` は、`<qtm-item #first>` のコンポーネントの番号 `[31, 68]` になり、結果は QtmItem のインスタンスです。
 
 ## 6. read：2 つ目の数を決める
 
@@ -599,7 +599,7 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
    参照名なら `-1` かディレクティブの番号、型なら注入器の番号です。
 2. **288〜294 行目：特別なトークンは `-2`**
 
-   `ElementRef`・`ViewContainerRef`・`Injector`、それにコンテナのノードでの `TemplateRef` は、provider として置かれていないので、注入器を探さずに `-2` を記録します。DEMO の `firstEl`（`[30, -2]`）と `tplVcr`（`[32, -2]`）です。
+   `ElementRef`・`ViewContainerRef`・`Injector`、それにコンテナのノードでの `TemplateRef` は、provider として置かれていないので、注入器を探さずに `-2` を記録します。DEMO の `firstEl`（`[31, -2]`）と `tplVcr`（`[33, -2]`）です。
 3. **296〜305 行目：それ以外の read は、同じノードの注入器で探す**
 
    見つからなければ組を積みません（303 行目）。DEMO の `boxTpl = viewChild('box', {read: TemplateRef})` は、`<div>` がコンテナではないので 292 行目に当たらず、ここで探しても無いので、結果は `undefined` です（表 2 の 2 番は印だけ）。
@@ -607,7 +607,7 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
 > [!WARNING]
 > **ハマりどころ**
 >
-> 291 行目の `read === Injector` は、22.2.0-next.6 の「feat(core): allow reading \`Injector\` from a view or content query」（2026 年 9 月）で足された行です。このサイトの 22.1.6 にはまだ無いので、DEMO の `boxInj = viewChild('box', {read: Injector})` は 296 行目の道に落ち、`Injector` という provider は無いので `undefined` になります（表 2 の 3 番）。22.2 では `[27, -2]` が積まれ、ノードの注入器（`NodeInjector`）が返ります。
+> 291 行目の `read === Injector` は、22.2.0-next.6 の「feat(core): allow reading \`Injector\` from a view or content query」（2026 年 9 月）で足された行で、v22.2.0 から入っています。このサイトの 22.2.6 にもあるので、DEMO の `boxInj = viewChild('box', {read: Injector})` では `[28, -2]` が積まれ（表 2 の 3 番）、ノードの注入器（`NodeInjector`）が返ります（表 1）。22.1.x にはこの行が無く、296 行目の道に落ちて、`Injector` という provider は無いので `undefined` になっていました。
 
 📄 `angular/packages/core/src/render3/queries/query.ts` L342–362 （▶ の行: 343–346, 352, 355, 360）
 
@@ -678,7 +678,7 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
 
    TQueries\_ の 137 行目で、親での番号を `indexInDeclarationView` に入れ、146 行目で埋め込みビューの TView の `queries` になります。
 
-子の TQuery が照合をするのは、**その埋め込みビューが最初に作られたとき**です。DEMO の表 3 で、`@if`（ノード 36）の子 10 番（`viewChildren(QtmItem)`）は `[27, 38]` （埋め込みビューの中の `<qtm-item [n]="2">`）を持ちますが、誰も描かない `<ng-template #tpl>`（ノード 32）の子は全部 `null` のままです。ng-template の中の item 9 が `items` に入らないのは、照合が起きていないからです。
+子の TQuery が照合をするのは、**その埋め込みビューが最初に作られたとき**です。DEMO の表 3 で、`@if`（ノード 37）の子 10 番（`viewChildren(QtmItem)`）は `[28, 39]` （埋め込みビューの中の `<qtm-item [n]="2">`）を持ちますが、誰も描かない `<ng-template #tpl>`（ノード 33）の子は全部 `null` のままです。ng-template の中の item 9 が `items` に入らないのは、照合が起きていないからです。
 
 > [!TIP]
 > **新卒エンジニアへ**
@@ -689,7 +689,7 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
 
 > **🧪 DEMO — 同じテンプレートに 12 個の viewChild / viewChildren と 2 個の contentChildren**
 >
-> 「描く」を押すと、本文の最初のテンプレートの部品（`qtm-stage`）をこのページに出し、描き終わったあとで 3 つを読みます。表 1 は signal を読んだ値です。表 2 と表 3 は、`qtm-stage` が `inject(ChangeDetectorRef)` で受けた ViewRef の `_lView` から TView（LView の 1 番）を取り、`tView.queries` の TQuery の `matches` をそのまま並べたものです。`_lView`・`queries`・`matches` は公開の API ではなく、このサイトの 22.1.6 の名前を**確かめるためだけ**に読んでいます（本番ビルドでも同じ名前で残っています）。
+> 「描く」を押すと、本文の最初のテンプレートの部品（`qtm-stage`）をこのページに出し、描き終わったあとで 3 つを読みます。表 1 は signal を読んだ値です。表 2 と表 3 は、`qtm-stage` が `inject(ChangeDetectorRef)` で受けた ViewRef の `_lView` から TView（LView の 1 番）を取り、`tView.queries` の TQuery の `matches` をそのまま並べたものです。`_lView`・`queries`・`matches` は公開の API ではなく、このサイトの 22.2.6 の名前を**確かめるためだけ**に読んでいます（本番ビルドでも同じ名前で残っています）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/qry-tquery-match)
 
@@ -697,19 +697,19 @@ DEMO の表 2 を、この読み方で読みます（このサイトの 22.1.6 �
 
 1. **番号の順**
 
-   表 2 の 0〜11 番はクラスに書いた順のビューのクエリ、12・13 番が `<qtm-host>`（ノード 37）を作ったときに足されたコンテンツのクエリです。12・13 番だけ「宣言のノード」が 37 で、ng-template の印がありません（ホストより前の ng-template は見ていない）。
+   表 2 の 0〜11 番はクラスに書いた順のビューのクエリ、12・13 番が `<qtm-host>`（ノード 38）を作ったときに足されたコンテンツのクエリです。12・13 番だけ「宣言のノード」が 38 で、ng-template の印がありません（ホストより前の ng-template は見ていない）。
 2. **参照名とディレクティブ**
 
-   0 番 `[27, -1]` と 4 番 `[30, 67]`。同じ参照名でも、要素なら -1、コンポーネントならその番号です。
+   0 番 `[28, -1]` と 4 番 `[31, 68]`。同じ参照名でも、要素なら -1、コンポーネントならその番号です。
 3. **read**
 
-   1 番 `[27, 57]`（QtmMark）、5 番 `[30, -2]`（ElementRef）、7 番 `[32, -2]`（ViewContainerRef）。2 番（TemplateRef を要素から）と 3 番（Injector。22.1.6）は組が無く、結果は undefined です。
+   1 番 `[28, 58]`（QtmMark）、3 番 `[28, -2]`（Injector）、5 番 `[31, -2]`（ElementRef）、7 番 `[33, -2]`（ViewContainerRef）。2 番（TemplateRef を要素から）は組が無く、結果は undefined です。
 4. **型の述語**
 
-   10 番 `viewChildren(QtmItem)` は 30・38・40・42 番のノード。`<qtm-host>` の中に書いた item 3〜5 も、**qtm-stage のテンプレートに書かれている**ので、qtm-stage のビューのクエリに合います（投影されても、書かれた場所のビューのノードです。第 6 回）。
+   10 番 `viewChildren(QtmItem)` は 31・39・41・43 番のノード。`<qtm-host>` の中に書いた item 3〜5 も、**qtm-stage のテンプレートに書かれている**ので、qtm-stage のビューのクエリに合います（投影されても、書かれた場所のビューのノードです。第 6 回）。
 5. **@if と ng-template**
 
-   すべてのビューのクエリが `[-32, n]` と `[-36, n]` を持ち、表 3 に子が 12 個ずつあります。9 番の `viewChildren(TemplateRef)` だけは、ノード 32 と 36 そのものにも合っています。ノード 36 の名前が `qtm-item` なのは、コンパイラがブロックの中身の要素名をコンテナの命令に渡しているからです（第 1 回の記録の 28 行目の `ɵɵconditionalCreate(4, …, "app-item", 1)`）。
+   すべてのビューのクエリが `[-33, n]` と `[-37, n]` を持ち、表 3 に子が 12 個ずつあります。9 番の `viewChildren(TemplateRef)` だけは、ノード 33 と 37 そのものにも合っています。ノード 37 の名前が `qtm-item` なのは、コンパイラがブロックの中身の要素名をコンテナの命令に渡しているからです（第 1 回の記録の 28 行目の `ɵɵconditionalCreate(4, …, "app-item", 1)`）。
 
 ## 9. 呼び出しの連なり
 

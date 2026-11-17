@@ -10,7 +10,7 @@ angular/angular-cli · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 
 この章で分かること: `ng serve` が「どの名前で届いた要求に答えるか（Host の検査）」と「ほかのサイトのページに応答を読ませるか（CORS）」を、Vite の middleware と Angular が足した middleware のどの行で決めているか。`allowedHosts` の値が Vite と SSR の 2 か所にどう渡るか、Angular が Vite の 403 の画面をどう差し替えるか、`headers` の見出しがどの応答に付くか、Chrome DevTools 向けの JSON と、SSR と HTTPS を一緒に使うときの plugin までを、本物の `ng serve` の記録で確かめます。
 
-読む対象は `packages/angular/build/src/tools/vite/` の `middlewares/host-check-middleware.ts`・`middlewares/headers-middleware.ts`・`middlewares/chrome-devtools-middleware.ts`・`plugins/ssr-ssl-plugin.ts` と、サイトの node\_modules の vite 8.1.5 の `dist/node/chunks/node.js` です（版は angular-cli 44129f66a3、記録は @angular/build 22.1.7）。middleware を並べる `setup-middlewares-plugin.ts` の全体は[ng serve の章](../boot/03-boot-dev-server.md)、Vite の設定の組み立ては[第 1 回](01-vds-config.md)、SSR の側の Host の検査は[SSR の Host 検証の章](../ssrx/04-ssrx-host-validation.md)にあります。
+読む対象は `packages/angular/build/src/tools/vite/` の `middlewares/host-check-middleware.ts`・`middlewares/headers-middleware.ts`・`middlewares/chrome-devtools-middleware.ts`・`plugins/ssr-ssl-plugin.ts` と、記録したときのサイトの node\_modules の vite 8.1.5 の `dist/node/chunks/node.js` です（版は angular-cli 44129f66a3、記録は @angular/build 22.1.7）。middleware を並べる `setup-middlewares-plugin.ts` の全体は[ng serve の章](../boot/03-boot-dev-server.md)、Vite の設定の組み立ては[第 1 回](01-vds-config.md)、SSR の側の Host の検査は[SSR の Host 検証の章](../ssrx/04-ssrx-host-validation.md)にあります。
 
 1. [1. Vite の設定を組み立てる](01-vds-config.md)
 2. [2. アセット・base href・index.html](02-vds-assets-html.md)
@@ -27,7 +27,7 @@ angular/angular-cli · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 
 middleware の並び全体（16 個）は[第 2 回](02-vds-assets-html.md)の 1 節にあります。この章が読むのはその前の 3 つと、Angular が「前」の組に入れた headers と Chrome DevTools です。Host の検査と CORS は Angular ではなく Vite が、plugin の `configureServer` を呼ぶ前に入れます。
 
-📄 `vite 8.1.5 の dist/node/chunks/node.js（サイトの node_modules、行番号はこのファイル）`
+📄 `vite 8.1.5 の dist/node/chunks/node.js（記録したときのサイトの node_modules、行番号はこのファイル）`
 
 ```
 // node_modules/vite/dist/node/chunks/node.js（vite 8.1.5）、_createServer の中

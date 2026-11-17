@@ -187,7 +187,7 @@ README の冒頭は「これは Angular の内部のライブラリで、公開 
 
 `@angular/core/primitives/event-dispatch` という入口（package.json の exports にある別の入り口）から出ているのは、この 15 行に並ぶものだけです。10 行目、`cache.ts` の `getDefaulted` は `getActionCache` という別名で出ています。13 行目の `registerDispatcher` は `event_dispatcher.ts` のもの（`EventDispatcher` を受ける版）で、`dispatcher.ts` にある同じ名前の関数ではありません。**`Dispatcher` クラスと `ActionResolver` はこの入口に無い**ので、外から行き先の解決を使うには `EventDispatcher` を通ります。
 
-このサイトが入れている配布物（`@angular/core` 22.1.6 の `fesm2022/primitives-event-dispatch.mjs`、25767 バイト）の最後の `export` 文も確かめました。並んでいる名前は `Attribute`・`EventContract`・`EventContractContainer`・`EventDispatcher`・`EventInfoWrapper`・`EventPhase`・`bootstrapAppScopedEarlyEventContract`・`clearAppScopedEarlyEventContract`・`getDefaulted as getActionCache`・`getAppScopedQueuedEventInfos`・`isCaptureEventType`・`isEarlyEventType`・`registerAppScopedDispatcher`・`registerDispatcher$1 as registerDispatcher`・`removeAllAppScopedEventListeners` の 15 個で、ソースの index.ts と同じです（`$1` は、束ねるときに同じ名前の 2 つの関数を区別した印）。11 行目の `EarlyJsactionDataContainer` は型だけなので、JS の export には出てきません。
+このサイトが入れている配布物（`@angular/core` 22.2.6 の `fesm2022/primitives-event-dispatch.mjs`、25921 バイト）の最後の `export` 文も確かめました。並んでいる名前は `Attribute`・`EventContract`・`EventContractContainer`・`EventDispatcher`・`EventInfoWrapper`・`EventPhase`・`bootstrapAppScopedEarlyEventContract`・`clearAppScopedEarlyEventContract`・`getDefaulted as getActionCache`・`getAppScopedQueuedEventInfos`・`isCaptureEventType`・`isEarlyEventType`・`registerAppScopedDispatcher`・`registerDispatcher$1 as registerDispatcher`・`removeAllAppScopedEventListeners` の 15 個で、ソースの index.ts と同じです（`$1` は、束ねるときに同じ名前の 2 つの関数を区別した印）。11 行目の `EarlyJsactionDataContainer` は型だけなので、JS の export には出てきません。
 
 | 入口の名前 | 中身 | Angular の中で使っている所（`grep` で確かめたもの） |
 | --- | --- | --- |
@@ -269,7 +269,7 @@ README の手順の最後（4 番目）は、この入口と合っていない�
 
 > **🧪 DEMO — 貯める → 登録する → 渡される（ライブ）**
 >
-> このページの JS に入っている本物の `@angular/core/primitives/event-dispatch`（@angular/core 22.1.6）を、下の赤い枠（`#jsa-ov-stage`）の上で動かします。「契約を作る」で `new EventContract(new EventContractContainer(赤い枠))` を作り、`addEvent('click')` と `addEvent('keydown')` を呼びます。「dispatcher を登録する」で `new EventDispatcher((event, actionName) => …)` を作って入口の `registerDispatcher` で登録します。このとき章のコードは契約の `ecrd` を 1 枚だけ包み、dispatcher に渡る `EventInfo` を `new EventInfoWrapper(…)` で持っておき、行き先の関数（delegate）が呼ばれた瞬間の getter の値を表に積みます。「貯まった数」は契約の内部の欄（`queuedEventInfos`）を読んでいます（書き換えません）。
+> このページの JS に入っている本物の `@angular/core/primitives/event-dispatch`（@angular/core 22.2.6）を、下の赤い枠（`#jsa-ov-stage`）の上で動かします。「契約を作る」で `new EventContract(new EventContractContainer(赤い枠))` を作り、`addEvent('click')` と `addEvent('keydown')` を呼びます。「dispatcher を登録する」で `new EventDispatcher((event, actionName) => …)` を作って入口の `registerDispatcher` で登録します。このとき章のコードは契約の `ecrd` を 1 枚だけ包み、dispatcher に渡る `EventInfo` を `new EventInfoWrapper(…)` で持っておき、行き先の関数（delegate）が呼ばれた瞬間の getter の値を表に積みます。「貯まった数」は契約の内部の欄（`queuedEventInfos`）を読んでいます（書き換えません）。
 >
 > 試す順番の例：「契約を作る」→ A の文字（span）を押す → B を押す → そのまま Enter → C を押す（ここまでで「貯めた」が 4 行。B は `<div>` なので Enter は keydown だけ。Tab で動くと Tab の keydown も貯まる）→「dispatcher を登録する」。登録した瞬間に、貯めた 4 つが押した順に渡されます。A は対象が span でも行き先は親の `<button>`、C は `jsaction` が無いので「行き先なし」。貯めていた分は `getIsReplay()` が `true`、`eventPhase` が `101`（`EventPhase.REPLAY`）で、時刻は**押したとき**のままです。登録した後に押すと、`getIsReplay()` は `undefined`、`eventPhase` は本物の泡立ちの段（3）になります。Enter をボタン A で押すと、keydown（A の `jsaction` に無いので行き先なし）と、ブラウザが作る click の 2 つが来ます。
 >

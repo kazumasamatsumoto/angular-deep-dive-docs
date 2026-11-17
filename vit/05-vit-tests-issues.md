@@ -344,7 +344,7 @@ gh で見ると、手元の origin/main の後の 11 月 16 日にも、PR #3471
 
 **Q. spec の中の Vitest は、サイトや手元のプロジェクトと同じ版ですか？**
 
-違います。bazel の deps（1 節の 272 行目）は angular-cli の `package.json` の `vitest` 5.0.0 で、このシリーズの記録はサイトの vitest 4.1.11 です。`extends: false` の it が vitest 5 でしか落ちないのはこのためです（[第 3 回](03-vit-plugins.md)）。
+違います。bazel の deps（1 節の 272 行目）は angular-cli の `package.json` の `vitest` 5.0.0 で、このシリーズの記録は、記録したときのサイトの vitest 4.1.11 です。`extends: false` の it が vitest 5 でしか落ちないのはこのためです（[第 3 回](03-vit-plugins.md)）。
 
 **Q. zoneless のアプリのテストは spec で確かめられていますか？**
 

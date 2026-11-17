@@ -462,7 +462,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO 1 — 書いた本文で push する**
 >
-> **本物の ngsw-worker.js（@angular/service-worker 22.1.6）を偽物のブラウザの上で動かしています**。偽物の `registration.showNotification` は呼ばれた引数を記録するだけで、このページは本物の通知を出しません（`sw-sandbox.ts` の先頭のコメント）。アプリの側の `SwPush` は動かしません。購読を作るには本物のブラウザの `PushManager` と本物の Service Worker の登録が要るからです。
+> **本物の ngsw-worker.js（@angular/service-worker 22.2.6）を偽物のブラウザの上で動かしています**。偽物の `registration.showNotification` は呼ばれた引数を記録するだけで、このページは本物の通知を出しません（`sw-sandbox.ts` の先頭のコメント）。アプリの側の `SwPush` は動かしません。購読を作るには本物のブラウザの `PushManager` と本物の Service Worker の登録が要るからです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-push)
 

@@ -74,7 +74,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 34 │ 
 ```
 
-12 行目の `SW_VERSION` は、パッケージを作るときに版の番号に置き換わる印です（tools/bazel/npm\_packages.bzl の置き換えの表）。サイトの node\_modules の配布物では `var SW_VERSION = "22.1.6"` になっていて、テストのハーネスで TypeScript をそのまま動かすと `0.0.0-PLACEHOLDER` のままです。13 行目の `DEBUG_LOG_BUFFER_SIZE` と 27〜28 行目の 2 つの配列が `log` の入れ物です（4 節）。31〜32 行目で、`Driver`（`Debuggable`）と `Adapter` を受け取ります。`Adapter` は時刻（`adapter.time`）と Response を作るのに使います。
+12 行目の `SW_VERSION` は、パッケージを作るときに版の番号に置き換わる印です（tools/bazel/npm\_packages.bzl の置き換えの表）。サイトの node\_modules の配布物では `var SW_VERSION = "22.2.6"` になっていて、テストのハーネスで TypeScript をそのまま動かすと `0.0.0-PLACEHOLDER` のままです。13 行目の `DEBUG_LOG_BUFFER_SIZE` と 27〜28 行目の 2 つの配列が `log` の入れ物です（4 節）。31〜32 行目で、`Driver`（`Debuggable`）と `Adapter` を受け取ります。`Adapter` は時刻（`adapter.time`）と Response を作るのに使います。
 
 📄 `angular/packages/service-worker/worker/src/debug.ts` L35–47 （▶ の行: 36–39, 44–47）
 
@@ -324,7 +324,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
 > **🧪 DEMO — v1 → v2 → オフラインの /ngsw/state**
 >
-> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.1.6 の配布物）を、偽物のブラウザの上で動かします。偽物にしたのは `self`・Cache Storage・サーバー・タブ・タイマーと時計で（sw-sandbox.ts の先頭のコメント）、時計は仮想なので「6s」はすぐに過ぎます。このページに本物の Service Worker は登録しません。ngsw-config は app（`/index.html`・`/main.js`、prefetch）と api（`/api/**`、performance、maxAge 1h）です。
+> 本物の `ngsw-worker.js`（`@angular/service-worker` 22.2.6 の配布物）を、偽物のブラウザの上で動かします。偽物にしたのは `self`・Cache Storage・サーバー・タブ・タイマーと時計で（sw-sandbox.ts の先頭のコメント）、時計は仮想なので「6s」はすぐに過ぎます。このページに本物の Service Worker は登録しません。ngsw-config は app（`/index.html`・`/main.js`、prefetch）と api（`/api/**`、performance、maxAge 1h）です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-debug)
 

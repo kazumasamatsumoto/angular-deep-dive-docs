@@ -663,7 +663,7 @@ View Engine の時代は `BrowserModule` が `Sanitizer → DomSanitizer` を pr
 
 > **🧪 DEMO 1 — 本物の DomSanitizer.sanitize に値を渡す**
 >
-> このページの `inject(DomSanitizer)`（@angular/platform-browser 22.1.6 の `DomSanitizerImpl`）に、下の値と SecurityContext をそのまま渡します。呼んでいる間だけ `console.warn` を横取りして画面に出します（コンソールには出しません）。結果は文字列として表示するだけで、DOM には入れません。
+> このページの `inject(DomSanitizer)`（@angular/platform-browser 22.2.6 の `DomSanitizerImpl`）に、下の値と SecurityContext をそのまま渡します。呼んでいる間だけ `console.warn` を横取りして画面に出します（コンソールには出しません）。結果は文字列として表示するだけで、DOM には入れません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/domr-sanitization)
 

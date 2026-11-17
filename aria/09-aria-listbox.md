@@ -10,7 +10,7 @@ angular/components · 読了 約 14 分 · 中核 · [サイトで読む（デ�
 
 第 5〜8 回で 1 つずつ読んだ Behavior（フォーカス・移動・選択・頭文字検索）を、実際の部品が初めて組み合わせるのが `ngListbox` です。この章では、`List` が 4 つの Behavior を 1 つの窓口にまとめる行、`ListboxPattern` が「どのキーで何を呼ぶか」の表を組む行、`Listbox` ディレクティブが host に `role`・`tabindex`・`aria-*` を書き、`afterRenderEffect` で既定の状態と `value` の後始末をする行を、順に追います。
 
-読む対象は `src/aria/private/behaviors/list/list.ts`、`src/aria/private/listbox/listbox.ts`・`option.ts`、`src/aria/listbox/listbox.ts`・`option.ts` です（../components の e81c398a86。ページの上のデモは @angular/aria 22.1.8 で、この 5 ファイルは中身が同じです）。
+読む対象は `src/aria/private/behaviors/list/list.ts`、`src/aria/private/listbox/listbox.ts`・`option.ts`、`src/aria/listbox/listbox.ts`・`option.ts` です（../components の e81c398a86。ページの上のデモは @angular/aria 22.2.7 で、この 5 ファイルは中身が同じです）。
 
 1. [1. 全体像](01-aria-overview.md)
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -725,7 +725,7 @@ angular/components · 読了 約 14 分 · 中核 · [サイトで読む（デ�
 
 ## 8. デモ：本物の ngListbox で tabindex と value を読む
 
-> **🧪 DEMO — このページの @angular/aria 22.1.8 の ngListbox**
+> **🧪 DEMO — このページの @angular/aria 22.2.7 の ngListbox**
 >
 > これは再現ではなく本物の `ngListbox` / `ngOption` です。`[(value)]` は章のコンポーネントの `value` signal と結んであり、初期値は `[]` です。キーボードで操作できます。Tab でリストに入り、↑↓・Home・End で動き、Space / Enter で選びます（どのキーが効くかは選択の方式で変わります。2 節の表）。キーやクリックのあと 50ms 待って、各項目の `tabindex`・`aria-selected` と `document.activeElement` を読んでログに出します。
 >

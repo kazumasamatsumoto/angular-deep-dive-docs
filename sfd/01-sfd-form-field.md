@@ -102,7 +102,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!NOTE]
 > **さらに深く**
 >
-> この版の `findCreateInstruction` は、59〜65 行目で見つかるたびに 64 行目で上書きするので、67 行目で返すのはその要素の**最後の**作る命令（`ElementEnd`）です。だから `ɵɵcontrolCreate` はテンプレートの `(input)` などの `listener` の後に走り、利用者の `(input)` のほうが `FormField` の `input` の購読より先に呼ばれます。angular-main の 6688a3d5502（2026-07-28、fix(forms): create controls before listeners）は、最初の作る命令を返すように変え、`ɵɵcontrolCreate` を listener より前に出しました。サイトの 22.1.6 には入っていません。
+> この版の `findCreateInstruction` は、59〜65 行目で見つかるたびに 64 行目で上書きするので、67 行目で返すのはその要素の**最後の**作る命令（`ElementEnd`）です。だから `ɵɵcontrolCreate` はテンプレートの `(input)` などの `listener` の後に走り、利用者の `(input)` のほうが `FormField` の `input` の購読より先に呼ばれます。angular-main の 6688a3d5502（2026-07-28、fix(forms): create controls before listeners）は、最初の作る命令を返すように変え、`ɵɵcontrolCreate` を listener より前に出しました。22.2.x には 7a58550089d として入っていて（v22.2.0 から）、サイトの 22.2.6 の `fesm2022/compiler.mjs` の `findCreateInstruction` は、見つけた最初の作る命令をすぐ返します。このサイトのデモでは、`ɵɵcontrolCreate` が listener より先に走ります。
 
 core の側で、`ɵɵcontrolCreate` は最初の 1 回だけ、その要素に「制御ディレクティブ」と「カスタムコントロール」がいるかを調べて `TNode` に書きます。
 
@@ -340,7 +340,7 @@ $ git show de56d74da39 -- packages/forms/signals/src/directive/form_field.ts
 > [!WARNING]
 > **ハマりどころ**
 >
-> 79 行目の `!==` は `NaN` を前回と違うと判断します（`NaN !== NaN` は `true`）。だからモデルの値が `NaN` の数のフィールドは、変更検知のたびに値を書き直します。angular-main の e118e155271（2026-10-05、fix(forms): use `Object.is` when comparing control bindings in signal forms）がここを `!Object.is(...)` に変えました。サイトの 22.1.6 は `!==` のままです（`fesm2022/signals.mjs` の `bindingUpdated` で確かめました）。同じ変更は 2e32872720e にも含まれていましたが、そちらは revert されました（[第 2 回](02-sfd-native.md)）。
+> 79 行目の `!==` は `NaN` を前回と違うと判断します（`NaN !== NaN` は `true`）。だからモデルの値が `NaN` の数のフィールドは、変更検知のたびに値を書き直します。angular-main の e118e155271（2026-10-05、fix(forms): use `Object.is` when comparing control bindings in signal forms）がここを `!Object.is(...)` に変えました。22.2.x には c91a8c429db として入っていて（v22.2.2 から）、サイトの 22.2.6 の `fesm2022/signals.mjs` の `bindingUpdated` も `!Object.is(...)` です（22.1.6 は `!==` のままでした）。同じ変更は 2e32872720e にも含まれていましたが、そちらは revert されました（[第 2 回](02-sfd-native.md)）。
 
 ## 6. registerAsBinding：フィールドに「この要素で表示している」と登録する
 
@@ -488,7 +488,7 @@ $ git show --stat f4a5b42ebe6   # refactor(forms): rename directive files for co
 
 > **🧪 DEMO — FormField はどの経路を選んだか**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。`form(signal('angular'), p => { required(p, { when }); disabled(p, { when }) })` の 1 つのフィールドを、選んだ相手に `[formField]` でつなぎます。FVC は `value = model('')` だけの部品、CVA は `NG_VALUE_ACCESSOR` を provide する部品、「両方」は `value` の model も `NG_VALUE_ACCESSOR` も持つ部品です。部品の中の input に打つと、部品がモデルへ渡す道（`valueChange` か `onChange`）がログに出ます。
+> 本物の `@angular/forms/signals`（22.2.6）です。`form(signal('angular'), p => { required(p, { when }); disabled(p, { when }) })` の 1 つのフィールドを、選んだ相手に `[formField]` でつなぎます。FVC は `value = model('')` だけの部品、CVA は `NG_VALUE_ACCESSOR` を provide する部品、「両方」は `value` の model も `NG_VALUE_ACCESSOR` も持つ部品です。部品の中の input に打つと、部品がモデルへ渡す道（`valueChange` か `onChange`）がログに出ます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sfd-form-field)
 

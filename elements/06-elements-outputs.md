@@ -169,7 +169,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 ## 5. DEMO：type・detail・bubbles を表に
 
-> **🧪 DEMO — 出力が CustomEvent になって届くところ（ライブ。@angular/elements 22.1.6 の createCustomElement）**
+> **🧪 DEMO — 出力が CustomEvent になって届くところ（ライブ。@angular/elements 22.2.6 の createCustomElement）**
 >
 > 「要素を作ってつなぐ」を押すと、`createCustomElement(ElOutEmitter, { injector })` を `<el-outputs-emitter>` の名前で登録し、`document.createElement` で作った要素を枠に入れます。要素と、その親の枠の両方に、`picked`・`legacy`・`renamed-out`・`renamed`・`ready`・`born` の 6 つの名前で `addEventListener` します。要素の中の 3 つのボタンはコンポーネントのテンプレートのボタンで、押すとそれぞれの出力が `emit` します。表の 1 行は、どちらかのリスナーが呼ばれた 1 回です。
 >

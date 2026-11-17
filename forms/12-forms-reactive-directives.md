@@ -783,7 +783,7 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — \[formGroup\] を差し替えると、accessor に何が呼ばれるか**
 >
-> 本物の `ReactiveFormsModule`（@angular/forms 22.1.6）です。`name` はふつうの `<input>`（`DefaultValueAccessor`）、`city` は呼ばれたメソッドをログに出す自作の `ControlValueAccessor` です。差し替えると、332 行目の `cleanUpControl`（`registerOnChange(noop)`）→ 340 行目の `setUpControlValueAccessor`（`writeValue` が最初）の順に並びます。
+> 本物の `ReactiveFormsModule`（@angular/forms 22.2.6）です。`name` はふつうの `<input>`（`DefaultValueAccessor`）、`city` は呼ばれたメソッドをログに出す自作の `ControlValueAccessor` です。差し替えると、332 行目の `cleanUpControl`（`registerOnChange(noop)`）→ 340 行目の `setUpControlValueAccessor`（`writeValue` が最初）の順に並びます。
 >
 > 入力欄に打ってから差し替え、もう一度戻すと、打った値は元の `FormGroup` に残っていて、戻したときの `writeValue` で入力欄に戻ります。`registerOnTouched(…)` は、外すときの noop と、つなぐときの本物の関数が同じ形なので見分けていません。（この並びは、同じコンポーネントを vitest + jsdom で動かして確かめました。）
 >
@@ -903,20 +903,20 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 `setUpControlValueAccessor` は `_throwError(dir, 'Cannot find control with')` を呼び、343〜346 行目で場所の説明を足して投げます。348〜353 行目、path が 2 段以上なら `path: 'address -> city'`（350 行目）、1 段なら `name: 'nope'`（351 行目）、名前が無ければ `unspecified name attribute`（352 行目）。339〜341 行目の `_noControlError`（「There is no FormControl instance attached to form control element with」）は、7 節の 332 行目で外したあとに accessor が古いコールバックを呼んだときに出るものです。
 
-開発モードの確認が無い本番ビルドでは、`null` のまま `setUpValidators(null, dir)` に進み、control の `_rawValidators` を読もうとして `TypeError: Cannot read properties of null (reading '_rawValidators')` になります。何のフォームのどの名前かが分からないエラーです。
+開発モードの確認が無い本番ビルドでは、`null` のまま `setUpValidators(null, dir)` に進み、control の `_rawValidators` を読もうとして `TypeError: Cannot read properties of null (reading '_rawValidators')` になります。何のフォームのどの名前かが分からないエラーです（引用の 8576f161ae4 と、この章を書いたときのサイトの 22.1.6 の形。いまの 22.2.6 は下の囲みのとおり違います）。
 
 > **🧪 DEMO — 存在しない名前の formControlName**
 >
 > ボタンを押すと、`<form [formGroup]="group"><input formControlName="nope" /></form>`（group には `name` しか無い）を `createComponent` で作り、`detectChanges()` を try/catch で囲んで、投げられたものをそのまま出します。このページは `isDevMode()` = **false** で動いています。
 >
-> 開発モード（`ng serve`）なら「Cannot find control with name: 'nope'」、本番ビルドなら `TypeError` が出ます。
+> 22.1.6 では、開発モード（`ng serve`）なら「Cannot find control with name: 'nope'」、本番ビルドなら `TypeError` が出ました。いまのサイトの 22.2.6 の本番ビルドでは、ボタンを押すと `TypeError` ではなく `NG01055` のエラーが出ます（下の囲みの修正。本番ではメッセージが削られ、番号だけになります）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-reactive-directives)
 
 > [!NOTE]
 > **さらに深く**
 >
-> この本番での `TypeError` を直したのが PR #71177「fix(forms): don't crash when formControlName has no matching control」（2026-10-20 にマージ、コミット `63f4bd4c7eb`）です。この章が引いている `../angular`（8576f161ae4、2026-09-09）には**まだ入っていません**（`git log --grep=71177` が空で、5 節の 189 行目に null の確認が無い）。最新の main（`../angular-main`）では、`addControl` の `form.get` の直後に `if (!ctrl)` を置き、`ngDevMode` に関係なく `RuntimeError`（NG01055）を投げます。メッセージは開発モードだけで、同じ階層にある control の名前を並べます （「Controls that do exist at this level: …」）。issue と PR の読み方は[第 20 回](20-forms-issues.md)で扱います。
+> この本番での `TypeError` を直したのが PR #71177「fix(forms): don't crash when formControlName has no matching control」（2026-10-20 にマージ、コミット `63f4bd4c7eb`）です。この章が引いている `../angular`（8576f161ae4、2026-09-09）には**まだ入っていません**（`git log --grep=71177` が空で、5 節の 189 行目に null の確認が無い）。最新の main（`../angular-main`）では、`addControl` の `form.get` の直後に `if (!ctrl)` を置き、`ngDevMode` に関係なく `RuntimeError`（NG01055）を投げます。メッセージは開発モードだけで、同じ階層にある control の名前を並べます （「Controls that do exist at this level: …」）。この修正は 22.2.x の枝にも 41b189752e2 として入り（22.2.4 の変更履歴の「don't crash when formControlName has no matching control」）、いまのサイトの 22.2.6 にあります。issue と PR の読み方は[第 20 回](20-forms-issues.md)で扱います。
 
 ## ここまでの呼び出し
 
@@ -1001,7 +1001,7 @@ pnpm bazel test //packages/forms/test:test \
 - 子は `ControlContainer` トークンで親を探し（`@Host @SkipSelf`）、登録は一番上の `formDirective.addControl` に集まる。
 - `formControlName` は最初の `ngOnChanges` で 1 回だけ登録し、名前があとで変わっても付け直さない。
 - `[formGroup]` の差し替えは、覚えている `directives` を「cleanUp → setUp」で付け直し、`writeValue` で入力欄を書き直す。
-- 名前に対応する control が無いと、開発モードでは「Cannot find control with name」、本番では `TypeError`。main では #71177 で NG01055 になった。
+- 名前に対応する control が無いと、開発モードでは「Cannot find control with name」、本番では `TypeError`。main では #71177 で NG01055 になった（22.2.x では 22.2.4 から。いまのサイトの 22.2.6 のデモでも NG01055）。
 
 ---
 

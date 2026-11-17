@@ -513,7 +513,7 @@ DEMO の記録から、境界が**切り替わらなかった**ものを抜き�
 
 > **🧪 DEMO — @boundary の切り替わり（記録の再生）**
 >
-> これは記録です。@angular/core 22.2.6 / Node v24.22.1 で、domino の DOM の上に `createApplication` で場面ごとに別のアプリを作り、`@boundary` を使うコンポーネントを JIT でコンパイルして描きました。HTML はホストの `innerHTML` からコメントを除いたもの、「届いたもの」は自作の ErrorHandler（`handleError` と `onViewError` を持つ）の記録です。このサイトの 22.1.6 には `@boundary` が無いので、ブラウザでは何も動かしません。
+> これは記録です。@angular/core 22.2.6 / Node v24.22.1 で、domino の DOM の上に `createApplication` で場面ごとに別のアプリを作り、`@boundary` を使うコンポーネントを JIT でコンパイルして描きました。HTML はホストの `innerHTML` からコメントを除いたもの、「届いたもの」は自作の ErrorHandler（`handleError` と `onViewError` を持つ）の記録です。記録を取ったときのこのサイトの依存 22.1.6 には `@boundary` が無かったので、ブラウザでは何も動かしません（今の依存の 22.2.6 には `@boundary` があります）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/err-boundary-runtime)
 

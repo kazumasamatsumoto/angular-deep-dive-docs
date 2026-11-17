@@ -38,7 +38,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 - このシリーズのソースは ../angular の 8576f161ae4（22.2.0-next.7）で、この commit を入れた日は 2026-09-09 です。`git rev-list --count HEAD..origin/main` は 807 で、origin/main（2026-11-04）は 807 commit 先にあります。
 - その 807 のうち、`packages/common/src`（http を除く）の fix・feat は 1 つだけでした：2cecc4aa608（2026-09-01 に書かれ、09-29 に main へ。arturovt、`disableOptimizedSrcset` のとき `[srcset]` のバインディングを通す、issue #49335）。第 14 回の srcset の話です。
 - このシリーズで「main も同じ」と書いた所（Location・ViewportScroller・テスト用の Location）は、`gh api 'repos/angular/angular/contents/…?ref=main'` で main のファイルを読んで比べています。
-- このサイトの DEMO が動かす本物は node\_modules の 22.1.6 です。この章の表の修正が 22.1.6 に入っているかは、`git tag --contains <hash> --sort=creatordate` の最初の tag で見ます（例：d109bf90d50 は v22.1.0-next.0、a69e56df718 は v22.1.0-next.1）。
+- このサイトの DEMO が動かす本物は node\_modules の 22.2.6 です。この章の表の修正が 22.2.6 に入っているかは、`git tag --contains <hash> --sort=creatordate` の最初の tag で見ます（例：d109bf90d50 は v22.1.0-next.0、a69e56df718 は v22.1.0-next.1）。22.2.x のブランチへの cherry-pick は別の hash になります（例：KeyValuePipe の直しは main の 622a7c7f29d が 22.2.x では fb705aad90、v22.2.6。[第 8 回](08-cmn-keyvalue-pipe.md)）。
 
 ## 1. データの取り方
 
@@ -119,7 +119,7 @@ CMN の各章で読んだ修正を、`git show --stat` で「どのファイル�
 
 1. **#48542 入れ子の ShadowDom で anchorScrolling が効かない（2022-12、open、PR なし）**
 
-   本文の「Which package」は router ですが、行は common の `findAnchorFromDocument` です（[第 19 回](19-cmn-viewport-scroller.md)の 3 節の 193・210 行目）。ルーターは `Scroll` のイベントで `scrollToAnchor(e.anchor)` を呼ぶだけで（同じ章の 5 節の 120 行目）、探すのは common です。**issue の「どの package」は、利用者から見えた場所であって、直す場所とは限りません**。TreeWalker は `document.body` の下の普通の木だけを歩くので、shadow root の中にある別の shadow host には来ません。報告の「1 段目だけは見つかる」と、197〜204 行目の 1 段だけの中を見る書き方がぴったり合います。第 19 回の DEMO の `cmn-vs-target-shadow2` で、このサイトの 22.1.6 の本物が同じ結果になります。spec の形にするなら、同じ章の「テストと直し方」のとおり `createTallElementWithShadowRoot` を 2 段にして、**Chromium のターゲット**で走らせます。
+   本文の「Which package」は router ですが、行は common の `findAnchorFromDocument` です（[第 19 回](19-cmn-viewport-scroller.md)の 3 節の 193・210 行目）。ルーターは `Scroll` のイベントで `scrollToAnchor(e.anchor)` を呼ぶだけで（同じ章の 5 節の 120 行目）、探すのは common です。**issue の「どの package」は、利用者から見えた場所であって、直す場所とは限りません**。TreeWalker は `document.body` の下の普通の木だけを歩くので、shadow root の中にある別の shadow host には来ません。報告の「1 段目だけは見つかる」と、197〜204 行目の 1 段だけの中を見る書き方がぴったり合います。第 19 回の DEMO の `cmn-vs-target-shadow2` で、このサイトの 22.2.6 の本物が同じ結果になります。spec の形にするなら、同じ章の「テストと直し方」のとおり `createTallElementWithShadowRoot` を 2 段にして、**Chromium のターゲット**で走らせます。
 2. **#55383 scroll-margin を守らない（2024-04、open）と、閉じた PR #70509**
 
    行は `scrollToElement`（第 19 回の 3 節の 167〜175 行目）で、オフセットは `setOffset` の値しか引きません。2026-09-01 の PR #70509 は `getComputedStyle` から `scroll-margin-top` を読んで引く 1 か所の直しでしたが、翌日 Andrew Scott が閉じました。理由は「`ViewportScroller` は古い仕組みで、推測を足したくない」「`scroll-margin` を書いている今のアプリの位置が変わる」「直すならルーターの側で `scrollIntoView` などを使って設計し直す」の 3 つです。issue には利用者の回避策（`Scroll` のイベントで `scrollMarginTop` を読んで `setOffset` する、自分で `scrollIntoView` する）がコメントで残っています。**直し方が正しくても、メンテナーの方針と合わない PR は閉じられます**。PR を考える前に、MEMBER・担当者のコメントを先に読む理由です。
@@ -143,7 +143,7 @@ CMN の各章で読んだ修正を、`git show --stat` で「どのファイル�
 | mock\_location\_strategy.ts の `back` | replaceState のあとで戻ると、今のパスが記録用の文字列 `replace: /b` になる | 本物の Location と組み合わせて Node で動かした | 第 18 回 |
 | location.ts の `go` と `onUrlChange` | listener が受け取る URL が、go では base href 付き、戻るでは正規化済み。# が変わる戻るでは 2 回 | 第 17 回の DEMO。振る舞いとして文書に書かれていないので、不具合かどうかは決めていない | [第 17 回](17-cmn-location.md) |
 | imgix\_loader.ts の独自の変換 | 値にカンマを含む変換（`crop: 'faces,edges'`）が `split(',')` で割れる | 第 15 回の DEMO と Node | [第 15 回](15-cmn-image-loaders.md) |
-| keyvalue\_pipe.ts の `compareFn` | 関数 → `null` に変えても並びが戻らない | 第 8 回で 22.1.6 を Node で動かした | [第 8 回](08-cmn-keyvalue-pipe.md) |
+| keyvalue\_pipe.ts の `compareFn` | 関数 → `null` に変えても並びが戻らない（あとで main の 622a7c7f29d・issue #71893 で直り、22.2.6 に fb705aad90 として入った） | 第 8 回で 22.1.6 を Node で動かした | [第 8 回](08-cmn-keyvalue-pipe.md) |
 | NgStyle の shorthand と longhand | `padding` だけを変えると `padding-left` が画面で消える | 第 2 回の DEMO（renderer に届いた呼び出し） | [第 2 回](02-cmn-ng-class-style.md) |
 | format\_date.ts | 閉じていない `'` が消える／-00:30 のタイムゾーンの符号／0〜99 年の `W` | 第 10・11 回で本物の 22.1.6 を動かして確かめた（第 11 回は spec の形の再現も示した） | [第 10 回](10-cmn-format-date.md)・[第 11 回](11-cmn-date-getters.md) |
 | number\_pipe.ts の CurrencyPipe | `currencyCode` に `null`・`''` を渡したときの通貨の決め方 | 第 12 回 | [第 12 回](12-cmn-format-number.md) |

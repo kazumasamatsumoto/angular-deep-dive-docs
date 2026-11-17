@@ -530,7 +530,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の FormControl に Validators を足し外しする**
 >
-> @angular/forms 22.1.6 の `FormControl` と `[formControl]` です。チェックボックスは `addValidators` / `removeValidators` のあとに `updateValueAndValidity()` を呼びます。minLength のチェックボックスが使う関数は、章のコンポーネントが 1 回だけ作って持っている参照です。
+> @angular/forms 22.2.6 の `FormControl` と `[formControl]` です。チェックボックスは `addValidators` / `removeValidators` のあとに `updateValueAndValidity()` を呼びます。minLength のチェックボックスが使う関数は、章のコンポーネントが 1 回だけ作って持っている参照です。
 >
 > 2 つ目：`{}` を返す自作の検証関数を、単体で渡すか配列で渡すか。
 >

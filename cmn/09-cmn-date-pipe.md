@@ -295,7 +295,7 @@ export const appConfig: ApplicationConfig = {
 
 > **🧪 DEMO — 本物の DatePipe を、章の中の小さなインジェクタで作って呼ぶ**
 >
-> 「transform を呼ぶ」を押すと、`Injector.create` で章の中だけのインジェクタを作り（親はこのサイトの `EnvironmentInjector`）、下で選んだ `LOCALE_ID`・`DATE_PIPE_DEFAULT_OPTIONS`・`DATE_PIPE_DEFAULT_TIMEZONE` を入れます。そこから 2 節のファクトリと同じ 3 つを `get` して、このサイトの本物の `DatePipe`（@angular/common 22.1.6）を `new` し、`transform` を呼びます。「決まった値」の列だけは 272〜275 行目を表示用に移植したもので、「formatDate を直接」は同じ値で本物の `formatDate` を呼んだ結果です。ロケールの ja・fr・de は、押したときにこの章で `registerLocaleData` します。エラーの文の中のクラス名は、このサイトの開発ビルドでは `'_DatePipe'` と出ます（ビルドの道具がクラスの名前を変えるため。本家の spec の文では `'DatePipe'`）。
+> 「transform を呼ぶ」を押すと、`Injector.create` で章の中だけのインジェクタを作り（親はこのサイトの `EnvironmentInjector`）、下で選んだ `LOCALE_ID`・`DATE_PIPE_DEFAULT_OPTIONS`・`DATE_PIPE_DEFAULT_TIMEZONE` を入れます。そこから 2 節のファクトリと同じ 3 つを `get` して、このサイトの本物の `DatePipe`（@angular/common 22.2.6）を `new` し、`transform` を呼びます。「決まった値」の列だけは 272〜275 行目を表示用に移植したもので、「formatDate を直接」は同じ値で本物の `formatDate` を呼んだ結果です。ロケールの ja・fr・de は、押したときにこの章で `registerLocaleData` します。エラーの文の中のクラス名は、このサイトの開発ビルドでは `'_DatePipe'` と出ます（ビルドの道具がクラスの名前を変えるため。本家の spec の文では `'DatePipe'`）。
 >
 > dateFormat・timezone を空にすると、その項目はオブジェクトに入れません。
 >

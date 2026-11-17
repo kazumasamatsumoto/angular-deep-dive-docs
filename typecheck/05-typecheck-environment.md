@@ -532,7 +532,7 @@ BoundTarget（[compiler-binder](../compiler/09-compiler-binder.md) で作られ�
 
 > **🧪 TcbEnvironment が作った部分を拾う**
 >
-> ボタンを押すと、このサイトに入っている @angular/compiler 22.1.6 の generateTypeCheckBlock が動きます。
+> ボタンを押すと、このサイトに入っている @angular/compiler 22.2.6 の generateTypeCheckBlock が動きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-environment)
 

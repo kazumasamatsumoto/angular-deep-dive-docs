@@ -380,7 +380,7 @@ Listbox の `[(value)]` に入る「選ばれた値の配列」を書き換え�
 
 > **🧪 DEMO — ngListbox の multi と selectionMode を切り替えて選ぶ**
 >
-> 本物の `ngListbox`（@angular/aria 22.1.8）で、`[(value)]` の中身を操作のたびに下へ出します（新しい行が上）。「c」は `[disabled]="true"`（softDisabled は既定の true なので止まれる）。Tab でリストに入り、矢印・Space・Enter・Shift+矢印・Ctrl（Mac は ⌘）+A・クリック・Shift+クリックを試してください。点線の枠が今の項目、塗りと ✓ が選ばれた項目です。multi を外すときは、開発モードの検査（単一選択なのに値が 2 つ以上だと `console.warn`。private/listbox/listbox.ts:213）に引っかからないよう、デモの側で先に value を 1 つに減らしています。
+> 本物の `ngListbox`（@angular/aria 22.2.7）で、`[(value)]` の中身を操作のたびに下へ出します（新しい行が上）。「c」は `[disabled]="true"`（softDisabled は既定の true なので止まれる）。Tab でリストに入り、矢印・Space・Enter・Shift+矢印・Ctrl（Mac は ⌘）+A・クリック・Shift+クリックを試してください。点線の枠が今の項目、塗りと ✓ が選ばれた項目です。multi を外すときは、開発モードの検査（単一選択なのに値が 2 つ以上だと `console.warn`。private/listbox/listbox.ts:213）に引っかからないよう、デモの側で先に value を 1 つに減らしています。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-list-selection)
 

@@ -372,7 +372,7 @@ angular/angular-cli · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> このサイトの依存の `@angular/ssr` 22.1.7 には 23e3d44a7f が入っていません（配布物の `ssr.mjs` に `criticalCssPlans` が 1 つも無い）。23e3d44a7f は v22.2.0-next.7 から入っています。そのため 3 節の記録は、../angular-cli のソースの `AngularServerApp` を束ね、同じ版の beasties（0.5.4）で動かしました。
+> 記録を取った 2026-11-06 のこのサイトの依存の `@angular/ssr` 22.1.7 には 23e3d44a7f が入っていませんでした（配布物の `ssr.mjs` に `criticalCssPlans` が 1 つも無い）。23e3d44a7f は v22.2.0-next.7 から（安定版では v22.2.0 から）入っています。そのため 3 節の記録は、../angular-cli のソースの `AngularServerApp` を束ね、同じ版の beasties（0.5.4）で動かしました。今のこのサイトの依存の 22.2.7 の `ssr.mjs` には `criticalCssPlans` が入っています。
 
 ## 4. CommonEngine：ディスクから作り置きを読む古い入口
 
@@ -941,7 +941,7 @@ console.log(JSON.stringify(out, null, 1));
 
 - `ServerAssets` はマニフェストの表を引くだけで、ファイルもパスの連結も扱わない。パスは 4fa81d403c から decode してから引く。
 - Hooks は `html:transform:pre` の 1 つだけで、登録するのは開発サーバー。写しの `ctx` に順に通す。
-- 23e3d44a7f で、重要 CSS の解析はビルドへ移り、サーバーは計画を当てはめるだけになった。nonce もビルドが拾う。22.1.7 にはまだ無い。
+- 23e3d44a7f で、重要 CSS の解析はビルドへ移り、サーバーは計画を当てはめるだけになった。nonce もビルドが拾う。22.1.7 にはまだ無く、22.2 系は v22.2.0 から（このサイトの 22.2.7 にはある）。
 - `CommonEngine` は非推奨。ディスクを読む唯一の入口で、bb72145f9a で `relative` の封じ込めになったが、spec は無い。許すホストは環境変数が先。
 
 ---

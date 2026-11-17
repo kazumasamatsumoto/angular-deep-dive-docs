@@ -265,7 +265,7 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 >
 > Listbox の `softDisabled` は既定で `true` です（listbox/listbox.ts:99。コミット 28a50f5dad「refactor(multiple): default softDisabled to true (#32240)」）。その直前の 95〜98 行目のコメントは「true なら無効な項目にもフォーカスが当たるが操作はできない。false ならナビゲーションで飛ばす」です。「無効な option にキーボードで届いてしまう」という報告 #33430 には、メンテナーが「意図した動きで、そうしないと利用者はそこに項目があることを知れない。飛ばしたいなら `[softDisabled]="false"`」と答えて閉じています（2026-06-23）。
 
-> **🧪 DEMO — このページの @angular/aria（22.1.8）の ngListbox で ListFocus を見る**
+> **🧪 DEMO — このページの @angular/aria（22.2.7）の ngListbox で ListFocus を見る**
 >
 > これは再現ではなく本物の `ngListbox` です。`cherry` は `[disabled]="true"` です。Tab でリストに入り、上下の矢印キーで動いてみてください。キーを押したあと・クリックしたあと・外からフォーカスが入ったあとに、描画が終わった時点の `document.activeElement`、コンテナと各項目の `tabindex`、`aria-activedescendant` を読んで下に出します（新しい行が上）。背景の色は `data-active`（今の項目）、`✓` は `aria-selected="true"` です。既定の `selectionMode="follow"` なので、動くと選択も付いてきます（[第 7 回](07-aria-list-selection.md)）。
 >

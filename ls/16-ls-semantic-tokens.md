@@ -680,7 +680,7 @@ VS Code でテンプレートの `@if` や `{{ … }}` に色が付くのは、�
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ls-semantic-tokens)
 
-> **🧪 DEMO 2 — ClassificationVisitor.visitElement の移植 + 本物の parseTemplate（@angular/compiler 22.1.6）**
+> **🧪 DEMO 2 — ClassificationVisitor.visitElement の移植 + 本物の parseTemplate（@angular/compiler 22.2.6）**
 >
 > 本物はスコープのディレクティブから「どの要素名がコンポーネントか」を決めますが（96・129 行目）、ここでは入力欄の名前の一覧で代用します。`button` のようにディレクティブの要素名でも、一覧に入れなければ色は付きません。
 >

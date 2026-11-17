@@ -585,7 +585,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の Location に URL を渡す**
 >
-> 「実行」を押すと、1 行ごとに章の中だけの小さな DI の木（`Injector.create`）を作ります。中身は、本物の `MockPlatformLocation`（`@angular/common/testing`。開始 URL は `http://example.com/`）、選んだ本物の `LocationStrategy`、本物の `Location`（22.1.6）、入れるなら `APP_BASE_HREF` です。その `Location` で `normalize`・`prepareExternalUrl` を呼び、`go` して `path()` を読み、最後に `back()` します。`MockPlatformLocation` は履歴を配列に持つだけなので、このページの URL と履歴は変わりません。空文字を試すときは `''` と書きます。
+> 「実行」を押すと、1 行ごとに章の中だけの小さな DI の木（`Injector.create`）を作ります。中身は、本物の `MockPlatformLocation`（`@angular/common/testing`。開始 URL は `http://example.com/`）、選んだ本物の `LocationStrategy`、本物の `Location`（22.2.6）、入れるなら `APP_BASE_HREF` です。その `Location` で `normalize`・`prepareExternalUrl` を呼び、`go` して `path()` を読み、最後に `back()` します。`MockPlatformLocation` は履歴を配列に持つだけなので、このページの URL と履歴は変わりません。空文字を試すときは `''` と書きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-location)
 

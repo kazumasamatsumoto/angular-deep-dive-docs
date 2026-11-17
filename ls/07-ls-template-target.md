@@ -668,7 +668,7 @@ selectorless のディレクティブ `@MyDir(foo="bar")` は、333 行目の開
 > [!NOTE]
 > **さらに深く**
 >
-> このサイトに入っている @angular/compiler 22.1.6 で `<div [title]="user.name"></div>` を解析すると、要素の `sourceSpan` は 0〜78 文字目のように**閉じタグまで**を含み、`startSourceSpan` が開始タグだけです（デモの「閉じタグ」で見られます）。766〜768 行目のコメントは古い `sourceSpan` の形を前提にしていますが、773 行目は `endSourceSpan` の終わりを使うので、どちらでも同じ結果になります。
+> このサイトに入っている @angular/compiler 22.2.6 で `<div [title]="user.name"></div>` を解析すると、要素の `sourceSpan` は 0〜78 文字目のように**閉じタグまで**を含み、`startSourceSpan` が開始タグだけです（デモの「閉じタグ」で見られます）。766〜768 行目のコメントは古い `sourceSpan` の形を前提にしていますが、773 行目は `endSourceSpan` の終わりを使うので、どちらでも同じ結果になります。
 
 ## 5. \[(x)\] が 2 つのノードになる所
 
@@ -857,7 +857,7 @@ selectorless のディレクティブ `@MyDir(foo="bar")` は、333 行目の開
 
 > **🧪 DEMO — カーソルの位置のノードと TargetNodeKind**
 >
-> テンプレートを書き、カーソルを置いて「この位置を調べる」を押します（プリセットは ¦ の位置にカーソルを置いて調べます）。道は ls-template.ts の `findNodePath`（`getTargetAtPosition` の簡略版。このサイトの @angular/compiler 22.1.6 の `parseTemplate` を使う）、TargetNodeKind はこの章の .ts に書いた `guessTarget`（3 節の 296〜379 行目の判定の移植）です。本物との違い：名前と値の範囲や `argumentSpan` はノードからではなく属性の文字列から求めます。`[(x)]` は道に入力の側しか出ないので、`[(` で始まる書き方で判断します。薄い行は本物が道に積まないノード（742〜754 行目）です。
+> テンプレートを書き、カーソルを置いて「この位置を調べる」を押します（プリセットは ¦ の位置にカーソルを置いて調べます）。道は ls-template.ts の `findNodePath`（`getTargetAtPosition` の簡略版。このサイトの @angular/compiler 22.2.6 の `parseTemplate` を使う）、TargetNodeKind はこの章の .ts に書いた `guessTarget`（3 節の 296〜379 行目の判定の移植）です。本物との違い：名前と値の範囲や `argumentSpan` はノードからではなく属性の文字列から求めます。`[(x)]` は道に入力の側しか出ないので、`[(` で始まる書き方で判断します。薄い行は本物が道に積まないノード（742〜754 行目）です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ls-template-target)
 

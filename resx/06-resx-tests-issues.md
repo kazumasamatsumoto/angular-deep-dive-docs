@@ -227,7 +227,7 @@ pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_o
 | angular-main で、debounce\_spec.ts の timer cleanup の it 4 つが消えた（ecbc89b465c の「modernize unit tests」）。debounce.ts の修正そのものは残っている。手元の木で修正を戻すと、そのうち 3 つが落ちる | core/test/resource/debounce\_spec.ts（0904f90b13a が足した `describe('timer cleanup')`） | `git -C angular-main show ecbc89b465c` と、作業木で修正を戻して走らせた結果（17 件中 3 件が失敗） | [第 2 回](02-resx-debounced.md) |
 | （細かいもの）resource.ts 290 行目の `const key` が使われていない。api.ts 241 行目の説明に「value value」の重複 | resource.ts 290 行目、api.ts 241 行目 | grep | [第 4 回](04-resx-ssr-cache.md) |
 
-読み込み中に params が undefined などになると前の読み込みが abort されない件（#71765）は、origin/main の efbab16e567（2026-11-10）で直っています。手元の木と 22.1.6 には入っていません。詳しくは[第 5 回](05-resx-cleanup-leaks.md)にあります。
+読み込み中に params が undefined などになると前の読み込みが abort されない件（#71765）は、origin/main の efbab16e567（2026-11-10）で直っています。手元の木と 22.1.6・22.2.6 には入っていません。詳しくは[第 5 回](05-resx-cleanup-leaks.md)にあります。
 
 ## 聞かれそうな質問
 

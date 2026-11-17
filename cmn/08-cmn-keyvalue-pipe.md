@@ -2,7 +2,7 @@
 
 # KeyValuePipe：オブジェクトと Map を並べる
 
-> KeyValuePipe が KeyValueDiffers で入力の変化を確かめ、変わったときだけ配列を作り直して compareFn で並べる行、defaultComparator が数・文字列・それ以外をどう比べるか、compareFn に null を渡したときの並び（途中で null に変えると並びが戻らない点も）、2026 年 8 月の型の修正（46d2cb7ff04）と signal を渡したときの警告（97ed3d9e859）。ページの上で本物の KeyValuePipe に値を渡すデモ。
+> KeyValuePipe が KeyValueDiffers で入力の変化を確かめ、変わったときだけ配列を作り直して compareFn で並べる行、defaultComparator が数・文字列・それ以外をどう比べるか、compareFn に null を渡したときの並び（手元の木では途中で null に変えても並びが戻らないこと、22.2.6 の fb705aad90 で入力の順に戻るようになったこと）、2026 年 8 月の型の修正（46d2cb7ff04）と signal を渡したときの警告（97ed3d9e859）。ページの上で本物の KeyValuePipe に値を渡すデモ。
 
 angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-keyvalue-pipe)
 
@@ -222,7 +222,9 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 > [!NOTE]
 > **さらに深く**
 >
-> **compareFn を関数から `null` に変えたときは、並びが戻りません。**入力に変化が無ければ 135〜138 行目を通らず、141 行目の `if (compareFn)` も通らないので、`this.keyValues` は前の compareFn で並べたままです（144 行目で `null` を覚えるだけ）。最初から `null` を渡した pipe は入力の順を返すので、同じ入力・同じ compareFn でも、それまでの経緯で答えが変わります。クラスの説明のコメント（「Passing `null` as the compareFn will use natural ordering of the input」）と合わない振る舞いです。main（2026-11-05 に gh で読んだ版）でも同じ行で、spec にはこの切り替えの it がありません。同じく、**鍵の並びだけが変わった**入力も、differ が「変化なし」と答えるので（足す・消す・値が変わる、のどれでもない）、`null` でも前の並びのままです。DEMO の下の表の最後の 2 行で見られます。
+> **compareFn を関数から `null` に変えたときは、並びが戻りません。**入力に変化が無ければ 135〜138 行目を通らず、141 行目の `if (compareFn)` も通らないので、`this.keyValues` は前の compareFn で並べたままです（144 行目で `null` を覚えるだけ）。最初から `null` を渡した pipe は入力の順を返すので、同じ入力・同じ compareFn でも、それまでの経緯で答えが変わります。クラスの説明のコメント（「Passing `null` as the compareFn will use natural ordering of the input」）と合わない振る舞いです。main（2026-11-05 に gh で読んだ版）でも同じ行で、spec にはこの切り替えの it がありません。同じく、**鍵の並びだけが変わった**入力も、differ が「変化なし」と答えるので（足す・消す・値が変わる、のどれでもない）、`null` でも前の並びのままです。DEMO の下の表の最後の行で見られます。
+>
+> 関数から `null` への切り替えのほうは、手元の木より後に直りました。main の 622a7c7f29d（fix(common): restore natural order when KeyValuePipe compareFn changes to null、issue #71893）で、22.2.x には cherry-pick の fb705aad90 として 22.2.6 から入っています。このサイトの node\_modules の 22.2.6（`fesm2022/_common_module-chunk.mjs` の `KeyValuePipe`）では、compareFn だけが変わったときも `this.keyValues = []` から作り直し、`Map` なら `forEach`、オブジェクトなら `Object.keys` の順で入れ直してから並べます。そのため DEMO の下の表では、逆順への切り替えも `null` への切り替えも新しい配列（`false`）になり、`null` の行は入力の順に戻ります。鍵の並びだけが変わった入力（最後の行）は、compareFn も変わらないので 22.2.6 でも前の並びのままです。
 
 ## 5. 型の修正 46d2cb7ff04：overload の順番
 
@@ -264,19 +266,19 @@ const key: 'a' | 'b' = result[0].key;
 // 修正の後：K extends string の overload が先に当たり、key は 'a' | 'b'
 ```
 
-修正の前は、`Record<'a' | 'b', number>` が先にある `K extends number` の overload に「推論が制約に落ちて」当たり、鍵が `string` に広がっていました（79〜82 行目のコメント）。同じコミットで spec に it が 2 つ（`should preserve a literal key union instead of widening it to string`・`should still collapse a numerically-keyed object to string keys`）足され、その it のコメントが issue #43883（Incorrect return type on `KeyValuePipe`）を挙げています。このコミットは v22.2.0-next.3 からで、このサイトの 22.1.6 には入っていません（型だけなので、DEMO の動きには関係ありません）。
+修正の前は、`Record<'a' | 'b', number>` が先にある `K extends number` の overload に「推論が制約に落ちて」当たり、鍵が `string` に広がっていました（79〜82 行目のコメント）。同じコミットで spec に it が 2 つ（`should preserve a literal key union instead of widening it to string`・`should still collapse a numerically-keyed object to string keys`）足され、その it のコメントが issue #43883（Incorrect return type on `KeyValuePipe`）を挙げています。このコミットは v22.2.0-next.3 からで、このサイトの 22.2.6 にも入っています（型だけなので、DEMO の動きには関係ありません）。
 
 ## 6. DEMO：本物の KeyValuePipe に渡す
 
 > **🧪 DEMO — 既定・null・逆順、と、同じ配列が返るか**
 >
-> このサイトの本物の `KeyValuePipe`（@angular/common 22.1.6）を、このサイトの本物の `KeyValueDiffers` で `new KeyValuePipe(differs)` して、ボタンを押したときに transform を直接呼びます。上の表は compareFn ごとに新しい pipe で 1 回ずつ、下の表は**1 つの pipe**に順に渡して、返った配列が前の回と同じオブジェクト（`===`）かを見ます。逆順の compareFn だけはこの章で書いたもの（鍵を文字列にして逆に比べる）です。
+> このサイトの本物の `KeyValuePipe`（@angular/common 22.2.6）を、このサイトの本物の `KeyValueDiffers` で `new KeyValuePipe(differs)` して、ボタンを押したときに transform を直接呼びます。上の表は compareFn ごとに新しい pipe で 1 回ずつ、下の表は**1 つの pipe**に順に渡して、返った配列が前の回と同じオブジェクト（`===`）かを見ます。逆順の compareFn だけはこの章で書いたもの（鍵を文字列にして逆に比べる）です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-keyvalue-pipe)
 
 - 既定のオブジェクトの例：既定は `["10", "2", "_z", "a", "b"]`（文字列の比べ。`_` は `a` より前）、`null` は `["2", "10", "b", "a", "_z"]`（`Object.keys` の順）。
 - Map の例：数の `2` と `10` は数の順、`false` は `true` より前、`null` は最後。`null` の compareFn なら入れた順のまま。
-- 下の表：「同じオブジェクトをもう一度」も「中身が同じ新しいオブジェクト」も `true`（131 行目が `null`）。鍵を足すと `false`（135 行目）。compareFn を逆順に変えると並びは変わるが `true`（同じ配列をその場で sort）。`null` に変えると `true` で、並びは逆順のまま（4 節の注意）。
+- 下の表：「同じオブジェクトをもう一度」も「中身が同じ新しいオブジェクト」も `true`（131 行目が `null`）。鍵を足すと `false`（135 行目）。compareFn を逆順に変えると並びは変わり、`null` に変えると入力の順に戻ります。どちらも `false` です（このサイトの 22.2.6 は compareFn が変わると配列を作り直す。4 節の注意）。手元の木の 131〜146 行目のままなら、どちらも `true`（同じ配列をその場で sort）で、`null` の行は逆順のままです。鍵の並びだけ逆にした最後の行は `true` で、並びは変わりません。
 
 ## 7. ここまでを 1 本に
 
@@ -409,7 +411,7 @@ INFO: Elapsed time: 7.466s
 ### 直すとしたら
 
 - 作り直しと並べ替えは `transform` の 131〜146 行目、並べ方は `defaultComparator`（150〜178 行目）です。it は spec の 64〜79 行目の形（`new KeyValuePipe(defaultKeyValueDiffers)` に 2 回渡して `toEqual`）で足せます。
-- 4 節の「関数 → `null` で並びが戻らない」を spec の形で書くと、次のようになります。2026-11-05 に、このサイトの node\_modules の 22.1.6 の本物の `KeyValuePipe` と `ɵdefaultKeyValueDiffers` を node で動かし、2 回目が `[a, b]` のまま（つまりこの it は今は落ちる）ことを確かめました。gh で `keyvalue` を含む issue と PR を検索した範囲（2026-11-05）では、同じ報告は見つかりませんでした。
+- 4 節の「関数 → `null` で並びが戻らない」を spec の形で書くと、次のようになります。2026-11-05 に、このサイトの node\_modules の 22.1.6 の本物の `KeyValuePipe` と `ɵdefaultKeyValueDiffers` を node で動かし、2 回目が `[a, b]` のまま（つまりこの it は手元の木では落ちる）ことを確かめました。この切り替えは、その後 main の 622a7c7f29d（issue #71893）で直り、22.2.6 に fb705aad90 として入りました。このコミットは spec にオブジェクトと Map の it を足しています。gh で `keyvalue` を含む issue と PR を検索した範囲（2026-11-05）では、同じ報告は見つかりませんでした。
 
 📄 `keyvalue_pipe_spec.ts の形で書いた確かめ（手元で書いたもの。本家には無い）`
 
@@ -418,7 +420,7 @@ it('should use natural ordering after compareFn changes to null', () => {
   const pipe = new KeyValuePipe(defaultKeyValueDiffers);
   const input = {'b': 1, 'a': 1};
   pipe.transform(input);                       // [a, b]（既定で並べる）
-  expect(pipe.transform(input, null)).toEqual([ // 今は [a, b] のまま
+  expect(pipe.transform(input, null)).toEqual([ // 手元の木では [a, b] のまま（22.2.6 では通る）
     {key: 'b', value: 1},
     {key: 'a', value: 1},
   ]);
@@ -440,7 +442,7 @@ it('should use natural ordering after compareFn changes to null', () => {
 
 **Q. 入力の順のまま並べたいときは？**
 
-`keyvalue: null` と書きます。141 行目で並べ替えを飛ばします。ただし、別の compareFn から途中で `null` に切り替えると、入力に変化が無い限り前の並びのままです（4 節の注意）。
+`keyvalue: null` と書きます。141 行目で並べ替えを飛ばします。ただし手元の木の行では、別の compareFn から途中で `null` に切り替えると、入力に変化が無い限り前の並びのままです（4 節の注意。22.2.6 からは入力の順に戻ります）。
 
 **Q. 値（value）で並べられますか？**
 
@@ -459,7 +461,7 @@ defaultComparator は鍵しか見ません（154〜155 行目）。`(a, b) => a.
 - KeyValuePipe は differ・前の配列・前の compareFn の 3 つを覚え、入力が変わったときだけ新しい配列を作る（131〜139 行目）。
 - 並べるのは入力か compareFn が変わったとき（140〜145 行目）。`sort` はその場で並べ替える。
 - defaultComparator は鍵だけを、null は後ろ・文字列は `<`・数は引き算・boolean は false が先・ほかは `String()` で比べる。オブジェクトの鍵は文字列なので `"10"` が `"2"` より先。
-- `null` の compareFn は入力の順。ただし途中で `null` に変えても並びは戻らない。
+- `null` の compareFn は入力の順。ただし手元の木では途中で `null` に変えても並びは戻らない（22.2.6 の fb705aad90 で戻るようになった）。
 - 46d2cb7ff04 は overload の順を入れ替えただけの型の修正で、実行時の振る舞いは変わらない。
 
 ---

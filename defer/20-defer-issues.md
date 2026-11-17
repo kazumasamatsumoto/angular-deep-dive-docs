@@ -37,7 +37,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
 - このシリーズのソースは ../angular の 8576f161ae4（22.2.0-next.7、commit の日付は 2026-09-06）です。`origin/main`（2026-11-05 の 4491b39c120）はその 826 commit 先にあり、そのうち `packages/core/src/defer`・`hydration`・`event_delegation_utils.ts`・`primitives/event-dispatch`・`primitives/defer` に触れるものは 12 個です。
 - その 12 個には、このシリーズで読んだ行の直しが入っています。ハイドレーションの後片付けの前に安定を待つ（80dba4b997c、[第 17 回](17-defer-hydration-queue.md)の 5 節）、jsaction の解析結果を `Object.create(null)` に（8d8859cb211、[第 18 回](18-defer-hydrate-events.md)の 2 節）、同じ `APP_ID` の 2 つのアプリ（3a0835b3328）、`IdleScheduler` の束の消し方（09e132a2cdd・9486df5e263、[第 9 回](09-defer-idle-immediate.md)）、hydrate トリガーの登録を値の確かめの中へ（6d32550fbba、[第 16 回](16-defer-hydrate-triggers.md)）などです。
-- このサイトの記録が動かす core は node\_modules の 22.1.6 です。565dbb2fe54（2026-08-07）のように手元の木より前の直しでも、22.1.6 に入っているかは配布物（`node_modules/@angular/core/fesm2022/`）を `grep` して確かめます（第 17 回の 4 節）。issue の報告の版と、読む行の版をそろえてから読みます。
+- このサイトの記録を録った core は node\_modules の 22.1.6 です（サイトの依存は今は 22.2.6 で、ページの上で本物の `@defer` を動かすデモはこちらで動きます）。565dbb2fe54（2026-08-07）のように手元の木より前の直しでも、22.1.6 や 22.2.6 に入っているかは配布物（`node_modules/@angular/core/fesm2022/`）を `grep` して確かめます（第 17 回の 4 節）。issue の報告の版と、読む行の版をそろえてから読みます。
 
 ## 1. データの取り方
 

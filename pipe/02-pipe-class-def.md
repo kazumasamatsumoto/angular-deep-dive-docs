@@ -621,7 +621,7 @@ npm に出すライブラリは、Angular の版が変わっても使えるよ�
 ```
 
 - 31 行目：呼ぶのは `ɵɵngDeclarePipe`。32 行目の型は 2 節と同じ `createPipeType` なので、.d.ts は full と同じです。
-- 43 行目の `minVersion`（23 行目の 14.0.0）は「この宣言を読めるリンカーの最も古い版」、44 行目の `version` は書いたコンパイラの版です。ソースでは `'0.0.0-PLACEHOLDER'` で、配布物の `@angular/compiler` 22.1.6 ではこの行が `literal('22.1.6')` に置き換わっています（このサイトの node\_modules で確かめた）。
+- 43 行目の `minVersion`（23 行目の 14.0.0）は「この宣言を読めるリンカーの最も古い版」、44 行目の `version` は書いたコンパイラの版です。ソースでは `'0.0.0-PLACEHOLDER'` で、配布物の `@angular/compiler` 22.2.6 ではこの行が `literal('22.2.6')` に置き換わっています（このサイトの node\_modules で確かめた）。
 - 50〜51 行目：`isStandalone` は、値があれば true でも書きます（ngtsc は常に値を渡す）。57〜60 行目：`pure` は false のときだけです。
 
 📄 `out/demo.js（compilationMode: 'partial' の記録。static の行だけ）` L1–12 （▶ の行: 3, 7, 11）
@@ -867,8 +867,8 @@ npm に出すライブラリは、Angular の版が変わっても使えるよ�
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/pipe-class-def)
 
 - どの入口も、評価する JS は `i0.ɵɵdefinePipe({name: …, type: …, pure: true})` の 1 行です。違うのは `standalone: false` が付くかどうかだけです。
-- `version: '18.2.0'` の部分宣言だけ `standalone: false` が足され、PipeDef も false です（util.ts 144〜146 行目）。19.0.0・22.1.6・`0.0.0-PLACEHOLDER` は true です。
-- 部分コンパイルの式は `version: '22.1.6'` です。ソースの 44 行目は `'0.0.0-PLACEHOLDER'` ですが、配布物では版の番号に置き換わっています。
+- `version: '18.2.0'` の部分宣言だけ `standalone: false` が足され、PipeDef も false です（util.ts 144〜146 行目）。19.0.0・22.2.6・`0.0.0-PLACEHOLDER` は true です。
+- 部分コンパイルの式は `version: '22.2.6'` です。ソースの 44 行目は `'0.0.0-PLACEHOLDER'` ですが、配布物では版の番号に置き換わっています。
 
 ## テストと直し方
 

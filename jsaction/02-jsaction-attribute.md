@@ -209,7 +209,7 @@ attribute.ts の 22 行目が属性名 `'jsaction'` で、公開の入口から 
 
    そのあと、その辞書を要素の `__jsaction` にも貼ります（4 節の `cache.set`）。
 
-下の表は、このサイトの配布物（22.1.6）を使い、ヘッドレスの Chrome で、属性を付けたボタンを `click()` して、届いた名前と `__jsaction` を読んだ記録です。3 節の行のとおりになります。下のデモで同じことを自分の手で試せます。
+下の表は、配布物の 22.1.6 を使い、ヘッドレスの Chrome で、属性を付けたボタンを `click()` して、届いた名前と `__jsaction` を読んだ記録です（`"toString"` の行は、このサイトの 22.2.6 では変わります。5 節の 4 番）。3 節の行のとおりになります。下のデモで同じことを自分の手で試せます。
 
 | `jsaction` の値 | click で届いた名前 | 要素の `__jsaction` | 決めている行 |
 | --- | --- | --- | --- |
@@ -309,16 +309,16 @@ attribute.ts の 22 行目が属性名 `'jsaction'` で、公開の入口から 
 
 1. **属性を書き換えても、要素のキャッシュは古いまま**
 
-   一度イベントが通った要素には辞書が貼られ、3 節 252〜253 行目で属性を見なくなります。`setAttribute` を監視する仕組みはどこにもありません。作り直させるには 65〜68 行目の `clear`（`delete element.__jsaction`）が要ります。ところが `clear` は index.ts から出ておらず、配布物の 22.1.6 の束にも入っていません（使う所が無いので束ねるときに落ちています）。ソースの中で `clear` を呼んでいるのは spec（dispatcher\_test.ts 515 行目。下の「テストと直し方」）だけです。
+   一度イベントが通った要素には辞書が貼られ、3 節 252〜253 行目で属性を見なくなります。`setAttribute` を監視する仕組みはどこにもありません。作り直させるには 65〜68 行目の `clear`（`delete element.__jsaction`）が要ります。ところが `clear` は index.ts から出ておらず、このサイトの配布物の 22.2.6 の束にも入っていません（使う所が無いので束ねるときに落ちています）。ソースの中で `clear` を呼んでいるのは spec（dispatcher\_test.ts 515 行目。下の「テストと直し方」）だけです。
 2. **同じ文字列の要素は、同じ辞書オブジェクトを共有する**
 
    274 行目で覚えた辞書が、同じ文字列の 2 つ目の要素にもそのまま貼られます。1000 個のボタンが `jsaction="click:;"` でも、解析は 1 回です。そのかわり、ある要素の辞書を書き換えると、同じ文字列のほかの要素（これから解析される要素も）に効いてしまいます。属性の無い要素の `EMPTY_ACTION_MAP` も全部で 1 つです。
 3. **`getActionCache`（27〜31 行目の `getDefaulted`）は読むだけではない**
 
    28 行目、貼られていなければ `{}` を作り、29 行目で**貼ります**。まだイベントが通っていない要素にこれを呼ぶと、空の辞書が貼られ、3 節 252〜253 行目でそれが使われ続けるので、**その要素の `jsaction` 属性は二度と読まれません**。この関数は、以前 Angular が属性を書かずに辞書へ直接書き込む実験（全体の委譲）で使っていたもので、その実験は 5f356fc0920 で消され、今は Angular の中から呼ばれていません。
-4. **文字列が `Object.prototype` の名前と同じだと、22.1.6 では壊れる**
+4. **文字列が `Object.prototype` の名前と同じだと、22.1.7 までは壊れる**
 
-   14 行目の `parseCache` は `{}` なので、`getParsed("toString")`（47 行目）は「覚えていない」ではなく、`Object.prototype.toString` 関数を返します。3 節の `getParsed` の直後の `if (!actionMap)` を素通りして、その関数が辞書として要素に貼られ、`jsaction="toString"`（= `click:toString`）の行き先が見つかりません。同じことは辞書を引く側でも起きます。`{}` の辞書を `actionMap["toString"]` と引くと、書いていない種類なのに関数が返り、`undefined` でないので「行き先あり」になります。手元の版より後の `main` の 8d8859cb211（v22.3.0-next.0 から）が、3 つの `{}` を `Object.create(null)`（プロトタイプの無いオブジェクト）に替えて、両方を直しています。
+   14 行目の `parseCache` は `{}` なので、`getParsed("toString")`（47 行目）は「覚えていない」ではなく、`Object.prototype.toString` 関数を返します。3 節の `getParsed` の直後の `if (!actionMap)` を素通りして、その関数が辞書として要素に貼られ、`jsaction="toString"`（= `click:toString`）の行き先が見つかりません。同じことは辞書を引く側でも起きます。`{}` の辞書を `actionMap["toString"]` と引くと、書いていない種類なのに関数が返り、`undefined` でないので「行き先あり」になります。手元の版より後の `main` の 8d8859cb211（v22.3.0-next.0 から）が、3 つの `{}` を `Object.create(null)`（プロトタイプの無いオブジェクト）に替えて、両方を直しています。同じ題のコミットが 22.2 系には bc402cf407c として v22.2.0 から、22.1 系には d7d5401cd5e として v22.1.8 から入っていて（`git tag --contains`）、このサイトの 22.2.6 の配布物でも `parseCache`・`cache`・`EMPTY_ACTION_MAP`・`actionMap` が `Object.create(null)` です。
 
 📄 `8d8859cb211 の中身（git show を短くしたもの）`
 
@@ -356,9 +356,9 @@ Angular がこの属性を書くのはサーバーだけです。テンプレー
 
 > **🧪 DEMO — jsaction を書き換えて、届く名前とキャッシュを見る（ライブ）**
 >
-> 「始める」で、赤い枠（`#jsa-at-stage`）に本物の `EventContract` と `EventDispatcher`（@angular/core 22.1.6）を作り、`click`・`dblclick`・`keydown`・`keyup` を聞きます。要素 A と B の `jsaction` は、章のコードが `setAttribute` で書きます。「属性を書き換えてキャッシュも消す」は、`cache.ts` の `clear`（入口に無い）と同じ `delete element.__jsaction` を章のコードで行います。`__jsaction` の表示は、プロパティを読むだけです（`getActionCache` は呼びません）。
+> 「始める」で、赤い枠（`#jsa-at-stage`）に本物の `EventContract` と `EventDispatcher`（@angular/core 22.2.6）を作り、`click`・`dblclick`・`keydown`・`keyup` を聞きます。要素 A と B の `jsaction` は、章のコードが `setAttribute` で書きます。「属性を書き換えてキャッシュも消す」は、`cache.ts` の `clear`（入口に無い）と同じ `delete element.__jsaction` を章のコードで行います。`__jsaction` の表示は、プロパティを読むだけです（`getActionCache` は呼びません）。
 >
-> 試し方の例：(1) 始める → A を押す（`"save"` が届き、`__jsaction` が貼られる）。(2) 例の `click:;keydown:;` を選び「属性だけ書き換える」→ A を押す（属性は変わったのに `"save"` のまま。252〜253 行目）。(3)「属性を書き換えてキャッシュも消す」→ A を押す（`""` が届き、Enter の keydown も届く）。(4) `toString` を選んでキャッシュも消して押す（22.1.6 では行き先なし、`__jsaction` が関数になる）。(5)「作り直す」（A と B の `__jsaction` も消して始め直す）→ A を押す前に「getActionCache(A) を呼ぶ」→ A を押す（属性があるのに行き先なし）。B は A と同じ文字列なので、両方押すと「同じオブジェクト」が `true` になります（274 行目の共有）。
+> 試し方の例：(1) 始める → A を押す（`"save"` が届き、`__jsaction` が貼られる）。(2) 例の `click:;keydown:;` を選び「属性だけ書き換える」→ A を押す（属性は変わったのに `"save"` のまま。252〜253 行目）。(3)「属性を書き換えてキャッシュも消す」→ A を押す（`""` が届き、Enter の keydown も届く）。(4) `toString` を選んでキャッシュも消して押す（このサイトの 22.2.6 では `"toString"` が届き、`__jsaction` は `{ "click": "toString" }`。22.1.7 までは行き先なしで、`__jsaction` が関数になっていた）。(5)「作り直す」（A と B の `__jsaction` も消して始め直す）→ A を押す前に「getActionCache(A) を呼ぶ」→ A を押す（属性があるのに行き先なし）。B は A と同じ文字列なので、両方押すと「同じオブジェクト」が `true` になります（274 行目の共有）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-attribute)
 
@@ -487,7 +487,7 @@ Chromium: 1/1 test files | 111 passed, 0 failed
 - `parseActions` は最初の `:` で割り、コロンのある形だけ `trim()` する。大文字小文字はそのまま。
 - 解析の結果は要素の `__jsaction` と、文字列ごとの `parseCache` の 2 か所に残る。どちらも属性の変更では作り直されない。
 - `getActionCache` は無ければ空を貼るので、読むだけには使わない。
-- 22.1.6 では `"toString"` のような文字列で行き先が見つからない。`main` の 8d8859cb211 が `Object.create(null)` で直した（spec は 5cb3ed2958a。辞書を引く側だけを確かめている）。
+- 22.1.7 までは `"toString"` のような文字列で行き先が見つからない。`main` の 8d8859cb211 が `Object.create(null)` で直し、22.2 系には v22.2.0 から入っている（spec は 5cb3ed2958a。辞書を引く側だけを確かめている）。このサイトの 22.2.6 の DEMO では `"toString"` が届く。
 
 ---
 

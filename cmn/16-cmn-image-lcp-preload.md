@@ -738,7 +738,7 @@ d14696e4308（2026-07-22、fix(common): preserve crossorigin on image preloads�
 
 > **🧪 DEMO — placeholder の付いた本物の NgOptimizedImage の、読み込みの前と後**
 >
-> 「描く」を押すと、`<img ngSrc width="320" height="180" [placeholder] [placeholderConfig]>` を 1 つ持つ小さなコンポーネントを `createComponent` で作って下に描きます。`NgOptimizedImage` はこのサイトの本物（22.1.6）で、`IMAGE_LOADER` だけ、頼まれた大きさの SVG を `data:` の URL で返す関数に差し替えています（placeholder のときは紫の小さな SVG）。描いた直後に `img` の style を読み（前）、`ApplicationRef.attachView` で変更検知の対象にしてから、`load` を待ち、`whenStable()` の後にもう一度読みます（後）。「Renderer2 への呼び出し」は、その間に `img` に届いた呼び出しです（このサイトの本物の `RendererFactory2` を `domr-probe.ts` の記録係で包んだもの）。
+> 「描く」を押すと、`<img ngSrc width="320" height="180" [placeholder] [placeholderConfig]>` を 1 つ持つ小さなコンポーネントを `createComponent` で作って下に描きます。`NgOptimizedImage` はこのサイトの本物（22.2.6）で、`IMAGE_LOADER` だけ、頼まれた大きさの SVG を `data:` の URL で返す関数に差し替えています（placeholder のときは紫の小さな SVG）。描いた直後に `img` の style を読み（前）、`ApplicationRef.attachView` で変更検知の対象にしてから、`load` を待ち、`whenStable()` の後にもう一度読みます（後）。「Renderer2 への呼び出し」は、その間に `img` に届いた呼び出しです（このサイトの本物の `RendererFactory2` を `domr-probe.ts` の記録係で包んだもの）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-image-lcp-preload)
 

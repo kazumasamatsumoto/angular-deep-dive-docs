@@ -528,7 +528,7 @@ export class Other {
 
 > **🧪 DEMO ① — 本物の @angular/compiler で features を出す**
 >
-> 「コンパイルする」を押したときに `@angular/compiler`（このサイトの 22.1.6）を読み込み、選んだ書き方のメタデータを `compileComponentFromMetadata` / `compileDirectiveFromMetadata` に渡します。中で 1 節の `addFeatures` が動きます。出てきた式は文字列にするだけで、評価はしません。
+> 「コンパイルする」を押したときに `@angular/compiler`（このサイトの 22.2.6）を読み込み、選んだ書き方のメタデータを `compileComponentFromMetadata` / `compileDirectiveFromMetadata` に渡します。中で 1 節の `addFeatures` が動きます。出てきた式は文字列にするだけで、評価はしません。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/hdi-features-pipeline)
 

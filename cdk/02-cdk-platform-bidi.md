@@ -36,7 +36,7 @@ CDK の部品の多くは「いまブラウザで動いているか」「どの�
 
 ## 1. @Service() は root に 1 つ
 
-この章で読むサービス（`Platform`・`Directionality`）は、どちらもクラスに `@Service()` が付いています。v22 の Angular に入った新しいデコレーターです。コンパイラはこれを `ɵɵdefineService` の呼び出しに変えます（インストール版 22.1.8 の `fesm2022/_platform-chunk.mjs` でも `static ɵprov = i0.ɵɵngDeclareService(…)` になっています）。
+この章で読むサービス（`Platform`・`Directionality`）は、どちらもクラスに `@Service()` が付いています。v22 の Angular に入った新しいデコレーターです。コンパイラはこれを `ɵɵdefineService` の呼び出しに変えます（インストール版 22.2.7 の `fesm2022/_platform-chunk.mjs` でも `static ɵprov = i0.ɵɵngDeclareService(…)` になっています）。
 
 中身は Angular 本体の `ɵɵdefineService` で、`autoProvided: false` と書かない限り `providedIn: 'root'` になります（その行は[注入器の章](../boot/08-boot-injectors.md)で引用しています）。つまり `@Injectable({providedIn: 'root'})` と同じで、アプリの root の注入器に 1 つだけ作られ、どこで `inject(Platform)` しても同じインスタンスが返ります（`providedIn` の仕組みは [providedIn の章](../ngmodule/10-ngmodule-provided-in.md)）。
 

@@ -2,7 +2,7 @@
 
 # createDirective と DirectiveFixture：ディレクティブだけをテストする
 
-> 最新のソースに入った TestBed.createDirective（このサイトの 22.1.6 には未収録）が、セレクタからタグ名を決め、DirectiveTestHost という空のホストにディレクティブを載せて DirectiveFixture を返す手順。複数のタグ名を持つセレクタのエラー、directiveInstance と onDestroy、これまでのテスト用ホストコンポーネントを書く方法との比較。
+> 22.2 で入った TestBed.createDirective（この章を書いたときのサイトの 22.1.6 には未収録、いまの 22.2.6 には収録）が、セレクタからタグ名を決め、DirectiveTestHost という空のホストにディレクティブを載せて DirectiveFixture を返す手順。複数のタグ名を持つセレクタのエラー、directiveInstance と onDestroy、これまでのテスト用ホストコンポーネントを書く方法との比較。
 
 angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/testing-directive-fixture)
 
@@ -11,7 +11,7 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> `TestBed.createDirective` と `DirectiveFixture` は、`../angular`（22.2.0-next.7）のソースにあり、**このサイトの `@angular/core` 22.1.6 には無い** API です （`node_modules/@angular/core/types/testing.d.ts` に `createDirective` も `DirectiveFixture` も出てきません。入ったのは v22.2.0-next.5 から）。だからこの章では、このサイトの ng test では確かめず、Angular 本体の spec を bazel で走らせて確かめます。
+> `TestBed.createDirective` と `DirectiveFixture` は、`../angular`（22.2.0-next.7）のソースにあり、**この章を書いたときのサイトの `@angular/core` 22.1.6 には無かった** API です （当時の `node_modules/@angular/core/types/testing.d.ts` に `createDirective` も `DirectiveFixture` も出てきませんでした。入ったのは v22.2.0-next.5 から）。だからこの章では、このサイトの ng test では確かめず、Angular 本体の spec を bazel で走らせて確かめました。いまのサイトは 22.2.6 に上げてあり、`types/testing.d.ts` に `DirectiveFixture`（157 行目）と `createDirective`（523 行目、`TestDirectiveOptions` は `@publicApi 22.2`）があり、`fesm2022/testing.mjs` の `createDirective` も 2〜3 節で読む形と同じです（22.2.0 の変更履歴の「add utility for testing directives」）。
 
 ディレクティブ（テンプレートを持たず、要素に振る舞いを足すクラス）をテストするには、これまで「そのディレクティブを使うだけのホストコンポーネント」を spec に書くのが定番でした。この章では、新しく入った `TestBed.createDirective` が**セレクタからタグ名を決め、空っぽのホストコンポーネント `DirectiveTestHost` にディレクティブを載せ、`DirectiveFixture` を返す**手順を、行番号を指して追います。
 
@@ -393,7 +393,7 @@ fixture.componentInstance.color.set('blue');
 📄 `22.2 から（createDirective）`
 
 ```
-// 22.2 から: createDirective（このサイトの 22.1.6 には無い）
+// 22.2 から: createDirective（22.1.x には無い。いまのサイトの 22.2.6 にはある）
 const color = signal('red');
 const fixture = TestBed.createDirective(Highlight, {
   tagName: 'p',                              // '[appHighlight]' にはタグ名が無いので必須
@@ -542,13 +542,13 @@ INFO: Elapsed time: 6.066s, Critical Path: 2.31s
 
 `tagName` を指定して、タグごとに作ります。747 行目で違うタグ名が 2 つあると投げるので（spec の 3054〜3055 行目、文面は `(button, a)`）、`createDirective(Dir, { tagName: 'button' })` と `{ tagName: 'a' }` の 2 本の `it` にします。
 
-**Q. このサイト（22.1.6）で同じことをしたいときは？**
+**Q. 22.1 のアプリで同じことをしたいときは？**
 
-5 節の「これまで」の書き方をします。テスト用のホストコンポーネントのテンプレートでディレクティブを使い、`By.directive` で要素を探してインジェクタからインスタンスを取ります（[第 8 回](08-testing-debug-element.md)）。
+22.1.x には `createDirective` が無いので（この章を書いたときのサイトの 22.1.6 も同じでした）、5 節の「これまで」の書き方をします。テスト用のホストコンポーネントのテンプレートでディレクティブを使い、`By.directive` で要素を探してインジェクタからインスタンスを取ります（[第 8 回](08-testing-debug-element.md)）。22.2 以降なら、いまのサイトの 22.2.6 のように `createDirective` が使えます。
 
 ## 読み終えて
 
-- `TestBed.createDirective` は 22.2 の API（05c4d5a8354）。このサイトの 22.1.6 には無い
+- `TestBed.createDirective` は 22.2 の API（05c4d5a8354）。この章を書いたときのサイトの 22.1.6 には無く、いまのサイトの 22.2.6 にはある
 - タグ名は `options.tagName` → 全セレクタの 0 番目。違うタグ名が 2 つ、または 1 つも無いと投げる（`div` にはしない）
 - ホストは空っぽのコンポーネント `DirectiveTestHost`。テスト対象は `directives` 配列に入り、`bindings` は `targetIdx = i + 1` でテスト対象に向く
 - `allowNonStandaloneDirectives: true` で、NgModule に宣言したディレクティブも載せられる

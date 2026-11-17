@@ -541,7 +541,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の NgClass・NgStyle が renderer に送る呼び出し**
 >
-> この章で定義した本物のコンポーネント `CmnNcsTarget` の `<p class="base" cmnNcsCount [ngClass]="cls()" [ngStyle]="sty()">` を描き、`mountWithLog`（`domr-probe.ts`）で、このサイトの本物の `DomRendererFactory2` に届いた呼び出しを記録します。`NgClass` と `NgStyle` はこのサイトの `@angular/common` 22.1.6 の本物です。`cmnNcsCount` は同じ要素の `ngDoCheck` の回数を数えるだけの、この章のディレクティブです。ボタンを押すたびに `detectChanges()` を 1 回走らせます。
+> この章で定義した本物のコンポーネント `CmnNcsTarget` の `<p class="base" cmnNcsCount [ngClass]="cls()" [ngStyle]="sty()">` を描き、`mountWithLog`（`domr-probe.ts`）で、このサイトの本物の `DomRendererFactory2` に届いた呼び出しを記録します。`NgClass` と `NgStyle` はこのサイトの `@angular/common` 22.2.6 の本物です。`cmnNcsCount` は同じ要素の `ngDoCheck` の回数を数えるだけの、この章のディレクティブです。ボタンを押すたびに `detectChanges()` を 1 回走らせます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-ng-class-style)
 

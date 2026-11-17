@@ -2,7 +2,7 @@
 
 # Combobox：入力欄と、開いて閉じるポップアップ
 
-> ComboboxPattern が入力欄に残ったフォーカスのまま、キーを 1 つだけ持つ keyboardEventRelay の signal に置き、描画のあとの effect で写しを作ってポップアップ（Listbox・Tree・Grid）へ投げ直す仕組み、select と autocomplete を分ける isEditable・aria-autocomplete、フォーカスが外れたら setTimeout で閉じる行。この 1 年でいちばん多く直された部品で、zone.js との相性や中継の再送の修正、続けて打ったキーが落ちる開いている issue（#33973）をページの上で再現。PopupControl はどの Pattern にも使われておらず、filterMode は以前の combobox とともに消えた。
+> ComboboxPattern が入力欄に残ったフォーカスのまま、キーを 1 つだけ持つ keyboardEventRelay の signal に置き、描画のあとの effect で写しを作ってポップアップ（Listbox・Tree・Grid）へ投げ直す仕組み、select と autocomplete を分ける isEditable・aria-autocomplete、フォーカスが外れたら setTimeout で閉じる行。この 1 年でいちばん多く直された部品で、zone.js との相性や中継の再送の修正、続けて打ったキーが落ちる issue（#33973。直した #34083 は 22.3.0-rc.0 からで、22.2.7 のこのページでは再現する）をページの上で再現。PopupControl はどの Pattern にも使われておらず、filterMode は以前の combobox とともに消えた。
 
 angular/components · 読了 約 14 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/aria-combobox)
 
@@ -36,7 +36,9 @@ combobox（コンボボックス）は、入力欄やボタンのような「ト
 > [!NOTE]
 > **ポイント**
 >
-> この章の引用は ../components の snapshot（22.2.0-next.5）、ページの上のデモはこのサイトに入れた `@angular/aria` 22.1.8 です。combobox の 5 ファイル（`combobox/*.ts` と `private/combobox/combobox.ts`）は、22.1.8 と snapshot で中身が同じでした。
+> この章の引用は ../components の snapshot（22.2.0-next.5）、ページの上のデモはこのサイトに入れた `@angular/aria` 22.2.7 です。combobox の 5 ファイル（`combobox/*.ts` と `private/combobox/combobox.ts`）は、この章を書いたときのサイトの 22.1.8 とは snapshot と中身が同じでしたが、22.2.7 では 2 つが違います。
+>
+> combobox.ts は e7dc3254ce（#34045、22.2.6、Fixes #34041）で、133 行目が `afterRenderEffect(() => this._pattern.keyboardEventRelayEffect())`（段階を書かないので mixedReadWrite）になりました。入力で候補が絞られたのと同じ描画でキーが中継されると、widget がアクティブな項目を新しい一覧に合わせる前に渡ってしまい、消えた候補が Enter で選ばれていたのを、write 段階のあとに回して防ぎます。combobox-popup.ts は 14d931161b（#33974、22.2.4）で、`ngOnInit` で登録した combobox を覚えておき、`ngOnDestroy` ではそれを外すようになりました（最初の変更検知の前に壊されても落ちない）。private/combobox/combobox.ts は snapshot と同じです。
 
 ## 1. 使う側の形：3 つのディレクティブ
 
@@ -513,7 +515,7 @@ combobox（コンボボックス）は、入力欄やボタンのような「ト
 
 2026-10-20 00:36（UTC）に #33973 が立ち、約 4 時間後の 04:17 に外部の PR #33975（drakeo338）が付きました。`gh pr diff 33975 -R angular/components` で読むと、keydown のハンドラをすべて `_relayKeyboardEvent(e)` に替え、そこで `_pendingRelayEvents` という配列に積んでから signal も set し、269 行目の関数で配列の全部を順に写して投げる形でした。signal はきっかけとして残しています。2026-11-02 の時点で reviews 0・comments 0、main の 92・152 行目は snapshot と同じ（`keyboardEventRelay.set(e)` のまま）でした。
 
-> **🧪 DEMO — 本物の ngCombobox + ngListbox（このサイトの 22.1.8）**
+> **🧪 DEMO — 本物の ngCombobox + ngListbox（このサイトの 22.2.7）**
 >
 > 入力欄に Tab で入り、ArrowDown で開いて上下の矢印で動き、Enter で確定できます。英字で打つと先頭一致で絞り込みます（絞り込みはこのページの `computed` で、Aria の仕事ではありません）。Escape で閉じ、Tab で外へ出ると閉じます。あなたが押したキー（`isTrusted` のもの）ごとに、120ms 後の入力欄の `aria-expanded`・`aria-controls` の有無・`aria-activedescendant` が指す候補・`value` を下に出します。下の 2 つのボタンは、入力欄に戻ってから Home を送り、`dispatchEvent` で ArrowDown を 3 回送ります。左は同じタスクの中で続けて、右は 60ms おきです。
 >
@@ -523,7 +525,7 @@ combobox（コンボボックス）は、入力欄やボタンのような「ト
 
 - 入力欄をクリックすると開き、`aria-controls` が付いて、最初の候補 Apple が `aria-activedescendant` になりました。ArrowDown で Apricot、Banana と動きます。
 - `b` を打つと Banana と Blueberry に絞られ、ArrowDown、Enter で `selected=[Blueberry]`、入力欄も `Blueberry` になって閉じました。閉じると `aria-controls` が外れます（2 節の 134〜136 行目）。
-- **続けて送る**：Apple から 3 回送っても **Apricot**（1 つだけ）。**60ms おき**：**Blueberry**（3 つ）。#33973 の症状は 22.1.8 でも出ました。
+- **続けて送る**：Apple から 3 回送っても **Apricot**（1 つだけ）。**60ms おき**：**Blueberry**（3 つ）。#33973 の症状は 22.1.8 でも出ました。サイトを 22.2.7 に上げたあと（2026-11-17、本番ビルド）に 2 つのボタンを押し直しても、続けて送ると Apricot、60ms おきなら Blueberry で、同じでした。#33973 は 2026-11-06 に #34083（249b3ee5c8「queue relayed keyboard events to prevent dropping back-to-back keys」）で閉じましたが、この修正は main と 22.3.0-rc.0 のタグにあり、22.2.x の枝（22.2.7）には入っていません。
 - どの操作でもコンソールに警告やエラーは出ませんでした。
 
 ## 5. 入力・ハイライト・閉じる
@@ -792,7 +794,7 @@ src/aria/private/combobox/combobox.spec.ts:21
 
 **Q. zone.js のアプリで使えますか？**
 
-使えます。ただし zone.js では描画の時機が違うので、2026 年の 6〜7 月に 2 つの修正が入りました。8002bce0c6 の写し（278 行目、#33448）と、def7bc2a69 の focusout からの閉じ方（227 行目、#33516）です。どちらも 22.1.8 に入っています。テストは下の combobox.zone.spec.ts の 1 本で、`provideZoneChangeDetection()` を providers に置き、キーごとに `detectChanges` します。
+使えます。ただし zone.js では描画の時機が違うので、2026 年の 6〜7 月に 2 つの修正が入りました。8002bce0c6 の写し（278 行目、#33448）と、def7bc2a69 の focusout からの閉じ方（227 行目、#33516）です。どちらも 22.1.8 にも 22.2.7 にも入っています。テストは下の combobox.zone.spec.ts の 1 本で、`provideZoneChangeDetection()` を providers に置き、キーごとに `detectChanges` します。
 
 📄 `components/src/aria/combobox/combobox.zone.spec.ts` L17–45 （▶ の行: 22–24, 36, 38, 44）
 
@@ -841,7 +843,7 @@ src/aria/private/combobox/combobox.spec.ts:21
 - `Combobox` は入力欄に付き、`ComboboxPopup`（ng-template）→ `ComboboxWidget`（中身）の順に登録されて、`aria-controls`・`aria-activedescendant` は widget から読む（popup L45〜51）。
 - 開いているときのキーは `keyboardEventRelay.set(e)` だけで、描画のあと `new KeyboardEvent` の写しを widget の要素に投げる（L268〜282）。だから確定の処理は listbox の `(keydown.enter)` に書く。
 - 閉じるのは focusout から `setTimeout` を待ち、入力欄と popup の `isFocused` がどちらも false のとき（L227〜233、L336）。
-- 中継の signal は 1 つしか持てないので、描画の前に続けて来たキーは落ちる（#33973、PR #33975 は配列に積む）。22.1.8 でもデモで再現する。
+- 中継の signal は 1 つしか持てないので、描画の前に続けて来たキーは落ちる（#33973、PR #33975 は配列に積む）。22.1.8 でも 22.2.7 でもデモで再現する。直した #34083 は 22.3.0-rc.0 から。
 - `PopupControl` はどこからも使われておらず、`filterMode` は以前の combobox とともに消えた。
 
 ---

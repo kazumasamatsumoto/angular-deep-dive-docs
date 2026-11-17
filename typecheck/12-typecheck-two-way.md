@@ -570,9 +570,9 @@ signal forms の `[formField]="f"`（[Signal Forms の章](../signals/17-signal-
 
 ## 6. デモ：\[(value)\] の 2 つの文を見る
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock**
 >
-> ボタンで `Rating` の入力と出力の形を切り替えて TCB を作ります。強調した行が、入力の側の代入と出力の側の `subscribe` とその中身です。`[formField]` のボタンでは、デモの `FormField` に本物と見分ける印（`hasNgFieldDirective`）を付けています（本物は `@angular/forms/signals` から来たことでも見分ける。5 節の `isFieldDirective`）。inputs.ts・events.ts・bindings.ts・signal\_forms.ts は 22.1.6 と読んでいるソースで同じです。
+> ボタンで `Rating` の入力と出力の形を切り替えて TCB を作ります。強調した行が、入力の側の代入と出力の側の `subscribe` とその中身です。`[formField]` のボタンでは、デモの `FormField` に本物と見分ける印（`hasNgFieldDirective`）を付けています（本物は `@angular/forms/signals` から来たことでも見分ける。5 節の `isFieldDirective`）。inputs.ts・events.ts・bindings.ts・signal\_forms.ts は、この章を書いたときのサイトの 22.1.6 と読んでいるソースで同じでした。いまのサイトの 22.2.6 では、inputs.ts（646e9723db1。[第 10 回](10-typecheck-inputs.md)）・events.ts（312e1d80890）・bindings.ts（97e57157e46）に後から入った行があり、signal\_forms.ts は同じです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-two-way)
 
@@ -591,6 +591,8 @@ signal forms の `[formField]="f"`（[Signal Forms の章](../signals/17-signal-
 | \[formField\] と \[disabled\]・\[(max)\] | oob に `formFieldUnsupportedBinding` が 2 回 |   |
 | \[formField\] を自作のコントロールに | `_t1.value[i0.ɵINPUT_SIGNAL_BRAND_WRITE_TYPE] = i0.ɵunwrapWritableSignal((((((((this).f)).score)()).value)));` と `_t1.disabled[...] = ((((((this).f)).score)()).disabled());` |   |
 | score() と書く | パースエラー「Unsupported expression in a two-way binding」。TCB は作られる |   |
+
+いまのサイトの 22.2.6 のデモでは、2 つのボタンで、上の表の `var _t2 = null! as (typeof _t1)["value"];` のすぐ後ろに `null! as typeof _t1.value /*D:ignore*/;` の 1 行も出ます。22.2.4 の 646e9723db1 で入った、言語サービスのための文です（[第 10 回](10-typecheck-inputs.md)）。ほかのボタンの出力は 22.1.6 のときと同じでした（2026-11-17）。
 
 どの形でも、出力の側の `subscribe` の中に `$event` は出てきません。自作のコントロールの形では、`valueChange` の出力の文も書かれていません（`[formField]` は出力のバインディングを足さない）。
 

@@ -314,7 +314,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — @defer の中の defer-rl-widget の chunk（ライブ）**
 >
-> 下の塊は、この章のテンプレートに書いた本物の `@defer (when go())` です。中の `defer-rl-widget` は `@defer` の中でだけ使っているので、コンパイラが `import()` に置き換え、別の chunk になっています。ボタンを押す直前と、本体が作られた直後に `performance.getEntriesByType('resource')` の JS のファイル名を読み、増えたものを出します（このサイト自身の chunk で、外部への通信ではありません）。registry の列は `ɵgetDeferBlocks` で塊を見つけ、本体のテンプレートの TView の `directiveRegistry` を**読むだけ**です（内部の形です。テンプレートの TNode の番号に 22.1.6 の `HEADER_OFFSET` の 27 を足して探しています）。1 回読み込むと、ページを読み直すまで元には戻りません。
+> 下の塊は、この章のテンプレートに書いた本物の `@defer (when go())` です。中の `defer-rl-widget` は `@defer` の中でだけ使っているので、コンパイラが `import()` に置き換え、別の chunk になっています。ボタンを押す直前と、本体が作られた直後に `performance.getEntriesByType('resource')` の JS のファイル名を読み、増えたものを出します（このサイト自身の chunk で、外部への通信ではありません）。registry の列は `ɵgetDeferBlocks` で塊を見つけ、本体のテンプレートの TView の `directiveRegistry` を**読むだけ**です（内部の形です。テンプレートの TNode の番号に、このサイトの 22.2.6 の `HEADER_OFFSET` の 28 を足して探しています。下の記録の 22.1.6 では 27 でした）。1 回読み込むと、ページを読み直すまで元には戻りません。
 >
 > 本番のビルドで、`defer-rl-widget` の文字列が章の chunk とは別の chunk にだけ入っていることを確かめています（「テストと直し方」の節）。`isStable` の列は、押してから 1 秒の間の変化を貯めて最後に出したものです。押した直後に `false`（3 節の 207 行目）になり、読み込みと描画が済むと `true` に戻ります（6 節の 311 行目）。
 >

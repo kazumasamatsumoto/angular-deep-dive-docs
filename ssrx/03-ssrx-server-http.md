@@ -200,7 +200,7 @@ index 6a0e8c06a60..176a7eeb303 100644
 
 ### 44355181e25（09-02、../angular-main だけ）：判定にも trim() を使わない（#70540）
 
-[第 1 回](01-ssrx-resolve-url.md)の 3e924cc8dbb は url.ts から `trim()` を除きましたが、http.ts の 76 行目には `trim()` が残っていました。本文は「`trim()` は WHATWG の URL の解析ではパスの文字として残る Unicode の空白を削る。そのずれで、xhr2 がアプリの認めたのとは別の origin に資格情報を送ることがある」と書き、判定を加工していない `request.url` で行うようにしました。../angular（8576f161ae4）と 22.1.6 には入っておらず、`git tag --contains` では 22.2 系の v22.2.0 と、22.1 系への取り込み（330083f250f）の v22.1.8 に入っています。
+[第 1 回](01-ssrx-resolve-url.md)の 3e924cc8dbb は url.ts から `trim()` を除きましたが、http.ts の 76 行目には `trim()` が残っていました。本文は「`trim()` は WHATWG の URL の解析ではパスの文字として残る Unicode の空白を削る。そのずれで、xhr2 がアプリの認めたのとは別の origin に資格情報を送ることがある」と書き、判定を加工していない `request.url` で行うようにしました。../angular（8576f161ae4）と 22.1.6 には入っておらず、`git tag --contains` では 22.2 系の v22.2.0 と、22.1 系への取り込み（330083f250f）の v22.1.8 に入っています。このサイトの今の依存 22.2.6 の配布物（`fesm2022/_server-chunk.mjs`）でも、判定は加工していない `request.url` で行われています。
 
 📄 `git show 44355181e25 -- packages/platform-server/src/http.ts（../angular-main）`
 

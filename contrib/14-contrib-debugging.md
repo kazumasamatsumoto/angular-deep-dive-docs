@@ -553,7 +553,7 @@ git switch -                   # 元のブランチへ。try-local-angular は g
    `pnpm build` で `dist/packages-dist/<パッケージ名>` ができます（上の 92〜101 行目）。
 2. **同じリポジトリのパッケージは全部替える**
 
-   このサイトが使う `@angular/*` のうち、angular/angular で作られるもの（core・common・compiler・forms・platform-browser・platform-server・router・compiler-cli）をまとめて替えます。これらは同じ版どうしで動く前提で、たとえば npm から入れた `@angular/router` 22.1.6 の peerDependencies は `@angular/core` を `22.1.6` ちょうどに指定しています。`@angular/cdk`・`@angular/ssr`・`@angular/build`・`@angular/cli` は別のリポジトリのものなので npm のまま残します。
+   このサイトが使う `@angular/*` のうち、angular/angular で作られるもの（core・common・compiler・forms・platform-browser・platform-server・router・compiler-cli）をまとめて替えます。これらは同じ版どうしで動く前提で、たとえば npm から入れた `@angular/router` 22.2.6 の peerDependencies は `@angular/core` を `22.2.6` ちょうどに指定しています。`@angular/cdk`・`@angular/ssr`・`@angular/build`・`@angular/cli` は別のリポジトリのものなので npm のまま残します。
 3. **preserveSymlinks を付ける**
 
    `npm install <フォルダ>` は node\_modules に symlink を作ります。手引きの 159〜162 行目のとおり、symlink を実際のパス（`../angular/dist/…`）に解決すると、そこから見える node\_modules が違うので import の解決に失敗します。下の 173〜174 行目のとおり、application ビルダーは `preserveSymlinks` を設定すればそれを、無ければ Node が `--preserve-symlinks` 付きで起動されたかを見ます。手引きの 165 行目は後者、手順は angular.json に書く前者です。
@@ -648,7 +648,7 @@ git switch -                   # 元のブランチへ。try-local-angular は g
 
    49〜51 行目、`--stamp` 付きなら `{{STABLE_PROJECT_VERSION}}` に置き換えます。その値を作るのが ng-dev の 41464 行目からです。41465 行目、元はルートの package.json の `version`（いまは `22.2.0-next.7`）。41467 行目、release なら（`build-and-link` の経路）そのまま `22.2.0-next.7`。snapshot なら（`pnpm build` の経路）41476 行目で `+sha-` と HEAD の先頭 7 文字が付き、41474 行目、手元に commit していない変更があれば `-with-local-changes` も付きます。
 
-いまの ../angular（HEAD は `8576f161ae4`、元からの削除が 1 つある）で `pnpm build` すれば、版は `22.2.0-next.7+sha-8576f16-with-local-changes` になります。npm から入れた版は `22.1.6` なので、デモの 1 行目を見るだけで「どちらの `@angular/core` で動いているか」が分かります。
+いまの ../angular（HEAD は `8576f161ae4`、元からの削除が 1 つある）で `pnpm build` すれば、版は `22.2.0-next.7+sha-8576f16-with-local-changes` になります。npm から入れた版は `22.2.6` なので、デモの 1 行目を見るだけで「どちらの `@angular/core` で動いているか」が分かります。
 
 ## 6. ソースマップでフレームワークにブレークポイント
 
@@ -697,7 +697,7 @@ git switch -                   # 元のブランチへ。try-local-angular は g
 38 │           },
 ```
 
-このサイトの angular.json の development は `"sourceMap": true` です。12 行目でスクリプトのソースマップは出ますが、15 行目、`vendor` は object で `true` を書いたときだけ `true` で、真偽値の `true` では `false` です。vendor（node\_modules のパッケージ）のソースマップを読まないので、DevTools でフレームワークの中は束ねられた `.mjs` のままです。dev-app は 35〜37 行目で `vendor: true` にしています。同じようにすると、DevTools の Sources に `packages/core/src/…` の TypeScript が出て、そこにブレークポイントを置けます。npm から入れた `@angular/core` 22.1.6 の `fesm2022/*.mjs.map` にも元の TypeScript の中身（`sourcesContent`）が入っていることを、このサイトの node\_modules で確かめました。
+このサイトの angular.json の development は `"sourceMap": true` です。12 行目でスクリプトのソースマップは出ますが、15 行目、`vendor` は object で `true` を書いたときだけ `true` で、真偽値の `true` では `false` です。vendor（node\_modules のパッケージ）のソースマップを読まないので、DevTools でフレームワークの中は束ねられた `.mjs` のままです。dev-app は 35〜37 行目で `vendor: true` にしています。同じようにすると、DevTools の Sources に `packages/core/src/…` の TypeScript が出て、そこにブレークポイントを置けます。npm から入れた `@angular/core` 22.2.6 の `fesm2022/*.mjs.map` にも元の TypeScript の中身（`sourcesContent`）が入っていることを、このサイトの node\_modules で確かめました。
 
 ## 7. コンパイラの出力を見る
 
@@ -773,7 +773,7 @@ function ContribDebuggingChapter_For_353_Template(rf, ctx) {
 
 **Q. ローカルのビルドが本当に使われているか、どう確かめますか？**
 
-`VERSION.full` を見ます。npm の版は `22.1.6` のような番号、`pnpm build` の出力は ng-dev 41476 行目の `+sha-<HEAD の 7 文字>` が付き、変更が commit されていなければ `-with-local-changes` も付きます。dev-app は `0.0.0` です。
+`VERSION.full` を見ます。npm の版は `22.2.6` のような番号、`pnpm build` の出力は ng-dev 41476 行目の `+sha-<HEAD の 7 文字>` が付き、変更が commit されていなければ `-with-local-changes` も付きます。dev-app は `0.0.0` です。
 
 ## 読み終えて
 

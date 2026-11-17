@@ -922,7 +922,7 @@ JIT（実行時に decorator を動かしてコンパイルする道。[standalo
 
 > **🧪 DEMO — このページの上の @angular/compiler で、1 つのクエリをコンパイルする**
 >
-> 書き方とオプションを選んで「コンパイルする」を押すと、このサイトの `@angular/compiler`（22.1.6）をその場で読み込み（それまでは読み込みません）、本物の `compileDirectiveFromMetadata`（3 節の query\_generation.ts）と `compileDeclareDirectiveFromMetadata`（5 節の compileQuery）を呼んで、できた式を文字列にします。選んだものを R3QueryMetadata にするところは、TypeScript も decorator も動かさずに、2 節（ngtsc）か 4 節（JIT）の規則をこのページが真似しています。どの行の規則で決まったかを下に並べます。
+> 書き方とオプションを選んで「コンパイルする」を押すと、このサイトの `@angular/compiler`（22.2.6）をその場で読み込み（それまでは読み込みません）、本物の `compileDirectiveFromMetadata`（3 節の query\_generation.ts）と `compileDeclareDirectiveFromMetadata`（5 節の compileQuery）を呼んで、できた式を文字列にします。選んだものを R3QueryMetadata にするところは、TypeScript も decorator も動かさずに、2 節（ngtsc）か 4 節（JIT）の規則をこのページが真似しています。どの行の規則で決まったかを下に並べます。
 >
 > メタデータ（R3QueryMetadata にあたるもの）：first = true、isSignal = true、述語 = \['a'\]、read = null
 >

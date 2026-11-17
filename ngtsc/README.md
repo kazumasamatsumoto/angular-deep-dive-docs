@@ -43,7 +43,7 @@ ng build や ngc を走らせると、TypeScript のプログラムの横で Ang
 17. [HMR の更新モジュール：コンポーネントだけを差し替える関数を作る](17-ngtsc-hmr.md)  
    NgCompiler.emitHmrUpdateModule が TraitCompiler.compileHmrUpdateCallback を呼び、extractHmrMetatadata・extractHmrDependencies がテンプレートの使う名前（ローカルの宣言と import）を集め、getHmrUpdateDeclaration が ɵɵreplaceMetadata を呼ぶ関数の宣言を作る行。CLI の側（cli-hmr）で読んだ範囲はリンク。
 18. [診断と性能の記録：FatalDiagnosticError・ErrorCode・PerfRecorder](18-ngtsc-diagnostics-perf.md)  
-   handler が投げる FatalDiagnosticError と、投げずに返す makeDiagnostic・makeRelatedInformation、ErrorCode の数が NG の番号（-99 を前に付けた TypeScript の診断の code）になる行と、ErrorCode の負の値を印にしてエラーの説明のページの URL を足す行（配布物 22.1.6 では URL が next を指していた）。PerfPhase・PerfEvent・PerfCheckpoint と ActivePerfRecorder、tracePerformance の設定で JSON に書き出す方法。
+   handler が投げる FatalDiagnosticError と、投げずに返す makeDiagnostic・makeRelatedInformation、ErrorCode の数が NG の番号（-99 を前に付けた TypeScript の診断の code）になる行と、ErrorCode の負の値を印にしてエラーの説明のページの URL を足す行（配布物（22.1.6・22.2.6）では URL が next を指す）。PerfPhase・PerfEvent・PerfCheckpoint と ActivePerfRecorder、tracePerformance の設定で JSON に書き出す方法。
 19. [ngtsc のテストを書く：NgtscTestEnvironment と runInEachFileSystem](19-ngtsc-test-env.md)  
    packages/compiler-cli/test/ngtsc の NgtscTestEnvironment（setup・write・driveMain・driveDiagnostics・getContents・enableMultipleCompilations）と、偽のファイルシステムで同じ spec を OS ごとに走らせる runInEachFileSystem、fake\_common（偽の @angular/common）、src/ngtsc の各ディレクトリの単体テストの makeProgram。ngtsc の不具合を spec の形で再現するときの手順。
 20. [issue と PR を読む：ngtsc の今](20-ngtsc-issues.md)  

@@ -722,7 +722,7 @@ action は 35 行目のとおり `Promise<TreeValidationResult>` を返します
 > [!NOTE]
 > **ポイント**
 >
-> 最新の main（../angular-main のコミット `9e99093bfe3`「fix(forms): reject unsupported updateOn in SignalFormControl」）では、このクラスに `updateOn` の検査が足されています。コンストラクタの options に `updateOn: 'blur'` などを渡したとき、または親の `FormGroup` / `FormArray` の `updateOn` が `'change'` 以外のときに、開発ビルドで例外を投げ、`get updateOn()` は常に `'change'` を返します。この章のソース（v22.2.0-next.7）とサイトの 22.1.6 には、まだこの検査がありません。
+> 最新の main（../angular-main のコミット `9e99093bfe3`「fix(forms): reject unsupported updateOn in SignalFormControl」）では、このクラスに `updateOn` の検査が足されています。コンストラクタの options に `updateOn: 'blur'` などを渡したとき、または親の `FormGroup` / `FormArray` の `updateOn` が `'change'` 以外のときに、開発ビルドで例外を投げ、`get updateOn()` は常に `'change'` を返します。この章のソース（v22.2.0-next.7）と、この章を書いたときのサイトの 22.1.6 には、まだこの検査がありません。22.2.x の枝には 122663145b として入り（22.2.4 の変更履歴の「reject unsupported updateOn in SignalFormControl」）、いまのサイトの 22.2.6 の `fesm2022/signals-compat.mjs` には、コンストラクタと親の `updateOn` を見て `unsupportedUpdateOnError` を投げる行があります。下のデモは `updateOn` を渡さないので、この検査には当たりません。
 
 ### \[formField\] の側から：InteropNgControl
 
@@ -796,7 +796,7 @@ action は 35 行目のとおり `Promise<TreeValidationResult>` を返します
 
 > **🧪 DEMO — &lt;form \[formRoot\]&gt; と submit()**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。`form(account, schema, { submission: { action, onInvalid } })` を `<form [formRoot]="f">` に付けています。username には 1.5 秒かかる `validateAsync`（常に通る）を付けてあります。action は 800 ms 待ってから、選んだモードの結果を返す擬似サーバーです（外部通信なし）。「例外を投げる」は `FormRoot` を通さず `submit(f, { action })` を直接呼び、返る Promise を try/catch で受けます。
+> 本物の `@angular/forms/signals`（22.2.6）です。`form(account, schema, { submission: { action, onInvalid } })` を `<form [formRoot]="f">` に付けています。username には 1.5 秒かかる `validateAsync`（常に通る）を付けてあります。action は 800 ms 待ってから、選んだモードの結果を返す擬似サーバーです（外部通信なし）。「例外を投げる」は `FormRoot` を通さず `submit(f, { action })` を直接呼び、返る Promise を try/catch で受けます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-sf-submit-compat)
 
@@ -806,7 +806,7 @@ action は 35 行目のとおり `Promise<TreeValidationResult>` を返します
 
 > **🧪 DEMO — FormControl を Signal Forms に、Signal Forms を FormGroup に**
 >
-> 上の段：`compatForm(signal({ title: '', legacy: new FormControl('旧フォーム', {validators: [required, minLength(3)]}) }))`。legacy の同じ `FormControl` を、`[formField]="mixed.legacy"` と リアクティブの `[formControl]="legacy"` の 2 つの入力欄につないでいます。下の段：`new FormGroup({ legacyName: new FormControl(...), signalName: new SignalFormControl('', (p) => { required(p); minLength(p, 2) }) })`。どちらも `@angular/forms/signals/compat`（22.1.6）です。
+> 上の段：`compatForm(signal({ title: '', legacy: new FormControl('旧フォーム', {validators: [required, minLength(3)]}) }))`。legacy の同じ `FormControl` を、`[formField]="mixed.legacy"` と リアクティブの `[formControl]="legacy"` の 2 つの入力欄につないでいます。下の段：`new FormGroup({ legacyName: new FormControl(...), signalName: new SignalFormControl('', (p) => { required(p); minLength(p, 2) }) })`。どちらも `@angular/forms/signals/compat`（22.2.6）です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/forms-sf-submit-compat)
 

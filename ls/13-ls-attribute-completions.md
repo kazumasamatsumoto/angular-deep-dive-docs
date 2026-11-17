@@ -857,7 +857,7 @@ import 文の `from '…'` に何を書くかは、`PotentialDirectiveModuleSpec
 
 ## 7. デモ：本物の DomElementSchemaRegistry に尋ねて表を作る
 
-> **🧪 DEMO — buildAttributeCompletionTable の移植 + 本物の DomElementSchemaRegistry / SelectorMatcher（@angular/compiler 22.1.6）**
+> **🧪 DEMO — buildAttributeCompletionTable の移植 + 本物の DomElementSchemaRegistry / SelectorMatcher（@angular/compiler 22.2.6）**
 >
 > 要素名と、いま付いている属性（空白区切り）を入れて「表を作る」を押すと、`<要素 属性… ¦>` の位置での候補を出します。DOM の分は本物の `allKnownAttributesOfElement`・`getMappedPropName`・`allKnownEventsOfElement`・`hasElement` の答えです。ディレクティブは下の 4 つを自分で書いたもので、本物はスコープと自動 import の候補から来ます。「いま付いている」の判定は本物の `getSymbolOfNode` ではなく `SelectorMatcher` で代用しています（移植です）。
 >

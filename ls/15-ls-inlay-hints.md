@@ -950,7 +950,7 @@ pipe は TCB の中で `_pipe1.transform(value, 'short')` のような呼び出�
 
 ## 8. デモ：本物の parseTemplate の節点に、ヒントの位置を置く
 
-> **🧪 DEMO — InlayHintVisitor の「位置と設定」の移植 + 本物の parseTemplate（@angular/compiler 22.1.6）**
+> **🧪 DEMO — InlayHintVisitor の「位置と設定」の移植 + 本物の parseTemplate（@angular/compiler 22.2.6）**
 >
 > テンプレートを本物の `parseTemplate` で R3 AST と式の AST にし、本物と同じ節点・同じ位置（`keySpan.end` など）にヒントを置きます（移植です）。型は TypeScript と TCB が無いと決まらないので `?`、引数の名前は関数の宣言が無いので「引数名」と書きます。ディレクティブを登録していないので入力のヒント（`visitTextAttribute`）は出ません。設定を切り替えると、すぐに作り直します。
 >

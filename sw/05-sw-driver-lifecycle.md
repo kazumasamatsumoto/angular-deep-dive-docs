@@ -501,7 +501,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 > **🧪 DEMO — install → activate → settle(0) → settle(6000)**
 >
-> 本物の `ngsw-worker.js`（このサイトに入っている @angular/service-worker 22.1.6 の配布物）を、偽物のブラウザの上で動かします。偽物にしたのは `self.caches`・`self.fetch`・`clients`・タイマーと `Date.now`（仮想の時計）などで、一覧は `sw-sandbox.ts` の先頭のコメントにあります。このページに本物の Service Worker は登録しません。アプリは `/index.html`・`/main.js`・`/styles.css`（グループ app、prefetch）と `/assets/logo.svg`（グループ assets、lazy）です。`settle(ms)` は仮想の時計を ms 進めます。
+> 本物の `ngsw-worker.js`（このサイトに入っている @angular/service-worker 22.2.6 の配布物）を、偽物のブラウザの上で動かします。偽物にしたのは `self.caches`・`self.fetch`・`clients`・タイマーと `Date.now`（仮想の時計）などで、一覧は `sw-sandbox.ts` の先頭のコメントにあります。このページに本物の Service Worker は登録しません。アプリは `/index.html`・`/main.js`・`/styles.css`（グループ app、prefetch）と `/assets/logo.svg`（グループ assets、lazy）です。`settle(ms)` は仮想の時計を ms 進めます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sw-driver-lifecycle)
 

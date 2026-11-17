@@ -435,6 +435,8 @@ SSR したページは、JS が届く前から見えていてボタンも押せ�
 
 インジェクタの初期化時（`ENVIRONMENT_INITIALIZER`）、110 行目で預ける実装を有効にし、112〜122 行目でこのアプリ用の預け方を登録します。118 行目、`<ng-container>` のコメントノードには預けません。119 行目で要素にリスナーを、120 行目で「ブロック名 → 要素」の Map に要素を入れます。
 
+このサイトの依存の 22.2.6 では、118 行目の条件が 1 つ増えています。596a40061f（v22.2.6、`fix(core): resolve closure and reference retention leaks`）が、要素でないものに加えて **`jsaction` 属性を持たない要素にも預けない**ようにしました（配布物の core.mjs の 366 行目、`!rEl.hasAttribute(Attribute.JSACTION)`）。サーバーの HTML に無かった要素、たとえば安定のあとに作った要素のリスナーは、もう預けられません。この直しで #66506 が閉じられました（[jsaction のシリーズの第 11 回](../jsaction/11-jsaction-angular.md)）。
+
 📄 `angular/packages/core/src/render3/view/listeners.ts` L169–181 （▶ の行: 172, 181）
 
 ```ts

@@ -747,7 +747,7 @@ CLDR のデータにあるすべてのロケールについて、38〜40 行目�
 
 44〜52 行目が 4 節の表の順番どおりに並べた配列で、54 行目で `undefined` を `u` に縮め、58 行目で最後に `plural`（関数そのもの。文字列ではない）を足します。29 行目でその関数の本体を同じファイルに書きます。npm に入っている fr.js の先頭はこうなっています。
 
-📄 `node_modules/@angular/common/locales/fr.js（22.1.6。読むだけ。配列は途中を省略）`
+📄 `node_modules/@angular/common/locales/fr.js（22.2.6。読むだけ。配列は途中を省略）`
 
 ```
 // THIS CODE IS GENERATED - DO NOT MODIFY.

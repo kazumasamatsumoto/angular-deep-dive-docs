@@ -992,7 +992,7 @@ ast.ts を見ると、`PropertyRead`（97 行目）と `SafePropertyRead`（112 
 1736 │   }
 ```
 
-v22 の式パーサは矢印関数を読めます（`items.filter(i => i.on)`）。1723〜1727 行目のとおり本体は式 1 つだけで、`{` で始まる本体は拒否されます。1729〜1732 行目で本体を読む間だけ `parseFlags` を `Action` に切り替えるので、**binding の中でも矢印関数の本体では代入が書けます**（1730 行目のコメント）。この章のサイトがインストールしている 22.1.6 でも、デモの `parseBinding` は矢印関数を受け付けます。
+v22 の式パーサは矢印関数を読めます（`items.filter(i => i.on)`）。1723〜1727 行目のとおり本体は式 1 つだけで、`{` で始まる本体は拒否されます。1729〜1732 行目で本体を読む間だけ `parseFlags` を `Action` に切り替えるので、**binding の中でも矢印関数の本体では代入が書けます**（1730 行目のコメント）。この章のサイトがインストールしている 22.2.6 でも、デモの `parseBinding` は矢印関数を受け付けます。
 
 ## 6. AST の主なノード
 
@@ -1146,7 +1146,7 @@ v22 の式パーサは矢印関数を読めます（`items.filter(i => i.on)`）
 
 > **🧪 DEMO — @angular/compiler の Lexer と Parser をブラウザで呼ぶ**
 >
-> 「解析」を押すと `@angular/compiler`（インストール版 22.1.6）を読み込み、`new Lexer().tokenize()` の結果と、`new Parser(new Lexer())` の `parseBinding` または `parseAction` が返す木を表示します。読み込みはボタンを押したときだけです。
+> 「解析」を押すと `@angular/compiler`（インストール版 22.2.6）を読み込み、`new Lexer().tokenize()` の結果と、`new Parser(new Lexer())` の `parseBinding` または `parseAction` が返す木を表示します。読み込みはボタンを押したときだけです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler-expression-parser)
 

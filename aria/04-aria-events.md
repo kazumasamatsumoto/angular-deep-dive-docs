@@ -575,19 +575,21 @@ Aria の Pattern は、「Shift を押しながら ↓ なら範囲を選ぶ」�
 3. **89 行目 通すのは「プログラムから」か「本物のポインタ」**
 
    `isProgrammaticClick(event) || !isFakeClick(event)`。ブラウザがキーボードの操作から作った click（`isTrusted` は true で `detail` が 0）だけを弾きます。40〜44 行目のコメントのとおり、キーボードの処理は KeyboardEventManager が既にしているので、同じ操作を 2 回処理して選択を上書きしないためです。プログラムからの click は通すので、spec の `element.click()` も処理されます。
+
+   いまのサイトの 22.2.7 では、25〜27 行目が引用と違います。5490363625「fix(multiple): update fake event detection in aria」（#34004、22.2.5）で `event.detail === 0 && event.screenX === 0 && event.screenY === 0`（3 つとも 0 のときだけ偽物）に替わり、`isFakeClick` と `isProgrammaticClick` は export されない関数に、`_isMatch` は private になりました（node\_modules の `fesm2022/_click-event-manager-chunk.mjs.map` から戻した .ts で確かめた）。89 行目の組み合わせ方は同じです。下のデモはキーだけを使うので、この差では動きが変わりません。
 4. **46〜49 行目 既定は止めない**
 
    click も `preventDefault` も `stopPropagation` もしません。listbox と tabs のクリックがこの形に移ったのが e01062ac52（#33031。PR の説明に「Fixes #32915 #32971」。#32915 はタッチのスクロールで選ばれてしまう報告）です。
 
 ## 7. デモ：修飾キー付きのキーで、何が止められたか
 
-> **🧪 DEMO — このページの @angular/aria（22.1.8）の ngListbox（multi・explicit）**
+> **🧪 DEMO — このページの @angular/aria（22.2.7）の ngListbox（multi・explicit）**
 >
 > 本物の `ngListbox` に `[multi]="true"` と `selectionMode="explicit"` を付けています。キーボードで操作できます。Tab でリストに入り、↑ ↓ で動きます。次を押してみてください：Shift だけ、Shift+↓ を 2 回、Space、Ctrl+A（Mac は ⌘+A）、Home、End、Ctrl+Shift+Home、Tab、Ctrl+B。リストの外側の `div` に `(keydown)` があり、泡立って届いたかを記録します。描画のあとに `event.defaultPrevented`・`document.activeElement`・`[(value)]` を読みます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-events)
 
-見るところは 4 つです（2026-11-02 にヘッドレスの Chrome で apple にフォーカスを置いてキーを送り、ログで確かめました）。
+見るところは 4 つです（2026-11-02 にヘッドレスの Chrome で apple にフォーカスを置いてキーを送り、ログで確かめました。サイトを 22.2.7 に上げたあと 2026-11-17 に同じキーを送っても、4 つとも同じでした。keyboard-event-manager.ts の 22.2.7 での違いは 63 行目の `Modifier.hasOwnProperty(…)` が `Object.hasOwn(Modifier, …)` になった 1 行だけで、結果は変わりません）。
 
 - **扱ったキーは止まる**：↓・Shift+↓・Space・Ctrl+A・Home・End・Ctrl+Shift+Home は `preventDefault=true`、`外の div に泡立った=false` です。4 節の 32〜36 行目の既定どおりです。
 - **扱わないキーは素通り**：Tab・Ctrl+B・Control キーそのものは `preventDefault=false`、`泡立った=true`。合う config が無ければ 2 節の 69 行目を通らないので、何もしません。Tab はそのままリストの外へフォーカスを移します。

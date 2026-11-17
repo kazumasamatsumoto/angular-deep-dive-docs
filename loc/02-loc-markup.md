@@ -115,7 +115,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> 325 行目の `descIndex` は、`@@` で切る**前の**全体で探しています。そのため `i18n="desc@@a|b"` のように customId の中に `|` があると、330 行目で `meaningAndDesc`（`"desc"`）を 7 文字目で切ることになり、meaning が `"desc"`、description が空になります（このページの compiler 22.1.6 で確かめた結果）。customId に `|` を使わないのが安全です。
+> 325 行目の `descIndex` は、`@@` で切る**前の**全体で探しています。そのため `i18n="desc@@a|b"` のように customId の中に `|` があると、330 行目で `meaningAndDesc`（`"desc"`）を 7 文字目で切ることになり、meaning が `"desc"`、description が空になります（compiler 22.1.6 で確かめた結果）。customId に `|` を使わないのが安全です。
 >
 > 逆向きの読み手、@angular/localize の `parseMetadata`（[第 13 回](13-loc-localize-tag.md)）は `split('@@', 2)` で切るので、`i18n="m|d@@x@@y"` の customId は compiler では `x@@y`（328 行目）、localize では `x` になります（2 つめの `@@` から右が捨てられる）。
 
@@ -231,7 +231,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 - **146〜148 行目**：`@if` などのブロックは、子を同じ `context` で訪ねます。だから `@if (ok) { <p i18n>Hi</p> }` の `<p>` も印が読まれ、条件の中の埋め込みテンプレートに自分のメッセージを持ちます（出力では `Demo_Conditional_0_Template` の中の `ɵɵi18n(1,0)`）。
 - **139 行目**：コメントは何もしません。`<!-- i18n -->…<!-- /i18n -->` という古い書き方は、このビジターでは読まれません。i18n\_parser\_spec.ts の `describe('blocks')` にこの書き方があるのは、spec が古い抽出（`extractor_merger.ts`、[第 8 回](08-loc-compiler-options.md)）を通るからです。
 
-`<ng-container>` と `<ng-template>` は、HTML の木ではふつうの `html.Element` です。だから印の読み方は `<p>` と同じで、違いは出力に出ます。このページの compiler 22.1.6 でコンパイルした結果です。
+`<ng-container>` と `<ng-template>` は、HTML の木ではふつうの `html.Element` です。だから印の読み方は `<p>` と同じで、違いは出力に出ます。compiler 22.1.6（依存を 22.2.6 に上げる前のこのサイトの版）でコンパイルした結果です。
 
 | 書き方 | メッセージが載る場所 | template 関数の命令 |
 | --- | --- | --- |
@@ -595,7 +595,7 @@ ICU の 2 つ（`Icu` と `IcuPlaceholder`）の作り方は [第 7 回](07-loc-
 
 > **🧪 DEMO — 本物の parseTemplate と @angular/localize の ɵparseMetadata で、印とメッセージを読む**
 >
-> 「読む」を押すと 2 つのことをします。(1) このページの @angular/compiler 22.1.6 の `parseTemplate` の結果（R3 AST）をたどり、要素や属性の `i18n` に載った `Message` を並べます（木は `visit` で 1 行にしたもの）。(2) `compileI18nTemplate` でコンパイルし、consts の `$localize` の 1 つめの部品を @angular/localize 22.1.6 の `ɵparseMetadata` で読みます。2 つの表の順番は違います（consts は ICU などの部品が先に並ぶ）。
+> 「読む」を押すと 2 つのことをします。(1) このページの @angular/compiler 22.2.6 の `parseTemplate` の結果（R3 AST）をたどり、要素や属性の `i18n` に載った `Message` を並べます（木は `visit` で 1 行にしたもの）。(2) `compileI18nTemplate` でコンパイルし、consts の `$localize` の 1 つめの部品を @angular/localize 22.2.6 の `ɵparseMetadata` で読みます。2 つの表の順番は違います（consts は ICU などの部品が先に並ぶ）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/loc-markup)
 

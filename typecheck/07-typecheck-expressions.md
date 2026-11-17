@@ -597,7 +597,7 @@ x.ts:4 TS2532: Object is possibly 'undefined'.
 
 この it は修正で書き換えられたもので、修正前は `{{ one?.two.three }}` の期待値が `(((((this).one))?.two.three))` の 1 つだけでした。1515 行目と 1518 行目のコメントのとおり、レシーバ自身が `?.` の読み（`a?.b`）のときは、そのレシーバは包まれます（visitSafePropertyRead が自分で包む）。それでも TypeScript の短絡は変わりません。同じコミットで span\_comments\_spec.ts の期待値も、`(((((this).method /*3,9*/) /*3,9*/)?.(…)) /*3,17*/)` から外側の括弧が 1 組減った形に変わりました（`git show e9ba39d671a` で確かめた）。
 
-このサイトに入っている 22.1.6 には、同じ修正が 079a8462635（22.1.x の枝。タグは v22.1.4 から）として入っています。sourcemap から戻した 22.1.6 の expression.ts は読んでいる版と同じでした（差がある 3 ファイルに expression.ts は入っていない）。だからデモでも修正後の形が出ます。
+この章を書いたときのサイトの 22.1.6 には、同じ修正が 079a8462635（22.1.x の枝。タグは v22.1.4 から）として入っています。sourcemap から戻した 22.1.6 の expression.ts は読んでいる版と同じでした（差がある 3 ファイルに expression.ts は入っていない）。だからデモでも修正後の形が出ました。いまのサイトの 22.2.6 の expression.ts は、読んでいる版と 1 行だけ違います。矢印関数の引数に `markIgnoreDiagnostics()` の代わりに `addParseSpanInfo(param.sourceSpan)` を付ける de5a1df4821「fix(compiler): report errors at arrow parameters」（22.2.6）です。この章の修正の形は同じです。
 
 ## 8. テンプレートリテラル
 
@@ -648,7 +648,7 @@ x.ts:4 TS2532: Object is possibly 'undefined'.
 
 > **🧪 {{ 式 }} の TCB（strictSafeNavigationTypes の true / false）**
 >
-> ボタンか Enter で、このサイトに入っている @angular/compiler 22.1.6 の generateTypeCheckBlock を 2 回呼びます。
+> ボタンか Enter で、このサイトに入っている @angular/compiler 22.2.6 の generateTypeCheckBlock を 2 回呼びます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-expressions)
 

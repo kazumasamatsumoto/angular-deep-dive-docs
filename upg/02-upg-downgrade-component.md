@@ -657,7 +657,7 @@ output にも `PropertyBinding` を作り（231 行目）、4 つの書き方を
    269〜273 行目。代入なら `setter(this.scope, v)`、式なら `getter(this.scope, {'$event': v})` を呼ぶ関数です。`this.scope` は要素の scope（65 行目の子ではない方）です。cd7c170763b（#60366、v20.0.0）より前は `subscribe({next: …})` と observer のオブジェクトを渡していて、関数しか受けない `OutputEmitterRef.subscribe` で `listenerFn is not a function` になっていました。
 4. **コンポーネントが壊れたら購読を外す**
 
-   274 行目。#48032（購読の漏れ）を直した 253d7564647（v16.2.0）の行です。DEMO の「ng-if で消す」で、`EventEmitter` の observers は 1 → 0 になりました。`OutputEmitterRef` の方は壊れるときに自分で listener の配列を捨てる（1 → `null`）ので、274 行目と二重に外れます。今の 22.1.6 では漏れは残っていません。
+   274 行目。#48032（購読の漏れ）を直した 253d7564647（v16.2.0）の行です。DEMO の「ng-if で消す」で、`EventEmitter` の observers は 1 → 0 になりました。`OutputEmitterRef` の方は壊れるときに自分で listener の配列を捨てる（1 → `null`）ので、274 行目と二重に外れます。記録の 22.1.6 では漏れは残っていません。
 
 📄 `angular/packages/upgrade/src/common/src/util.ts` L190–222 （▶ の行: 196–197, 205, 207–208, 210, 212, 220–221）
 

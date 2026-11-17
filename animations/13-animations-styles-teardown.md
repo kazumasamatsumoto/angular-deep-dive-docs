@@ -2,7 +2,7 @@
 
 # スタイルの後片付け：leave の間はコンポーネントの CSS を消さない
 
-> コンポーネントが壊されるとき NoneEncapsulationDomRenderer.destroy がスタイルを外す行と、allLeavingAnimations（leave 中の LView の ID の Set）が空でない間は外さない理由、命令・node\_animations.ts・control\_flow.ts が ID を足し引きする 7 か所。(animate.leave) は要素を作った時点で足すため、スタイルのタグが残り続ける開いている issue #66244 と、どこを直せばよいかの入口。
+> コンポーネントが壊されるとき NoneEncapsulationDomRenderer.destroy がスタイルを外す行と、allLeavingAnimations（leave 中の LView の ID の Set）が空でない間は外さない理由、命令・node\_animations.ts・control\_flow.ts が ID を足し引きする 7 か所。(animate.leave) は要素を作った時点で足すため、スタイルのタグが残り続ける開いている issue #66244 と、どこを直せばよいかの入口（22.2.6 は 596a40061fa で leave が始まったときに足す形になり、デモの結果が変わる）。
 
 angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/animations-styles-teardown)
 
@@ -257,7 +257,7 @@ render3/instructions/animation.ts:427:  allLeavingAnimations.add(lView[ID]);
 
 ## 4. 引かれない道筋：スタイルのタグが残り続ける
 
-2 節と 3 節を合わせると、スタイルが外れないのは次の 3 つの場合です。どれも下のデモで本物を動かして確かめました。
+2 節と 3 節を合わせると、スタイルが外れないのは次の 3 つの場合です。どれも下のデモで本物を動かして確かめました（この章を書いたとき、サイトが 22.1.6 だったとき）。いまのサイトの 22.2.6 では、2 つ目と 3 つ目の入口の 427 行目が変わっています（7 節の終わり）。
 
 1. **leave 中に壊れたコンポーネント自身のスタイル（意図どおり、ただし後で外されない）**
 
@@ -273,7 +273,7 @@ render3/instructions/animation.ts:427:  allLeavingAnimations.add(lView[ID]);
 
 2025-12-24 に開かれた **#66244**「Angular never removes style tags on destroy if any component has (animate.leave) hook」（ラベル `area: core`・`core: animations`、2026-11-01 時点で open）は、上の 2 つ目と 3 つ目にあたります。報告者は「`(animate.leave)` を外すと、コンポーネントを壊したときに背景色が戻る」再現を StackBlitz で示し、「leave が全部終わったあとにスタイルのタグを外してほしい」と書いています。コメントは 3 件です（`gh issue view 66244 -R angular/angular --comments` で読めます）。
 
-- 2026-01-05、外部の人が「#66255 を直したコミットで解決済み」と書いています。そのコミットは ../angular では **80b0fbba1f9**（fix(core): avoid leaking view data in animations）で、`git show 80b0fbba1f9` を見ると、Set の中身を `LView` から `lView[ID]` に変えただけです（ビューをメモリに握り続けないため）。427 行目の「作った時点で足す」も、683 行目の判定も変わっていません。このコミットを含む ../angular の 22.2.0-next.7 の行も、このサイトの 22.1.6 の行（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs` の `ɵɵanimateLeaveListener`）も同じ形で、下のデモでも残ります。
+- 2026-01-05、外部の人が「#66255 を直したコミットで解決済み」と書いています。そのコミットは ../angular では **80b0fbba1f9**（fix(core): avoid leaking view data in animations）で、`git show 80b0fbba1f9` を見ると、Set の中身を `LView` から `lView[ID]` に変えただけです（ビューをメモリに握り続けないため）。427 行目の「作った時点で足す」も、683 行目の判定も変わっていません。このコミットを含む ../angular の 22.2.0-next.7 の行も、この章を書いたときのサイトの 22.1.6 の行（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs` の `ɵɵanimateLeaveListener`）も同じ形で、下のデモでも残りました（いまの 22.2.6 では 7 節の終わりのとおり変わっています）。
 - 2026-01-06、Angular チームの thePunderWoman が「子の要素が CSS で消えていく途中で親のコンポーネントが壊されることがあり、いつ外しても安全かを知るのが難しい」と答えています。
 - 2026-01-07、報告者が「いくつかの場合は仕様として文書にすればよい。そもそもスタイルを外すこと自体がコンポーネントの外に影響しうるし、困る人は設定で切れる」と返しています。
 
@@ -358,7 +358,7 @@ render3/instructions/animation.ts:427:  allLeavingAnimations.add(lView[ID]);
 
 > **🧪 DEMO — 子コンポーネントのスタイルのタグが head に残るか**
 >
-> 下の 4 つは、このページのテンプレートに書いた本物の `@if` と `animate.leave` / `(animate.leave)` です（このサイトの `@angular/core` 22.1.6）。A〜D はそれぞれ自分の `styles` を持つ別々のコンポーネントで、styles の中に目印のクラス名（`ast-a-marker` など）が入っています。ボタンを押すと 50ms 後（と、消したときは 1000ms 後）に、`document.head` の `<style>` のうち目印を含むものの数と、`ɵallLeavingAnimations`（`@angular/core` が内部用に export している本物の Set）の大きさを読んで、下の表に 1 行足します。OS の設定で動きを減らしていても、このデモは動きます。
+> 下の 4 つは、このページのテンプレートに書いた本物の `@if` と `animate.leave` / `(animate.leave)` です（このサイトの `@angular/core` 22.2.6）。A〜D はそれぞれ自分の `styles` を持つ別々のコンポーネントで、styles の中に目印のクラス名（`ast-a-marker` など）が入っています。ボタンを押すと 50ms 後（と、消したときは 1000ms 後）に、`document.head` の `<style>` のうち目印を含むものの数と、`ɵallLeavingAnimations`（`@angular/core` が内部用に export している本物の Set）の大きさを読んで、下の表に 1 行足します。OS の設定で動きを減らしていても、このデモは動きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/animations-styles-teardown)
 
@@ -382,7 +382,17 @@ render3/instructions/animation.ts:427:  allLeavingAnimations.add(lView[ID]);
 - **B** は消した 50ms 後に Set が 1（`node_animations.ts:78`）、1000ms 後には 0（262 行目）に戻りましたが、B のタグは残りました。4 節の 1 つ目です。
 - **C** は**出しただけで** Set が 1 になりました（`animation.ts:427`）。その間に A を出して消すと、A のタグが残りました。#66244 そのものです。
 - そのあと Set が 0 に戻ってから A をもう一度出して消しても、A のタグは消えませんでした。前に引かれなかった 1 が残っているので、数が 2 → 1 になるだけだからです（1 節の 194〜195 行目）。
-- **D** を消したあと、Set は 1 のまま 0 に戻りませんでした。4 節の 3 つ目です。このページの「後始末」ボタンと、ページを離れるときの処理は、D を作ったときに増えた ID だけを Set から消します（この章のコンポーネントの `cleanupLeakedIds`。Angular の内部の Set を直接触っているので、デモの後始末以外には使わないでください）。
+- **D** を消したあと、Set は 1 のまま 0 に戻りませんでした（22.1.6 の記録）。4 節の 3 つ目です。このページの「後始末」ボタンと、ページを離れるときの処理は、D を作ったときに増えた ID だけを Set から消します（この章のコンポーネントの `cleanupLeakedIds`。Angular の内部の Set を直接触っているので、デモの後始末以外には使わないでください）。
+
+### 22.2.6 に上げたあとの記録
+
+サイトを 22.2.6 に上げたあと（2026-11-17、本番ビルド）に同じ順でボタンを押すと、表の結果が変わりました。22.2.6 に入った 596a40061fa「fix(core): resolve closure and reference retention leaks」（22.2.6 の変更履歴）が、427 行目の `allLeavingAnimations.add(lView[ID])` を `ɵɵanimateLeaveListener` から消し、leave の関数を実際に走らせる `runLeaveAnimationFunction` の中へ移したからです（`git show 596a40061fa -- packages/core/src/render3/instructions/animation.ts`）。`(animate.leave)` は、要素を作った時点ではなく、leave が始まったときに Set に足されます。
+
+- **A だけ**と **B** は同じでした。B は消した 50ms 後に Set が 1、1000ms 後に 0 で、B のタグは残ります（4 節の 1 つ目は 22.2.6 でも起きる）。
+- **C を出しただけ**では Set は 0 のままです。C を出したまま A を出して消すと、**A のタグは消えました**。C を消した 50ms 後は Set が 1、1000ms 後に 0 です。
+- **D** を出して消すと、D のタグは消え、Set も 0 のままでした。子の中の `(animate.leave)` は走らないので、足されることもありません。「後始末」で消す ID もありません。
+
+つまり 4 節の 2 つ目（どこかに `(animate.leave)` が「ある」だけで外れない）と 3 つ目（ID が永久に残る）は、22.2.6 のデモでは出ません。1 つ目（leave 中に壊れたコンポーネントのタグが後で外されない）と、leave が走っている間は関係ないコンポーネントのタグも外れないこと（683 行目の判定）は変わっていません。#66244 は 2026-11-17 の時点で開いたままです。
 
 ## テストと直し方
 
@@ -501,7 +511,7 @@ leave のアニメーションは、消えていく要素にクラス（`animate
 
 **Q. issue のコメントに「もう直っている」とありますが？**
 
-そのコミット（../angular の 80b0fbba1f9）は、Set に入れるものを LView から番号（`lView[ID]`）に変えたものです。ビューを握り続けるメモリリーク（#66255）は直りますが、427 行目で作った時点に足すことも、683 行目で全体の大きさを見ることも変わっていません。このコミットを含むこのサイトの 22.1.6 で、7 節のデモは A のタグが残りました。
+そのコミット（../angular の 80b0fbba1f9）は、Set に入れるものを LView から番号（`lView[ID]`）に変えたものです。ビューを握り続けるメモリリーク（#66255）は直りますが、427 行目で作った時点に足すことも、683 行目で全体の大きさを見ることも変わっていません。このコミットを含む 22.1.6（この章を書いたときのサイト）で、7 節のデモは A のタグが残りました。いまの 22.2.6 では、別の 596a40061fa で足す場所が移ったので、C を出したままでも A のタグは消えます（7 節の終わり）。
 
 **Q. Set が 0 に戻ったのに、A のタグが残ったのはなぜですか？**
 
@@ -511,7 +521,7 @@ leave のアニメーションは、消えていく要素にクラス（`animate
 
 - コンポーネントのスタイルは `SharedStylesHost` が CSS の文字列ごとに「使っている数」を数え、0 になったときだけタグを外す（`shared_styles_host.ts` 194〜197 行目）。
 - `NoneEncapsulationDomRenderer.destroy`（Emulated も同じ）は、`allLeavingAnimations` が空でなければ数を引かずに帰る（`dom_renderer.ts` 683 行目）。飛ばした分を後で引く仕組みは無い。
-- Set はアプリ全体で 1 つ。足すのは 3 か所、引くのは 4 か所で、`(animate.leave)` は要素を作った時点で足す（`animation.ts:427`）。子の中の `(animate.leave)` を親が消すと、ID は永久に残る。
+- Set はアプリ全体で 1 つ。足すのは 3 か所、引くのは 4 か所で、`(animate.leave)` は要素を作った時点で足す（`animation.ts:427`）。子の中の `(animate.leave)` を親が消すと、ID は永久に残る。22.2.6 は 596a40061fa で leave が始まったときに足す形になり、デモではこの 2 つが出ない。
 - これが開いている #66244。直す入口は 683 行目の判定と Set の足し引きで、どれが正しいかは決まっていない。旧パッケージは `BaseAnimationRenderer.destroy` でレンダラーごとに待ってから必ず外していた。
 - この判定を確かめる spec は無い。足すなら `core/test/acceptance/animation_spec.ts` か `platform-browser/test/dom/dom_renderer_spec.ts`、どちらもブラウザ版のターゲットでしか走らない。
 

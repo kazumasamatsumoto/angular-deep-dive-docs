@@ -38,7 +38,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 - このシリーズのソースは ../angular の 8576f161ae4（22.2.0-next.7、commit の日付は 2026-09-09）です。origin/main（2026-11-04 の 57905ca4e67）はその 807 commit 先にあり、そのうち `devtools/` に触れるものは 30 個です。
 - その 30 個には、このシリーズで読んだ行の直しが入っています。ハイドレーションのずれた子を探す再帰（3eaae88e5d7、[第 18 回](18-devtools-router-transfer.md)の 6 節）、Transfer State を null-prototype のオブジェクトにまとめる（ad9058ad879、同じ 5 節）、`BreakpointManager` の送り手の確かめと spec（11838e481a0、[第 17 回](17-devtools-signal-graph.md)の 8 節）、デバッガーが外れたときのボタン（36a0ab6ed8d、#70949）、見張りのボタンを隠す（ad548b9c008、#70948）、バックエンドの設定をまとめる（fe94aae0348、#70683）です。
 - 拡張の版は、手元の木で作ったものの manifest が 1.21.0 でした（[第 19 回](19-devtools-test-build.md)のデモ）。main には 1.21.1・1.22.0・1.22.1 への版上げの commit があります。
-- このサイトの DEMO が動かす core は node\_modules の 22.1.6 で、`toggleWatchSignal` や `linkedSignal` の値（第 17 回）のように、手元の木の core にはあって 22.1.6 には無いものがあります。issue の報告の版と、読む行の版をそろえてから読みます。
+- このサイトの DEMO の記録は node\_modules の 22.1.6 の core で録ったもので、`toggleWatchSignal` や `linkedSignal` の値（第 17 回）のように、手元の木の core にはあって 22.1.6 には無いものがあります（サイトの依存は今は 22.2.6 で、こちらには d45bd2f53d8 の `toggleWatchSignal` と `linkedSignal` の枝が入っています）。issue の報告の版と、読む行の版をそろえてから読みます。
 
 ## 1. データの取り方
 

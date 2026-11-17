@@ -459,7 +459,7 @@ NgSwitch 自身はケースのビューを持ちません。それぞれのケ�
 
 > **🧪 DEMO — 本物の NgSwitch・NgIf・NgPlural とビューの出し入れ**
 >
-> この章で定義した本物のコンポーネント `CmnNisTarget` を描き、`mountWithLog`（`domr-probe.ts`）で、このサイトの本物の `DomRendererFactory2` に届いたノードの作成・挿入・取り外しを記録します。使っているディレクティブはこのサイトの `@angular/common` 22.1.6 の本物です。的は 2 つあり、違いは `'b'` のケースの置き方だけです。
+> この章で定義した本物のコンポーネント `CmnNisTarget` を描き、`mountWithLog`（`domr-probe.ts`）で、このサイトの本物の `DomRendererFactory2` に届いたノードの作成・挿入・取り外しを記録します。使っているディレクティブはこのサイトの `@angular/common` 22.2.6 の本物です。的は 2 つあり、違いは `'b'` のケースの置き方だけです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-ng-if-switch)
 

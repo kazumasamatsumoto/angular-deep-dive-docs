@@ -44,7 +44,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 | `@switch` | `TcbSwitchOp`（switch\_block.ts） | `switch (…) { case …: }` | `case` は残り、本体が空（4 節の 37・41 行目） |
 | `@let` | `TcbLetDeclarationOp`（let.ts） | `const _t1 = (…)` | 関係しない（ブロックではない） |
 | `@defer` | op は無い。`appendDeferredBlock`（scope.ts） | 中身をそのまま同じ Scope に並べる | **見ない。中身は常に検査される**（6 節） |
-| `@boundary` | `TcbBoundaryOp`（boundary.ts、22.1.6 には無い） | `try {} catch (err) {}` | 本体が空（7 節の 33・39 行目） |
+| `@boundary` | `TcbBoundaryOp`（boundary.ts、22.2 から。22.1.6 には無い） | `try {} catch (err) {}` | 本体が空（7 節の 33・39 行目） |
 
 ## 2. @if の as：別名は if の外で宣言される
 
@@ -791,9 +791,9 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> このサイトの `@angular/compiler` 22.1.6 にはこの判定はありません（22.1.6 の scope.ts は `node instanceof Element` だけを見て、`isDeferred(node)` の真偽だけで判定します）。22.1.6 のパーサは `name blockA` を「Unrecognized trigger」として弾くので、デモでは試せません。
+> この章を書いたときのサイトの `@angular/compiler` 22.1.6 にはこの判定がありませんでした（22.1.6 の scope.ts は `node instanceof Element` だけを見て、`isDeferred(node)` の真偽だけで判定します）。22.1.6 のパーサは `name blockA` を「Unrecognized trigger」として弾きました。いまのサイトの 22.2.6 では、scope.ts に同じ 605〜633 行目の判定があり、パーサも `@defer (name blockA)` を受け付けます。ただしデモは deferredImports を持つディレクティブを渡さないので、この診断はデモでは出ません。
 
-## 7. @boundary：try / catch にする（22.1.6 には無い）
+## 7. @boundary：try / catch にする（22.2 から）
 
 📄 `angular/packages/compiler/src/typecheck/ops/boundary.ts` L32–56 （▶ の行: 33, 36, 39, 42, 45, 50, 53）
 
@@ -846,11 +846,11 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 246 │       }
 ```
 
-f7597cb7d93（2026-04-20、#70463）で入った `@boundary` の型チェックです。36〜42 行目で本体を子の Scope にして `{ … }` に、`@error` があれば 50 行目で `try {本体} catch (err) {…}` にします。`@error (let err; when err instanceof CustomError)` の `when` は、同じファイルの `generateCatchBranch` で `if` の連なりになります。234〜235 行目、`@error` の中の `$error` は `(err as Error)`、236〜237 行目、`$reset` は `(() => {})` を初期値にした変数です。だから test/ngtsc/boundary\_spec.ts の `it('should error when accessing non-existent properties on error alias')`（:48）では、「Property 'nonExistentProperty' does not exist on type 'Error'」という TypeScript のエラーが期待値です。このサイトの 22.1.6 のパーサは `@boundary` を知らないので、デモでは扱いません。
+f7597cb7d93（2026-04-20、#70463）で入った `@boundary` の型チェックです。36〜42 行目で本体を子の Scope にして `{ … }` に、`@error` があれば 50 行目で `try {本体} catch (err) {…}` にします。`@error (let err; when err instanceof CustomError)` の `when` は、同じファイルの `generateCatchBranch` で `if` の連なりになります。234〜235 行目、`@error` の中の `$error` は `(err as Error)`、236〜237 行目、`$reset` は `(() => {})` を初期値にした変数です。だから test/ngtsc/boundary\_spec.ts の `it('should error when accessing non-existent properties on error alias')`（:48）では、「Property 'nonExistentProperty' does not exist on type 'Error'」という TypeScript のエラーが期待値です。この章を書いたときのサイトの 22.1.6 のパーサは `@boundary` を知らなかったので、デモのプリセットには入れていません。いまのサイトの 22.2.6 には boundary.ts があり、デモのテンプレートを `@boundary { <p>{{ a }}</p> } @error (let err) { <p>{{ $error.message }}</p> }` に書き換えて「TCB を作る」を押すと、`try { "" + (((this).a)); } catch (err) { var _t1 = ((err as Error)); var _t2 = ((() => {})); var _t3 = ((err as Error)); … }` が出ました（2026-11-17）。
 
 ## 8. デモ：本物の generateTypeCheckBlock で TCB を作る
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock**
 >
 > プリセットを選ぶか、テンプレートを書き換えて「TCB を作る」を押してください。ボタンを押したときだけ `@angular/compiler` を読み込んで動きます。Environment は記録だけの差し替えで、参照はクラス名のまま、pipe は `_pipe_名前` と書きます（[第 5 回](05-typecheck-environment.md)の本物は import と宣言を足します）。設定の既定は `strictTemplates` 相当です。
 >
@@ -947,7 +947,7 @@ let.ts 39 行目で `const` を書いています。`@let` の値はテンプレ
 - `as` の別名は `if` の前に `var`、`$index` などは `null! as number` の型だけの変数で、読まれたものだけ出る。
 - `@switch` のハンドラのガードは、`case` なら `===` の `||`、`default` ならほかの全部の値の `!==` の `&&`。`@default never` は `never` への代入。
 - `@defer` は中身を同じ Scope に並べるだけで、`checkControlFlowBodies` を見ない。trigger は `if (when) {}` と `new IntersectionObserver(null!, options)`。
-- 読んでいる 22.2.0-next.7 には、keyed defer と `@boundary` の TCB がある。このサイトの 22.1.6 には無い。
+- 読んでいる 22.2.0-next.7 には、keyed defer と `@boundary` の TCB がある。この章を書いたときのサイトの 22.1.6 には無く、いまの 22.2.6 にはある（デモで @boundary を書けば TCB が出る）。
 
 ---
 

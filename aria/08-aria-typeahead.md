@@ -210,7 +210,7 @@ Listbox で Space は 2 つの意味を持ちます。explicit のときの「�
 
 > **🧪 DEMO — 項目の多い ngListbox で頭文字検索**
 >
-> 本物の `ngListbox`（@angular/aria 22.1.8、`selectionMode="explicit"`）です。各 option に `[label]` を付けています。「Coconut」は `[disabled]="true"`（softDisabled は既定の true）。Tab でリストに入り、文字を打ってください。キーごとに「前のキーからの時間」と、描画のあとの今の項目を出します（新しい行が上）。`typeaheadDelay` を変えて、同じ打ち方で結果が変わるのを見てください。
+> 本物の `ngListbox`（@angular/aria 22.2.7、`selectionMode="explicit"`）です。各 option に `[label]` を付けています。「Coconut」は `[disabled]="true"`（softDisabled は既定の true）。Tab でリストに入り、文字を打ってください。キーごとに「前のキーからの時間」と、描画のあとの今の項目を出します（新しい行が上）。`typeaheadDelay` を変えて、同じ打ち方で結果が変わるのを見てください。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-typeahead)
 

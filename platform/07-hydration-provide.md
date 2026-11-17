@@ -169,7 +169,7 @@ features を Set に集める前半は [転送キャッシュの章](../http/11-
    旗が無ければ入ります。[転送キャッシュの章](../http/11-http-transfer-cache.md)の主題です。
 3. **289〜291 行目：`ɵwithIncrementalHydration()`**
 
-   `NoIncrementalHydration` の旗が無ければ入ります。**v22 ではインクリメンタルハイドレーションが既定で有効**なのは、この 3 行のためです。これを確かめたのは v22.2.0-next.7 のソースですが、このサイトが使っている 22.1.6 の配布物（`fesm2022/platform-browser.mjs`）にも同じ 3 項演算子があります。
+   `NoIncrementalHydration` の旗が無ければ入ります。**v22 ではインクリメンタルハイドレーションが既定で有効**なのは、この 3 行のためです。これを確かめたのは v22.2.0-next.7 のソースですが、このサイトが使っている 22.2.6 の配布物（`fesm2022/platform-browser.mjs`）にも同じ 3 項演算子があります（この章を書いたときの 22.1.6 も同じでした）。
 
 feature から集めたプロバイダは、この 3 組の後ろに並びます。このサイトの `app.config.ts` は `provideClientHydration(withIncrementalHydration())` と書いているので、`ɵwithIncrementalHydration()` が 291 行目と feature の分とで 2 回並びます。値のトークンは後勝ちで 1 つになり（[R3Injector の章](../di/08-di-r3-injector-get.md)）、2 つ並ぶ `APP_BOOTSTRAP_LISTENER` は中で「もう始めたか」を見て 1 回しか動きません（[第 15 回](15-incremental-hydration.md)）。害はありませんが、v22 では書く必要がありません。
 
@@ -703,7 +703,7 @@ feature から集めたプロバイダは、この 3 組の後ろに並びます
 
 **Q. v22 でインクリメンタルハイドレーションは既定になったのですか？**
 
-はい。2 節の 289〜291 行目で、`withNoIncrementalHydration()` を渡さない限り `ɵwithIncrementalHydration()` が入ります。v22.2.0-next.7 のソースと、このサイトにインストールされている 22.1.6 の `fesm2022/platform-browser.mjs` の両方で同じ条件式になっていることを確かめました。そのため `withIncrementalHydration()` は 146 行目で非推奨（v24 で削除予定）です。外したいときは 160 行目の `withNoIncrementalHydration()` を渡し、両方を渡すと開発ビルドでは 273 行目のエラーになります。
+はい。2 節の 289〜291 行目で、`withNoIncrementalHydration()` を渡さない限り `ɵwithIncrementalHydration()` が入ります。v22.2.0-next.7 のソースと、このサイトにインストールされている 22.2.6（この章を書いたときは 22.1.6）の `fesm2022/platform-browser.mjs` の両方で同じ条件式になっていることを確かめました。そのため `withIncrementalHydration()` は 146 行目で非推奨（v24 で削除予定）です。外したいときは 160 行目の `withNoIncrementalHydration()` を渡し、両方を渡すと開発ビルドでは 273 行目のエラーになります。
 
 **Q. CDN で HTML を圧縮したら、ハイドレーションでエラーになりました。**
 

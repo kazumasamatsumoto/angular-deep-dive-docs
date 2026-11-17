@@ -574,7 +574,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 ## 7. デモ：本物の Generator で ngsw.json を作る
 
-> **🧪 DEMO — @angular/service-worker/config 22.1.6 の Generator.process を、このページで動かす**
+> **🧪 DEMO — @angular/service-worker/config 22.2.6 の Generator.process を、このページで動かす**
 >
 > 「ngsw.json を作る」を押すと、`sw-sandbox.ts` の `buildManifest` が本物の `new Generator(fs, baseHref).process(config)` を呼びます。`fs` は下のファイルの一覧（1 行に 1 つ。`パス = 中身`、`=` を省くと中身は「中身：パス」）で、ハッシュは Web Crypto の SHA-1 です。「files の glob の正規表現」の表だけは、glob.ts の `globToRegex` を移植した関数で作っています（本物の Generator はこの正規表現を ngsw.json に書かないため）。
 >

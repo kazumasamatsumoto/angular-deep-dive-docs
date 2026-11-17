@@ -883,7 +883,7 @@ void 要素（`<input>` など）も、開始タグの時点ではいったん�
 
 > **🧪 DEMO — HtmlParser と parseTemplate を実際に呼んで木を見る**
 >
-> ボタンを押すと `@angular/compiler`（このサイトにインストールされている 22.1.6）を読み込み、入力を解析して木を字下げで表示します。「HTML AST」は `new HtmlParser().parse()` の結果（この章の段）、「R3 AST」は `parseTemplate()` の結果（空白の除去の後）です。
+> ボタンを押すと `@angular/compiler`（このサイトにインストールされている 22.2.6）を読み込み、入力を解析して木を字下げで表示します。「HTML AST」は `new HtmlParser().parse()` の結果（この章の段）、「R3 AST」は `parseTemplate()` の結果（空白の除去の後）です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/compiler-html-parser)
 

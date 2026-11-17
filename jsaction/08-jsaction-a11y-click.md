@@ -987,7 +987,7 @@ console.log(JSON.stringify(out, null, 1));
 
 使っていません。`ActionResolver` の `addA11yClickSupport` を呼ぶ所は、../angular の packages の中で `test/dispatcher_test.ts` の `createDispatcher`（1 節の 319 行目）だけです。Angular がイベントの再生で作るのは `new EventDispatcher(fn)` で（[event-replay の章](../platform/14-event-replay.md)の 6 節、[第 11 回](11-jsaction-angular.md)）、その constructor が作る `ActionResolver` には a11y の関数を渡しません（[第 10 回](10-jsaction-dispatcher.md)）。
 
-このサイトが使う配布物（@angular/core 22.1.6 の `fesm2022/primitives-event-dispatch.mjs`、766 行）を `grep` すると、`addA11yClickSupport` のメソッドは残っていますが、`isActionKeyEvent`・`updateEventInfoForA11yClick` などの a11y\_click.ts と event.ts の判定の関数は 1 つも入っていません。どこからも呼ばれないので、束ねるときに落とされています。だから**配布物の入口だけでは、a11y の click を有効にできません**。
+このサイトが使う配布物（@angular/core 22.2.6 の `fesm2022/primitives-event-dispatch.mjs`、767 行）を `grep` すると、`addA11yClickSupport` のメソッドは残っていますが、`isActionKeyEvent`・`updateEventInfoForA11yClick` などの a11y\_click.ts と event.ts の判定の関数は 1 つも入っていません。どこからも呼ばれないので、束ねるときに落とされています。だから**配布物の入口だけでは、a11y の click を有効にできません**。
 
 > [!NOTE]
 > **ポイント**

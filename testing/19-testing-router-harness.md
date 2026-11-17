@@ -328,7 +328,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 ## 6. 最新の main に入った navigate メソッド
 
-../angular（22.2.0-next.7、8576f161ae4）にはまだ無く、../angular-main（74961c66242、2026-10-30）に入っている変更です。このサイトの 22.1.6 でも `typeof harness.navigate` は `'undefined'` でした。
+../angular（22.2.0-next.7、8576f161ae4）にはまだ無く、../angular-main（74961c66242、2026-10-30）に入っている変更です。この章を書いたときのサイトの 22.1.6 でも `typeof harness.navigate` は `'undefined'` でした。いまのサイトの 22.2.6 の `@angular/router` の `fesm2022/testing.mjs` にも、`RouterTestingHarness` のメソッドは `create`・`detectChanges`・`navigateByUrl` と 2 つの getter だけで、`navigate` はまだありません。
 
 📄 `../angular-main（読むだけ）`
 

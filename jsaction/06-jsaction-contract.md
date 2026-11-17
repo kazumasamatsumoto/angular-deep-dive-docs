@@ -380,7 +380,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 10 行目のとおり「誰が呼べるかを決める enum」で、値は 14 行目の 1 つだけです。index.ts（入口）はこの enum を出していないので、配布物を使う人は `Restriction.I_AM_THE_JSACTION_FRAMEWORK` と書けず、ふつうは event\_dispatcher.ts の `registerDispatcher(eventContract, dispatcher)`（中で `Restriction.I_AM_THE_JSACTION_FRAMEWORK` を付けて `ecrd` を呼ぶ。[第 10 回](10-jsaction-dispatcher.md)）を通します。Angular の `initEventReplay` もこちらです。下の DEMO は、生の `EventInfo` を見るために `EventContract.registerDispatcher` を直接呼び、第 2 引数には型を合わせた `0` を渡しています。
 
-d072791f131（2026-01-17、refactor(core): remove unused restriction parameter、PR #66625）を `git show` で読むと、消したのは早期の契約の側の 2 つの関数（bootstrap\_app\_scoped.ts の `registerAppScopedDispatcher` と bootstrap\_global.ts の `registerGlobalDispatcher`）の第 1 引数 `restriction` と、それぞれの `import {Restriction}` の行、それに公開 API の記録（goldens の index.api.md）の 1 行です。`EventContract` の 270・279 行目の `restriction` は残っています。この commit は v21.2.0-next.2 から入っていて（`git tag --contains`）、このサイトの 22.1.6 の型（`registerAppScopedDispatcher(appId, dispatcher, dataContainer?)`）もその形です。
+d072791f131（2026-01-17、refactor(core): remove unused restriction parameter、PR #66625）を `git show` で読むと、消したのは早期の契約の側の 2 つの関数（bootstrap\_app\_scoped.ts の `registerAppScopedDispatcher` と bootstrap\_global.ts の `registerGlobalDispatcher`）の第 1 引数 `restriction` と、それぞれの `import {Restriction}` の行、それに公開 API の記録（goldens の index.api.md）の 1 行です。`EventContract` の 270・279 行目の `restriction` は残っています。この commit は v21.2.0-next.2 から入っていて（`git tag --contains`）、このサイトの 22.2.6 の型（`registerAppScopedDispatcher(appId, dispatcher, dataContainer?)`）もその形です。
 
 ## 7. cleanUp：契約をはじめの状態に戻す
 
@@ -421,7 +421,7 @@ d072791f131（2026-01-17、refactor(core): remove unused restriction parameter�
 
 > **🧪 DEMO — handlerInfos・eventHandlers・queuedEventInfos**
 >
-> これはライブです。このページが読み込んだ本物の `@angular/core/primitives/event-dispatch`（22.1.6）の `EventContract` と `EventContractContainer` を、ボタンを押したときだけ下の点線の箱に作ります。表は、`EventContractContainer` の private の `handlerInfos`（37 行目）と、`EventContract` の private の `eventHandlers`（89 行目）・`browserEventTypeToExtraEventTypes`（91 行目）・`queuedEventInfos`（106 行目）を、操作のたびと箱の上のイベントのたびに読み直したものです。番号はイベント（`Event`）ごとに振っています。
+> これはライブです。このページが読み込んだ本物の `@angular/core/primitives/event-dispatch`（22.2.6）の `EventContract` と `EventContractContainer` を、ボタンを押したときだけ下の点線の箱に作ります。表は、`EventContractContainer` の private の `handlerInfos`（37 行目）と、`EventContract` の private の `eventHandlers`（89 行目）・`browserEventTypeToExtraEventTypes`（91 行目）・`queuedEventInfos`（106 行目）を、操作のたびと箱の上のイベントのたびに読み直したものです。番号はイベント（`Event`）ごとに振っています。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-contract)
 

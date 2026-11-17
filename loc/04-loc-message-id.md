@@ -35,7 +35,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 ## 1. 先に結論：ID は 3 種類ある
 
-`<p i18n>Hello {{name}}!</p>` 1 つから、コンパイラの中では 3 種類の ID が計算されます。このページの compiler 22.1.6 で確かめた値です。
+`<p i18n>Hello {{name}}!</p>` 1 つから、コンパイラの中では 3 種類の ID が計算されます。compiler 22.1.6（依存を 22.2.6 に上げる前のこのサイトの版）で確かめた値です。
 
 | ID | 材料 | 計算する関数 | 値 | 使う人 |
 | --- | --- | --- | --- | --- |
@@ -331,13 +331,13 @@ meaning が ID に入るのは、「同じ英語でも意味が違えば別々�
 
 > **🧪 DEMO (1) — 本物の computeMsgId で、文と meaning から ID を出す**
 >
-> @angular/localize 22.1.6 の `ɵcomputeMsgId` を呼びます。localize はこれを compiler の `digest.ts` から直接読み込んでいるので、6 節の関数そのものです。文は `$localize` の ID の材料の形（プレースホルダーは `{$名前}`）で書きます。
+> @angular/localize 22.2.6 の `ɵcomputeMsgId` を呼びます。localize はこれを compiler の `digest.ts` から直接読み込んでいるので、6 節の関数そのものです。文は `$localize` の ID の材料の形（プレースホルダーは `{$名前}`）で書きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/loc-message-id)
 
 > **🧪 DEMO (2) — コンパイラの出力の $localize ごとに、3 種類の ID と ICU のつながりを並べる**
 >
-> `compileI18nTemplate`（このページの @angular/compiler 22.1.6）でコンパイルし、`$localize` の部品を `ɵparseMessage` で読みます。「$localize の ID」は実行時と `ng extract-i18n` が使う値、「goog.getMsg の名前」は `MSG_EXTERNAL_<id>$$…` の id（4 節の `Message.id`）、「古い ID」は `␟` のあとの値です。チェックを入れると `enableI18nLegacyMessageIdFormat: true` でコンパイルします。「別のメッセージを指す ID」は `:ICU@@…:` の行き先で、同じ出力の中にその ID の `$localize` があるかを調べます。
+> `compileI18nTemplate`（このページの @angular/compiler 22.2.6）でコンパイルし、`$localize` の部品を `ɵparseMessage` で読みます。「$localize の ID」は実行時と `ng extract-i18n` が使う値、「goog.getMsg の名前」は `MSG_EXTERNAL_<id>$$…` の id（4 節の `Message.id`）、「古い ID」は `␟` のあとの値です。チェックを入れると `enableI18nLegacyMessageIdFormat: true` でコンパイルします。「別のメッセージを指す ID」は `:ICU@@…:` の行き先で、同じ出力の中にその ID の `$localize` があるかを調べます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/loc-message-id)
 

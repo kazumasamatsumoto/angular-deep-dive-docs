@@ -129,7 +129,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 > [!NOTE]
 > **ポイント**
 >
-> このサイトの `app.config.ts` は `provideClientHydration(withIncrementalHydration())` と書いています。インストール版（22.1.6）でも `provideClientHydration` が既定で入れるので、引数は無くても同じ動きです。書くと同じ providers が 2 回入りますが、ブートストラップ後のリスナーは 373 行目の `requested` で 2 回目を飛ばし、イベントの再生側も `appsWithEventReplay` で 2 回目を飛ばすので、動きは変わりません。`@deprecated` は型定義の印で、実行時に警告は出ません。
+> このサイトの `app.config.ts` は `provideClientHydration(withIncrementalHydration())` と書いています。インストール版（22.2.6）でも `provideClientHydration` が既定で入れるので、引数は無くても同じ動きです。書くと同じ providers が 2 回入りますが、ブートストラップ後のリスナーは 373 行目の `requested` で 2 回目を飛ばし、イベントの再生側も `appsWithEventReplay` で 2 回目を飛ばすので、動きは変わりません。`@deprecated` は型定義の印で、実行時に警告は出ません。
 
 ## 2. コンパイラが出す命令：ɵɵenableIncrementalHydrationRuntime
 

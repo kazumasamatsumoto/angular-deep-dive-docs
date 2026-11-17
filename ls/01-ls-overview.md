@@ -139,7 +139,7 @@ VS Code でテンプレートの `user.name` にカーソルを乗せると型�
 
 ## 3. デモ：言語サービスが見るノードの道筋と、TCB の位置
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 で、カーソルの位置からノードと TCB の行を探す**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 で、カーソルの位置からノードと TCB の行を探す**
 >
 > テンプレートの中にカーソルを置いて「この位置で調べる」を押すと、2 つのことをします。(1) `parseTemplate` でテンプレートを解析し、カーソルを含むノードを外側からいちばん深いものまで並べます。これは `template_target.ts` の `getTargetAtPosition` の**簡略版（移植）**で、本物と違い `[(x)]` を 2 つのノードに分けるなどの扱いはありません（本物は[第 7 回](07-ls-template-target.md)）。(2) 本物の `generateTypeCheckBlock` で同じテンプレートの TCB を作り、いちばん深いノードから外へ向かって「同じ範囲の位置コメント `/*開始,終了*/`」を探して、その行を強調します。本物の `SymbolBuilder` は TypeScript の構文木を歩いてコメントを読みますが、ここでは文字列の上で探しています（考え方の再現）。TCB を作る部分は compiler-cli の `Environment` を簡単な差し替えにしているので、クラスは名前のまま、import は書かれません（[型チェック第 1 回](../typecheck/01-typecheck-overview.md)）。
 >

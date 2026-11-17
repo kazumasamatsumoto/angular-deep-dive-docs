@@ -165,7 +165,7 @@ platform-browser の `BROWSER_MODULE_PROVIDERS` の一部です。`bootstrapAppl
 @if (on()) {<domr-ov-child />}
 ```
 
-renderer に届く呼び出しを見るために、共通部品 `domr-probe.ts` の `mountWithLog` を使います。これは**このサイトの本物の `DomRendererFactory2`**（@angular/platform-browser 22.1.6）を薄い記録係で包み、工場と renderer のメソッドが呼ばれるたびに 1 行を記録してから、本物をそのまま呼びます。記録に出るのは core から renderer への呼び出しだけで、renderer が中で自分のメソッドを呼ぶ分（Emulated の renderer が `_ngcontent-…` を付けるなど）は出ません。
+renderer に届く呼び出しを見るために、共通部品 `domr-probe.ts` の `mountWithLog` を使います。これは**このサイトの本物の `DomRendererFactory2`**（@angular/platform-browser 22.2.6）を薄い記録係で包み、工場と renderer のメソッドが呼ばれるたびに 1 行を記録してから、本物をそのまま呼びます。記録に出るのは core から renderer への呼び出しだけで、renderer が中で自分のメソッドを呼ぶ分（Emulated の renderer が `_ngcontent-…` を付けるなど）は出ません。
 
 > **🧪 DEMO — 本物のコンポーネントを描いて、renderer に届いた呼び出しを並べる**
 >

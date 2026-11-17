@@ -315,7 +315,7 @@ writeFileSync(new URL('./specmap.json', import.meta.url), JSON.stringify(rows, n
 > [!TIP]
 > **新卒エンジニアへ**
 >
-> issue を読むときは、本文の「Cause」に書かれた行が、手元の木（8576f161ae4）や main で今もその形かを、まず `git log -L` や `gh api 'repos/angular/angular/contents/<path>?ref=main'` で確かめます。#71518 の本文が指す `initEventReplay` は、main では `APP_ID` が重なったときに早く戻る形に変わっています（3a0835b3328。第 11 回の 5 節の行の少し上）が、`removeAllAppScopedEventListeners` を呼ばないことは同じでした（2026-11-06）。
+> issue を読むときは、本文の「Cause」に書かれた行が、手元の木（8576f161ae4）や main で今もその形かを、まず `git log -L` や `gh api 'repos/angular/angular/contents/<path>?ref=main'` で確かめます。#71518 の本文が指す `initEventReplay` は、main では `APP_ID` が重なったときに早く戻る形に変わっています（3a0835b3328。第 11 回の 5 節の行の少し上）が、`removeAllAppScopedEventListeners` を呼ばないことは同じでした（2026-11-06）。その後 #71518 は、呼ぶ側ではなく `clearAppScopedEarlyEventContract` の中でリスナーを外す形（74260b298fe、22.2 系は 6b257f59b42 で v22.2.6 から）で閉じられました。
 
 ## このシリーズで見つけたもの
 
@@ -325,7 +325,7 @@ writeFileSync(new URL('./specmap.json', import.meta.url), JSON.stringify(rows, n
 | --- | --- | --- | --- |
 | ハイドレーションの前に Shift や Cmd（Mac 以外では Ctrl）を押しながらしたクリックが、渡し直されない。早期の契約には貯まるが、再生のときに種類が clickmod に書き換わり、サーバーが付けた `click:;` に当たらない。2a915d1912d（#57201）は当時のイベントの委譲には clickModSupport を false で渡したが、イベントの再生には渡していない | core/src/hydration/event\_replay.ts 220 行目（`new EventDispatcher(fn)` で clickModSupport が既定の true）と primitives/event-dispatch/src/action\_resolver.ts 93-98 行目 | このサイトの本番のプリレンダーで main を止めたまま押してから JS を流す（ふつうのクリックは動き、Shift・Cmd は動かない）。ソースを束ねた記録でも delegate が 0 回 | [第 7 回](07-jsaction-resolver.md) |
 | 同じ Event を 2 つの EventDispatcher が配ると、2 つ目で `TypeError: Cannot redefine property: stopPropagation` になる。stopPropagation を書き換えられない形（configurable: false）で貼るため。インクリメンタルハイドレーションでは body の契約が残るので、APP\_ID の違う 2 つのアプリが 1 ページにあると起きうる（Angular のアプリ 2 つでは試していない） | primitives/event-dispatch/src/event\_dispatcher.ts 105-114 行目と 172-179 行目 | 公開の入口だけで 2 組の EventContract と EventDispatcher を入れ子に置いて押す（22.1.6・手元・main のソースのどれでも出る）。このサイトでも、デモの組を body まで泡立たせると出る | [第 10 回](10-jsaction-dispatcher.md) |
-| （既存の issue）早期の契約が body に付けたリスナーが、アプリの起動後も外されず、早期の箱の q に積み続ける。initEventReplay は clearAppScopedEarlyEventContract を呼ぶが、removeAllAppScopedEventListeners を呼ばない（425f44c1333 で抜け落ちた）。開いている #71518 と、承認済みの PR #71519 | core/src/hydration/event\_replay.ts の initEventReplay | 自分専用の appId で同じ順に呼ぶデモと、記録の「安定の後に押す」場面 | [第 5 回](05-jsaction-early-contract.md)・[第 11 回](11-jsaction-angular.md) |
+| （既存の issue）早期の契約が body に付けたリスナーが、アプリの起動後も外されず、早期の箱の q に積み続ける。initEventReplay は clearAppScopedEarlyEventContract を呼ぶが、removeAllAppScopedEventListeners を呼ばない（425f44c1333 で抜け落ちた）。#71518 と PR #71519。2026-11-10 に閉じられ、22.2 系には 6b257f59b42 として v22.2.6 から入った（`clearAppScopedEarlyEventContract` がリスナーも外す）。このサイトの 22.2.6 の第 5 回のデモでは、チェックを外しても「clear のあとに q に増えた数」は 0 のまま | core/src/hydration/event\_replay.ts の initEventReplay | 自分専用の appId で同じ順に呼ぶデモと、記録の「安定の後に押す」場面 | [第 5 回](05-jsaction-early-contract.md)・[第 11 回](11-jsaction-angular.md) |
 | registerAppScopedDispatcher（と registerGlobalDispatcher）で渡した関数が呼ばれない。欄の `d` を差し替えるが、リスナーの `h` が呼ぶのは作ったときの局所の `d` のまま。最小化した min.js の中も同じ形。Angular の中ではこの関数を呼んでいないので、Angular のアプリには影響しない | primitives/event-dispatch/src/earlyeventcontract.ts 70-74 行目と 121 行目 | 自分専用の appId のデモで、登録したあとに押しても 0 回のまま | [第 5 回](05-jsaction-early-contract.md) |
 | getActionCache が返した辞書に書き込むと、ほかの要素にも効く。jsaction の無い要素には共有の EMPTY\_ACTION\_MAP が、同じ文字列の要素には同じ辞書が貼られるため。Angular 本体は getActionCache を使っていない | primitives/event-dispatch/src/action\_resolver.ts 22 行目・256-257 行目と cache.ts 27-29 行目 | ライブのデモ（main でも同じ） | [第 2 回](02-jsaction-attribute.md) |
 | 素の Dispatcher が再生の配列を空にしないので、2 回目の予定のときに、前のイベントがもう一度渡される。最初の版（666d6465758）のコメントは「空にするのは eventReplayer の役目」と書いていたが、今はそのコメントも無い。Angular は eventReplayer を渡さない EventDispatcher だけを使う | primitives/event-dispatch/src/dispatcher.ts 98-108 行目と createEventReplayer | ソースを束ねて Node で動かした記録 | [第 10 回](10-jsaction-dispatcher.md) |
@@ -354,9 +354,9 @@ bazel の `--test_arg=--filter=…` では走らせられませんでした。4 
 
 75〜76 行目で `window` を `globalThis` にし、BUILD.bazel の 81 行目で data にした `contract_bundle_min.js` を import します。これで `window.__jsaction_bootstrap` が定義され、89〜90 行目で it ごとに `window._ejsas` を空にします。
 
-**Q. いま開いている、このシリーズに一番近い issue はどれですか？**
+**Q. このシリーズに一番近い issue はどれですか？**
 
-#71518（早期の箱のリスナーが外されない）です。第 11 回の記録の after-stable の場面で、安定のあとの click が箱に積まれ続けることを確かめました。開いている PR #71519 があります。
+#71518（早期の箱のリスナーが外されない）です。第 11 回の記録（22.1.6）の after-stable の場面で、安定のあとの click が箱に積まれ続けることを確かめました。PR #71519 が 2026-11-10 に入って閉じられ、v22.2.6 に 6b257f59b42 として入りました。今のサイトの 22.2.6 の第 5 回のデモでは、もう積まれません。
 
 ## 読み終えて
 

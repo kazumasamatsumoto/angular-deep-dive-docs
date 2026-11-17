@@ -35,9 +35,9 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 1. コンパイラが置いていくもの
 
-出発点は、コンパイラの出力です。`<div i18n="@@demo-sub">Hello <b>…</b>@if (show) {<span>…</span>}!</div>` を、このページに入っている本物の `@angular/compiler` 22.1.6 でコンパイルするとこうなります （consts の関数の作り方は [第 6 回](06-loc-const-collection.md)）。
+出発点は、コンパイラの出力です。`<div i18n="@@demo-sub">Hello <b>…</b>@if (show) {<span>…</span>}!</div>` を、本物の `@angular/compiler` 22.1.6（依存を 22.2.6 に上げる前のこのサイトの版）でコンパイルするとこうなります （consts の関数の作り方は [第 6 回](06-loc-const-collection.md)）。
 
-📄 `コンパイラの出力（このページの @angular/compiler 22.1.6。goog.getMsg の枝と 2 つめの配列は省略）`
+📄 `コンパイラの出力（@angular/compiler 22.1.6。goog.getMsg の枝と 2 つめの配列は省略）`
 
 ```
 function Demo_Conditional_3_Template(rf, ctx) {
@@ -257,7 +257,7 @@ var def = ɵɵdefineComponent({type: Demo, selectors: [['app-demo']], decls: 4, 
 >
 > 559 行目と 560 行目は、印が見つからなかったとき（`indexOf` と `search` が `-1`）を確かめていません。翻訳から `{$START_BLOCK_IF}` などのテンプレートの印が消えていると、`substring(2, -1)` つまり文の先頭 2 文字が「サブテンプレートの文」になります。確かめているのは 526〜531 行目の `ngDevMode` の assert だけで、それも「開きに対応する閉じが無い」ことの確認です。
 >
-> このページに入っている `@angular/core` 22.1.6 の同じ 2 つの関数を Node で取り出し、`'Bonjour �#2��0��/#2�!'` と `1` を渡すと `'Bo'` が返りました。`$localize` の translate は「翻訳にあって元の文に無い」プレースホルダーは投げますが、「元の文にあって翻訳に無い」ものは投げません（[第 14 回](14-loc-runtime-translations.md)）。
+> `@angular/core` 22.1.6（依存を上げる前のこのサイトの版）の同じ 2 つの関数を Node で取り出し、`'Bonjour �#2��0��/#2�!'` と `1` を渡すと `'Bo'` が返りました。`$localize` の translate は「翻訳にあって元の文に無い」プレースホルダーは投げますが、「元の文にあって翻訳に無い」ものは投げません（[第 14 回](14-loc-runtime-translations.md)）。
 
 ## 5. i18nStartFirstCreatePass：印で割って、偶数はテキスト、奇数は印
 
@@ -527,7 +527,7 @@ var def = ɵɵdefineComponent({type: Demo, selectors: [['app-demo']], decls: 4, 
 
 > **🧪 DEMO — ɵɵi18nStart に渡る文字列を取り出し、印を読む**
 >
-> 「コンパイルして読む」を押すと、テンプレートをこのページの `@angular/compiler` 22.1.6 で JS にし（`compileI18nTemplate`）、その `consts` の関数を本物の `$localize`・`ɵmakeTemplateObject`・`ɵɵi18nPostprocess` で評価して、`ɵɵi18nStart` に渡る文字列を取り出します。そのあとの「切り出し」（4 節）は getTranslationForTemplate の写しで、「割り方」（5 節）は `PH_REGEXP` と波かっこの深さ 0 の切り方だけを写した**移植**です（TNode や命令の配列は作りません）。ICU を試すなら `<p i18n>{count, plural, =0 {none} other {{{count}} items}}</p>` のように書きます。
+> 「コンパイルして読む」を押すと、テンプレートをこのページの `@angular/compiler` 22.2.6 で JS にし（`compileI18nTemplate`）、その `consts` の関数を本物の `$localize`・`ɵmakeTemplateObject`・`ɵɵi18nPostprocess` で評価して、`ɵɵi18nStart` に渡る文字列を取り出します。そのあとの「切り出し」（4 節）は getTranslationForTemplate の写しで、「割り方」（5 節）は `PH_REGEXP` と波かっこの深さ 0 の切り方だけを写した**移植**です（TNode や命令の配列は作りません）。ICU を試すなら `<p i18n>{count, plural, =0 {none} other {{{count}} items}}</p>` のように書きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/loc-runtime-start)
 

@@ -4,7 +4,7 @@
 
 > FormField の全体・ネイティブの要素・parse エラーと validity・カスタムコントロール・ControlValueAccessor との互換・spec と issue
 
-forms シリーズの Signal Forms の章は、スキーマ・検証・メタデータ・送信と、フォームの「中身」を読みました。このシリーズは、その中身を画面の要素につなぐ側、\[formField\] ディレクティブを読みます。1 つの \[formField\] が、相手がネイティブの input か、FormValueControl を実装したコンポーネントか、ControlValueAccessor かを見分け、値・状態・エラーをどの向きにどの時機で流すかを、directive/ の 9 つのファイルと 2026 年の修正（日付の input・radio・number の途中の値・CVA の重複した writeValue・debounce 中の古い書き戻しなど）の順に追います。デモはページの上の本物の @angular/forms/signals 22.1.6 です。
+forms シリーズの Signal Forms の章は、スキーマ・検証・メタデータ・送信と、フォームの「中身」を読みました。このシリーズは、その中身を画面の要素につなぐ側、\[formField\] ディレクティブを読みます。1 つの \[formField\] が、相手がネイティブの input か、FormValueControl を実装したコンポーネントか、ControlValueAccessor かを見分け、値・状態・エラーをどの向きにどの時機で流すかを、directive/ の 9 つのファイルと 2026 年の修正（日付の input・radio・number の途中の値・CVA の重複した writeValue・debounce 中の古い書き戻しなど）の順に追います。デモはページの上の本物の @angular/forms/signals 22.2.6 です。
 
 全 6 章 · [サイトで読む](https://angular-deep-dive-cyan.vercel.app/series/sfd)
 

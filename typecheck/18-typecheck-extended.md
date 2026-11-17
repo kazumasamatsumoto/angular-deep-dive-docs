@@ -616,7 +616,7 @@ NgCompiler.makeCompilation が、TemplateTypeChecker・`ts.TypeChecker`（1691 �
 
 > **🧪 CombinedRecursiveAstVisitor が訪れる節点**
 >
-> このサイトの @angular/compiler 22.1.6 の `parseTemplate` で R3 AST を作り、TemplateVisitor と同じ基底クラス `CombinedRecursiveAstVisitor` を継承した訪問者で歩きます（ボタンを押したときだけ）。印を付ける条件は、invalid\_banana\_in\_box の 34・37 行目と nullish\_coalescing\_not\_nullable の 36 行目を書き写したもので、**本物の検査は動かしていません**（compiler-cli は入っていない）。4 節の visitTemplate の上書きはしていないので、\*ngIf を書くと同じ節点が 2 度出ます。`??` があれば、型を見る検査が読みに行く TCB の行を共通部品の generateTypeCheckBlock で出します。
+> このサイトの @angular/compiler 22.2.6 の `parseTemplate` で R3 AST を作り、TemplateVisitor と同じ基底クラス `CombinedRecursiveAstVisitor` を継承した訪問者で歩きます（ボタンを押したときだけ）。印を付ける条件は、invalid\_banana\_in\_box の 34・37 行目と nullish\_coalescing\_not\_nullable の 36 行目を書き写したもので、**本物の検査は動かしていません**（compiler-cli は入っていない）。4 節の visitTemplate の上書きはしていないので、\*ngIf を書くと同じ節点が 2 度出ます。`??` があれば、型を見る検査が読みに行く TCB の行を共通部品の generateTypeCheckBlock で出します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/typecheck-extended)
 

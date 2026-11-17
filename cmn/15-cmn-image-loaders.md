@@ -728,7 +728,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 > **🧪 DEMO — 本物の組み込みのローダーで URL を作る**
 >
-> 「作る」を押すと、選んだ `provide…Loader(path)`（このサイトの本物の `@angular/common` 22.1.6）を `createEnvironmentInjector` で小さな木に入れ、そこから `IMAGE_LOADER` を取り出して下の config で呼びます（spec の `createCloudinaryLoader` と同じやり方）。URL を作るだけで、読み込みはしません。例外は画面に出します。Netlify で表に無いキーを渡したときだけは、110 行目の `console.warn` を出さないよう、71〜77 行目の表を写した集合で先に止めています。「このページの IMAGE\_LOADER」は、この章のコンポーネントに inject した本物で、アプリが何も provide していないので `noopImageLoader` です。
+> 「作る」を押すと、選んだ `provide…Loader(path)`（このサイトの本物の `@angular/common` 22.2.6）を `createEnvironmentInjector` で小さな木に入れ、そこから `IMAGE_LOADER` を取り出して下の config で呼びます（spec の `createCloudinaryLoader` と同じやり方）。URL を作るだけで、読み込みはしません。例外は画面に出します。Netlify で表に無いキーを渡したときだけは、110 行目の `console.warn` を出さないよう、71〜77 行目の表を写した集合で先に止めています。「このページの IMAGE\_LOADER」は、この章のコンポーネントに inject した本物で、アプリが何も provide していないので `noopImageLoader` です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-image-loaders)
 

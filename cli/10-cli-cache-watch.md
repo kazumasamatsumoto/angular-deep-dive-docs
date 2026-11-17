@@ -32,7 +32,7 @@ angular/angular-cli · 読了 約 13 分 · 発展 · [サイトで読む（デ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> 読むソースは 22.2.0-next.6 です。このサイトに入っている `@angular/build` 22.1.7 の `watcher.js` は、まだ `watchpack` を使う古い実装です （`node_modules/@angular/build/src/tools/esbuild/watcher.js` の冒頭が `require("watchpack")`）。angular-cli のコミット「replace watchpack with @parcel/watcher and chokidar」で 1 節の形になりました。2 節以降の流れ（`ChangedFiles` を渡してからの処理）は同じです。
+> 読むソースは 22.2.0-next.6 です。この章を書いたときのサイトの `@angular/build` 22.1.7 の `watcher.js` は、まだ `watchpack` を使う古い実装でした （`node_modules/@angular/build/src/tools/esbuild/watcher.js` の冒頭が `require("watchpack")`）。angular-cli のコミット「replace watchpack with @parcel/watcher and chokidar」（a6ef9cfbe、22.2.0）で 1 節の形になりました。2 節以降の流れ（`ChangedFiles` を渡してからの処理）は同じです。いまのサイトの 22.2.7 はこのコミットのあとの版で、`src/tools/esbuild/watcher.js` は無くなり、`src/utils/watcher.js` が `@parcel/watcher` と `chokidar` を読み込みます（`watchpack` はどこからも読まれていません）。
 
 ## 0. 全体の流れ
 
@@ -801,7 +801,7 @@ TypeScript の構文木（`ts.SourceFile`）もメモリに残します。78 行
 
    121 行目。相対パスなら git のルートを探し、git worktree の中なら本体のリポジトリ側の `.angular/cache` を使います（worktree ごとに冷えたキャッシュから始めないため）。127 行目で版の番号のフォルダを足します。application builder はさらにプロジェクト名のフォルダを足します。
 
-このサイトのリポジトリで実際に見ると `.angular/cache/22.1.7/angular-deep-dive/` の中に `.tsbuildinfo`（約 310kB）・`angular-compiler.db`（約 4.9MB）と `angular-compiler.db-lock`・Vite の事前バンドル用の `vite/`（`deps` と `deps_ssr`）がありました。前の 2 つを書くのが次の 2 か所です。
+このサイトのリポジトリで実際に見ると `.angular/cache/22.1.7/angular-deep-dive/` の中に `.tsbuildinfo`（約 310kB）・`angular-compiler.db`（約 4.9MB）と `angular-compiler.db-lock`・Vite の事前バンドル用の `vite/`（`deps` と `deps_ssr`）がありました（サイトが 22.1.7 だったとき）。前の 2 つを書くのが次の 2 か所です。依存を 22.2.7 に上げてビルドしたあとは、`.angular/cache/` の中は `22.2.7/angular-deep-dive/` だけになり、`22.1.7` のフォルダは消えていました（下の `purgeStaleBuildCache` の働きです）。
 
 📄 `angular-cli/packages/angular/build/src/tools/angular/compilation/compiler-options.ts` L68–75 （▶ の行: 69–70, 72）
 
@@ -1074,7 +1074,7 @@ SQLite の store は閉じるときに掃除します。329〜331 行目で 14 �
 57 │     await Promise.allSettled(entriesToDelete);
 ```
 
-application builder と dev-server は、起動のたびに `purgeStaleBuildCache` を呼びます。54 行目、今の版のフォルダ（`22.1.7`）**以外**を消します。`ng update` で版が上がると、古い版のキャッシュは次のビルドで消えます。
+application builder と dev-server は、起動のたびに `purgeStaleBuildCache` を呼びます。54 行目、今の版のフォルダ（いまのサイトなら `22.2.7`）**以外**を消します。`ng update` で版が上がると、古い版のキャッシュは次のビルドで消えます。
 
 📄 `angular-cli/packages/angular/cli/src/commands/cache/clean/cli.ts` L18–37 （▶ の行: 29, 31）
 

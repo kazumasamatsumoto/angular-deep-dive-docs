@@ -550,7 +550,7 @@ ngtsc は 888 行目で、TypeScript の出力前の変換（`before`）に `sig
 > [!NOTE]
 > **ポイント**
 >
-> この節の `toggleWatchSignal` と `WeakRef` / `FinalizationRegistry` による ID 管理は、このシリーズが読んでいるソース（v22.2.0-next.7）の実装です。このサイト自身が依存している `@angular/core` 22.1 系には、まだ入っていません（6 節までの `getSignalGraph` は入っているので、上のデモは動きます）。
+> この節の `toggleWatchSignal` と `WeakRef` / `FinalizationRegistry` による ID 管理は、このシリーズが読んでいるソース（v22.2.0-next.7）の実装です。この章を書いたときにこのサイトが依存していた `@angular/core` 22.1 系には、まだ入っていませんでした（6 節までの `getSignalGraph` は入っているので、上のデモは動きます）。いまのサイトの 22.2.6 には入っていて、`fesm2022/_debug_node-chunk.mjs` に `toggleWatchSignal` と、`FinalizationRegistry`・`WeakRef` を使う ID 管理があります（デモはこの節の関数を呼んでいません）。
 
 📄 `angular/packages/core/src/render3/util/signal_debug.ts` L342–360 （▶ の行: 344–346, 348, 351, 356）
 

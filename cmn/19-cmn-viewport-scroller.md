@@ -427,7 +427,7 @@ provideClientHydration(withIncrementalHydration()),
 
 > **🧪 DEMO — 本物の scrollToAnchor を、章の中の的に向ける**
 >
-> 「スクロール」を押すと、`ViewportScroller.ɵprov` の factory（1 節の 29〜32 行目）をこのページの injector の中で呼んで、本物の `BrowserViewportScroller`（22.1.6）をもう 1 つ作り、`setOffset([0, 入力の値])` と `scrollToAnchor(的, {behavior})` を呼びます。ルーターが使う root の `ViewportScroller` とは別のインスタンスなので、オフセットはこのデモの中だけです。ページ全体がスクロールします。URL は変えません。「元の位置に戻る」で、最初に押す前の位置へ `scrollToPosition` で戻ります。表の「期待する位置」だけは、167〜175 行目の式をこの表のために計算したもので、的を探すのも表のための移植（2 段目の shadow root の中まで探す）です。的の箱は表より上に置いています（表の行が増えても的の位置がずれず、ブラウザのスクロールの調整（scroll anchoring）が入らないように）。
+> 「スクロール」を押すと、`ViewportScroller.ɵprov` の factory（1 節の 29〜32 行目）をこのページの injector の中で呼んで、本物の `BrowserViewportScroller`（22.2.6）をもう 1 つ作り、`setOffset([0, 入力の値])` と `scrollToAnchor(的, {behavior})` を呼びます。ルーターが使う root の `ViewportScroller` とは別のインスタンスなので、オフセットはこのデモの中だけです。ページ全体がスクロールします。URL は変えません。「元の位置に戻る」で、最初に押す前の位置へ `scrollToPosition` で戻ります。表の「期待する位置」だけは、167〜175 行目の式をこの表のために計算したもので、的を探すのも表のための移植（2 段目の shadow root の中まで探す）です。的の箱は表より上に置いています（表の行が増えても的の位置がずれず、ブラウザのスクロールの調整（scroll anchoring）が入らないように）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-viewport-scroller)
 

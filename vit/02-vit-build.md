@@ -189,7 +189,7 @@ $ git show 66bd6bd1ea -- …/unit-test/schema.json   # 2026-09-07（抜粋）
 
    Vitest 5 で、JSDOM のクラスのフィールドの初期化で共有の module の export が未初期化になる問題が直ったので、切る必要が無くなった、という説明です。同じ日に vitest 5 への更新（93c5bc8868）が入っています。
 
-44129f66a3 の 264 行目（[CLI の章](../cli/12-cli-unit-test.md)の 5 節の引用）は `disableCodeSplitting: !options.splitting` で、既定では分けます。すると 79 行目の `ignoreAnnotations` も既定では入りません。#33910 を固める `vitest-barrel-side-effects_spec.ts`（15 行目の it）は `splitting` を指定せずに走るので、分けた状態で barrel が残ることを確かめていることになります。10 節の記録では、既定（zoneless）の出力は spec 5 つ・共有の chunk 3 つ・`init-testbed.js`・`vitest-mock-patch.js` で、`--no-splitting` では chunk が 0 になり、`spec-app-app.js` が 2,122 バイトから 3,860 バイトに、`init-testbed.js` が 2,305 バイトから 6,159 バイトに増えました（共有の部分をそれぞれが抱える）。サイトの依存は vitest 4.1.11 ですが、この記録のアプリでは分けても分けなくても全部のテストが同じ結果でした（落ちるのはわざと落とした 1 つだけ）。
+44129f66a3 の 264 行目（[CLI の章](../cli/12-cli-unit-test.md)の 5 節の引用）は `disableCodeSplitting: !options.splitting` で、既定では分けます。すると 79 行目の `ignoreAnnotations` も既定では入りません。#33910 を固める `vitest-barrel-side-effects_spec.ts`（15 行目の it）は `splitting` を指定せずに走るので、分けた状態で barrel が残ることを確かめていることになります。10 節の記録では、既定（zoneless）の出力は spec 5 つ・共有の chunk 3 つ・`init-testbed.js`・`vitest-mock-patch.js` で、`--no-splitting` では chunk が 0 になり、`spec-app-app.js` が 2,122 バイトから 3,860 バイトに、`init-testbed.js` が 2,305 バイトから 6,159 バイトに増えました（共有の部分をそれぞれが抱える）。記録したときのサイトの依存は vitest 4.1.11 ですが、この記録のアプリでは分けても分けなくても全部のテストが同じ結果でした（落ちるのはわざと落とした 1 つだけ）。
 
 ## 4. zone.js をどう読み込むか
 
@@ -349,7 +349,7 @@ $ git show d09f98ee70 -- …/runners/vitest/build-options.ts   # origin/main、2
 288 │ 
 ```
 
-276〜278 行目で、project から `@angular/localize` が解決できれば `hasLocalize` を真にします。真なら仮想の init の先頭（次の節の 66 行目）に `import '@angular/localize/init';` が入り、`$localize`（翻訳の印の付いた文字列を組み立てる関数、[i18n の章](../cli/09-cli-i18n.md)）が globalThis に置かれます。75c1dce387（2026-06-24）で入りました。`$localize` を使うライブラリのテストで `ReferenceError` になっていたためです。サイトの `node_modules` には `@angular/localize` 22.1.6 が入っているので、記録の 6 通りの全部で、仮想の init の 1 行目がこの import でした。284 行目の `!options.debug` は teardown（各テストの後に TestBed の module を壊すか）で、`--debug` のときだけ `destroyAfterEach: false` になります（[後片付けの章](../testing/03-testing-reset-teardown.md)）。
+276〜278 行目で、project から `@angular/localize` が解決できれば `hasLocalize` を真にします。真なら仮想の init の先頭（次の節の 66 行目）に `import '@angular/localize/init';` が入り、`$localize`（翻訳の印の付いた文字列を組み立てる関数、[i18n の章](../cli/09-cli-i18n.md)）が globalThis に置かれます。75c1dce387（2026-06-24）で入りました。`$localize` を使うライブラリのテストで `ReferenceError` になっていたためです。記録したときのサイトの `node_modules` には `@angular/localize` 22.1.6 が入っていたので、記録の 6 通りの全部で、仮想の init の 1 行目がこの import でした。284 行目の `!options.debug` は teardown（各テストの後に TestBed の module を壊すか）で、`--debug` のときだけ `destroyAfterEach: false` になります（[後片付けの章](../testing/03-testing-reset-teardown.md)）。
 
 ## 6. 仮想の init のファイルの中身
 

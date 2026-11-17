@@ -10,7 +10,7 @@ angular/components · 読了 約 10 分 · 中核 · [サイトで読む（デ�
 
 アコーディオンやタブのパネルの中身を `<ng-template ngAccordionContent>` / `<ng-template ngTabContent>` に書くと、閉じている間はその中身が**作られません**。それをしているのは 84 行しかない 2 つのディレクティブ、`DeferredContentAware`（入れ物の側）と `DeferredContent`（テンプレートの側）です。この章では、`afterRenderEffect` が `TemplateRef` から埋め込みビューを作る行・`preserveContent` でなければ壊す行を追い、プリレンダーした HTML に中身が入らないことと、`@defer` との違いを確かめます。
 
-読む対象は `src/aria/private/deferred-content/deferred-content.ts` と、それを使う `src/aria/tabs/tab-content.ts`・`tab-panel.ts` です（アコーディオンの側は[第 10 回](10-aria-accordion.md)で引用しました）。このファイルは 22.1.8 と e81c398a86 で同じです。
+読む対象は `src/aria/private/deferred-content/deferred-content.ts` と、それを使う `src/aria/tabs/tab-content.ts`・`tab-panel.ts` です（アコーディオンの側は[第 10 回](10-aria-accordion.md)で引用しました）。このファイルは、この章を書いたときのサイトの 22.1.8 とも、いまのサイトの 22.2.7 とも、e81c398a86 と同じです。
 
 1. [1. 全体像](01-aria-overview.md)
 2. [2. SignalLike](02-aria-signal-like.md)
@@ -246,11 +246,11 @@ A のパネルには `inert` が付いていません（パネルの `visible()`
 
 > **🧪 DEMO — 閉じているパネルの中の子のコンポーネントは作られているか**
 >
-> 本物のアコーディオン（@angular/aria 22.1.8）です。どちらのパネルにも、`ngOnInit` と破棄のときにログを書く子のコンポーネント `app-dcd-child` を `<ng-template ngAccordionContent>` の中に置きました。A は `[(expanded)]` の初期値が `true`、B は `false` です。キーボードで操作できます。Tab で見出しのボタンに入り、↑↓ で移り、Enter / Space で開閉します。子の「+1」でカウンタを増やしてから閉じて開くと、状態が残るかが分かります。
+> 本物のアコーディオン（@angular/aria 22.2.7）です。どちらのパネルにも、`ngOnInit` と破棄のときにログを書く子のコンポーネント `app-dcd-child` を `<ng-template ngAccordionContent>` の中に置きました。A は `[(expanded)]` の初期値が `true`、B は `false` です。キーボードで操作できます。Tab で見出しのボタンに入り、↑↓ で移り、Enter / Space で開閉します。子の「+1」でカウンタを増やしてから閉じて開くと、状態が残るかが分かります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/aria-deferred-content)
 
-2026-11-02 にヘッドレスの Chrome で操作して記録したログです（番号はログの通し番号）。
+2026-11-02 にヘッドレスの Chrome で操作して記録したログです（番号はログの通し番号）。サイトを 22.2.7 に上げたあと（2026-11-17）に「B を開く → +1 を 2 回 → 閉じる → 開く」を押し直しても、01〜07 は同じ順で出ました（22.2.6 でアコーディオンのリスナーがトリガーに移りましたが、[第 10 回](10-aria-accordion.md)の 5 節、開閉から子のビューを作るまでは変わりません）。
 
 - **読み込んだ直後**：`01 「A」の子が作られた` だけが出ます。B の子は作られていません。
 - **B を開く**：`02 B を開いた` のあとに `03 「B」の子が作られた`。expandedChange が先で、子が作られるのは描画のあと（58〜63 行目）だからです。

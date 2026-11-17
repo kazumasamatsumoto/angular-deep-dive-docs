@@ -161,7 +161,7 @@ PR ごとに走る CI の `devtools` の仕事は 3 段です。60 行目の `pn
 
 1. **devtools の defaults.bzl の 59〜66 行目：@angular の 3 つを足し、tsconfig を devtools のものにして、リポジトリ共通の規則を呼ぶ**
 
-   58 行目のコメントのとおり、テストの初めに読む `browser_tests.init.mts` が import するものを足しています。ここの `//:node_modules/@angular/core` は、`../angular/package.json` の依存で `"@angular/core": "workspace:*"`、つまり**この木の `packages/core` から作ったもの（22.2.0-next.7）**です。このサイトのデモが動かす 22.1.6 とは違います。
+   58 行目のコメントのとおり、テストの初めに読む `browser_tests.init.mts` が import するものを足しています。ここの `//:node_modules/@angular/core` は、`../angular/package.json` の依存で `"@angular/core": "workspace:*"`、つまり**この木の `packages/core` から作ったもの（22.2.0-next.7）**です。このサイトのデモの記録を録った 22.1.6 とは違います。
 2. **tools/bazel/web\_test.bzl の 38〜42 行目：初めに読むファイルに `browser_zoneless` を入れる**
 
    残りの `web_test`（spec を 1 つのファイルに束ねる `spec_bundle` と、ブラウザで走らせる `wtr_test`）は [contrib-bazel](../contrib/04-contrib-bazel.md) で読みました。
@@ -693,7 +693,7 @@ writeFileSync(out, JSON.stringify({ runs }, null, 2) + '\n');
 
 **Q. spec はどの版の Angular で走りますか？**
 
-この木の `packages/core` から作ったもの（22.2.0-next.7）です。devtools の defaults.bzl の 60〜62 行目が足す `//:node_modules/@angular/core` は、package.json の `workspace:*` でこの木を指します。このサイトのデモは 22.1.6 なので、版で違う動きはデモと spec で食い違うことがあります。
+この木の `packages/core` から作ったもの（22.2.0-next.7）です。devtools の defaults.bzl の 60〜62 行目が足す `//:node_modules/@angular/core` は、package.json の `workspace:*` でこの木を指します。このサイトのデモは 22.1.6 で録った記録なので、版で違う動きはデモと spec で食い違うことがあります。
 
 **Q. 拡張を手元で作って Chrome に入れるには？**
 

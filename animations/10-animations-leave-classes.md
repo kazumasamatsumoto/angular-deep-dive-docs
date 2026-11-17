@@ -2,7 +2,7 @@
 
 # animate.leave のクラス：付けて、終わりを待って、消す
 
-> animateLeaveClassRunner が動いている enter を止め、クラスを付けて offsetWidth で再計算させ、いちばん長いアニメーションの終わりで LView に置いた resolvers を全部呼ぶ仕組み。次のフレームでアニメーションが無いと分かったときの即時の片付けと、終わりのイベントが来ないとき長さ + 50 ms で片付ける setTimeout、ng-content を持つコンポーネントのホスト要素だけクラスを外す理由。22.1.6 の配布物では offsetWidth の行が rollup の設定で消えていること。
+> animateLeaveClassRunner が動いている enter を止め、クラスを付けて offsetWidth で再計算させ、いちばん長いアニメーションの終わりで LView に置いた resolvers を全部呼ぶ仕組み。次のフレームでアニメーションが無いと分かったときの即時の片付けと、終わりのイベントが来ないとき長さ + 50 ms で片付ける setTimeout、ng-content を持つコンポーネントのホスト要素だけクラスを外す理由（22.2.6 は af2c7e386d8 でいつも外す）。22.1.6・22.2.6 の配布物では offsetWidth の行が rollup の設定で消えていること。
 
 angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモが動きます）](https://angular-deep-dive-cyan.vercel.app/chapter/animations-leave-classes)
 
@@ -285,11 +285,11 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 > [!WARNING]
 > **ハマりどころ**
 >
-> このサイトが使っている `@angular/core` 22.1.6 の配布物（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs`）を grep すると、`animateLeaveClassRunner` の中に **374 行目の `const _reflow = el.offsetWidth;` がありません**。同じファイルの source map の `sourcesContent` には 372〜374 行目がそのまま入っており、v22.1.6 のタグのソースにもあります。パッケージを作る rules\_angular の `ng_package` の `rollup.config.js` が `treeshake` に `propertyReadSideEffects: false` を指定しているので、rollup が「使われない変数への property の読み出し」を副作用なしとみなして消した、と読めます。このサイトの transition のデモ（下の ②・③）はこの行の無い 22.1.6 で動いています。この行が無いことで振る舞いが変わる場面があるかは、確かめていません。
+> この章を書いたときのサイトの `@angular/core` 22.1.6 の配布物（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs`）を grep すると、`animateLeaveClassRunner` の中に **374 行目の `const _reflow = el.offsetWidth;` がありません**。同じファイルの source map の `sourcesContent` には 372〜374 行目がそのまま入っており、v22.1.6 のタグのソースにもあります。パッケージを作る rules\_angular の `ng_package` の `rollup.config.js` が `treeshake` に `propertyReadSideEffects: false` を指定しているので、rollup が「使われない変数への property の読み出し」を副作用なしとみなして消した、と読めます。いまのサイトの 22.2.6 の配布物でも同じで、`animateLeaveClassRunner` に `offsetWidth` の行はありません。このサイトの transition のデモ（下の ②・③）はこの行の無い版（22.1.6、いまは 22.2.6）で動いています。この行が無いことで振る舞いが変わる場面があるかは、確かめていません。
 
 ## 5. デモ：クラスの種類と、消えるまでの時刻
 
-> **🧪 DEMO — 本物の animate.leave（Angular 22.1.6）**
+> **🧪 DEMO — 本物の animate.leave（Angular 22.2.6）**
 >
 > 4 つの箱は、それぞれ別の `@if` の中の本物の要素です。leave のクラスは ① `@keyframes` 600 ms、② transition 600 ms（opacity と transform の 2 本）、③ transition 300 ms + delay 400 ms、④ アニメーションの無いクラス（枠線だけ）。「消す」を押すと、そのときだけ `MutationObserver`（class と子の増減）と、capture の `animationend` / `transitionend` を付けて時刻を並べます。OS の設定で動きを減らしていても、このデモは動きます。
 >
@@ -311,7 +311,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
       - `cancelAnimationsIfRunning()` — utils.ts L288 — *enter のクラスとリスナーを外す*
       - `renderer.listen(el, 'animationend' / 'transitionend')` — L363-364
       - `trackLeavingNodes()` → `renderer.addClass()` — L366-370 — *ここで動き始める*
-      - `el.offsetWidth` — L374 — *22.1.6 の配布物には無い*
+      - `el.offsetWidth` — L374 — *22.1.6・22.2.6 の配布物には無い*
       - `requestAnimationFrame` → `determineLongestAnimation()` — L380-382 — *無ければ即片付け／あれば長さ + 50 ms の setTimeout*
   - `handleOutAnimationEnd(event)` — L330 — *いちばん長いものの終わり、または animation-fallback*
     - `cleanupAfterLeaveAnimations(resolvers, cleanupFns)` — utils.ts L392 — *resolve → 第 9 回の allSettled が進む*
@@ -393,13 +393,13 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
    クラスの付け外しと終わりの判定は `animation.ts` の `animateLeaveClassRunner`、いちばん長いものの判定は `longest_animation.ts` の `determineLongestAnimation` と `utils.ts` の `isLongestAnimation`、片付けは `utils.ts` の `cleanupAfterLeaveAnimations` です。spec は `acceptance/animation_spec.ts` の `describe('animate.leave')` に足します。
 5. **最新の main では**
 
-   7e678e0ed72（`#70764` の一部）で 349〜356 行目の `if (Array.isArray(tNode.projection))` が無くなり、終わったら**いつも**`removeClasses` で leave のクラスを外すようになりました。336 行目の条件にも `(event as CustomEvent).detail?.cancel` が足され、第 12 回の「取り消し」のイベントでも片付けに進むようになっています。どちらも ../angular と 22.1.6 には入っていません。
+   7e678e0ed72（`#70764` の一部）で 349〜356 行目の `if (Array.isArray(tNode.projection))` が無くなり、終わったら**いつも**`removeClasses` で leave のクラスを外すようになりました。336 行目の条件にも `(event as CustomEvent).detail?.cancel` が足され、第 12 回の「取り消し」のイベントでも片付けに進むようになっています。どちらも ../angular と 22.1.6 には入っていません。22.2.x の枝には af2c7e386d8（22.2.0 の変更履歴の「cancel leave animations in nested views during list reordering」）として入り、いまのサイトの 22.2.6 の `animateLeaveClassRunner` は、`event.detail?.cancel` の条件と、いつも `removeClasses` を呼ぶ形です。だから 22.2.6 のデモで「4 つとも消す」を押すと、4 つとも「DOM から外れた」の直前に「class が変わった → （なし）」の行が出ます（22.1.6 では出ませんでした。2026-11-17 に本番の 22.1.6 のページと並べて確かめた）。
 
 ## 聞かれそうな質問
 
 **Q. offsetWidth を読まないと何が起きますか？**
 
-372 行目のコメントが言う目的は「クラスを付けたことをブラウザに登録させ、transition を始めさせる」ことです。読まなければ、スタイルの再計算は次の描画の前まで遅れます。leave の要素はすでに描かれている要素なので、前のスタイルは計算済みで、クラスを付ければ transition の始まりと終わりの値は決まります。実際、374 行目が消えている 22.1.6 の配布物でも、このページの transition のデモ（②・③）は動きました。この行が無いと困る場面があるかは確かめていません。
+372 行目のコメントが言う目的は「クラスを付けたことをブラウザに登録させ、transition を始めさせる」ことです。読まなければ、スタイルの再計算は次の描画の前まで遅れます。leave の要素はすでに描かれている要素なので、前のスタイルは計算済みで、クラスを付ければ transition の始まりと終わりの値は決まります。実際、374 行目が消えている 22.1.6 の配布物でも、いまの 22.2.6 の配布物でも、このページの transition のデモ（②・③）は動きました。この行が無いと困る場面があるかは確かめていません。
 
 **Q. fallback の +50 ms は何のためですか？**
 
@@ -419,7 +419,8 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 - `animateLeaveClassRunner` は enter を止め、リスナーを付け、クラスを付ける（324・363〜370 行目）。
 - 次のフレームでアニメーションが無ければ即片付け、あれば長さ + 50 ms の保険のタイマーを置く（380〜394 行目）。
 - 片付けはいちばん長いものの終わりか fallback で 1 回だけ。resolvers を全部呼び、リスナーとタイマーを外す（357 行目・utils.ts 392〜404 行目）。
-- 374 行目の `offsetWidth` は、22.1.6 の配布物では rollup の設定で消えている。
+- 374 行目の `offsetWidth` は、22.1.6 と 22.2.6 の配布物では rollup の設定で消えている。
+- 22.2.6 には af2c7e386d8 が入っていて、ng-content の有無にかかわらず、終わったら leave のクラスを外す。
 
 ---
 

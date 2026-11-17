@@ -215,7 +215,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
 13 行目、`ng_for_of.ts` から `NgFor` と `NgForOf` の 2 つを import しています。`ng_for_of.ts` の最後で `export {NgForOf as NgFor}` としているので、2 つは同じクラスです（[第 3 回](03-cmn-ng-for-of.md)）。23〜24 行目で両方を外に出しますが、同じファイルの下にある `COMMON_DIRECTIVES`（ngmodule-exports で引用済み）には `NgForOf` だけが入っています。同じクラスを 2 回並べる必要がないからです。
 
-standalone のコンポーネントでは、`imports: [CommonModule]` と書く代わりに `imports: [NgClass, DatePipe]` と 1 つずつ書けます。ディレクティブのソースには `standalone: true` がありません。v19 から standalone が既定なので、2024-11 の commit 9658dd1fe33（refactor(common): remove standalone: true）で消されました。このサイトが使う 22.1.6 の `fesm2022/_common_module-chunk.mjs` では、11 のディレクティブの `ɵɵngDeclareDirective` と 13 の pipe の `ɵɵngDeclarePipe` のどれにも `isStandalone: true` が入っています。1 つずつ書くと、使わないディレクティブと pipe がバンドルに入りません。どちらで書いても、テンプレートの中で何が起きるかは同じです。
+standalone のコンポーネントでは、`imports: [CommonModule]` と書く代わりに `imports: [NgClass, DatePipe]` と 1 つずつ書けます。ディレクティブのソースには `standalone: true` がありません。v19 から standalone が既定なので、2024-11 の commit 9658dd1fe33（refactor(common): remove standalone: true）で消されました。このサイトが使う 22.2.6 の `fesm2022/_common_module-chunk.mjs` では、11 のディレクティブの `ɵɵngDeclareDirective` と 13 の pipe の `ɵɵngDeclarePipe` のどれにも `isStandalone: true` が入っています。1 つずつ書くと、使わないディレクティブと pipe がバンドルに入りません。どちらで書いても、テンプレートの中で何が起きるかは同じです。
 
 ## 4. 入口は 1 つではない：package.json と ng\_package
 
@@ -279,7 +279,7 @@ standalone のコンポーネントでは、`imports: [CommonModule]` と書く�
 62 │ )
 ```
 
-28 行目の `ng_package` が npm に出す形を作ります。55〜61 行目の deps に並んだ 5 つの `ng_project`（`common`・`common/http`・`common/http/testing`・`common/testing`・`common/upgrade`）が、それぞれ 1 つの入口になります。32 行目でロケールのパッケージを中に入れます。実際にこのサイトの `node_modules/@angular/common/package.json`（22.1.6）の `exports` を見ると、ソースの 2 つに加えて `"."`・`"./http"`・`"./http/testing"`・`"./testing"`・`"./upgrade"`・`"./package.json"` が足されていて、`"."` は `./fesm2022/common.mjs`、`"./testing"` は `./fesm2022/testing.mjs` を指しています。
+28 行目の `ng_package` が npm に出す形を作ります。55〜61 行目の deps に並んだ 5 つの `ng_project`（`common`・`common/http`・`common/http/testing`・`common/testing`・`common/upgrade`）が、それぞれ 1 つの入口になります。32 行目でロケールのパッケージを中に入れます。実際にこのサイトの `node_modules/@angular/common/package.json`（22.2.6）の `exports` を見ると、ソースの 2 つに加えて `"."`・`"./http"`・`"./http/testing"`・`"./testing"`・`"./upgrade"`・`"./package.json"` が足されていて、`"."` は `./fesm2022/common.mjs`、`"./testing"` は `./fesm2022/testing.mjs` を指しています。
 
 | 入口 | ソース | 中身 | 読む回 |
 | --- | --- | --- | --- |
@@ -419,7 +419,7 @@ standalone のコンポーネントでは、`imports: [CommonModule]` と書く�
 
 > **🧪 DEMO — 1 つの値と、このサイトの本物の pipe・書式の関数**
 >
-> このサイトが使っている本物の `@angular/common` 22.1.6 の pipe のクラスを `new` して、`transform` を直接呼びます（テンプレートの `| date` と同じクラスです。ロケールは `'en-US'`）。`KeyValuePipe` には、このページの本物の `KeyValueDiffers` を渡します。例外も、そのまま表に出します。
+> このサイトが使っている本物の `@angular/common` 22.2.6 の pipe のクラスを `new` して、`transform` を直接呼びます（テンプレートの `| date` と同じクラスです。ロケールは `'en-US'`）。`KeyValuePipe` には、このページの本物の `KeyValueDiffers` を渡します。例外も、そのまま表に出します。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-overview)
 
@@ -441,7 +441,7 @@ standalone のコンポーネントでは、`imports: [CommonModule]` と書く�
 > [!WARNING]
 > **ハマりどころ**
 >
-> `formatNumber` の行だけは、数でない値を渡しても例外にならず `"∞"` を返します。`formatNumber` の引数の型は `number` で、文字列やオブジェクトはもともと型の外です（このデモは型を越えて渡しています）。中では `!isFinite(value)` のとき無限大の記号を出していて、グローバルの `isFinite` は文字列を数に直してから見るので、数にならない値は全部「有限でない」になります。以前は本物の `NaN` も `"∞"` でしたが、2026-08 の commit 7596548e9b8（fix(common): use locale NaN symbol in number formatting。22.1 系には e8378dfeab3 として 22.1.4 から入っています）で、`Number.isNaN(value)` なら NaN の記号を使うように直りました。このサイトの 22.1.6 にも入っていて、「数」で `abc` と入れると（`Number('abc')` は `NaN`）`"NaN"` になります。`Number.isNaN` は文字列を数に直さないので、文字列を渡すと今も `"∞"` です。中身は[第 12 回](12-cmn-format-number.md)で読みます。
+> `formatNumber` の行だけは、数でない値を渡しても例外にならず `"∞"` を返します。`formatNumber` の引数の型は `number` で、文字列やオブジェクトはもともと型の外です（このデモは型を越えて渡しています）。中では `!isFinite(value)` のとき無限大の記号を出していて、グローバルの `isFinite` は文字列を数に直してから見るので、数にならない値は全部「有限でない」になります。以前は本物の `NaN` も `"∞"` でしたが、2026-08 の commit 7596548e9b8（fix(common): use locale NaN symbol in number formatting。22.1 系には e8378dfeab3 として 22.1.4 から入っています）で、`Number.isNaN(value)` なら NaN の記号を使うように直りました。このサイトの 22.2.6 にも入っていて、「数」で `abc` と入れると（`Number('abc')` は `NaN`）`"NaN"` になります。`Number.isNaN` は文字列を数に直さないので、文字列を渡すと今も `"∞"` です。中身は[第 12 回](12-cmn-format-number.md)で読みます。
 
 > [!NOTE]
 > **ポイント**

@@ -55,7 +55,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 CLI がマイグレーションを探す入口は、この 2 行だけです。44 行目の `ng-update.migrations` は `ng update` が、53 行目の `schematics` は `ng generate @angular/core:<名前>` が読みます。45 行目の `packageGroup` が何に置き換わってどう効くかは [ng add と ng update](../cli/16-cli-add-update.md) の 6 節で読みました。
 
-どちらも `./schematics/` の下を指しています。つまり**配られる `@angular/core` の中に `schematics/` ディレクトリがある**ということです。このサイトの `node_modules/@angular/core`（22.1.6）を開くと、`schematics/` の中は `bundles/`（38 ファイル）・`collection.json`・`migrations.json`・`ng-generate/<15 個>/schema.json` だけです。TypeScript のソースは 1 つも入っていません。
+どちらも `./schematics/` の下を指しています。つまり**配られる `@angular/core` の中に `schematics/` ディレクトリがある**ということです。このサイトの `node_modules/@angular/core`（22.2.6）を開くと、`schematics/` の中は `bundles/`（38 ファイル）・`collection.json`・`migrations.json`・`ng-generate/<15 個>/schema.json` だけです。TypeScript のソースは 1 つも入っていません。
 
 ## 2. npm パッケージに入れるもの
 
@@ -293,7 +293,7 @@ CLI がマイグレーションを探す入口は、この 2 行だけです。4
    入口は `[name].cjs`、共有の chunk は `[name]-[hash].cjs`。`project_paths-CEexbl9C.cjs` のような名前はこの 61 行目から来ます。
 5. **41・63 行目：バナー**
 
-   41 行目の `v0.0.0-PLACEHOLDER` は、npm に出すときに版に置き換わります。このサイトの node\_modules の `signals.cjs` の 3 行目は `@license Angular v22.1.6` です。
+   41 行目の `v0.0.0-PLACEHOLDER` は、npm に出すときに版に置き換わります。このサイトの node\_modules の `signals.cjs` の 3 行目は `@license Angular v22.2.6` です。
 
 ### できたものを見る
 
@@ -359,7 +359,7 @@ require('@angular/compiler');
 
 CLI の側で factory を読むのは、angular-devkit の `ExportStringRef` です。
 
-📄 `node_modules/@angular-devkit/schematics/tools/export-ref.js（このサイトの 22.1.7）` L16–27 （▶ の行: 17, 19, 22）
+📄 `node_modules/@angular-devkit/schematics/tools/export-ref.js（このサイトの 22.2.7）` L16–27 （▶ の行: 17, 19, 22）
 
 ```
 16 │     constructor(ref, parentPath = process.cwd(), inner = true) {
@@ -384,7 +384,7 @@ CLI の側で factory を読むのは、angular-devkit の `ExportStringRef` で
    collection の JSON があるディレクトリからの相対パスを絶対パスにします。
 3. **22 行目：`require(…)[name]`**
 
-   読み込みは `require` です。そして 配られた `@angular/core` の package.json（このサイトの node\_modules の 22.1.6）には `"type": "module"` があるので（ソースの package.json には無く、パッケージを作るときに足されます）、パッケージの中の `.js` は ESM として扱われます。**拡張子を `.cjs` にすると、その 1 ファイルだけは CommonJS として読まれる**ので、`require` で中の `exports.migrate` が取れます。
+   読み込みは `require` です。そして 配られた `@angular/core` の package.json（このサイトの node\_modules の 22.2.6）には `"type": "module"` があるので（ソースの package.json には無く、パッケージを作るときに足されます）、パッケージの中の `.js` は ESM として扱われます。**拡張子を `.cjs` にすると、その 1 ファイルだけは CommonJS として読まれる**ので、`require` で中の `exports.migrate` が取れます。
 
 ## 7. load\_esm.ts：ESM を読むための道具と、その今
 

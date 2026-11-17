@@ -395,7 +395,7 @@ $ git show 6cc54e5edef -- packages/forms/signals/src/directive/input_validity_mo
 
 ### 5.2 置いただけで dirty になる、style が input の中に入る
 
-DEMO の 3 つ目で、静的な `type="date"` の input を `@if` の中に後から置くと、2 つのことが起きます（headless Chrome と、サイトの 22.1.6 で確かめました）。
+DEMO の 3 つ目で、静的な `type="date"` の input を `@if` の中に後から置くと、2 つのことが起きます（headless Chrome で、22.1.6 のときのサイトと今のサイトの 22.2.6 の両方で確かめました）。
 
 1. **触っていないのに dirty() が true になる**
 
@@ -486,7 +486,7 @@ parser の `errors` は「モデルの値が変わると空に戻る `linkedSign
 
 `transformedValue` を使う `FormValueControl` は、標準の forms の `[formControl]` や `ngModel` にもつなげます（6 節の 137 行目が `NgControl` の `FORM_CONTROL_INTEGRATION` を見つける）。そのとき、parse エラーは `FormControl` の `errors` には入るのに、**部品自身の `errors` の input には次の変更検知まで届かない**、というのが #71127（2026-10-01）です。
 
-サイトの 22.1.6 で DEMO の 2 つ目を押した記録です（部品の右の「この部品の errors input」）。`[formControl]` の側に `12x` と打つと `[]` のまま、何もしないボタンを押すと `[parse]` になり、`7` と打って直しても `[parse]` のまま、もう一度押すと `[]` に戻ります。`[formField]` の側は打った直後に変わります。
+書いたときのサイトの 22.1.6 で DEMO の 2 つ目を押した記録です（部品の右の「この部品の errors input」）。`[formControl]` の側に `12x` と打つと `[]` のまま、何もしないボタンを押すと `[parse]` になり、`7` と打って直しても `[parse]` のまま、もう一度押すと `[]` に戻ります。`[formField]` の側は打った直後に変わります。今のサイトの 22.2.6 には下の修正が入っているので、DEMO では `[formControl]` の側も打った直後に `[parse]` になり、`7` と打てばすぐ `[]` に戻ります（ボタンを押さなくても変わります）。
 
 📄 `git show 67c4e8fc6c3（ng_control.ts の部分）`
 
@@ -535,7 +535,7 @@ $ git show 67c4e8fc6c3 -- packages/forms/src/directives/ng_control.ts   # angula
 
 > **🧪 DEMO — validity・parseErrors・モデルの値**
 >
-> 本物の `@angular/forms/signals`（22.1.6）です。1 つ目は `vol`（`50`）に `type="number"` と `type="range"` をつなぎ、どちらの要素にも `errors` の input を持つだけのディレクティブ（`sfdvErrorsProbe`）を乗せています。number に `5e` と打ってから「読み直す」を見てください。2 つ目は `transformedValue` で `1,234` と表示する部品を、`[formField]` と `[formControl]` の両方につないでいます。3 つ目は日付の input を `@if` の中に後から置きます。
+> 本物の `@angular/forms/signals`（22.2.6）です。1 つ目は `vol`（`50`）に `type="number"` と `type="range"` をつなぎ、どちらの要素にも `errors` の input を持つだけのディレクティブ（`sfdvErrorsProbe`）を乗せています。number に `5e` と打ってから「読み直す」を見てください。2 つ目は `transformedValue` で `1,234` と表示する部品を、`[formField]` と `[formControl]` の両方につないでいます。3 つ目は日付の input を `@if` の中に後から置きます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sfd-validity)
 
@@ -543,7 +543,7 @@ $ git show 67c4e8fc6c3 -- packages/forms/src/directives/ng_control.ts   # angula
 | --- | --- | --- |
 | number に `5e` | number: badInput `true`・value `""`・`FormField.errors()``[parse]`。range: `FormField.errors()``[]`、ディレクティブの `errors``[parse]`。モデル `5`・`invalid``true` | 4 節の 45 行目、2 節の 200 行目、3 節の注意（#71632） |
 | その後 range を 70 に | 両方の `errors` が `[]`、number の value も `"70"` | parser の `errors` がモデルの変化で空に戻る（6 節の最後） |
-| \[formControl\] に `12x` → ボタン | 部品の `errors` の input が 1 回遅れて `[parse]` | 7 節（#71127、22.1.6 には修正が無い） |
+| \[formControl\] に `12x`、次に `7` | 部品の `errors` の input が打った直後に `[parse]`、`7` で `[]`（22.1.6 では 1 回遅れていた） | 7 節（#71127、22.2.6 には修正が入っている） |
 | `[type]="'date'"` の input を置く | dirty `false`、style 0 個 | 5.1 節の注意 |
 | `type="date"` の input を置く | dirty `true`、style 1 個（`<input#sfdv-date-static>` の中） | 5.2 節 |
 

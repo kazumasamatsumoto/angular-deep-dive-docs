@@ -276,7 +276,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
 > **🧪 DEMO — このページの上の @angular/compiler で、投影の命令を出す**
 >
-> 「コンパイルする」を押すと、このサイトの `@angular/compiler`（22.1.6）をその場で読み込み（それまでは読み込みません）、JIT の入口 `CompilerFacadeImpl.compileComponent` に欄のテンプレートを渡して、**評価する直前の JS の文字列**を受け取ります（評価はしません）。表の値は、すべてその JS の中の定数と `ɵɵprojection` の引数から読んでいます。JIT の書き出しなので定数は `const` ではなく `var` で、文字列は `'` で囲まれます。依存を渡していないので、要素は `ɵɵdomElementStart` になります。
+> 「コンパイルする」を押すと、このサイトの `@angular/compiler`（22.2.6）をその場で読み込み（それまでは読み込みません）、JIT の入口 `CompilerFacadeImpl.compileComponent` に欄のテンプレートを渡して、**評価する直前の JS の文字列**を受け取ります（評価はしません）。表の値は、すべてその JS の中の定数と `ɵɵprojection` の引数から読んでいます。JIT の書き出しなので定数は `const` ではなく `var` で、文字列は `'` で囲まれます。依存を渡していないので、要素は `ɵɵdomElementStart` になります。
 >
 > 例を選ぶか欄を書き換えて、「コンパイルする」を押してください。
 >

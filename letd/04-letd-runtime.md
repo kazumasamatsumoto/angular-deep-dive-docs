@@ -21,7 +21,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 1. 歩み：空の命令から、ハイドレーションの直しまで
 
-実行時の側を変えたコミットです（../angular の `git log`。日付は作者の日付で、どれもこのサイトの 22.1.6 に入っています）。
+実行時の側を変えたコミットです（../angular の `git log`。日付は作者の日付で、どれもこのサイトの 22.2.6 に入っています）。
 
 | 日付 | コミット | 変わったこと |
 | --- | --- | --- |
@@ -172,7 +172,7 @@ diff --git a/packages/core/src/render3/instructions/let_declaration.ts b/package
 
 1. **31 行目：添字に HEADER\_OFFSET を足す**
 
-   コンパイラが渡す `index` はテンプレートの中の番号（0 から）で、LView の先頭の `HEADER_OFFSET` 個はビューの管理用の枠です（[LView の章](../ivy/06-ivy-lview.md)）。../angular（22.2.0-next.7）では 28 なので、`ɵɵdeclareLet(0)` の値は `lView[28]` に入ります。**このサイトの 22.1.6 では 27**で、22.2.0 の f6afb807c1e（ErrorBoundary の `ON_ERROR` の枠を 27 番に足した）で 1 つ増えました。8 節のデモは、この数を版ごとに TView から求めています。
+   コンパイラが渡す `index` はテンプレートの中の番号（0 から）で、LView の先頭の `HEADER_OFFSET` 個はビューの管理用の枠です（[LView の章](../ivy/06-ivy-lview.md)）。../angular（22.2.0-next.7）とこのサイトの 22.2.6 では 28 なので、`ɵɵdeclareLet(0)` の値は `lView[28]` に入ります。**22.1.x では 27**で、22.2.0 の f6afb807c1e（ErrorBoundary の `ON_ERROR` の枠を 27 番に足した）で 1 つ増えました。8 節のデモは、この数を版ごとに TView から求めています。
 2. **32〜33 行目：LetDeclaration の TNode を作り、「親ではない」と覚える**
 
    `getOrCreateTNode` は最初の作成の回（firstCreatePass）だけ TNode を作り、2 回目からは `tView.data` にあるものを返します（[TNode の章](../ivy/04-ivy-tnode.md)）。33 行目の第 2 引数 `false` で、次のノードは子ではなく**兄弟**としてつながります。`@let` は子を持ちません（4 節の 840 行目 `child: null`）。
@@ -792,7 +792,7 @@ diff --git a/packages/core/src/hydration/cleanup.ts b/packages/core/src/hydratio
 
 > **🧪 DEMO — @let の値を変えて、LView の枠を読む**
 >
-> 点線の枠の中の `letd-rt-stage` は、このサイトのビルド（AOT、compiler-cli 22.1.6）でコンパイルされた本物の `@let` です。テンプレートは次の 3 つを持ちます。`@let total = price() * qty();`（子のビューで読む）、`@let label = '個数 ' + qty();`（同じビューだけで読む）、`@let pair = [price(), mimic() ? {} : qty()];`（子のビューで読む）。「LView の枠を読む」は、`inject(ChangeDetectorRef)` の ViewRef が持つ `_lView` から、宣言の枠（`HEADER_OFFSET` 番から `bindingStartIndex` の手前まで）を読みます。`HEADER_OFFSET` は、TView の `data` で「添字と `index` が一致する最初の TNode」として求めます（22.1.6 では 27）。`_lView` と TView の形は 22.1.6 の非公開の形で、確かめるためだけに読んでいます。
+> 点線の枠の中の `letd-rt-stage` は、このサイトのビルド（AOT、compiler-cli 22.2.6）でコンパイルされた本物の `@let` です。テンプレートは次の 3 つを持ちます。`@let total = price() * qty();`（子のビューで読む）、`@let label = '個数 ' + qty();`（同じビューだけで読む）、`@let pair = [price(), mimic() ? {} : qty()];`（子のビューで読む）。「LView の枠を読む」は、`inject(ChangeDetectorRef)` の ViewRef が持つ `_lView` から、宣言の枠（`HEADER_OFFSET` 番から `bindingStartIndex` の手前まで）を読みます。`HEADER_OFFSET` は、TView の `data` で「添字と `index` が一致する最初の TNode」として求めます（22.2.6 では 28、22.1.x では 27）。`_lView` と TView の形は 22.2.6 の非公開の形で、確かめるためだけに読んでいます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/letd-runtime)
 

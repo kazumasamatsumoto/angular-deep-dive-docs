@@ -558,7 +558,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 7. デモ：ガードを持つディレクティブで TCB を作る
 
-> **🧪 DEMO — このページの @angular/compiler（22.1.6）の generateTypeCheckBlock に、ガードを持つディレクティブを渡す**
+> **🧪 DEMO — このページの @angular/compiler（22.2.6）の generateTypeCheckBlock に、ガードを持つディレクティブを渡す**
 >
 > ディレクティブは本物の `@angular/common` ではなく、6 節の `extractDirectiveTypeCheckMeta` が返すのと同じ `ngTemplateGuards` / `hasNgTemplateContextGuard` を持たせたデモ用のメタデータです。ボタンを押したときだけ動きます。
 >

@@ -594,7 +594,7 @@ console.log(JSON.stringify({ typescript: ts.version, cases: CASES.map(([id, expr
 | `d7b475122ac`・`a617967d904` stable にする | 2026-04-16・05-11 | `@experimental 19.2` を `@publicApi 22.0` に（resource.ts と resource\_api.ts） | 1 節の 45・57 行目 |
 | `63886758787` fix(http): prevent `httpResource` from leaking a subscription | 2026-05-26 | 同期で応答が来たとき、`onAbort` が `sub` より先に呼ばれても購読をやめる（`aborted` の旗）。spec に同期で流すインターセプタの it を足した | loader（[httpResource の章](../signals/16-signals-http-resource.md)） |
 
-新しい本家（../angular-main、2026-10-30）では、さらに 2 本が resource.ts を変えています。f458730d377（2026-09-27）は `normalizeRequest` が渡す `reportProgress` を `reportDownloadProgress` として渡すように変え（`HttpRequest` 側の分かれ方は[第 1 回](01-httpx-request-options.md)）、5128dec0ca1（2026-09-17）は abort の listener を `{once: true}` で付けるようにしました。どちらも型（この章の `HttpResourceFn` と resource\_api.ts）は変えていません。resource\_api.ts は 2 つの木で同じです。
+新しい本家（../angular-main、2026-10-30）では、さらに 2 本が resource.ts を変えています。f458730d377（2026-09-27）は `normalizeRequest` が渡す `reportProgress` を `reportDownloadProgress` として渡すように変え（`HttpRequest` 側の分かれ方は[第 1 回](01-httpx-request-options.md)）、5128dec0ca1（2026-09-17）は abort の listener を `{once: true}` で付けるようにしました。どちらも型（この章の `HttpResourceFn` と resource\_api.ts）は変えていません。resource\_api.ts は 2 つの木で同じです。2 本とも 22.2 系に取り込まれていて（前者は 6dee7fe91c、v22.2.1）、このサイトの 22.2.6 の配布物（`@angular/common` の `fesm2022/http.mjs`）にも入っています。
 
 コミットの本文の書き方も見ておきます。50d9d55f498 は「何が困るか（`else` が `never`）→ どう変えたか（`undefined` を含むときだけ型ガードにする）」を 2 段落で書き、`Fixes #…` を 3 つ並べています。63886758787 は 1 文で「同期で流れたとき購読が漏れていた」と書くだけで、spec の it の名前（`should unsubscribe the observable when the request emits synchronously`）が同じことを言っています。
 

@@ -698,7 +698,7 @@ open の issue #48279（2022-11、「IANA のタイムゾーンを日付の書�
 
 > **🧪 DEMO — 1 つの日付を、記号ごと・timezone ごとに本物の formatDate で書く**
 >
-> 「表を作る」を押すと、このサイトの本物の `formatDate`（@angular/common 22.1.6）を、表の行の記号 1 つ × 列の timezone 1 つごとに呼びます。`Y` だけは開発モードの検査（第 10 回の 5 節）に止められないよう `YYYY 'W'ww` で呼びます。下の「timezone の数字」は 895 行目と 909 行目を表示用に移植した計算で、この端末の `Date.parse` を使います。最後の列の名前は自由に変えられます。ja だけ extra（`B`）を登録します。en-US・fr・de の `B` は `NG02303` です。
+> 「表を作る」を押すと、このサイトの本物の `formatDate`（@angular/common 22.2.6）を、表の行の記号 1 つ × 列の timezone 1 つごとに呼びます。`Y` だけは開発モードの検査（第 10 回の 5 節）に止められないよう `YYYY 'W'ww` で呼びます。下の「timezone の数字」は 895 行目と 909 行目を表示用に移植した計算で、この端末の `Date.parse` を使います。最後の列の名前は自由に変えられます。ja だけ extra（`B`）を登録します。en-US・fr・de の `B` は `NG02303` です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-date-getters)
 

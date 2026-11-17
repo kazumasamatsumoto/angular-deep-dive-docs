@@ -223,7 +223,7 @@ compiler の入口ファイルが外に出しているものも見ておきま�
 
 ## 4. デモ：本物のコンパイラの出力を見る
 
-> **🧪 DEMO — このページの @angular/compiler 22.1.6 で i18n のテンプレートをコンパイルする**
+> **🧪 DEMO — このページの @angular/compiler 22.2.6 で i18n のテンプレートをコンパイルする**
 >
 > 「コンパイルする」を押すと、`loc-compile.ts` の `compileI18nTemplate` が本物の `parseTemplate` → `compileComponentFromMetadata` を呼びます。出力の JS から `$localize` の呼び出しを抜き出し、ngtsc が書く形（タグ付きテンプレート、`\uFFFD` は実行時の印の区切りの文字 U+FFFD）に並べ直して見せます。本物の ngtsc の出力とは括弧や改行の付き方が違い、`enableI18nLegacyMessageIdFormat` は既定の true（`␟` のあとに古い ID が並ぶ）です。
 >

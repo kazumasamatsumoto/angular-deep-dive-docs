@@ -120,7 +120,7 @@ open の `area: forms` 159 件に付いている `forms: *` のラベルを数�
 
    `FormControl` は最初から値を持っていて、登録も同期なので 1 回だけ（[第 12 回](12-forms-reactive-directives.md)）。
 
-第 13 回のデモは本物の @angular/forms 22.1.6 で、この順番（`writeValue(null)` → `writeValue("Alice")`）がそのまま出ます。では、なぜ 9 年以上 open なのか。スレッドを読むと分かることは次のとおりです。
+第 13 回のデモは本物の @angular/forms 22.2.6 で、この順番（`writeValue(null)` → `writeValue("Alice")`）がそのまま出ます。では、なぜ 9 年以上 open なのか。スレッドを読むと分かることは次のとおりです。
 
 - 2020 年に修正の PR（#38140「fix(forms): ValueAccessor.writeValue(...) sometimes called with null」）が出ましたが、2022-01-27 にマージされずに閉じられています（`gh pr view 38140` で確かめた状態）。
 - 2026-09-29 のコメントは、二重の呼び出しが `ngModel` の構造（control を先につなぎ、値を microtask であとから入れる）から来ていること、1 回目を消すと**すべてのアプリのすべての accessor**で `writeValue` の回数とタイミングが変わること、accessor 側で最初の `null` を無視すれば今でも避けられること、を挙げています。第 13 回の 4 節で読んだ「2 回目の変更検知を起こすために遅らせている」理由と合わせると、「直す」が単純な 1 行の変更ではないことが分かります。

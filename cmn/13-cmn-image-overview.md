@@ -567,7 +567,7 @@ core の 2 つの transform は [cdk-platform-bidi](../cdk/02-cdk-platform-bidi.
 
 > **🧪 DEMO — 本物の NgOptimizedImage を描いて、img に書かれた属性を見る**
 >
-> 「描く」を押すと、この章の中の小さなコンポーネント（`<img [ngSrc] [width] [height] [priority] [fill] [loading]>` を 1 つ持つ）を `createComponent` で作り、下の枠に描きます。`NgOptimizedImage` はこのサイトの本物（`@angular/common` 22.1.6）です。`IMAGE_LOADER` だけはこのコンポーネントの `providers` で差し替えていて、頼まれた幅と高さを文字で描いた SVG を `data:` の URL で返します（通信しません）。「Renderer2 への呼び出し」は、このサイトの本物の `RendererFactory2` を記録係で包んで（`domr-probe.ts`）、`img` に届いた呼び出しを順に並べたものです。width は 0〜1200 に丸めます。
+> 「描く」を押すと、この章の中の小さなコンポーネント（`<img [ngSrc] [width] [height] [priority] [fill] [loading]>` を 1 つ持つ）を `createComponent` で作り、下の枠に描きます。`NgOptimizedImage` はこのサイトの本物（`@angular/common` 22.2.6）です。`IMAGE_LOADER` だけはこのコンポーネントの `providers` で差し替えていて、頼まれた幅と高さを文字で描いた SVG を `data:` の URL で返します（通信しません）。「Renderer2 への呼び出し」は、このサイトの本物の `RendererFactory2` を記録係で包んで（`domr-probe.ts`）、`img` に届いた呼び出しを順に並べたものです。width は 0〜1200 に丸めます。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/cmn-image-overview)
 

@@ -601,7 +601,7 @@ lib.dom の `NavigationInterceptOptions` には `precommitHandler` があり（1
 
 > **🧪 DEMO — window.navigation（読むだけ）と FakeNavigation の同じ欄**
 >
-> ボタンを押すと、このページで、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の `FakeNavigation` の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`new ɵFakeNavigation(document.implementation.createHTMLDocument(''), location.href)` を 1 つ作って、ブラウザの `window.navigation` と同じ欄を読みます。ブラウザの側は値を読むだけで、navigate もリスナーの登録もしません。このページの URL と履歴は変わりません。`@angular/core/testing` をそのまま読み込まないのは、そのモジュールが読み込み時に `beforeEach` と `afterEach` を登録する行（testing.mjs の 2522〜2523 行目）から TestBed と JIT の部品が引き込まれ、このサイトの最初に読む JS が 60 kB ほど増えるからです。動くコードは同じです。
+> ボタンを押すと、このページで、配布物（`@angular/core` 22.1.6 の `fesm2022/testing.mjs`）の `FakeNavigation` の範囲を 1 文字も変えずに写したファイル（`navx-fake-navigation.vendor.ts`）を読み込み、`new ɵFakeNavigation(document.implementation.createHTMLDocument(''), location.href)` を 1 つ作って、ブラウザの `window.navigation` と同じ欄を読みます。ブラウザの側は値を読むだけで、navigate もリスナーの登録もしません。このページの URL と履歴は変わりません。`@angular/core/testing` をそのまま読み込まないのは、そのモジュールが読み込み時に `beforeEach` と `afterEach` を登録する行（このサイトの 22.2.6 の testing.mjs では 2659〜2660 行目）から TestBed と JIT の部品が引き込まれ、このサイトの最初に読む JS が 60 kB ほど増えるからです。動くコードは 22.1.6 の配布物と同じです。写しの元は 22.1.6 です。このサイトの今の依存 22.2.6 の `fesm2022/testing.mjs` の `FakeNavigation` は、a8233232f5a（v22.2.0 から）で仕様に合わせて書き換わっているので、写しは前の形のままにしてあります。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/navx-api-types)
 

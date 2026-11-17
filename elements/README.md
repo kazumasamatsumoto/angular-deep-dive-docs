@@ -4,7 +4,7 @@
 
 > createCustomElement・属性と入力・ComponentNgElementStrategy・投影するノード・入力と変更検知・出力とイベント・切り離しと破棄
 
-@angular/elements は、Angular のコンポーネントを Web Components のカスタム要素（customElements.define で登録する、HTML のタグとして使える要素）に包むパッケージです。packages/elements/src は 750 行ほどで、createCustomElement が HTMLElement を継承したクラスを作り、そのクラスが要素のライフサイクル（connectedCallback・attributeChangedCallback・disconnectedCallback）を ComponentNgElementStrategy に渡します。strategy は、要素がページにつながったときにコンポーネントを作り、要素の子を ng-content へ投影し、属性やプロパティで来た値を入力に入れて変更検知の予定を立て、出力を DOM の CustomEvent に直し、要素が外れたら少し待ってからコンポーネントを壊します。このシリーズでは、その流れを 1 つずつ読みます。ページの上のデモは、本物の @angular/elements 22.1.6 で、このページに本物のカスタム要素を登録して動かします。各章の最後に、その仕組みの spec と手元での走らせ方を置きます。最終回は、開いている issue を読みます。
+@angular/elements は、Angular のコンポーネントを Web Components のカスタム要素（customElements.define で登録する、HTML のタグとして使える要素）に包むパッケージです。packages/elements/src は 750 行ほどで、createCustomElement が HTMLElement を継承したクラスを作り、そのクラスが要素のライフサイクル（connectedCallback・attributeChangedCallback・disconnectedCallback）を ComponentNgElementStrategy に渡します。strategy は、要素がページにつながったときにコンポーネントを作り、要素の子を ng-content へ投影し、属性やプロパティで来た値を入力に入れて変更検知の予定を立て、出力を DOM の CustomEvent に直し、要素が外れたら少し待ってからコンポーネントを壊します。このシリーズでは、その流れを 1 つずつ読みます。ページの上のデモは、本物の @angular/elements 22.2.6 で、このページに本物のカスタム要素を登録して動かします。各章の最後に、その仕組みの spec と手元での走らせ方を置きます。最終回は、開いている issue を読みます。
 
 全 8 章 · [サイトで読む](https://angular-deep-dive-cyan.vercel.app/series/elements)
 
