@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 57 シリーズ・697 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 58 シリーズ・702 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -65,6 +65,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 55. [SSR のサーバールートの内側：ルートを取り出し、木で照合し、応答を組み立てる](srt/README.md)（5 章）— ルートの取り出し・プリレンダーのパラメータとリダイレクト・ルートの木・manifest と renderAngular・応答とその後片付け・spec と issue
 56. [Signal Forms のフィールドの木：子を作り、配列を追い、古い木と橋をかける](sft/README.md)（5 章）— 子の作り方・配列の追跡と孤児のフィールド・proxy と context・SignalFormControl と extract・spec と issue
 57. [ビルドの前と後：書いた HTML・CSS・class が何に変わるか](bmap/README.md)（3 章）— コンポーネントの JS と DOM・スタイルの束と minify・index.html の仕上げ
+58. [Signal Forms の組み込みの検証：required から minDate まで、1 つの validate に下りるまで](sfv/README.md)（5 章）— 共通の形（when・message・error と isEmpty）・数と長さの上限下限と metadata・日付・ValidationError の型・spec と issue
 
 ## 作り直し方
 

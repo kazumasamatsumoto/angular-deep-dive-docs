@@ -593,7 +593,7 @@ import されたファイルの中身です。10 行目で `./builder` から `e
 156 │ }
 ```
 
-393 行目 → 151 行目。ターゲットは `{my-app:serve:development}` という **波括弧付きの文字列**に変換されて `scheduleByName` に渡ります。この表記が「ターゲット指定」の印で、コロン 2 つの `pkg:builder`（ビルダー直接指定）と区別されます。
+393 行目 → 151 行目。ターゲットは `{my-app:serve:}` という **波括弧付きの文字列**に変換されて `scheduleByName` に渡ります。最後が空なのは、`--configuration` を付けないと architect-command-module.ts 110 行目の `configuration = ''` がそのまま渡るからです。既定の `development` は、このあと node-modules-architect-host.ts 245〜247 行目でオプションを組むときに `defaultConfiguration` から補われます。この表記が「ターゲット指定」の印で、コロン 2 つの `pkg:builder`（ビルダー直接指定）と区別されます。
 
 📄 `angular-cli/packages/angular_devkit/architect/src/schedule-by-name.ts` L46–57 （▶ の行: 49, 55–56）
 
@@ -612,7 +612,7 @@ import されたファイルの中身です。10 行目で `./builder` から `e
 57 │   const id = ++_uniqueId;
 ```
 
-49 行目、`scheduler.schedule(name, {})`。`Architect` のコンストラクタ 364 行目で作った `SimpleScheduler` が、358〜360 行目に並んだレジストリに `'{my-app:serve:development}'` という名前のジョブを順に問い合わせます。先頭が `ArchitectTargetJobRegistry` です。
+49 行目、`scheduler.schedule(name, {})`。`Architect` のコンストラクタ 364 行目で作った `SimpleScheduler` が、358〜360 行目に並んだレジストリに `'{my-app:serve:}'` という名前のジョブを順に問い合わせます。先頭が `ArchitectTargetJobRegistry` です。
 
 📄 `angular-cli/packages/angular_devkit/architect/src/architect.ts` L226–263 （▶ の行: 229, 234, 242–243, 251, 257）
 
@@ -750,7 +750,7 @@ import されたファイルの中身です。10 行目で `./builder` から `e
       - `getArchitectHost()` — L144 — *new WorkspaceNodeModulesArchitectHost(workspace, basePath)*
       - `architectHost.getBuilderNameForTarget(target)` — node-modules-architect-host.ts L124 — *angular.json → "@angular/build:dev-server"*
       - `getArchitect(true).scheduleTarget(target, options)` — architect.ts L388
-        - `scheduleByTarget → scheduleByName('{app:serve:development}')` — schedule-by-name.ts L151 → L36
+        - `scheduleByTarget → scheduleByName('{app:serve:}')` — schedule-by-name.ts L151 → L36
           - `scheduler.schedule(name)` — schedule-by-name.ts L49
             - `ArchitectTargetJobRegistry.get(name)` — architect.ts L226
               - `host.getOptionsForTarget(target)` — node-modules-architect-host.ts L239 — *options + configurations.development*

@@ -700,6 +700,8 @@ angular/angular-cli · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 `angular-memory-plugin.ts` の `resolveId`（77〜78 行目）が、`outputFiles` に `/main.js` があれば `.angular/vite-root/<project>/main.js` という架空のパスに解決し、`load`（92〜93 行目）がそのパスを `/main.js` に戻して `outputFiles.get()` で中身を返します。`server.ts` 155〜157 行目のとおり、この root ディレクトリは存在しません。
 
+呼ばれる時機には注意が要ります。カウンターのアプリ（CLI 22.2.7）で `ng serve` の中を記録すると、`resolveId('/main.js')` と `load` は `GET /` で index.html を返す途中 （`transformIndexHtml` が script を先に変換するとき、importer は index.html）に走り、あとから来た `GET /main.js` では新しく呼ばれず、Vite が変換済みの結果を返していました。返る中身も `Map` の 2291 バイトそのままではなく、Vite が import の書き換えなどを足した 4822 バイトでした。
+
 **Q. /about を直接開いてもアプリが表示されるのはなぜですか？**
 
 `setup-middlewares-plugin.ts` 129 行目の `angularHtmlFallbackMiddleware` が 拡張子の無い URL を `/index.html` に書き換え、130〜131 行目の `createAngularIndexHtmlMiddleware` （index-html-middleware.ts 38 行目）が `outputFiles.get('/index.html')` を返すからです。その後ブラウザで Router が `/about` を解釈します（[13 章](13-boot-spa-navigation.md)）。

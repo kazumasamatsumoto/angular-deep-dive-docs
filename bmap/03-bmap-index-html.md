@@ -711,4 +711,5 @@ nonce.ts 38 行目などの `emitStartTag` がタグを parse5 の形で出し�
 
 ---
 
-← 前: [スタイルの前と後：コンポーネントの CSS とグローバルの CSS、minify・target・ファイル名](02-bmap-styles-bundle.md)
+← 前: [スタイルの前と後：コンポーネントの CSS とグローバルの CSS、minify・target・ファイル名](02-bmap-styles-bundle.md)  
+次: [共通の形：when・message・error と、空の値を検証しない isEmpty](../sfv/01-sfv-common.md) →

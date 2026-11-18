@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（35 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（36 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -793,3 +793,21 @@ await cycle(); // 3 回目に戻す
 | [第 3 回](bmap/03-bmap-index-html.md) | （不具合らしきもの）`index.html` の `<head>` に `<style/>` と書くと、エラーにならずにビルドが通り、ページの中身が全部 `<style>` の文字になる | valid-self-closing-tags.ts 73 行目の SVG の `style` が、HTML の中の `<style/>` にも当たる（表がタグの場所を見ない） | 複製の `src/index.html` に `<style/>` を 1 行足して `ng build -c development`。`<link>` と `<script>` が `<!doctype html>` の前に付く。headless Chrome で `<body>` が空 | 見つからなかった（SVG のタグを許す #27702・#28502 は閉） |
 | [第 3 回](bmap/03-bmap-index-html.md) | （不具合らしきもの）`ngCspNonce` を使うと、`<noscript>` の中の `<link>` の nonce が `fonts.inline` によって付いたり付かなかったりする | index-html-generator.ts のコンストラクタで、全部に通す列の `addNonce` が `fonts.inline` のときだけ入る。CSR の列の `addNonce` は beasties のあと | 複製の `<app-root ngCspNonce="r4nd0m">` を production でビルドすると付き、`fonts: false` にすると付かない | 見つからなかった（link に nonce を付ける #34255・PR #34256 は閉） |
 | [第 3 回](bmap/03-bmap-index-html.md) | （警告どおりの限界）CSS の入れ子が出力に残ると、beasties 0.5.4 がそのセレクターを読めず、重要な CSS から外す | inline-critical-css.ts 38 行目の `warn` が警告を集める。入れ子が残るのは target が新しいときだけ（第 2 回の 3 節） | `.browserslistrc` を「last 2 Chrome versions」にし、`&.on` の規則を足して production。`Could not parse 1 selector … &.on (Empty sub-selector)` | 見つからなかった |
+
+## Signal Forms の組み込みの検証：required から minDate まで、1 つの validate に下りるまで
+
+### [spec と issue を読む：組み込みの検証を固めているテスト](sfv/05-sfv-tests-issues.md) — このシリーズで見つけたもの
+
+このシリーズを書いている途中で見つけたものです。どれも **issue も PR も出していません**。ソースの行は 8576f161ae4 で、origin/main（943ec3bd8d6）とサイトの 22.2.6 の `.mjs` でも同じ形であることを確かめました。gh で探した範囲で、同じことを報告した issue があるものは「既存」に書きました。上の 3 つは第 1〜3 回で見つけたもので、詳しい行と記録はそれぞれの章にあります。
+
+| 何が起きるか | ソースの行 | 再現 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- | --- |
+| `pattern` に `g`（か `y`）フラグの `RegExp` を渡すと、`lastIndex` が前の一致の位置で残り、同じ種類の値でも結果が交互に変わる。doc コメントに注意が無い | `pattern.ts` 51 行目（渡された `RegExp` の `test` をそのまま呼ぶ） | 第 1 回の DEMO と記録 | gh の検索では見つからず | [第 1 回](sfv/01-sfv-common.md) |
+| `max(NaN)` を `max(10)` より先に積むと、`max()` と input の `max` 属性が `NaN` のまま（検証は 10 で正しく落ちる）。積む順で結果が変わる | `api/rules/metadata.ts` 86〜88 行目の reducer（`item < acc` が `NaN` で常に偽） | 第 2 回の DEMO と記録。`max.spec.ts` 119 行目は検証の結果だけを見る | gh の検索では見つからず | [第 2 回](sfv/02-sfv-limits.md) |
+| Invalid Date の下限を先に積むと、`min()` が Invalid Date のまま、`min` 属性が `"NaN-NaN-NaN"`（検証は正しい） | `api/rules/metadata.ts` 101 行目の reducer（`item > acc`）と `min_date.ts` 60 行目（検証だけが飛ばす） | 第 3 回の DEMO と記録 | gh の検索では見つからず | [第 3 回](sfv/03-sfv-dates.md) |
+| `[formField]` を通った parse エラーは、`errors()` と `getError('parse')` で `instanceof NgValidationError`・`instanceof NativeInputParseError` が偽（ただのオブジェクト）。型は `NgValidationError` の和に入っている | `directive/form_field.ts` 187〜191 行目（`{...err, fieldTree, formField}`）。parse エラーを入れた ebae211add3 からこの形（a67e00741c2 で今の場所に移った） | 第 4 回の DEMO（qty に `3a`）、4 節の E6（変えても spec は全部通る） | gh の検索では見つからず | [第 4 回](sfv/04-sfv-errors.md) |
+| `error` に schema の外の 1 つのオブジェクトを渡して 2 つのフィールド（か 2 つのフォーム）に使うと、2 つ目のエラーの `fieldTree` が 1 つ目のフィールドを指す。`errorSummary()` の並びもそこに寄る | `field/validation.ts` 408・411 行目（`??=` で返されたオブジェクトに書き込む）と `required.ts` などの `getOption(config.error, ctx)`（関数でなければ同じオブジェクト） | 第 4 回の DEMO（shareA・shareB）と Node の記録 | gh の検索では見つからず | [第 4 回](sfv/04-sfv-errors.md) |
+| spec の名前が中身と合っていない：`min.spec.ts` 77 行目・`required.spec.ts` 93 行目の「`wraps it as custom`」（包まない）、`email.spec.ts` 15 行目の「`returns requiredTrue error when the value is false`」（email のエラーを見る）、`compat_validation_error.spec.ts` 18 行目の `describe('destroy$')`（中身は `reactiveErrorsToSignalErrors`） | それぞれ 46dbd185664・b8314bd3409・60447945bc5 から。origin/main も同じ | grep と `git log -S` | 無し | [第 1 回](sfv/01-sfv-common.md)・[第 4 回](sfv/04-sfv-errors.md) |
+| `validation_errors.ts` の `WithFieldTree` などの doc コメントが「`field` property」と書いている（プロパティは `fieldTree`） | `validation_errors.ts` 22・32・44 行目。ae0c59028a2（`field` から `fieldTree` に改名）の残り。origin/main も同じ | grep | 無し | [第 4 回](sfv/04-sfv-errors.md) |
+
+ほかに、既存の issue を今のコードで確かめたものがあります。第 4 回の `CompatValidationError` が `fieldTree` と `message` を書かないこと（#71634）、既定の文言を設定する口が無いこと（#66396）です。
