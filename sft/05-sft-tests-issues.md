@@ -304,4 +304,5 @@ proxy.ts・context.ts の `resolve`・compat の構造と検証の状態・`extr
 
 ---
 
-← 前: [SignalFormControl と extract：リアクティブフォームの中の Signal Forms](04-sft-signal-form-control.md)
+← 前: [SignalFormControl と extract：リアクティブフォームの中の Signal Forms](04-sft-signal-form-control.md)  
+次: [コンポーネントの前と後：テンプレートと class は JS に、CSS は styles の文字列に](../bmap/01-bmap-component.md) →

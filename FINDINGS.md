@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（34 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（35 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -779,3 +779,17 @@ await cycle(); // 3 回目に戻す
 | `compatForm` の根の `valid()`・`invalid()` は、compat の子を一度も読む前は `FormControl` の validator を見ない。今は掃除の effect が最初の tick で子を作るので、それより前の同期の読み出しだけで見えるが、#70627 の 1 行の直しを当てると tick のあとも見えたまま（既存の spec は全部通る） | `field/structure.ts` の `computeChildrenMap` の遅延の判断（どの子にもスキーマのルールが無ければ子を作らない、98c5afdb021）と、`compat/src/compat_structure.ts`（compat の子の検証はルールでなく control から来る）、`field/manager.ts` 84 行目 | 第 4 回の DEMO 2、作業木の spec 2 本（manager.ts をそのまま／直したとき） | 無し（#70627 の PR #71659 が開いている） | [第 4 回](sft/04-sft-signal-form-control.md)・[第 1 回](sft/01-sft-structure.md) |
 
 ほかに、既存の issue を今のコードで確かめたものがあります。第 1 回の掃除の effect が遅延で作らなかった子を全部作ること（#70627）、第 2 回の同じ印の要素が 1 つの子を共有すること（#70840）と `keyInParent` が文字列であること（#71616）、第 3 回の `in` が子のキーを見ないこと（#70252）、第 4 回の status の変化を親に知らせないこと（#72009）・compat の `errorSummary`・`parseErrors` が空であること（#71634・#71633）です。小さなものでは、`compat/src/api/extract.ts` の先頭に、b542302a23c のあとで使われなくなった `untracked` の import が残っています（origin/main も同じ）。
+
+## ビルドの前と後：書いた HTML・CSS・class が何に変わるか
+
+### [index.html の前と後：script と link、重要な CSS とフォントの埋め込み、プリレンダーとの違い](bmap/03-bmap-index-html.md) — このシリーズで見つけたもの
+
+各章で、ソースの行と、自分で動かした記録で確かめたものです。「既存」は `gh` で探して見つかった issue・PR です（2026-11-18）。
+
+| 章 | 何が起きるか | ソースの行 | 再現 | 既存の issue / PR |
+| --- | --- | --- | --- | --- |
+| [第 1 回](bmap/01-bmap-component.md) | （不具合ではない・spec の穴）`_nghost-ng-c…` の数字を決める `getComponentId` の材料を固める spec が無く、新しい本家では材料が 1 つ減って、同じコンポーネントの数字が変わる | core/src/render3/definition.ts の `getComponentId`。98b0f3b7207（origin/main と v22.3.0-rc.0）で `componentDef.signals` の 1 行が消えた | 題材の `Card` は 22.2.6 で `c663675611`、その 1 行だけを消した作業木で `c3857098018`（第 1 回の 7 節・10 節） | — |
+| [第 2 回](bmap/02-bmap-styles-bundle.md) | （不具合・22.2.7 まで）Google Fonts の CSS のディスクのキャッシュが効かず、ビルドのたびにダウンロードする | inline-fonts.ts 184 行目が `base64`、258 行目が `hex`。259 行目の前にフォルダを作る行が無く、260 行目の `catch` が失敗を捨てる | 22.2.7 の `inline-fonts.js` の `https.get` を数える偽物に差し替え、同じ URL で 2 回 `processURL`。フォルダの有無にかかわらず 2 回。修正を当てた写しは 1 回 | #34719（閉）、PR #34720（4673cecf00、main。22.2.x に 67595ebff8、22.3.x に 820ca173fe。v22.2.7 より後） |
+| [第 3 回](bmap/03-bmap-index-html.md) | （不具合らしきもの）`index.html` の `<head>` に `<style/>` と書くと、エラーにならずにビルドが通り、ページの中身が全部 `<style>` の文字になる | valid-self-closing-tags.ts 73 行目の SVG の `style` が、HTML の中の `<style/>` にも当たる（表がタグの場所を見ない） | 複製の `src/index.html` に `<style/>` を 1 行足して `ng build -c development`。`<link>` と `<script>` が `<!doctype html>` の前に付く。headless Chrome で `<body>` が空 | 見つからなかった（SVG のタグを許す #27702・#28502 は閉） |
+| [第 3 回](bmap/03-bmap-index-html.md) | （不具合らしきもの）`ngCspNonce` を使うと、`<noscript>` の中の `<link>` の nonce が `fonts.inline` によって付いたり付かなかったりする | index-html-generator.ts のコンストラクタで、全部に通す列の `addNonce` が `fonts.inline` のときだけ入る。CSR の列の `addNonce` は beasties のあと | 複製の `<app-root ngCspNonce="r4nd0m">` を production でビルドすると付き、`fonts: false` にすると付かない | 見つからなかった（link に nonce を付ける #34255・PR #34256 は閉） |
+| [第 3 回](bmap/03-bmap-index-html.md) | （警告どおりの限界）CSS の入れ子が出力に残ると、beasties 0.5.4 がそのセレクターを読めず、重要な CSS から外す | inline-critical-css.ts 38 行目の `warn` が警告を集める。入れ子が残るのは target が新しいときだけ（第 2 回の 3 節） | `.browserslistrc` を「last 2 Chrome versions」にし、`&.on` の規則を足して production。`Could not parse 1 selector … &.on (Empty sub-selector)` | 見つからなかった |
