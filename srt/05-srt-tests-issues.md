@@ -360,4 +360,5 @@ serverRoutes の `*` と `getPrerenderParams` の検査は、90 行目の `inval
 
 ---
 
-← 前: [manifest と renderAngular：ビルドの出力とサーバーの起動をつなぐ](04-srt-manifest-render.md)
+← 前: [manifest と renderAngular：ビルドの出力とサーバーの起動をつなぐ](04-srt-manifest-render.md)  
+次: [子の作り方：FieldNodeStructure が値から子を作る](../sft/01-sft-structure.md) →

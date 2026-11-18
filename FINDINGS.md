@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（33 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（34 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -762,3 +762,20 @@ await cycle(); // 3 回目に戻す
 | matcher のルートの下のサーバールートは、`親の経路/**` の文字列の前方一致で集めるので、`**` を使わずに書いた serverRoute（`shop/*/sale`）は集められない | routes/ng-routes.ts 274・275 行目 | 第 1 回の記録と ng-routes\_spec.ts 383 行目の it | — | [第 1 回](srt/01-srt-extract.md) |
 
 読み方の目安: 上の 2 つ（並びの順の食い違い、先頭の `*`）は、利用者が普通に書ける設定で起きるので影響がいちばん大きいものです。3・4 つめは `%` を経路に書いたときだけです。片付けの抜けは 22.2.7 では直っていますが、それを見張る spec は 44129f66a3 の `test/` にはありません。
+
+## Signal Forms のフィールドの木：子を作り、配列を追い、古い木と橋をかける
+
+### [spec と issue を読む：フィールドの木を固めているテスト](sft/05-sft-tests-issues.md) — このシリーズで見つけたもの
+
+このシリーズを書いている途中で見つけたものです。どれも **issue も PR も出していません**。ソースの行は 8576f161ae4 で、origin/main（ca92b968b8e）とサイトの 22.2.6 の `.mjs` でも同じ形であることを確かめました。再現は、22.2.6 で動かしたページの上のデモと Node の記録、8576f161ae4 の作業木に足した spec（node:test）です。gh で探した範囲で、同じことを報告した issue があるものは「既存」に書きました。
+
+| 何が起きるか | ソースの行 | 再現 | 既存の issue / PR | 章 |
+| --- | --- | --- | --- | --- |
+| 値が文字列・数・`null` のフィールドに `Object.hasOwn(f.name, 'x')`・`Object.getOwnPropertyDescriptor(f.name, 'x')` を呼ぶと TypeError（`Reflect.getOwnPropertyDescriptor called on non-object`）。`Object.keys(f.name)` は `[]` | `field/proxy.ts` 80〜88 行目（82 行目が値をそのまま渡す。90〜93 行目の ownKeys にはある「オブジェクトでなければ」の分かれ道が無い）。e87f423d907 から | 第 3 回の DEMO 1、作業木の spec（`Expected function not to throw`） | 無し | [第 3 回](sft/03-sft-proxy-context.md) |
+| 再帰のスキーマで、同じフィールドに違う深さで付けた 2 つのルールが同じ path を `valueOf`・`stateOf`・`fieldTreeOf` で読むと、2 番目のルールが 1 番目の深さで決まったフィールドを受け取る（B だけなら `next.data`、A と並べると根の `data`） | `field/context.ts` 46〜49・110・112 行目（cache の鍵が path だけ）と 79 行目（深さはモジュールの変数で、鍵にも依存にも入らない）、`field/resolution.ts` 9 行目。b8314bd3409 から | 第 3 回の DEMO 2 と Node の記録、作業木の spec（`Expected $[1] = 'B:D0' to equal 'B:D1'`） | 無し | [第 3 回](sft/03-sft-proxy-context.md) |
+| `SignalFormControl` を `FormGroup` に入れると、最初の変更検知、`markAsPristine()`・`markAsUntouched()`、dirty だったものの `reset()` のたびに、**兄弟の**`FormControl` の dirty・touched が消える | `compat/src/signal_form_control/signal_form_control.ts` 164〜168・182〜186・398・403 行目（親の `markAsUntouched()`・`markAsPristine()` を呼ぶ。リアクティブフォームは親に `_updatePristine`・`_updateTouched` を呼ぶ） | 第 4 回の DEMO 1、作業木の spec 2 本 | 無し | [第 4 回](sft/04-sft-signal-form-control.md) |
+| `ctrl.fieldTree().value.set(v)` 1 回で親の `valueChanges` が 2 回（`reset()` は値が変わると 3 回）。`FormGroup` に入れただけで、最初の変更検知で親の `valueChanges` が 1 回 | 同じファイルの 110〜112 行目（`onUpdate` が数えずに親を呼ぶ）と 287〜296 行目、値の effect の最初の 1 回（118〜128 行目） | 第 4 回の DEMO 1、作業木の spec 2 本 | #72009 の PR #72014（開いている）の書き換えで変わる形 | [第 4 回](sft/04-sft-signal-form-control.md) |
+| `[...ctrl.fieldTree]`・`for...of` で取り出した配列の子は包まれていない木で、`value.set` しても親がその場で追いつかない（`[...ctrl.fieldTree][0] !== ctrl.fieldTree[0]`） | 同じファイルの 535 行目（`typeof prop === 'string'` で `Symbol.iterator` を包まない）と `field/proxy.ts` 57 行目（内側の `tgt.fieldTree` に反復子を当てる） | Node の記録、作業木の spec（`Expected $.c[0] = 'a' to equal 'X'`） | 無し | [第 4 回](sft/04-sft-signal-form-control.md) |
+| `compatForm` の根の `valid()`・`invalid()` は、compat の子を一度も読む前は `FormControl` の validator を見ない。今は掃除の effect が最初の tick で子を作るので、それより前の同期の読み出しだけで見えるが、#70627 の 1 行の直しを当てると tick のあとも見えたまま（既存の spec は全部通る） | `field/structure.ts` の `computeChildrenMap` の遅延の判断（どの子にもスキーマのルールが無ければ子を作らない、98c5afdb021）と、`compat/src/compat_structure.ts`（compat の子の検証はルールでなく control から来る）、`field/manager.ts` 84 行目 | 第 4 回の DEMO 2、作業木の spec 2 本（manager.ts をそのまま／直したとき） | 無し（#70627 の PR #71659 が開いている） | [第 4 回](sft/04-sft-signal-form-control.md)・[第 1 回](sft/01-sft-structure.md) |
+
+ほかに、既存の issue を今のコードで確かめたものがあります。第 1 回の掃除の effect が遅延で作らなかった子を全部作ること（#70627）、第 2 回の同じ印の要素が 1 つの子を共有すること（#70840）と `keyInParent` が文字列であること（#71616）、第 3 回の `in` が子のキーを見ないこと（#70252）、第 4 回の status の変化を親に知らせないこと（#72009）・compat の `errorSummary`・`parseErrors` が空であること（#71634・#71633）です。小さなものでは、`compat/src/api/extract.ts` の先頭に、b542302a23c のあとで使われなくなった `untracked` の import が残っています（origin/main も同じ）。
