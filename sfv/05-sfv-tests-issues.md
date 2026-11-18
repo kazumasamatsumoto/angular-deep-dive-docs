@@ -327,4 +327,5 @@ web の `form_field.spec.ts` の `properties`（184 行目）の中、`maxLength
 
 ---
 
-← 前: [エラーの型：ValidationError を作る関数とクラス、fieldTree が付くまで](04-sfv-errors.md)
+← 前: [エラーの型：ValidationError を作る関数とクラス、fieldTree が付くまで](04-sfv-errors.md)  
+次: [FieldTree と Field：呼べて、プロパティで下りられる木の型](../sfty/01-sfty-tree.md) →

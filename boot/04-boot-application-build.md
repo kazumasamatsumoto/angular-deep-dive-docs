@@ -187,7 +187,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
    TypeScript ソースと、コンパイル結果（JS）を保持するキャッシュです。再ビルドで変わらなかったファイルは再利用されます。
 3. **127〜131 行目：Angular コンパイルの実体を 1 つ作る**
 
-   `createAngularCompilation(jit, browserOnly)`。`aot: true`（既定）なら `AotCompilation` です。これを `PrimaryCompilationContext` に包みます。「Primary」が付くのは、polyfills やサーバ側バンドルなど*複数の esbuild ビルドが同じコンパイル結果を共有する*ためです。
+   `createAngularCompilation(jit, browserOnly)`。既定（環境変数 `NG_BUILD_PARALLEL_TS` を false にしない限り）では `ParallelCompilation` が返り、ワーカースレッドの中で `AotCompilation` を動かします （factory.ts 34〜37 行目、[cli-angular-compilation](../cli/03-cli-angular-compilation.md)）。これを `PrimaryCompilationContext` に包みます。「Primary」が付くのは、polyfills やサーバ側バンドルなど*複数の esbuild ビルドが同じコンパイル結果を共有する*ためです。
 4. **132〜139 行目：`setupBundlerContexts`**
 
    esbuild の実行単位（`BundlerContext`）を複数作ります。次の引用です。
@@ -368,7 +368,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
 178 ▶         const compilation = angularCompilationContext.compilation;
 ```
 
-160 行目、`build.onStart`。esbuild はビルドを始めるたび（初回も再ビルドも）、**どのファイルも解決・読み込みする前に**このフックを呼び、戻りの Promise を待ちます。168〜169 行目、Secondary（polyfills 側）はここで Primary の完了を待つだけ。177〜178 行目、Primary（アプリ本体）は `markAsInProgress()` して `compilation`（`AotCompilation`）を取り出します。
+160 行目、`build.onStart`。esbuild はビルドを始めるたび（初回も再ビルドも）、**どのファイルも解決・読み込みする前に**このフックを呼び、戻りの Promise を待ちます。168〜169 行目、Secondary（polyfills 側）はここで Primary の完了を待つだけ。177〜178 行目、Primary（アプリ本体）は `markAsInProgress()` して `compilation`（既定では `ParallelCompilation`）を取り出します。
 
 📄 `angular-cli/packages/angular/build/src/tools/esbuild/angular/compiler-plugin.ts` L319–345 （▶ の行: 324–326, 341）
 
@@ -507,7 +507,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
 >
 > つまり答えは「**esbuild の中、ただし一番最初**」です。esbuild がビルドを開始 → `onStart` で Angular コンパイラがプロジェクト全体を解析・emit してキャッシュに置く → それが終わってから esbuild が `main.ts` から import を辿り始める。esbuild はファイルを 1 つずつ要求するモデルですが、Angular の AOT は全ファイルが揃わないと解決できない（別ファイルのセレクタを知る必要がある）ので、この順序にする必要があります。
 
-## 5. onLoad：esbuild が要求したファイルに、コンパイル済み JS を返す
+## 5. onLoad：esbuild が要求したファイルに、コンパイル済みのコードを返す
 
 📄 `angular-cli/packages/angular/build/src/tools/esbuild/angular/compiler-plugin.ts` L449–467 （▶ の行: 449–451, 464）
 
@@ -535,7 +535,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
 
 449 行目、`.ts` / `.js`（と `tsx` / `jsx`、`m`/`c` 付き）を読むとき esbuild はこのフックを呼びます。`main.ts` が最初の 1 つで、その `import` を辿って `app.config.ts`、`app.ts`、`@angular/core` の `.mjs` と続きます。451 行目で `fileReplacements`（`environment.ts` の差し替え）を適用し、464 行目で**4 節のキャッシュから取り出します**。ディスクの `.ts` は読みません。
 
-📄 `angular-cli/packages/angular/build/src/tools/esbuild/angular/compiler-plugin.ts` L526–545 （▶ の行: 526, 529, 536, 540–542）
+📄 `angular-cli/packages/angular/build/src/tools/esbuild/angular/compiler-plugin.ts` L526–549 （▶ の行: 526, 529, 536, 540, 542, 548）
 
 ```ts
 526 ▶         } else if (typeof contents === 'string' && (useTypeScriptTranspilation || isJS)) {
@@ -553,14 +553,20 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
 538 │ 
 539 │         let loader: Loader;
 540 ▶         if (useTypeScriptTranspilation || isJS) {
-541 ▶           // TypeScript has transpiled to JS or is already JS
+541 │           // TypeScript has transpiled to JS or is already JS
 542 ▶           loader = 'js';
 543 │         } else if (request.at(-1) === 'x') {
 544 │           // TSX and TS have different syntax rules. Only set if input is a TSX file.
 545 │           loader = 'tsx';
+546 │         } else {
+547 │           // Otherwise, directly bundle TS
+548 ▶           loader = 'ts';
+549 │         }
 ```
 
-526 行目、キャッシュの中身がまだ文字列（TypeScript が emit した直後の JS）なら、529 行目で `javascriptTransformer`（ワーカースレッドで動く後処理。`sideEffects` の注釈付けなど）を通し、536 行目で変換後のバイト列をキャッシュに戻します。2 回目以降は `Uint8Array` なのでこの分岐を飛ばします。540〜542 行目、esbuild には `loader: 'js'` として渡します。**esbuild から見ると、`.ts` ファイルは最初から JS だった**ことになります。esbuild の TypeScript 変換は使われていません。
+どちらの枝に入るかは `useTypeScriptTranspilation` で決まります。この値は aot-compilation.ts 80〜82 行目で `!compilerOptions.isolatedModules` になります。`ng new` が作る tsconfig は `isolatedModules: true` なので、既定では false です。   
+ 既定（false）の場合、526 行目の分岐には入らず、548 行目で esbuild に `loader: 'ts'` を渡します。キャッシュの中身は、Angular の変換（デコレータを `ɵcmp` などに書き換える）だけを済ませた **TypeScript のまま**で、型の注釈を消して JS にするのは esbuild です。   
+`isolatedModules: false` の場合は、TypeScript が JS まで emit した文字列が入っています。526 行目でそれを 529 行目の `javascriptTransformer`（ワーカースレッドで動く後処理。`sideEffects` の注釈付けなど）に通し、536 行目でキャッシュに戻して、540〜542 行目で `loader: 'js'` として渡します。
 
 ## 6. バンドルの実行と「初期ファイル」の決定
 
@@ -594,7 +600,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
 258 │       }
 ```
 
-2 節 148 行目の `bundleAll` が各 `BundlerContext` に対して呼ぶのがこの関数です。242 行目、初回は esbuild の `context()` を作り、248 行目で `rebuild()`。2 回目以降は 236〜238 行目、既存の context で `rebuild()`。esbuild はこの context 内で 前回の解析結果を保持し、変わらなかったモジュールの処理を省きます。254 行目は watch 無し（`ng build`）の経路です。`write: false`（引用外、共通オプション）なので esbuild は**結果をメモリに返すだけ**で、ここでもディスクには書きません。
+2 節 148 行目の `bundleAll` が各 `BundlerContext` に対して呼ぶのがこの関数です。242 行目、初回は esbuild の `context()` を作り、248 行目で `rebuild()`。2 回目以降は 236〜238 行目、既存の context で `rebuild()`。esbuild はこの context 内で 前回の解析結果を保持し、変わらなかったモジュールの処理を省きます。254 行目の `build()` は `useContext` が false のときだけの経路です。アプリ本体の `BundlerContext` は setup-bundling.ts 70 行目で `true` を渡して作られるので、watch 無しの `ng build` でも 242〜248 行目の `context()` → `rebuild()` を通ります。`write: false`（引用外、共通オプション）なので esbuild は**結果をメモリに返すだけ**で、ここでもディスクには書きません。
 
 📄 `angular-cli/packages/angular/build/src/tools/esbuild/bundler-context.ts` L324–356 （▶ の行: 326, 329, 335, 341, 343, 346, 352）
 
@@ -646,7 +652,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
   - `runEsBuildBuildAction(action, options)` — build-action.ts L53
     - `withProgress('Building...', () => action())` — build-action.ts L98
       - `executeBuild(normalizedOptions, context)` — execute-build.ts L47
-        - `createAngularCompilation(jit, browserOnly)` — execute-build.ts L127 — *AotCompilation を 1 つ*
+        - `createAngularCompilation(jit, browserOnly)` — execute-build.ts L127 — *ParallelCompilation を 1 つ*
         - `setupBundlerContexts(...)` — setup-bundling.ts L34 — *本体 / polyfills / styles の BundlerContext*
           - `createBrowserCodeBundleOptions(...)` — application-code-bundle.ts L40 — *entryPoints、supported、plugins: \[createCompilerPlugin\]*
         - `BundlerContext.bundleAll([...])` — execute-build.ts L148
@@ -654,7 +660,7 @@ angular/angular-cli · 読了 約 13 分 · 中核 · [サイトで読む（デ�
             - `onStart` — compiler-plugin.ts L160 — *esbuild が最初に呼ぶ*
               - `compilation.initialize(tsconfig, ...)` — compiler-plugin.ts L324 → aot-compilation.ts L64 — *new NgtscProgram → analyzeAsync*
               - `compilation.emitAffectedFiles()` — compiler-plugin.ts L389 → aot-compilation.ts L355-375 — *@Component → ɵcmp、typeScriptFileCache.set*
-            - `onLoad(main.ts)`, `onLoad(app.ts)`, … — compiler-plugin.ts L449 — *typeScriptFileCache.get → loader 'js'*
+            - `onLoad(main.ts)`, `onLoad(app.ts)`, … — compiler-plugin.ts L449 — *typeScriptFileCache.get → loader 'ts'*
           - `initialFiles` を決める — bundler-context.ts L325-352 — *main / polyfills が entrypoint: true*
       - `executePostBundleSteps(...)` — execute-build.ts L366 — *index.html 生成（次章）*
     - `yield* emitOutputResults(result, outputOptions)` — build-action.ts L172-178 — *Result (kind: Full) が前章の for await に届く*
@@ -667,11 +673,11 @@ esbuild の**中**で、かつ**一番最初**です。`createCompilerPlugin` �
 
 **Q. ɵcmp はどこで作られますか？**
 
-`aot-compilation.ts` 355 行目、`angularCompiler.prepareEmit().transformers` が返す `@angular/compiler-cli` の変換器が、370〜375 行目の `emitNextAffectedFile` の中で 各クラスのデコレータを `static ɵcmp = ɵɵdefineComponent(...)` に書き換えます。CLI は変換器を*呼ぶ*だけで、`ɵcmp` の中身を決めるのは Angular コンパイラです （[ivy-overview](../ivy/02-ivy-overview.md)）。
+`aot-compilation.ts` 355 行目、`angularCompiler.prepareEmit().transformers` が返す `@angular/compiler-cli` の変換器が各クラスのデコレータを `static ɵcmp = ɵɵdefineComponent(...)` に書き換えます。変換器を当てる場所は、`isolatedModules: true`（既定）なら 417 行目以降の `ts.transform` （Angular の変換だけ）、false なら 370〜375 行目の `emitNextAffectedFile` の中です。CLI は変換器を*呼ぶ*だけで、`ɵcmp` の中身を決めるのは Angular コンパイラです （[ivy-overview](../ivy/02-ivy-overview.md)）。
 
-**Q. esbuild は TypeScript を変換できるのに、なぜ使っていないのですか？**
+**Q. TypeScript から JS への変換は、TypeScript と esbuild のどちらがしますか？**
 
-`onLoad`（compiler-plugin.ts 540〜542 行目）が esbuild に渡すのは `loader: 'js'` で、中身は 464 行目でキャッシュから取った**すでに JS になったコード**です。Angular のデコレータ変換と型チェックは TypeScript の API（`ts.createEmitAndSemanticDiagnosticsBuilderProgram`、aot-compilation.ts 148 行目）が必要で、esbuild の変換器ではできません。
+`isolatedModules` で変わります。`true`（`ng new` の既定）なら esbuild です。`onLoad`（compiler-plugin.ts 548 行目）は `loader: 'ts'` を渡し、中身は 464 行目でキャッシュから取った、Angular の変換だけが済んだ TypeScript です。`false` なら TypeScript が JS まで emit し、540〜542 行目で `loader: 'js'` になります。どちらでも、Angular のデコレータ変換と型チェックには TypeScript の API（`ts.createEmitAndSemanticDiagnosticsBuilderProgram`、aot-compilation.ts 148 行目）を使います。esbuild は型を見ずに注釈を消すだけなので、この 2 つはできません。
 
 **Q. zone.js を polyfills に入れると、出力の JS は変わりますか？**
 
@@ -679,14 +685,14 @@ esbuild の**中**で、かつ**一番最初**です。`createCompilerPlugin` �
 
 **Q. ファイルを 1 つ変えたとき、全部やり直しますか？**
 
-やり直しません。esbuild 側は `bundler-context.ts` 236〜238 行目で前回の `context` の `rebuild()` を使い、Angular 側は `aot-compilation.ts` 135 行目で `this.#state?.angularProgram`（前回のプログラム）を `NgtscProgram` に渡し、148 行目の BuilderProgram と 370 行目の `emitNextAffectedFile` で影響を受けたファイルだけ emit します。`SourceFileCache`（execute-build.ts 122 行目）が変更ファイルを追跡しています。
+やり直しません。esbuild 側は `bundler-context.ts` 236〜238 行目で前回の `context` の `rebuild()` を使い、Angular 側は `aot-compilation.ts` 135 行目で `this.#state?.angularProgram`（前回のプログラム）を `NgtscProgram` に渡し、148 行目の BuilderProgram で影響を受けたファイルだけを emit します（`isolatedModules: false` なら 370 行目の `emitNextAffectedFile`、true なら 417 行目以降の Angular の変換だけ）。`SourceFileCache`（execute-build.ts 122 行目）が変更ファイルを追跡しています。
 
 ## 読み終えて
 
 - `buildApplicationInternal` → `runEsBuildBuildAction` → `executeBuild` の 3 段。`runEsBuildBuildAction` が「1 回ビルドする関数」を初回と変更ごとに呼び、`yield` する
-- `executeBuild` は `AotCompilation` を 1 つ、`BundlerContext` を複数（本体・polyfills・styles）作り、`bundleAll` で esbuild を走らせる
+- `executeBuild` は Angular のコンパイル（既定は `ParallelCompilation`）を 1 つ、`BundlerContext` を複数（本体・polyfills・styles）作り、`bundleAll` で esbuild を走らせる
 - AOT は esbuild の `onStart` の中。`new NgtscProgram` → `analyzeAsync` → `prepareEmit().transformers` で `ɵcmp` を生成 → 全ファイルをキャッシュへ
-- `onLoad` はキャッシュから JS を返す。esbuild から見ると `.ts` は最初から JS
+- `onLoad` はキャッシュからコードを返す。既定（`isolatedModules: true`）では `loader: 'ts'` で、型の注釈を消すのは esbuild
 - 出力はメモリ上（`write: false`）。`main` と `polyfills` が `entrypoint: true` の `initialFiles` になり、次章で `<script>` に変わる
 
 ビルドの中で呼ばれるテンプレートコンパイラそのものは [テンプレートコンパイラの内側](../compiler/README.md)のシリーズで読みます。

@@ -248,13 +248,13 @@ angular/angular-cli · 読了 約 10 分 · 基礎 · [サイトで読む（デ�
 
 ## 5. IndexHtmlGenerator：プラグインの列
 
-📄 `angular-cli/packages/angular/build/src/utils/index-file/index-html-generator.ts` L81–110 （▶ の行: 88, 91–92, 95, 98–100, 104, 108）
+📄 `angular-cli/packages/angular/build/src/utils/index-file/index-html-generator.ts` L81–110 （▶ の行: 84, 88, 91–92, 95, 98–100, 104, 108）
 
 ```ts
  81 │   constructor(readonly options: IndexHtmlGeneratorOptions) {
  82 │     const extraCommonPlugins: IndexHtmlGeneratorPlugin[] = [];
  83 │     if (options?.optimization?.fonts.inline) {
- 84 │       extraCommonPlugins.push(inlineFontsPlugin(this), addNonce);
+ 84 ▶       extraCommonPlugins.push(inlineFontsPlugin(this), addNonce);
  85 │     }
  86 │ 
  87 │     // Common plugins
@@ -283,7 +283,7 @@ angular/angular-cli · 読了 約 10 分 · 基礎 · [サイトで読む（デ�
 110 │   }
 ```
 
-88 行目、共通プラグインは `augmentIndexHtmlPlugin`（タグの挿入、この章の本体）→ フォントのインライン化（`optimization.fonts.inline` のとき）→ `postTransformPlugin`（2 節 399 行目の `transformer`）。91〜92 行目、`inlineCritical` なら CSR 用にクリティカル CSS を `<style>` として埋め込むプラグイン。95 行目、CSP 用の `nonce` 属性を付けるプラグイン。98〜100 行目、SSR/prerender ありのとき、CSR 側には `ngcm` 属性、SSR 側にはイベントのリプレイ契約スクリプト （1 節の出力にあった `id="ng-event-dispatch-contract"`）。104〜108 行目、`autoCsp` は最後です。
+88 行目、共通プラグインは `augmentIndexHtmlPlugin`（タグの挿入、この章の本体）→ フォントのインライン化と、それが足した `<style>` への `nonce`（`optimization.fonts.inline` のとき、84 行目で 2 つ一緒に足す）→ `postTransformPlugin`（2 節 399 行目の `transformer`）。91〜92 行目、`inlineCritical` なら CSR 用にクリティカル CSS を `<style>` として埋め込むプラグイン。95 行目、CSP 用の `nonce` 属性を付けるプラグイン。98〜100 行目、SSR/prerender ありのとき、CSR 側には `ngcm` 属性、SSR 側にはイベントのリプレイ契約スクリプト （1 節の出力にあった `id="ng-event-dispatch-contract"`）。104〜108 行目、`autoCsp` は最後です。
 
 📄 `angular-cli/packages/angular/build/src/utils/index-file/index-html-generator.ts` L112–131 （▶ の行: 112–113, 117–121）
 
@@ -597,12 +597,12 @@ HTML を正規表現で切り貼りするのではなく、`parse5` ベースの
       - `new IndexHtmlGenerator({ indexPath, entrypoints: insertionOrder, ... })` — L101 — *readAsset をメモリ読みに差し替え（L119）*
       - `indexHtmlGenerator.process({ baseHref, lang, files, hints })` — L121 → utils/index-file/index-html-generator.ts L112
         - `readIndex(src/index.html)` — L113 — *あなたの HTML をディスクから読む*
-        - `runPlugins(content, this.plugins, ...)` — L117 — *augment → fonts → postTransform*
+        - `runPlugins(content, this.plugins, ...)` — L117 — *augment →（fonts → addNonce）→ postTransform*
           - `augmentIndexHtml({ html, entrypoints, files, hints, loadOutputFile, ... })` — L191 → augment-index-html.ts L85
             - entrypoints × files で `scripts` / `stylesheets` を並べる — augment-index-html.ts L113-137
             - `scriptTags`（type="module" / defer）、`headerLinkTags`、`bodyLinkTags` を作る — L139-242
             - `htmlRewritingStream(html)` で head/base/body の開始・終了に emitRaw — L245-334
-        - `runPlugins(content, this.csrPlugins, ...)` — L119 — *nonce、inlineCritical、ngcm 属性*
+        - `runPlugins(content, this.csrPlugins, ...)` — L119 — *inlineCritical → nonce（SSR/prerender のときだけ ngcm 属性も）*
     - `createOutputFile('index.html', csrContent, Browser)` — execute-post-bundle.ts L110-112 — *出力ファイルの列に加わる*
 
 ## 聞かれそうな質問
@@ -621,7 +621,7 @@ HTML を正規表現で切り貼りするのではなく、`parse5` ベースの
 
 **Q. &lt;base href="/"&gt; を書き忘れたらどうなりますか？**
 
-`augmentIndexHtml` 264〜266 行目で、`<head>` の開始タグ直後に `<base href="...">` が挿入されます（`baseHref` オプションの既定は `'/'`）。すでに書いてあれば 276〜277 行目で `href` だけが上書きされます。`ng build --base-href /app/` が効くのはこの 2 か所です。
+`augmentIndexHtml` 264〜266 行目で、`<head>` の開始タグ直後に `<base href="...">` が挿入されます。ただし 264 行目の条件は `isString(baseHref)` で、`baseHref` オプションには既定がありません（application builder の schema.json に default が無く、tools/esbuild/index-html-generator.ts 43 行目はオプションをそのまま渡します）。`--base-href` を付けなければ `<base>` は足されず、`ng new` が src/index.html に書いておく `<base href="/">` がそのまま残ります。すでに書いてあれば 276〜277 行目で `href` だけが上書きされます。`ng build --base-href /app/` が効くのはこの 2 か所です。
 
 **Q. ng serve の HTML に modulepreload が無いのはなぜですか？**
 

@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 58 シリーズ・702 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 59 シリーズ・708 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -66,6 +66,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 56. [Signal Forms のフィールドの木：子を作り、配列を追い、古い木と橋をかける](sft/README.md)（5 章）— 子の作り方・配列の追跡と孤児のフィールド・proxy と context・SignalFormControl と extract・spec と issue
 57. [ビルドの前と後：書いた HTML・CSS・class が何に変わるか](bmap/README.md)（3 章）— コンポーネントの JS と DOM・スタイルの束と minify・index.html の仕上げ
 58. [Signal Forms の組み込みの検証：required から minDate まで、1 つの validate に下りるまで](sfv/README.md)（5 章）— 共通の形（when・message・error と isEmpty）・数と長さの上限下限と metadata・日付・ValidationError の型・spec と issue
+59. [Signal Forms の型を読む：FieldTree から SchemaPath まで、api/types.ts の 1000 行](sfty/README.md)（6 章）— FieldTree と Field・FieldState の読み口・Compat と binding の型・PathKind と SchemaPath・validateHttp と debounce・型の spec と issue
 
 ## 作り直し方
 
