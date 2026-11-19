@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 62 シリーズ・726 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 63 シリーズ・732 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -70,6 +70,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 60. [Router のディレクティブとイベントの残り：RouterLink・RouterLinkActive・RouterOutlet・events.ts を行で埋める](rdir/README.md)（6 章）— RouterLink の入力と href・RouterLinkActive の残り・RouterOutlet の入力と detach / attach・events.ts の各クラス・ExtraOptions と RouterModule・spec と issue
 61. [@angular/ssr の読み残し：provideServerRendering・リクエストハンドラ・CommonEngine・ビルド側のワーカーを行で埋める](ssrl/README.md)（6 章）— provideServerRendering と withRoutes / withAppShell・createRequestHandler と Node の入口・CommonEngine と性能の記録・i18n と URL の小道具・prerender のワーカーとサーバー起動・spec と issue
 62. [Router の読み残し：UrlTree と RouterState の小道具・provideRouter の残り・Router クラス・読み込みとガードを行で埋める](rtl/README.md)（6 章）— UrlTree / ParamMap と木の小道具・ActivatedRoute の Observable と継承・provideRouter と RouterModule の残り・Router クラスと Navigation の型・読み込み・事前読み込み・再利用・関数ガード・spec と issue
+63. [application builder の読み残し：options の正規化・結果の形・BundlerContext・キャッシュ・小さなプラグインを行で埋める](abl/README.md)（6 章）— normalizeOptions・ExecutionResult と Result の種類・BundlerContext と後処理の残り・永続キャッシュ・esbuild の小さなプラグインと検査・spec と issue
 
 ## 作り直し方
 

@@ -93,7 +93,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 303 │   }
 ```
 
-`outputMode`（`"static"` か `"server"`）を書くと、古い `prerender` と `appShell` の設定は 262〜274 行目で無視されます。268 行目、`server`（`src/main.server.ts`）があれば `prerender = true`。296 行目で `discoverRoutes` が既定の `true` になり、ルートは Router の設定から取り出すことになります。つまり `outputMode` を書いた時点で、static でも server でも**プリレンダーは必ず走ります**。違いは何を出力するかです。
+`outputMode`（`"static"` か `"server"`）を書くと、古い `prerender` の設定は 262〜274 行目で上書きされ、`appShell` には「考慮されない」という警告が出ます（ただし appShell の値はそのあとも使われ、static と一緒に書くと /shell をプリレンダーしようとします。[normalizeOptions の章](../abl/01-abl-options.md)の 3 節）。268 行目、`server`（`src/main.server.ts`）があれば `prerender = true`。296 行目で `discoverRoutes` が既定の `true` になり、ルートは Router の設定から取り出すことになります。つまり `outputMode` を書いた時点で、static でも server でも**プリレンダーは必ず走ります**。違いは何を出力するかです。
 
 📄 `angular-cli/packages/angular/build/src/builders/application/options.ts` L324–340 （▶ の行: 336–339）
 

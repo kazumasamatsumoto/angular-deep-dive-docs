@@ -391,4 +391,5 @@ url\_tree.spec.ts の 158〜161 行目のように、関数が Router の一部�
 
 ---
 
-← 前: [読み込み・事前読み込み・再利用・関数ガード：小さな関数を行で埋める](05-rtl-load-guard.md)
+← 前: [読み込み・事前読み込み・再利用・関数ガード：小さな関数を行で埋める](05-rtl-load-guard.md)  
+次: [normalizeOptions：angular.json の options がビルドの設定になるまで](../abl/01-abl-options.md) →
