@@ -437,4 +437,5 @@ prerender.ts には unit の spec が無いので、e2e の `tests/e2e/tests/bui
 
 ---
 
-← 前: [ビルド側のワーカー：ルートの取り出し・prerender の描画・サーバーの起動・fetch の差し替え](05-ssrl-build-workers.md)
+← 前: [ビルド側のワーカー：ルートの取り出し・prerender の描画・サーバーの起動・fetch の差し替え](05-ssrl-build-workers.md)  
+次: [UrlTree・UrlSegment・ParamMap：URL の木の公開 API と、木の小道具](../rtl/01-rtl-url-tree.md) →

@@ -619,7 +619,7 @@ update ブロックの命令の例です。78 行目で前回の値と比較し�
 
 3 節 248 行目と 253 行目の `notify` は、`ChangeDetectionSchedulerImpl` に 「`setTimeout`/`rAF` で tick を予約させる」副作用も持ちます（[次章](12-boot-click-to-paint.md)で読む `shouldScheduleTick`）。しかし 741 行目の `tick()` が同期的に先に走り、終わると `afterTick`（85 行目）が流れます。92〜93 行目、スケジューラ自身が走らせた tick ではないので `cleanup()`、予約はキャンセルされます。結果として最初の描画で `tick` は 1 回だけです。
 
-開発モードでは 3 節 568〜572 行目の `view.checkNoChanges()` が続きます。`checkNoChangesInternal` → `detectChangesInternal(lView)`（Global モード）で、`Default` 戦略のコンポーネントは `CheckAlways` により 509〜511 行目で再度 refresh され、テンプレート関数が **3 回目**（Update、ただし checkNoChanges モード）呼ばれます。値が 2 回目と違えば `NG0100: ExpressionChangedAfterItHasBeenCheckedError` です （[checkNoChanges の章](../cd/07-cd-check-no-changes.md)）。本番ビルドでは `ngDevMode` が `false` なので 2 回です。
+開発モードでは 3 節 568〜572 行目の `view.checkNoChanges()` が続きます。`checkNoChangesInternal` → `detectChangesInternal(lView)`（Global モード）で、`changeDetection: ChangeDetectionStrategy.Eager`（旧 Default）を指定したコンポーネントは `CheckAlways` により 509〜511 行目で再度 refresh され、テンプレート関数が **3 回目**（Update、ただし checkNoChanges モード）呼ばれます。v22 の既定は OnPush（definition.ts 352 行目の `onPush: changeDetection !== Eager`）なので、何も指定しないコンポーネントは汚れていなければ refresh されず、開発モードでも 2 回のままです。値が 2 回目と違えば `NG0100: ExpressionChangedAfterItHasBeenCheckedError` です （[checkNoChanges の章](../cd/07-cd-check-no-changes.md)）。本番ビルドでは `ngDevMode` が `false` なので 2 回です。
 
 > **🧪 DEMO — 子コンポーネントの数を変えると、テンプレート関数が呼ばれる順はどうなるか**
 >
@@ -655,7 +655,7 @@ update ブロックの命令の例です。78 行目で前回の値と比較し�
 
 **Q. 最初の描画で、テンプレート関数は何回呼ばれますか？**
 
-本番では 2 回です。1 回目は render.ts 107 行目から `RenderFlags.Create`（`rf = 1`）で、2 回目は change\_detection.ts 242 行目から `RenderFlags.Update`（`rf = 2`）で。開発モードでは application\_ref.ts 568〜572 行目の `checkNoChanges` が `Default` 戦略のコンポーネントを もう 1 回 Update で呼ぶので 3 回です。`rf = 3` で 1 回、という呼び方は起動時にはありません。
+本番では 2 回です。1 回目は render.ts 107 行目から `RenderFlags.Create`（`rf = 1`）で、2 回目は change\_detection.ts 242 行目から `RenderFlags.Update`（`rf = 2`）で。開発モードでは application\_ref.ts 568〜572 行目の `checkNoChanges` が、Eager 戦略（旧 Default）のコンポーネントだけを もう 1 回 Update で呼ぶので 3 回です。既定の OnPush のままなら開発モードでも 2 回です。`rf = 3` で 1 回、という呼び方は起動時にはありません。
 
 **Q. constructor と ngOnInit はそれぞれどの pass で呼ばれますか？**
 
@@ -683,7 +683,7 @@ createLView（construction.ts 193〜194 行目）でルート LView に `Dirty |
 - 1 回目は `renderView`（Create）。TNode と DOM を作り、`renderChildComponents` で木全体を先に回る
 - 2 回目は `_loadComponent` の `tick()` → `refreshView`（Update）。ルート LView は最初から `RefreshView` が立っているので Targeted モードでも選ばれる
 - `ngOnInit` は親の `refreshView` の 257〜261 行目、自分の update pass の直前
-- 開発モードは `checkNoChanges` で 3 回目。本番は 2 回
+- 既定の OnPush なら開発モードでも本番でも 2 回。Eager 戦略なら開発モードだけ `checkNoChanges` で 3 回目
 
 ---
 

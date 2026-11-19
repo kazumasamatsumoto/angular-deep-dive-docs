@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（37 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（38 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -831,3 +831,25 @@ await cycle(); // 3 回目に戻す
 | B7 | 44129f66a3 の generateRedirectStaticPage は `"` を含むリダイレクト先で属性を壊す | utils.ts 34 行目から | 第 5 回の 4 節（2 つの版に同じ URL） | main の 537a47a482 で直っている（22.2.7 に入っている） |
 
 振る舞いとして確かめたが食い違いではないものも 2 つあります。prerender 中にコンポーネントが資産でない相対 URL を `fetch('/…')` で直接呼ぶと、fetch-patch が受け取った文字列をそのまま元の fetch に回し、`Failed to parse URL from /api/hello` で失敗します（server.ts を起動した設定でも同じ。HttpClient の呼び出しは先に絶対 URL になるので届く）。また、prerender の描画では `inject(REQUEST)` が `null` です。どちらも第 5 回の記録にあります。
+
+## Router の読み残し：UrlTree と RouterState の小道具・provideRouter の残り・Router クラス・読み込みとガードを行で埋める
+
+### [spec と issue を読む：Router の読み残しを固めているテスト](rtl/06-rtl-tests-issues.md) — 7. このシリーズで見つけたもの
+
+どれも 8576f161ae4 の行を読み、本物の @angular/router 22.2.6（ページのデモ・Node）か作業木の spec で確かめたものです。gh で同じ話の issue を探し、見つからなかったものには「既存なし」と書いています。
+
+|   | 何が起きるか | 行 | 確かめ方 | 既存の issue |
+| --- | --- | --- | --- | --- |
+| A1 | `ParamMap.get` の型は `string \| null` だが、値が空の配列なら `undefined`、数なら数のまま返る | shared.ts 61 行目の型、86〜93 行目の `Array.isArray(v) ? v[0] : v` | [第 1 回](rtl/01-rtl-url-tree.md)のデモと Node。spec なし | 既存なし |
+| A2 | `UrlSegment.parameters` の doc の例は `{id: 33}` だが、実際は文字列の `'33'` | url\_tree.ts 370 行目 | 第 1 回のデモと Node | 既存なし |
+| A3 | `getInherited` の doc コメントは「既定では親の data を継承しない」と書くが、既定値は v22.0.0 から `'always'` | router\_state.ts 297 行目の既定値、307〜310 行目のコメント | [第 2 回](rtl/02-rtl-router-state.md)のデモ（既定で子が親の params・data・title を受け取る） | 既存なし（ガイドだけ直った） |
+| A4 | 根の `ActivatedRoute.url` の初期値は `[UrlSegment('')]`、`snapshot.url` は `[]`。比べるのが snapshot なので、その後も揃わない | router\_state.ts 79 行目と 107 行目 | 第 2 回のデモ（開発・本番） | 既存なし |
+| A5 | `withEnabledBlockingInitialNavigation()` と `withDisabledInitialNavigation()` を両方渡すと、順番によらず最初のナビゲーションが走る。警告もエラーも出ない（`provideHttpClient` は同じ種類の重複を調べている） | provide\_router.ts 395〜429 行目（423 行目の `initialNavigation()`）、469〜477 行目 | [第 3 回](rtl/03-rtl-provide-router.md)のデモと Node（開発・本番） | 既存なし |
+| A6 | `withDebugTracing` は本番ビルドで provider を 1 つも返さないが、doc に書かれていない（`enableTracing` も同じ）。spec なし | provide\_router.ts 490〜491 行目の doc、515・534〜536 行目 | 第 3 回のデモ（本番のページで 0 個） | 既存なし |
+| B1 | `Router.lastSuccessfulNavigation` が書き込める signal のまま返る（`currentNavigation` は `asReadonly()`） | router.ts 378〜380 行目と 177 行目、navigation\_transition.ts 349 行目 | [第 4 回](rtl/04-rtl-router-class.md)のデモと作業木の spec（`.set` が関数） | 既存なし |
+| B2 | constructor のコメントは「破棄されると events は complete される」と書くが、`dispose` は `unsubscribe()` を呼ぶ。破棄のあとの `router.events.subscribe()` は `ObjectUnsubscribedError` を投げる。spec なし | router.ts 184〜186 行目のコメント、412〜416 行目 | 第 4 回のデモ | 既存なし |
+| B3 | `NoPreloading` の doc は「既定で有効」と書くが、`withPreloading` を渡さなければ `RouterPreloader` 自体が作られない。`RouterPreloader` の doc の「すべてのナビゲーションのイベント」も、実際は `NavigationEnd` だけ | router\_preloader.ts 73 行目、90〜92 行目と 112 行目 | [第 5 回](rtl/05-rtl-load-guard.md)のデモ | 既存なし |
+| B4 | `mapToCanActivate` などの `mapTo*` を通す spec が packages/router/test に 1 つもない。`mapToCanMatch` などの doc は、例のファイルに無い `region='CanActivate'` を指す | utils/functional\_guards.ts 28・61・79 行目 | grep と bazel の filter（0 件）、作業木で書き足した spec は通った | 既存なし |
+| B5 | export された `loadChildren` の doc は「@angular-devkit/build-angular が使う」と書くが、今の呼び出し元は angular-cli の @angular/ssr（ng-routes.ts） | router\_config\_loader.ts 117〜119 行目 | angular-cli を grep | 既存なし |
+
+もう 1 つ、括弧の中の primary の先頭のセグメントに `:` があると、serialize してから parse し直したとき名前付きの outlet に化ける問題（url\_tree.ts 509〜519 行目）は、8576f161ae4 では再現しますが、本家ではすでに 011675e417d で直っていて、22.2.4 以降（このサイトの 22.2.6 も）には入っています（[第 1 回](rtl/01-rtl-url-tree.md)）。

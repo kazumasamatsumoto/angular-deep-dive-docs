@@ -302,7 +302,7 @@ angular/angular · 読了 約 14 分 · 中核 · [サイトで読む（デモ�
 
 1. **379〜380 行目：document.querySelector('app-root')**
 
-   文字列なので `this.doc.querySelector`。`this.doc` は `DOCUMENT` トークン、[8 章](08-boot-injectors.md)で見たプラットフォームインジェクタの `_document()` が返した `document` です。index.html に `<app-root>` が無ければ 381〜387 行目で `NG0-ROOT_NODE_NOT_FOUND: The selector "app-root" did not match any elements` が投げられます。
+   文字列なので `this.doc.querySelector`。`this.doc` は `DOCUMENT` トークン、[8 章](08-boot-injectors.md)で見たプラットフォームインジェクタの `_document()` が返した `document` です。index.html に `<app-root>` が無ければ 381〜387 行目で `NG05104: The selector "app-root" did not match any elements`（platform-browser の `ROOT_NODE_NOT_FOUND = -5104`）が投げられます。
 2. **388〜390 行目：textContent = ''**
 
    `preserveContent` が `false` なら中身を空にします。174〜181 行目、`preserveContent` は `PRESERVE_HOST_CONTENT` トークン （hydration が有効なとき `true`）か ShadowDom のときだけ `true` です。通常の CSR では index.html に書いた「Loading...」はここで消えます。
