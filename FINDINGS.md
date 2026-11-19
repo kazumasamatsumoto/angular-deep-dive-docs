@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（36 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（37 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -811,3 +811,23 @@ await cycle(); // 3 回目に戻す
 | `validation_errors.ts` の `WithFieldTree` などの doc コメントが「`field` property」と書いている（プロパティは `fieldTree`） | `validation_errors.ts` 22・32・44 行目。ae0c59028a2（`field` から `fieldTree` に改名）の残り。origin/main も同じ | grep | 無し | [第 4 回](sfv/04-sfv-errors.md) |
 
 ほかに、既存の issue を今のコードで確かめたものがあります。第 4 回の `CompatValidationError` が `fieldTree` と `message` を書かないこと（#71634）、既定の文言を設定する口が無いこと（#66396）です。
+
+## @angular/ssr の読み残し：provideServerRendering・リクエストハンドラ・CommonEngine・ビルド側のワーカーを行で埋める
+
+### [spec と issue を読む：@angular/ssr の残りを固めているテスト](ssrl/06-ssrl-tests-issues.md) — 7. このシリーズで見つけたもの
+
+どれも 44129f66a3 の行を読み、Node か本物の ng build（@angular/build・@angular/ssr 22.2.7）で確かめたものです。gh で同じ話の issue と PR を探し、見つからなかったものには「既存なし」と書いています。
+
+|   | 何が起きるか | 行 | 確かめ方 | 既存の issue |
+| --- | --- | --- | --- | --- |
+| A1 | CommonEngine に `enablePerformanceProfiler: true` を付けて 2 つのリクエストを重ねると、先に始まって後に終わった方の render が `SyntaxError: The "start:🅰️:Render Page" performance mark has not been set` で reject する。表（printPerformanceLogs）にもほかのリクエストの行が混ざる | peformance-profiler.ts 44〜46 行目で mark の名前がラベルだけで決まり、52〜56 行目の finally で後の方が先の方の start の mark を消す。15 行目はプロセスの measure を全部読む | 第 3 回の記録（150 ms と 40 ms の render を 30 ms ずらして重ねる） | 閉じた #27374 が同じ例外（再現できず閉じられている）。開いているものはなし |
+| A2 | createRequestHandler / createNodeRequestHandler の JSDoc の例は `export default` だが、dev-server と prerender が読むのは名前つきの `reqHandler` だけ。例どおりに書くと ng serve は警告を出して内部の中間処理に切り替わる | src/handler.ts 31・39 行目、node/src/handler.ts 37 行目ほか。読む側は ssr-middleware.ts 105〜106 行目と launch-server.ts 22 行目 | 第 2 回の記録（export default だけの server.ts） | 既存なし |
+| B1 | outputMode を書かない設定で `prerender.routesFile` と withAppShell を一緒に使うと、app shell の印が落ち、index.html が app shell にならない（index.html が出力されず、ng-app-shell/index.html が別に出る） | prerender.ts 438 行目の return が appShellRoute を返さない（b2e2be052f が 427 行目の return にだけ足した）。main でも同じ | 第 5 回の「outputMode なし ＋ routesFile」と「prerender: true」の 2 つのビルド。M7 で直しても 615 件とも通る | 既存なし（"routesFile appShell" ほかで検索） |
+| B2 | routesFile の末尾に改行があると、空の行が `/` のルートになり、RenderMode.Client にした `/` も prerender される | prerender.ts の routesFile の行（split のあと空の行を除かない）。main でも同じ | 第 5 回の「同じ ＋ routes.txt の末尾に改行」のビルド | 既存なし |
+| B3 | 大文字と小文字を区別しない比べ方を固める it が無い | i18n.ts 200・201 行目（JSDoc は 99 行目） | M1：`toLowerCase()` を消しても 249 件とも通る | —（spec の抜け） |
+| B4 | JSDoc と本物の食い違い：空文字の約束、`*` の説明、Map の順、renderAngular の戻り値の `destroy`、「ファイルらしいリクエストは飛ばす」のコメント | i18n.ts 13・14、52、64・65 行目。ng.ts 49〜52 行目。app-engine.ts 230・237 行目 | 第 4 回の JSDoc の表（本物の関数に流した） | —（文書） |
+| B5 | JSDoc と本物の食い違い（ビルドの側）：PrerenderOutput の例の `appShell`、escapeUnsafeChars の「Unicode のエスケープ」、エンジン用のマニフェストの「Google App Engine」 | prerender.ts 47・51 行目。manifest.ts 54 行目、66・67 行目 | 第 5 回の 8 節 | —（文書） |
+| B6 | `ExtractRoutesWorkerData` がどこからも使われず、使っている `hasSsrEntry` を型に持たない | routes-extractor-worker.ts 17・18、24〜26 行目 | ../angular-cli を grep して定義の 1 か所だけ | —（型） |
+| B7 | 44129f66a3 の generateRedirectStaticPage は `"` を含むリダイレクト先で属性を壊す | utils.ts 34 行目から | 第 5 回の 4 節（2 つの版に同じ URL） | main の 537a47a482 で直っている（22.2.7 に入っている） |
+
+振る舞いとして確かめたが食い違いではないものも 2 つあります。prerender 中にコンポーネントが資産でない相対 URL を `fetch('/…')` で直接呼ぶと、fetch-patch が受け取った文字列をそのまま元の fetch に回し、`Failed to parse URL from /api/hello` で失敗します（server.ts を起動した設定でも同じ。HttpClient の呼び出しは先に絶対 URL になるので届く）。また、prerender の描画では `inject(REQUEST)` が `null` です。どちらも第 5 回の記録にあります。

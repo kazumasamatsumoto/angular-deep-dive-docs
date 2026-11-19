@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 60 シリーズ・714 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 61 シリーズ・720 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -68,6 +68,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 58. [Signal Forms の組み込みの検証：required から minDate まで、1 つの validate に下りるまで](sfv/README.md)（5 章）— 共通の形（when・message・error と isEmpty）・数と長さの上限下限と metadata・日付・ValidationError の型・spec と issue
 59. [Signal Forms の型を読む：FieldTree から SchemaPath まで、api/types.ts の 1000 行](sfty/README.md)（6 章）— FieldTree と Field・FieldState の読み口・Compat と binding の型・PathKind と SchemaPath・validateHttp と debounce・型の spec と issue
 60. [Router のディレクティブとイベントの残り：RouterLink・RouterLinkActive・RouterOutlet・events.ts を行で埋める](rdir/README.md)（6 章）— RouterLink の入力と href・RouterLinkActive の残り・RouterOutlet の入力と detach / attach・events.ts の各クラス・ExtraOptions と RouterModule・spec と issue
+61. [@angular/ssr の読み残し：provideServerRendering・リクエストハンドラ・CommonEngine・ビルド側のワーカーを行で埋める](ssrl/README.md)（6 章）— provideServerRendering と withRoutes / withAppShell・createRequestHandler と Node の入口・CommonEngine と性能の記録・i18n と URL の小道具・prerender のワーカーとサーバー起動・spec と issue
 
 ## 作り直し方
 

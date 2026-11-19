@@ -344,4 +344,5 @@ GuardRejected は guards.spec.ts の CanLoad（L1641〜1643）と navigation\_er
 
 ---
 
-← 前: [ExtraOptions と RouterModule.forRoot：設定の型と、withX との対応表](05-rdir-options.md)
+← 前: [ExtraOptions と RouterModule.forRoot：設定の型と、withX との対応表](05-rdir-options.md)  
+次: [provideServerRendering の中身：withRoutes と withAppShell が積む provider](../ssrl/01-ssrl-provide.md) →

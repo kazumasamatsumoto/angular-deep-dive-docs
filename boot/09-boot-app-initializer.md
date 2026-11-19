@@ -278,7 +278,7 @@ angular/angular · 読了 約 10 分 · 中核 · [サイトで読む（デモ�
 483 │       }
 ```
 
-次章で読む `ApplicationRef.bootstrapImpl` の冒頭です。470 行目で同じ `ApplicationInitStatus` を取り出し、472 行目で `done` が `false` なら 482 行目で `NG0405: Cannot bootstrap as there are still asynchronous initializers running` を投げます。`bootstrap()` 経由なら `donePromise.then` の後なので通りますが、`createApplication()` で得た `appRef` に対して自分で早すぎる `bootstrap()` を呼ぶと、ここで止まります。
+次章で読む `ApplicationRef.bootstrapImpl` の冒頭です。470 行目で同じ `ApplicationInitStatus` を取り出し、472 行目で `done` が `false` なら 482 行目で `NG0405: Cannot bootstrap as there are still asynchronous initializers running` を投げます。`bootstrap()` 経由なら `donePromise.then` の後なので通りますが、`createApplication()` の Promise も同じ `donePromise.then` の後で解決するので、その `appRef` に `bootstrap()` を呼んでも通ります。ここで止まるのは、`done` がまだ `false` のうちに `ApplicationRef` を取り出して `bootstrap()` を呼んだとき（初期化関数の中で呼んだときなど）です。
 
 ## 7. 失敗したとき
 
@@ -309,7 +309,7 @@ angular/angular · 読了 約 10 分 · 中核 · [サイトで読む（デモ�
 238 │ }
 ```
 
-4 節 268 行目の `this.reject(e)` で `donePromise` が reject されると、bootstrap.ts 143 行目の `.then` はスキップされ、`appRef.bootstrap` は呼ばれません。reject はそのまま 224〜229 行目に届き、226 行目で `ErrorHandler` へ、228 行目で再 throw。結果として `bootstrapApplication(...).catch(...)` に届きます。画面は空のまま、コンソールにエラーが 1 回出ます。
+4 節 268 行目の `this.reject(e)` で `donePromise` が reject されると、bootstrap.ts 143 行目の `.then` はスキップされ、`appRef.bootstrap` は呼ばれません。reject はそのまま 224〜229 行目に届き、226 行目で `ErrorHandler` へ、228 行目で再 throw。結果として `bootstrapApplication(...).catch(...)` に届きます。画面は空のまま（index.html に書いた中身のまま）です。コンソールには 226 行目の `ErrorHandler` の分が 1 回出て、再 throw された reject を main.ts の `.catch` が書き出せばもう 1 回、`.catch` が無ければ捕まえられなかった reject として 1 回出ます。
 
 ## 8. ENVIRONMENT\_INITIALIZER との違い
 

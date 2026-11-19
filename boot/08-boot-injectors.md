@@ -73,7 +73,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 110 │ }
 ```
 
-102 行目、公開 API の `Injector.create` を使っています。105 行目で `INJECTOR_SCOPE: 'platform'`、106 行目で破棄リスナーの `Set`、107 行目で前章の 3 つ（`PLATFORM_ID` / `PLATFORM_INITIALIZER` / `DOCUMENT`）を並べます。合計 5 つのプロバイダ。これがプラットフォームインジェクタの全財産です。
+102 行目、公開 API の `Injector.create` を使っています。105 行目で `INJECTOR_SCOPE: 'platform'`、106 行目で破棄リスナーの `Set`、107 行目で前章の 3 つ（`PLATFORM_ID` / `PLATFORM_INITIALIZER` / `DOCUMENT`）を並べます。ここで渡すのは合計 5 つのプロバイダです。ただし、作った直後のインジェクタの records は 7 件あります。multi の `PLATFORM_INITIALIZER` がトークンの分と値の分の 2 件になり、インジェクタ自身を返す `INJECTOR` の 1 件が足されるためです。さらに起動の途中で、`providedIn: 'platform'` のクラス（コンソールに書く `Console` など）が、初めて頼まれたときにここへ足されていきます。
 
 📄 `angular/packages/core/src/di/injector.ts` L107–119 （▶ の行: 116–117）
 
