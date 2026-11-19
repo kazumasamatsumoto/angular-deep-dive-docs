@@ -305,4 +305,5 @@ path とスキーマの形なら types.spec.ts の `describe('types')`、context
 
 ---
 
-← 前: [validateHttp と debounce：型の外にある、時間と通信の約束](05-sfty-http-debounce.md)
+← 前: [validateHttp と debounce：型の外にある、時間と通信の約束](05-sfty-http-debounce.md)  
+次: [RouterLink の入力：queryParams から target まで、href とクリックに効く行](../rdir/01-rdir-link-inputs.md) →

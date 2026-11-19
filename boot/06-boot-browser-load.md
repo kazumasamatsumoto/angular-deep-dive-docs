@@ -243,7 +243,7 @@ bootstrapApplication(App, appConfig)
 430 │         },
 ```
 
-`ngJitMode` は Angular のソースでは 10 行目のとおり「グローバルにあるはずの定数」として宣言されているだけです。実際の値はビルド時に埋め込まれます。`ng build` では 659〜668 行目の esbuild `define`、665 行目で `jit` でなければ `'false'`。dev-server では Vite 側にも同じ定義が必要で、428 行目で `aot` なら `'false'` です。esbuild はこの `define` を使って、`typeof ngJitMode === 'undefined' || ngJitMode`（browser.ts 133 行目）を `typeof false === 'undefined' || false` と書き換え、さらに定数畳み込みで `false` にします。つまり**AOT ビルドの `main.js` には 134 行目の `resolveJitResources()` は残っていません**。テンプレートはすでに 4 章でコンパイル済みなので、実行時にコンパイラを待つ必要が無いのです。664 行目、本番ビルドなら `ngDevMode` も `'false'` になり、開発用の検査コードが消えます。657 行目の `write: false` は 4 章で触れた「esbuild はメモリに返すだけ」の設定です。
+`ngJitMode` は Angular のソースでは 10 行目のとおり「グローバルにあるはずの定数」として宣言されているだけです。実際の値はビルド時に埋め込まれます。`ng build` では 659〜668 行目の esbuild `define`、665 行目で `jit` でなければ `'false'`。dev-server では Vite 側にも同じ定義が必要で、428 行目で `aot` なら `'false'` です。esbuild はこの `define` を使って、browser.ts 133 行目の条件 `(typeof ngJitMode === 'undefined' || ngJitMode) && typeof fetch === 'function'` の前半を `typeof false === 'undefined' || false` と書き換え、定数畳み込みで条件全体を `false` にします。つまり**AOT ビルドの `main.js` では 134 行目の `resolveJitResources()` は実行されません**。最適化しない開発ビルドでは `if (false) { await resolveJitResources(); }` の形でコードは残り、最適化したビルド（`optimization: true`）では消えます。テンプレートはすでに 4 章でコンパイル済みなので、実行時にコンパイラを待つ必要が無いのです。664 行目、本番ビルドなら `ngDevMode` も `'false'` になり、開発用の検査コードが消えます。657 行目の `write: false` は 4 章で触れた「esbuild はメモリに返すだけ」の設定です。
 
 ## 5. この瞬間の画面
 
@@ -331,7 +331,7 @@ bootstrapApplication(App, appConfig)
     - `main.js` 本体 = `main.ts` の最上位 — options.ts L396
       - `bootstrapApplication(App, appConfig)` — platform-browser/src/browser.ts L123
         - `createProvidersConfig(options, context)` — browser.ts L130 — *次章*
-        - `typeof ngJitMode === 'undefined' || ngJitMode` → `false` — browser.ts L133、define は application-code-bundle.ts L665 — *resolveJitResources は実行されない*
+        - `(typeof ngJitMode === 'undefined' || ngJitMode) && …` → `false` — browser.ts L133、define は application-code-bundle.ts L665 — *resolveJitResources は実行されない*
         - `internalCreateApplication(config)` — browser.ts L137 → core/src/application/create\_application.ts — *次章の入口*
   - `DOMContentLoaded` — 仕様 — *module script の評価が終わってから*
 
@@ -355,7 +355,7 @@ bootstrapApplication(App, appConfig)
 
 **Q. AOT ビルドなのに、browser.ts に resolveJitResources の呼び出しがあるのはなぜですか？**
 
-ソースには残っていますが、`main.js` には残りません。133 行目の条件は `typeof ngJitMode === 'undefined' || ngJitMode` で、`ngJitMode` は `ng_jit_mode.ts` 10 行目の宣言どおりビルド時定数です。esbuild の `define` （application-code-bundle.ts 665 行目、dev-server では vite/index.ts 428 行目）が `'false'` に置き換え、条件全体が `false` に畳み込まれて 134 行目は削除されます。
+ソースには残っていますが、`main.js` では実行されません。133 行目の条件は `(typeof ngJitMode === 'undefined' || ngJitMode) && typeof fetch === 'function'` で、`ngJitMode` は `ng_jit_mode.ts` 10 行目の宣言どおりビルド時定数です。esbuild の `define` （application-code-bundle.ts 665 行目、dev-server では vite/index.ts 428 行目）が `'false'` に置き換え、条件全体が `false` に畳み込まれます。最適化しない開発ビルドでは `if (false)` の中に残り、最適化したビルドでは 134 行目ごと削除されます。
 
 **Q. &lt;link rel="modulepreload"&gt; は何のためにありますか？**
 
@@ -366,7 +366,7 @@ bootstrapApplication(App, appConfig)
 - `type="module"`（augment-index-html.ts 145 行目）の script は、解析完了後・`DOMContentLoaded` 前・文書順に実行される。置き場所が末尾なのは挿入位置の都合で、性質上どこでも同じ
 - `polyfills.js` → `main.js` の順は `insertionOrder`（options.ts 393・396 行目）と module script の文書順実行の組み合わせ。zone.js が API を差し替える前に Angular が動いてはいけない
 - `polyfills: []`（既定）なら `polyfills.js` は生成されない（application-code-bundle.ts 713〜715 行目）。`async`/`await` もネイティブのまま（utils.ts 203 行目）
-- `main.js` の最上位で `bootstrapApplication(App, appConfig)`（browser.ts 123 行目）。`ngJitMode` は `define` で `false` に畳み込まれ、JIT 用の経路は消えている
+- `main.js` の最上位で `bootstrapApplication(App, appConfig)`（browser.ts 123 行目）。`ngJitMode` は `define` で `false` に畳み込まれ、JIT 用の経路は実行されない（最適化したビルドでは消えている）
 - この瞬間、`<app-root>` は空。137 行目の `internalCreateApplication` から Angular の内部に入る（次章）
 
 ---
