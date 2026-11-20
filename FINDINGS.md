@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（42 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（43 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -979,3 +979,57 @@ await cycle(); // 3 回目に戻す
 | [8](rmd/08-rmd-url-rest.md) | （版の印）`ViewTransitionsFeatureOptions`・`ViewTransitionInfo` は `@developerPreview 20.0`、`withViewTransitions` は 19.0 | utils/view\_transition.ts 24・46 | main の 64502f9ae23 で `@publicApi 22.3` に揃った |
 
 45 件のうち、main で直っていたのは最後の 2 件（リンクと版の印）だけでした。ほかは 8576f161ae4 と同じ文が、上の表の main の行に残っています。
+
+## Forms の説明文の読み残し
+
+### [spec と issue を読む：Forms の説明文を固めているもの](fmd/10-fmd-tests-issues.md) — 4. このシリーズで見つけたもの（食い違いと不具合）
+
+どれも 8576f161ae4 の行を読み、本物の @angular/forms 22.2.6（ページのデモと Node の記録）か、説明文の例をそのまま取り出したファイルの型検査（サイトの TypeScript と compiler-cli、`--strict`・`strictTemplates`）で確かめたものです。「main」は ../angular の origin/main（d201dd76ef2、2026-11-19）で、直っていなければ「main 同じ」と書きました。第 1〜5 回の行は、その章の記録をそのまま並べています。
+
+| 章 | 何が起きるか | 行（8576f161ae4） | 確かめ方と main |
+| --- | --- | --- | --- |
+| [1](fmd/01-fmd-abstract-model.md) | （食い違い）値以外のイベントは「親を更新したあとに流れる」と書くが、`StatusChangeEvent` は親より先に出る（受け取った時点の親の status は古い） | model/abstract\_model.ts 769 | デモ。1c736dc3b25（#54579）から。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （食い違い）`getError` は「control か error が無ければ null」と書くが、errors はあってキーが無いと `undefined` | model/abstract\_model.ts 1608〜1609（実装 1613） | デモ。spec は errors が null の場合だけ。e268a0579a3 から。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （写し間違い）`enable` の opts を「untouched に mark したとき」と説明する | model/abstract\_model.ts 1302〜1303 | デモ（値と状態のイベント）。a57825acf35 から。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （誤ったリンク）`@see markAsDisabled`（その名前は無く、`disable`） | model/abstract\_model.ts 66 | grep。9d114c052a3 から。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （誤ったリンク）asyncValidator の getter が `Validators.compose()` を見よと書く（非同期は `composeAsync`） | model/abstract\_model.ts 595 | 1d9d02696ea から。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （例の誤り）removeValidators・hasValidator の例が 1 つのブロックで `const ctrl` を 2 回宣言する | model/abstract\_model.ts 876・881、920・925 | TS2451 ×4。7316fa71c43 から。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （食い違い）onlySelf を省くと「祖先を全部 mark する」と書くが、markAsUntouched・markAsPristine は子から数え直す | model/abstract\_model.ts 1065〜1066・1162〜1163 | デモ。main 同じ |
+| [1](fmd/01-fmd-abstract-model.md) | （型の説明の誤り）`Value<FormGroup<…>>` を `{address: string\|undefined}` と書く（実際は `{address?: string}`） | model/abstract\_model.ts 342 | tsc。main 同じ |
+| [2](fmd/02-fmd-group-array.md) | （食い違い）patchValue の onlySelf を「Default is true」と書く（既定は false） | model/form\_group.ts 473〜474 | デモと form\_group\_spec.ts 526。main 同じ |
+| [2](fmd/02-fmd-group-array.md) | （食い違い）FormRecord・FormArray の reset は「子を null に」と書くが、nonNullable の子は既定の値に戻る | model/form\_group.ts 812〜813、model/form\_array.ts 389〜390 | デモ。main 同じ |
+| [2](fmd/02-fmd-group-array.md) | （例の誤り）`FormGroup<{one?: FormControl<string>}>` の例が型に通らず、`value.one` の型の答えも違う | model/form\_group.ts 176〜182 | TS2322。main 同じ |
+| [2](fmd/02-fmd-group-array.md) | （例の誤り）group の検証関数・options・reset の例 | model/form\_group.ts 103・137・141・151・153・560 | TS2345・TS2531 ×3・TS1005、103 行目の `last; 'Drew'`。main 同じ |
+| [2](fmd/02-fmd-group-array.md) | （食い違い）「Throws other wise」と書くが、console.warn だけ | model/form\_group.ts 676 | 683 行目の TODO。main 同じ |
+| [3](fmd/03-fmd-control-builder.md) | （例の誤り）`console.log(name); // 'Alex'` など。`name` は control で、値は `name.value` | form\_builder.ts 156・168・179 | 2dbdebc6467 から。main 同じ |
+| [3](fmd/03-fmd-control-builder.md) | （不具合）`fb.nonNullable.control('a', {})` など、空の options を渡すと `TypeError: this.validator is not a function` | form\_builder.ts 366〜384（`isAbstractControlOptions` 22〜31） | デモ。nullable の builder は正常。2dbdebc6467 から。main 同じ |
+| [3](fmd/03-fmd-control-builder.md) | （型の不具合）説明文の例 `[{value, disabled}, {updateOn: 'blur'}]` の control の型が配列になる。`ControlConfig` の 2 つ目は options を受けない | form\_builder.ts 235・202〜205（`PermissiveControlConfig` 46、`ControlConfig` 71〜75） | tsc（TS2353）。3b8503f960f の例。main 同じ |
+| [4](fmd/04-fmd-validators.md) | （食い違い）`pattern` は「値全体に一致しなければならない」と書くが、`a\|b` は `'xb'` を通す | directives/validators.ts 654、validators.ts 408〜410 | デモ。main 同じ |
+| [4](fmd/04-fmd-validators.md) | （狭い実装）`min`・`max` のディレクティブは「どの formControlName・formControl・ngModel にも」と書くが、セレクターは `input[type=number]` だけ | directives/validators.ts 202〜203・254〜255 | デモ（range は spec 2033 で意図）。main 同じ |
+| [4](fmd/04-fmd-validators.md) | （例の誤り）AsyncValidator の例が `Observable` を import しない | directives/validators.ts 307・315 | TS2304。main 同じ |
+| [5](fmd/05-fmd-errors.md) | （古い文）`[formArray]` に undefined でも「formGroup expects a FormGroup」、`[formArray]` の下でも通る formGroupName に「親に formGroup が要る」 | directives/reactive\_errors.ts 63・74・86 | デモ。74・86 は main 同じ、63 の文は abstract\_form.directive.ts に移って残る（fc3dc890aad） |
+| [5](fmd/05-fmd-errors.md) | （一覧の欠け）NG01354 の解説ページはあるが、一覧の表に無い | adev/src/content/reference/errors/overview.md | 38d093232c6 でページ追加。main 同じ |
+| [5](fmd/05-fmd-errors.md) | （綴り・古い例）「parent be ngModelGroup」（to が抜け）、`Option 2: `、例が `*ngFor` | directives/template\_driven\_errors.ts 50・88、error\_examples.ts 36 | main 同じ |
+| [5](fmd/05-fmd-errors.md) | （誤ったリンク、main で直った）`FormsModule#withconfig`（アンカーは withConfig） | directives/shared.ts 46・61 | f825c9bc7cc で直った |
+| [6](fmd/06-fmd-ng-control.md) | （例の誤り）CVA の `registerOnChange` の例の host `'_onChange($event.target.value)'` は、今の既定の型検査を通らない | control\_value\_accessor.ts 73 | strictTemplates の ngc で TS2531・TS2339（0571b335b9b で host の型検査が既定に）。main 同じ |
+| [6](fmd/06-fmd-ng-control.md) | （古い）`Form` は「`FormGroupDirective` と `NgForm` が実装する」。`FormArrayDirective` も実装する | form\_interface.ts 17 | abstract\_form.directive.ts 58。main 同じ |
+| [6](fmd/06-fmd-ng-control.md) | （説明不足）`NgControlStatusGroup` は「グループには `ng-submitted` も付く」と書くが、`formGroupName` などには付かない | ng\_control\_status.ts 120〜122 | デモの 9 行目。main 同じ |
+| [6](fmd/06-fmd-ng-control.md) | （説明不足、main で直った）`isRequired` の説明が途中で切れ、`Validators.required` を書かない | ng\_control.ts 289 | f9cf82642ca で直った |
+| [6](fmd/06-fmd-ng-control.md) | （不具合、直った）FVC に付けた `updateOn: 'blur'` の control が、値を出した瞬間に `setValue` する | ng\_control.ts 232〜237 | 401b4f2011c（22.2.6 には a7b0e8ef9d6 で入っている） |
+| [7](fmd/07-fmd-reactive-dirs.md) | （例の欠け）`FormArrayDirective` の説明文が「次の例は」と書くが、例が無い | form\_array\_directive.ts 37〜38 | 0dd95c503f4 で写した文。main 同じ |
+| [7](fmd/07-fmd-reactive-dirs.md) | （狭すぎる）`formGroupName` は「親の `FormGroupDirective` とだけ使える」。`formArrayName` と `[formArray]` の下でも動く | form\_group\_name.ts 43 | デモの 6 番目、233〜238 行目。main 同じ |
+| [7](fmd/07-fmd-reactive-dirs.md) | （例のコメントの誤り）nestedFormGroup の `form.value` のコメントが `email: ''`。本物は `null` | packages/examples/forms/ts/nestedFormGroup/nested\_form\_group\_example.ts 53 | デモ（2cdd0511092 から）。main 同じ |
+| [7](fmd/07-fmd-reactive-dirs.md) | （値の名前の誤り）`callSetDisabledState` の古い値を `whenDisabled` と書く。型は `'whenDisabledForLegacyCode'` | form\_providers.ts 82（と 43） | tsc --strict で TS2322（96b7fe93af3 から）。main 同じ |
+| [7](fmd/07-fmd-reactive-dirs.md)・[8](fmd/08-fmd-template-dirs.md) | （食い違い）`resetForm` は「初期の値に戻す」と書くが、nonNullable でない control は `null` に戻る | abstract\_form.directive.ts 296、ng\_form.ts 354 | デモと template\_integration\_spec.ts 1252（099d1a67a0c から）。main 同じ |
+| [7](fmd/07-fmd-reactive-dirs.md) | （リンク）FormsModule の「Template-driven Forms Guide」が `guide/forms`（Overview と同じ）を指す | form\_providers.ts 28 | adev に template-driven-forms.md がある。main 同じ |
+| [7](fmd/07-fmd-reactive-dirs.md) | （綴り）「it always an empty array」 | abstract\_form.directive.ts 175 | main 同じ |
+| [8](fmd/08-fmd-template-dirs.md) | （食い違い）`NgModel` は「ディレクティブの `field` プロパティで control を取れる」と書くが、`field` は無い（`control`） | ng\_model.ts 102 | `'field' in m` が `false`、ngc で TS2339。2fdd4da2a86（Signal Forms の `[control]` → `[field]` の改名）で `control` から置き換わった。main 102 同じ |
+| [8](fmd/08-fmd-template-dirs.md) | （名前の誤り）`FormModule`・`ReactiveFormModule` | ng\_form.ts 106 | 9a550202860 から。main 同じ |
+| [8](fmd/08-fmd-template-dirs.md) | （狭すぎる）`NgModelGroup` は「`NgForm` の子として（`<form>` の中で）だけ」。`[ngForm]` の下でも入れ子でも動く | ng\_model\_group.ts 39 | デモ（`<div ngForm>` の中の入れ子）。main 同じ |
+| [9](fmd/09-fmd-accessors.md) | （例の誤り）`compareWith` の例の `<option[ngValue]="country">` は空白が抜けていて NG5002 | select\_control\_value\_accessor.ts 90 | ngc で NG5002 ×2。e7608e503f1（`*ngFor` → `@for`）で空白が消えた。main 90 同じ |
+| [9](fmd/09-fmd-accessors.md) | （説明不足）`compareWith` は `[value]` の option には効かず、1 つの select の `[value]` は文字列になる。select multiple の `[value]` は型が残る | select\_control\_value\_accessor.ts 79〜81・283〜284、select\_multiple\_control\_value\_accessor.ts 245〜246・251 | デモ（compareWith 0 回、`'2'` と `[2]`）。main 同じ |
+| [9](fmd/09-fmd-accessors.md) | （不具合）`name` の無い `[formControl]` の radio は、別の control どうしも 1 つの組になり、片方を選ぶと別の control の同じ値の radio に `checked` が付く（値は変わらない）。`fireUncheck` の「外す」とも合わない | radio\_control\_value\_accessor.ts 92〜100・256・260〜262 | デモ（ページの Chrome と Node の両方）。根の同じ #60539、関連の #40074。main 同じ |
+| [9](fmd/09-fmd-accessors.md) | （古い）select が `change` を聞く理由を IE と書く | select\_control\_value\_accessor.ts 99〜101 | main 同じ |
+| [9](fmd/09-fmd-accessors.md) | （綴り）「The follow example」「one or of more」「evntually」 | select\_multiple\_control\_value\_accessor.ts 59・124、radio\_control\_value\_accessor.ts 113、select\_control\_value\_accessor.ts 146 | main 同じ |
+
+第 6〜9 回の説明文で、書いてあるとおりに動いたものも多くありました。getter と control の一致、`path` の文字列、`standalone` と `name` の options の 2 つの例、`ngFormOptions` の `updateOn`、select と radio の例のアプリ、IME の既定の動きは、どれも説明文のとおりです。
