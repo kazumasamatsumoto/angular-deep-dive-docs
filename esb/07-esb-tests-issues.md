@@ -295,4 +295,5 @@ stylesheet-cache-key の 5 件は、同じ値なら同じハッシュ、1 つ変
 
 ---
 
-← 前: [compiler-plugin の残り：コンパイルの状態・JIT のコールバック・コンポーネントのスタイル](06-esb-compiler-rest.md)
+← 前: [compiler-plugin の残り：コンパイルの状態・JIT のコールバック・コンポーネントのスタイル](06-esb-compiler-rest.md)  
+次: [AotCompilation の残り：プログラムの作り直し・診断・出力の書き出し](../bcu/01-bcu-aot.md) →

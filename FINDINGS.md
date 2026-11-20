@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（40 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（41 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -892,3 +892,34 @@ await cycle(); // 3 回目に戻す
 | [5](esb/05-esb-styles.md) | 関数の名前 `resetSassWorkerPoolCaches`・`shutdownSassWorkerPool` の「ワーカーのプール」は fc5a2ecb14 で消えている。stylesheet-cache-key.ts のコメントの「キャッシュの鍵の頭」は、呼ぶ所が無い | grep |
 | [6](esb/06-esb-compiler-rest.md) | Secondary の文脈は onStart の 168〜175 行目で先に返るので、setupWarnings が消えず、毎回の再ビルドで同じ警告（キャッシュを作れない、など）を返す | 永続キャッシュの場所を作れなくした Node の記録（main は 1 回目だけ、polyfills は 3 回とも） |
 | [6](esb/06-esb-compiler-rest.md) | component-stylesheets.ts の collectReferencedFiles（231 行目）がインラインのスタイルの参照先を集めない（22.2.7 の 978351af71 で直った） | 行の読み比べ |
+
+## @angular/build の compilation と utils の読み残し
+
+### [spec と issue を読む：compilation と utils を固めているテスト](bcu/10-bcu-tests-issues.md) — 6. このシリーズで見つけたもの（食い違いと不具合）
+
+各章で、ソースの行と、自分で動かした記録で確かめたものです。「main」は新しい本家（815c98e07a）、「22.2.x」はリリースの枝です。
+
+| 章 | 何が起きるか | 行 | 確かめ方と今の状態 |
+| --- | --- | --- | --- |
+| [1](bcu/01-bcu-aot.md) | （食い違い）tsconfig の警告の注記の文字列に空白が無く、綴りも違う | compiler-options.ts の 96〜97 行目 | .ts を transpile して呼んだ記録。main の 13a7346493（22.2.x は 0dc103735e）で直った |
+| [1](bcu/01-bcu-aot.md) | （不具合）ファイルの先頭（start が 0）の診断に、行・列・行の全文が付かない | diagnostics.ts の 40 行目の `if (info.start)` | 2 つの版の convertTypeScriptDiagnostic に同じ診断を渡した記録。main の cd70beb20d（22.2.x は e78cf0ae96）で直った |
+| [1](bcu/01-bcu-aot.md) | （通らない道）sourceMap の道で、`.map` を入れた鍵に JS を上書きする | aot-compilation.ts の 452〜460 行目 | 行の読み比べ。compiler-options.ts の 119 行目で通らない |
+| [2](bcu/02-bcu-parallel.md) | （約束）並列のとき、update を呼ばずに initialize すると、ワーカーの SourceFile のキャッシュが古いまま emit する | parallel-worker.ts（呼ぶ側の compiler-plugin.ts の 200〜202 行目が守っている） | 本物のワーカーで update を呼ばない記録 |
+| [3](bcu/03-bcu-hmr.md) | （不具合）対応するフィールドの一覧が `'stylesUrl'` で、`styleUrls` の配列を変えると HMR の候補にならない | hmr-candidates.ts の 217〜223 行目 | 本物と 222 行目だけ替えた写しの記録。22.2.7 と main も同じ |
+| [4](bcu/04-bcu-host.md) | （食い違い）アロー関数のブロックの 2 文目の return、`.then().catch()` の loadComponent に ɵentryName が付かない | lazy-routes-transformer.ts の 78〜89 行目 | 13 通りの入力の記録。SSR の modulepreload の対応づけから抜けるだけで、アプリは動く |
+| [5](bcu/05-bcu-budget.md) | （食い違い）見積もりの無い表で、ファイルの行の末尾に「 \| 」が残る。サーバーの段は 23 個の空白も続く | stats-table.ts の 168〜174 行目 | 記録と、このサイトの development のビルドの表 |
+| [6](bcu/06-bcu-index.md) | （不具合）`<base>` を書いた index.html では、遅延チャンクの integrity の importmap が `<base>` の前に出る。深いパスで直接開くと鍵がずれ、遅延チャンクの integrity が検査されない | augment-index-html.ts の 280〜282 行目と 301 行目 | headless Chrome の記録（`/deep/route` で違う integrity のチャンクが読み込まれた）と、作業木の it（4 節）。main も同じ行。gh で見つからなかった |
+| [6](bcu/06-bcu-index.md) | （食い違い）`<base>` も baseHref も無いと importmap が出ない。`<head>` の無い HTML も同じ | 264 行目と 274〜284 行目、340〜342 行目 | Node の記録 |
+| [6](bcu/06-bcu-index.md) | （食い違い）コメントの中に `<base` と書くと、baseHref の `<base>` を足さない | 246 行目の `html.includes('<base')` | Node の記録。main も同じ |
+| [7](bcu/07-bcu-auto-csp.md) | （食い違い）`<head>` の開始タグが無いと、CSP の meta が出ず、警告も無い | auto-csp.ts の 174 行目 | Node の記録。main も同じ |
+| [7](bcu/07-bcu-auto-csp.md) | （食い違い）外部の script の中に書いた文字が、ローダーに置き換えたあと `<body>` の HTML として残る | 144 行目の `emitText` | 22.2.7 の autoCsp に 1 行の HTML を当てた記録。main も同じ |
+| [7](bcu/07-bcu-auto-csp.md) | （不具合・22.2.7 で直った）`type="Module"` や `application/javascript` の外部の script がローダーに回らず、`'strict-dynamic'` で止められる | 47 行目と 57 行目 | headless Chrome で 2 つとも `script-src-elem` の違反。22.2.x の e31bd66f67（main は 8e1b20253a） |
+| [8](bcu/08-bcu-options.md) | （食い違い）`NG_BUILD_DEBUG_OPTIMIZE` に名前を並べると、書いた物が「戻る」形で、beautify は消せず、知らない値は `1` と同じ | environment-options.ts の 60〜82 行目 | 子プロセスの記録。main も同じ |
+| [8](bcu/08-bcu-options.md) | （食い違い）`translation` の無いロケールの object に「Expected a string, array of strings, or object.」と出る | i18n-options.ts の 159・187 行目 | Node の記録。main も同じ |
+| [8](bcu/08-bcu-options.md) | （不具合）sourceRoot と同じ頭の兄弟のフォルダ（`src-assets`）を assets に書くと「outside of the output path」で止まる。object の形は渡した object に output を書き込む | normalize-asset-patterns.ts の 38・40・42 行目と 78 行目 | Node の記録。main の 58c30c05f6 と c042a66fed で直った（22.2.x には無い） |
+| [8](bcu/08-bcu-options.md) | （不具合・22.2.7 で直った）worktree の中の入れ子のワークスペースのキャッシュが、元のリポジトリの直下になる | normalize-cache.ts の 79 行目 | 2 つの版の記録。22.2.x の b198044048（main は aa53b97247） |
+| [8](bcu/08-bcu-options.md) | （不具合・22.2.7 で直った）proxy の配列の形の文字列の context を捨てる、glob の鍵の順番が変わる、glob の正規表現が `?` 以降にも当たる | load-proxy-config.ts の 93〜95・117〜118・116 行目 | 2 つの版の記録。22.2.x の 996e47f809・405bfa370a・7d9ba62803 |
+| [8](bcu/08-bcu-options.md) | （食い違い）読み込んだ proxy の設定の object を書き換えるので、同じプロセスで 2 回目に読むと配列の形が空になる | 100 行目と 143 行目 | Node の記録。dev-server は 1 回だけ呼ぶ。main も同じ |
+| [8](bcu/08-bcu-options.md) | （食い違い）postcss.config.json の object の形で、値が `true` のプラグインを黙って飛ばす | postcss-configuration.ts の 119〜121 行目 | Node の記録。main も同じ |
+| [9](bcu/09-bcu-paths.md) | （不具合・22.2.7 で直った）`/"/` のような正規表現の後ろで、文字列の中の `//# sourceMappingURL=` を消して壊れた JavaScript を返す | source-map.ts の 96〜257 行目（正規表現の状態が無い） | 2 つの版の記録。#34590、#34632（22.2.x は 631ac8aa66） |
+| [9](bcu/09-bcu-paths.md) | （食い違い）`joinUrlParts` は `HTTPS://` の大文字を URL と見なさず、頭に `/` を付ける | url.ts の 118 行目 | Node の記録。main も同じ |
