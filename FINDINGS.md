@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（38 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（40 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -853,3 +853,42 @@ await cycle(); // 3 回目に戻す
 | B5 | export された `loadChildren` の doc は「@angular-devkit/build-angular が使う」と書くが、今の呼び出し元は angular-cli の @angular/ssr（ng-routes.ts） | router\_config\_loader.ts 117〜119 行目 | angular-cli を grep | 既存なし |
 
 もう 1 つ、括弧の中の primary の先頭のセグメントに `:` があると、serialize してから parse し直したとき名前付きの outlet に化ける問題（url\_tree.ts 509〜519 行目）は、8576f161ae4 では再現しますが、本家ではすでに 011675e417d で直っていて、22.2.4 以降（このサイトの 22.2.6 も）には入っています（[第 1 回](rtl/01-rtl-url-tree.md)）。
+
+## application builder の読み残し：options の正規化・結果の形・BundlerContext・キャッシュ・小さなプラグインを行で埋める
+
+### [spec と issue を読む：application builder の読み残しを固めているテスト](abl/06-abl-tests-issues.md) — 6. このシリーズで見つけたもの（食い違いと不具合）
+
+| 章 | 食い違い | 確かめ方 |
+| --- | --- | --- |
+| [1](abl/01-abl-options.md) | outputMode を書くと appShell は無視される、という警告の文に対し、appShellOptions は作られる | 22.2.7 の ng build（その章の 3 節） |
+| [1](abl/01-abl-options.md) | index の output のフォルダが捨てられ、schema.json の説明と合わない | 作業木で it を足すと落ちる（その章の 4 節） |
+| [1](abl/01-abl-options.md) | tests/options/output-mode.ts が \_spec.ts で終わらず、1 度も走っていない | 名前を変えて走らせると 2 件とも落ちる |
+| [2](abl/02-abl-results.md) | 失敗をはさんだ再ビルドで、その間に消した出力が dist に残る | 作業木で it を足すと落ちる（その章の 5 節） |
+| [2](abl/02-abl-results.md) | dev-server の utils.ts 94 行目は外部のコンポーネントのスタイルを「64 桁の 16 進数 + .css」で見分けるが、cda8830710 から ID は xxHash の 16 桁で、NG\_HMR\_CSTYLES=1 の `?ngcomp` の応答がカプセル化されない | 記録の CSS の名前と curl（その章の最後の節） |
+| [2](abl/02-abl-results.md) | 同じスタイルが再ビルドのたびに 2 つ届き、古い方が後に残る（開いている #34248 の症状の仕組み） | NG\_HMR\_CSTYLES=1 の記録（その章と第 3 回の 5 節） |
+| [3](abl/03-abl-context-post.md) | watch で前の結果に debug ID をもう一度通すと ID が変わり、JS を変えていない回にも main.js が modified になる | 作業木の it と ng serve の記録（その章の 11 節） |
+| [3](abl/03-abl-context-post.md) | 読み込みキャッシュを分け合う context が、自分の読まないファイルの変更でも捨てられる（新しい本家の 9534f6287e で直った） | その章の 6 節のデモ |
+| [4](abl/04-abl-cache.md) | persistent-load-result-cache.ts の冒頭のコメント（鍵に中身、sha256）が、calculateCacheKey と hash.ts に合わない | git show d11a663e77・cda8830710 |
+| [4](abl/04-abl-cache.md) | PersistentLoadResultCache は resolveDir と pluginData を L2 に残さない。put のときに無かった依存は、あとで作られても検証されない | SQLite を L2 にした Node の記録。wasm の onLoad で 2 回目に 2 つのエラー（第 5 回の 5b） |
+| [5](abl/05-abl-plugins.md) | angular.json の scripts に入れたパッケージが 3rdpartylicenses.txt に出ない（metafile の入力が仮想のパスだけ） | カウンターに tslib を足した ng build（その章の 10 節） |
+
+第 4 回の 2 つめは、まだどこからも使われていないクラスの話なので、いまの ng build では起きません。第 5 回の wasm の contents の onLoad は、その組み合わせで初めて表に出る前提（`pluginData` が必ずある）です。
+
+## tools/esbuild の読み残し：束ね方の設定・JS の後処理・watch・i18n の差し込み・スタイル・コンパイラプラグインの残りを行で埋める
+
+### [spec と issue を読む：tools/esbuild の読み残しを固めているテスト](esb/07-esb-tests-issues.md) — 6. このシリーズで見つけたもの（食い違いと不具合）
+
+| 章 | 食い違い | 確かめ方 |
+| --- | --- | --- |
+| [1](esb/01-esb-code-bundle.md) | polyfills のパスに `'` があると、入口の import の文字列が切れて esbuild のエラーになる（743 行目。22.2.7 で直った） | 作業木の it（4 節） |
+| [1](esb/01-esb-code-bundle.md) | 142〜146 行目の createCompilerPluginOptions だけ読み込みキャッシュを渡していない（22.2.7 と新しい本家は 72dc9677cf で足した） | 行の読み比べ |
+| [2](esb/02-esb-js-transformer.md) | 文字列に ɵ があるだけの node\_modules のファイルは、ワーカーが何も変えないと、先に切った sourceMappingURL のコメントが元のバイト列ごと戻り、sourceMap.vendor が偽でもそのパッケージの元のソースが main.js.map に出る | Node の記録と、偽のパッケージを置いたカウンターの ng build、作業木の it |
+| [3](esb/03-esb-watcher.md) | cwd の外のファイルは、396 行目の判定が自分の dirKey を見ていつも偽になり、作ったばかりの購読を 407 行目でやめる。既定の Parcel の道では変更を返さない（22.2.7 で直った） | 本物の createWatcher に操作を当てた記録、作業木の it |
+| [4](esb/04-esb-i18n-inliner.md) | ID が `constructor` のメッセージに翻訳が無いと、警告ではなく「Cannot read properties of undefined (reading 'map')」のエラーになり、出力に ID 付きの元の文が残る（reader の 170 行目と、@angular/localize の translations.ts の 62 行目） | 22.2.7 の `inlineTemplateUpdate` を Node から呼んだ記録 |
+| [4](esb/04-esb-i18n-inliner.md) | 116 行目の Blob の道は、Piscina がワーカーを起こすのに SharedArrayBuffer を使うので、ふつうは通りようがない | 作業木の it（4 節）、piscina の dist/worker\_pool/index.js の 43 行目 |
+| [4](esb/04-esb-i18n-inliner.md) | reader の 19〜20 行目のコメントは「UTF-8 のバイト順は UTF-16 の順と同じ」と言うが、U+E000 以上と補助面の文字で順が違う。エンコーダーも読む側もバイト順で比べるので、結果は合っている | encoder の 48〜50 行目のコメントと読み比べ |
+| [5](esb/05-esb-styles.md) | PostCSS の設定に無いプラグインがあると、ng build が esbuild のエラーにならず Node ごと落ちる。落ちないようにしても、理由（プラグイン名）が捨てられ "postcss" を読めないと 3 つ出る | カウンターに .postcssrc.json を置いた ng build、作業木の it（4 節） |
+| [5](esb/05-esb-styles.md) | 既定の sass-embedded では Sass のスタックが絶対パスで、`join(cwd, …)` が無いパスを作る。`@use` の連なりの真ん中のファイルが見張られず、ng build --watch で直しても作り直されない | 22.2.7 の `ng build --watch` の記録と、NG\_BUILD\_SASS\_EMBEDDED=0 との比べ |
+| [5](esb/05-esb-styles.md) | 関数の名前 `resetSassWorkerPoolCaches`・`shutdownSassWorkerPool` の「ワーカーのプール」は fc5a2ecb14 で消えている。stylesheet-cache-key.ts のコメントの「キャッシュの鍵の頭」は、呼ぶ所が無い | grep |
+| [6](esb/06-esb-compiler-rest.md) | Secondary の文脈は onStart の 168〜175 行目で先に返るので、setupWarnings が消えず、毎回の再ビルドで同じ警告（キャッシュを作れない、など）を返す | 永続キャッシュの場所を作れなくした Node の記録（main は 1 回目だけ、polyfills は 3 回とも） |
+| [6](esb/06-esb-compiler-rest.md) | component-stylesheets.ts の collectReferencedFiles（231 行目）がインラインのスタイルの参照先を集めない（22.2.7 の 978351af71 で直った） | 行の読み比べ |

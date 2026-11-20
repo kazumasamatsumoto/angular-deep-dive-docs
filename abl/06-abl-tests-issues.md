@@ -303,7 +303,7 @@ print(json.dumps(res, ensure_ascii=False, indent=1))
 | 34674 | Debug ID changes the bytes of polyfills and main but not their file names, so cached files fail the SRI check | 2026-11-08 | [3. BundlerContext と後処理の残り](03-abl-context-post.md) | ラベル angular/build:application は付いていない（area: @angular/build）。gh の検索で追加 |
 | 34262 | Follow-up to issue: SSR: Add a way to configure externalDependencies for the server bundle only | 2026-10-06 | [1. normalizeOptions](01-abl-options.md) | 同上 |
 
-## 6. このシリーズで見つけた食い違い
+## 6. このシリーズで見つけたもの（食い違いと不具合）
 
 | 章 | 食い違い | 確かめ方 |
 | --- | --- | --- |
@@ -348,4 +348,5 @@ builder を丸ごと動かす spec です。4 節の M8・M10〜M13 は、その
 
 ---
 
-← 前: [小さなプラグインと検査：外部パッケージ・仮想モジュール・wasm・CommonJS・ライセンス](05-abl-plugins.md)
+← 前: [小さなプラグインと検査：外部パッケージ・仮想モジュール・wasm・CommonJS・ライセンス](05-abl-plugins.md)  
+次: [束ね方の設定を作る関数：ブラウザ・polyfills・サーバー・SSR の入口の esbuild オプション](../esb/01-esb-code-bundle.md) →
