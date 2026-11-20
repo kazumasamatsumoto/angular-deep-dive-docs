@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（41 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（42 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -923,3 +923,59 @@ await cycle(); // 3 回目に戻す
 | [8](bcu/08-bcu-options.md) | （食い違い）postcss.config.json の object の形で、値が `true` のプラグインを黙って飛ばす | postcss-configuration.ts の 119〜121 行目 | Node の記録。main も同じ |
 | [9](bcu/09-bcu-paths.md) | （不具合・22.2.7 で直った）`/"/` のような正規表現の後ろで、文字列の中の `//# sourceMappingURL=` を消して壊れた JavaScript を返す | source-map.ts の 96〜257 行目（正規表現の状態が無い） | 2 つの版の記録。#34590、#34632（22.2.x は 631ac8aa66） |
 | [9](bcu/09-bcu-paths.md) | （食い違い）`joinUrlParts` は `HTTPS://` の大文字を URL と見なさず、頭に `/` を付ける | url.ts の 118 行目 | Node の記録。main も同じ |
+
+## Router の型と説明文の読み残し
+
+### [spec と issue を読む：型と説明文を固めているもの](rmd/09-rmd-tests-issues.md) — 4. このシリーズで見つけたもの（食い違いと不具合）
+
+どれも 8576f161ae4 の行を読み、本物の @angular/router 22.2.6（ページのデモと Node の記録）か、説明文の例をそのまま取り出した .ts の型検査（サイトの TypeScript 6.0.3、`--strict`）で確かめたものです。「main」は origin/main（d201dd76ef2、2026-11-20）で、直っていなければ main の行番号を書きました。
+
+| 章 | 何が起きるか | 行（8576f161ae4） | 確かめ方と main |
+| --- | --- | --- | --- |
+| [1](rmd/01-rmd-basic-types.md) | （説明不足）`RedirectCommand` は「ガードから返せる」とだけ書くが、ガードと resolver から投げても redirect になる | models.ts 131〜135 | navigation\_transition.ts の 909〜911 行目と guards.spec.ts 2552。main 149 も同じ |
+| [1](rmd/01-rmd-basic-types.md) | （食い違い）`LoadChildrenCallback` を「次の形のアロー関数でなければならない」と書くが、型は Routes・部品・Observable も受け、4 つの形とも動く | models.ts 266 | デモ。main 283 |
+| [1](rmd/01-rmd-basic-types.md) | （食い違い）`matcher` は `path` と一緒に使えないと書くが、`path: ''` と一緒なら通り、matcher は呼ばれない | models.ts 208・639 | デモ（matcher 0 回）。既知の閉じた #58507。main 225・656 |
+| [2](rmd/02-rmd-route.md) | （例の誤り）Multiple Outlets の例でカンマが抜けている | models.ts 415 | TS1005。main 432 |
+| [2](rmd/02-rmd-route.md) | （例の誤り）`redirectTo: '/user/:name'` の例は、そのままでは NG04002 | models.ts 456〜457 | デモ。main 474 |
+| [2](rmd/02-rmd-route.md) | （古い）「空の path のルートは親の params と data を継ぐ」。既定が `'always'` になり、path に関係なく継ぐ | models.ts 485 | デモ。main 502 |
+| [2](rmd/02-rmd-route.md) | （食い違い）空の path の redirect を `'prefix'` にすると無限ループと書くが、redirect は 1 回で止まる | models.ts 519〜523・628〜632 | デモ（recognize.ts の 372 行目の allowRedirects）。main 540・649 |
+| [2](rmd/02-rmd-route.md) | （説明不足）`pathMatch: 'prefix', //default`。開発モードでは空の path の redirect に書かないと例外 | models.ts 511 | validateConfig。main 528 |
+| [2](rmd/02-rmd-route.md) | （説明不足）`paramsChange` の説明が行列パラメーターに触れない（行頭の `- ` も無い） | models.ts 784〜785・352〜353 | デモ（`;m=1` で走る）、guards.spec.ts 679。main 813・369 |
+| [2](rmd/02-rmd-route.md) | （古い）`resolve` は「DI トークンの map」、`title` は「文字列か Resolve の Injectable」と書くが、関数も受ける | models.ts 753・600〜601 | 型の 757・606 行目、デモ。main 782・617 |
+| [3](rmd/03-rmd-guards.md) | （例の誤り）`Permissions.canActivate()` を引数 2 つで呼ぶ。`route.params.id` | models.ts 853・867・986 | TS2554・TS4111。main 882 |
+| [3](rmd/03-rmd-guards.md) | （食い違い）CanActivateChildFn の説明が `canActivate`、例は `children: []` でガードが呼ばれない | models.ts 1031・1034 | デモ。main 1060 |
+| [3](rmd/03-rmd-guards.md) | （例の誤り）CanDeactivate の例の `route` は存在しない名前 | models.ts 1080 | TS2552。main 1109 |
+| [3](rmd/03-rmd-guards.md) | （綴り）「at in this phase」 | models.ts 1236 | main 1265 |
+| [4](rmd/04-rmd-resolve-nav.md) | （例の誤り）「`HeroComponent` から」と書くが、例の部品は `HeroDetailComponent` | models.ts 1305・1404 | main 1334・1433 |
+| [4](rmd/04-rmd-resolve-nav.md) | （例の誤り）Resolve の順の例にカンマ 2 つの抜けと、`Route` に無い `guards` | models.ts 1333・1335・1339 | TS1005 ×2、TS2353。main 1362・1368 |
+| [4](rmd/04-rmd-resolve-nav.md) | （例の誤り）ResolveFn の順の例もカンマが抜けている | models.ts 1443・1445 | TS1005 ×2。main 1472 |
+| [4](rmd/04-rmd-resolve-nav.md) | （綴り）「redirect a `RedirectCommand`」（return a） | models.ts 1365 | main 1394 |
+| [4](rmd/04-rmd-resolve-nav.md) | （例の誤り）CanLoad の例で `string` の引数に `route` を渡す | models.ts 1482・1493 | TS2345。main 1522 |
+| [4](rmd/04-rmd-resolve-nav.md) | （古い）`onSameUrlNavigation` を「`OnSameUrlNavigation` の一部」と書くが、型は全部 | models.ts 1553〜1554 | 726530a9af9 が型を広げた。main 1582 |
+| [4](rmd/04-rmd-resolve-nav.md) | （表示）info の例の箇条書きが途中で改行され 2 項目に描かれる | models.ts 1609〜1610 | main 1638 |
+| [4](rmd/04-rmd-resolve-nav.md) | （綴り）`UrlHandingStrategy`、「the browser URL the differ」 | models.ts 1647・1654 | main 1676・1683 |
+| [4](rmd/04-rmd-resolve-nav.md) | （誤ったリンク）`@see withInMemoryRouterScroller`（公開の名前は `withInMemoryScrolling`） | models.ts 1668 | main 1697 |
+| [4](rmd/04-rmd-resolve-nav.md) | （例の誤り）`isFunction<product>(fn)`（値を型に使う） | utils/type\_guards.ts 20 | TS2749。main 20 |
+| [5](rmd/05-rmd-features.md) | （食い違い）`withHashLocation` は「history API の代わりに URL の fragment を使う」と書くが、`#` 付きの URL で `history.pushState` を呼ぶ | provide\_router.ts 647 | デモ（偽の PlatformLocation に `pushState('#/a?x=1')`）。router の spec 0 件。main 650 |
+| [5](rmd/05-rmd-features.md) | （言い方）`withExperimentalPlatformNavigation` は「`Location` strategy を provide する」と書くが、差し替えるのは `Location`。222 行目に `*` が無く、239・244 行目に行末の空白 | provide\_router.ts 213・222・239・244 | 行の読み比べ（266〜270 行目）。main 216 |
+| [6](rmd/06-rmd-events.md) | （食い違い）`ChildActivationStart`・`ChildActivationEnd`・`ActivationStart`・`ActivationEnd` を「Resolve の段の一部」と書くが、Start はガードの段、End は activate の段で出る | events.ts 530〜531・553〜554・575〜576・598〜599 | デモの「成功」と router\_events.spec.ts 31。49cd8513e45（2017）から。main 同じ行 |
+| [6](rmd/06-rmd-events.md) | （食い違い）`restoredState` は「popstate のとき以外は null」と書くが、初期ナビゲーションでも `history.state` に `navigationId` があれば入る（trigger は imperative） | events.ts 105〜106 | デモの「初期ナビゲーション」。router.ts 305〜309 行目の内部のコメントは正しい。main 106 |
+| [6](rmd/06-rmd-events.md) | （古い）`NavigationTrigger` の `'hashchange'` は、9e039ca68bf（2021-09-02）から出ない | events.ts 19・23、navigation\_transition.ts 242 | デモの「hash の変更」（trigger は popstate）。main 19 |
+| [6](rmd/06-rmd-events.md) | （説明不足）`ResolveStart` は「解決するものがあってもなくても出る」と書くが、activate する Route が無いと出ない | events.ts 430〜431 | デモの「query だけ変える」、navigation\_transition.ts 681〜683 行目。main 430 |
+| [6](rmd/06-rmd-events.md) | （説明不足）`RouteConfigLoadStart` は「Route の設定を遅延読み込みする前」と書くが、`loadComponent` でも、Resolve の段のあとに出る | events.ts 488 | デモの「loadComponent」。main 488 |
+| [6](rmd/06-rmd-events.md) | （説明不足）`NavigationCancellationCode.Redirect` は「ガードが UrlTree を返したとき」と書くが、resolver の `RedirectCommand` とエラー処理の `RedirectCommand` も同じ code | events.ts 181 | デモの「resolver が RedirectCommand」と第 5 回の 8 節。main 181 |
+| [7](rmd/07-rmd-directives.md) | （食い違い）`../` は「Route の木を 1 段上がる」と書くが、URL のセグメントを 1 つ戻る | directives/router\_link.ts 112〜113 | デモの u3（`/team/11/user/jim`）。`createUrlTree` の doc の例とは合う。main 112 |
+| [7](rmd/07-rmd-directives.md) | （例の誤り）state の例が strict で通らない | directives/router\_link.ts 169 | TS18047・TS18048。main 169 |
+| [7](rmd/07-rmd-directives.md) | （印の欠け）`RouterLinkWithHref` は本文に「v15 から非推奨」と書くだけで `@deprecated` が無い | directives/router\_link.ts 588 | 行の読み比べ。main 602 |
+| [8](rmd/08-rmd-url-rest.md) | （例の誤り）`['../../team/44/user/22']` は `/team/44/user/22` ではなく `/team/33/team/44/user/22`。67 行目に `//` が無い | create\_url\_tree.ts 75〜76・67（router.ts 465〜466 は[createUrlTree](router/03-router-create-url-tree.md)で既出） | デモ。main 75〜76 |
+| [8](rmd/08-rmd-url-rest.md) | （食い違い）`createUrlTree` は「今の URL の木にセグメントを足す」と書くが、`relativeTo` が無ければ根に当てる（`['details']` → `/details`） | router.ts 425・430〜431 | デモ。main 426 |
+| [8](rmd/08-rmd-url-rest.md) | （例の誤り）`router.navigate`（`this.` が無い） | navigation\_transition.ts 132 | TS2663。#68378 を直した #68379 は models.ts だけ。main 133 |
+| [8](rmd/08-rmd-url-rest.md) | （例の誤り）`TitleStrategy` の例の Routes に閉じ括弧 `}` が足りない | page\_title\_strategy.ts 22〜27 | TS1136。main 23 |
+| [8](rmd/08-rmd-url-rest.md) | （例の誤り）独自のスクロールの例が `response.json()` の Promise をそのまま入れる。main で書き直した版は型の誤りになる | router\_config.ts 180 | 8576f161ae4 は `any` で通る。main 182 は TS2345（4380e683d80、2026-09-10） |
+| [8](rmd/08-rmd-url-rest.md) | （言い方）`ROUTER_CONFIGURATION` を「Router のサービスの DI トークン」と書く（中身は設定） | router\_config.ts 304 | main 303 |
+| [8](rmd/08-rmd-url-rest.md) | （古い内部のコメント）`processChildren` は「合わなければ null を返す」と書くが、戻り値の型に null は無く、`NoMatch` を投げる | recognize.ts 181〜182 | 行の読み比べ。main 198 |
+| [8](rmd/08-rmd-url-rest.md) | （記号）`` `//(a:a)(b:b) `` の閉じの `` ` `` が抜けている（内部のコメント） | url\_tree.ts 860 | main 922 |
+| [8](rmd/08-rmd-url-rest.md) | （誤ったリンク）`UrlHandlingStrategy` のガイドへのリンクが事前読み込みの節 | url\_handling\_strategy.ts 18 | main の deade10d4d1（2026-09-25）で直った |
+| [8](rmd/08-rmd-url-rest.md) | （版の印）`ViewTransitionsFeatureOptions`・`ViewTransitionInfo` は `@developerPreview 20.0`、`withViewTransitions` は 19.0 | utils/view\_transition.ts 24・46 | main の 64502f9ae23 で `@publicApi 22.3` に揃った |
+
+45 件のうち、main で直っていたのは最後の 2 件（リンクと版の印）だけでした。ほかは 8576f161ae4 と同じ文が、上の表の main の行に残っています。

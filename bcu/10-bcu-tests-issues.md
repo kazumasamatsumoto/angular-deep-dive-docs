@@ -281,4 +281,5 @@ augment-index-html の it は、13 行目の共通の HTML（`<head></head>` だ
 
 ---
 
-← 前: [パス・URL・ソースマップ・版の小道具：path・url・source-map・hash・version](09-bcu-paths.md)
+← 前: [パス・URL・ソースマップ・版の小道具：path・url・source-map・hash・version](09-bcu-paths.md)  
+次: [models.ts の小さな型：GuardResult・RedirectCommand・UrlMatcher・Data・LoadChildren](../rmd/01-rmd-basic-types.md) →

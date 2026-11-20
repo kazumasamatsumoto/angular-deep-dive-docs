@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 65 シリーズ・749 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 66 シリーズ・758 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -73,6 +73,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 63. [application builder の読み残し：options の正規化・結果の形・BundlerContext・キャッシュ・小さなプラグインを行で埋める](abl/README.md)（6 章）— normalizeOptions・ExecutionResult と Result の種類・BundlerContext と後処理の残り・永続キャッシュ・esbuild の小さなプラグインと検査・spec と issue
 64. [tools/esbuild の読み残し：束ね方の設定・JS の後処理・watch・i18n の差し込み・スタイル・コンパイラプラグインの残りを行で埋める](esb/README.md)（7 章）— application-code-bundle・JavaScriptTransformer・watcher・I18nInliner・StylesheetPluginFactory と Sass/Less・compiler-plugin の残りと compilation-state・spec と issue
 65. [@angular/build の compilation と utils の読み残し](bcu/README.md)（10 章）— AotCompilation・ParallelCompilation と worker・hmr-candidates と typescript-printer・AngularHost と lazy-routes-transformer・bundle-calculator と stats-table・index-file・auto-csp・options の正規化・path/url/source-map・spec と issue
+66. [Router の型と説明文の読み残し](rmd/README.md)（9 章）— models.ts の Route・ガード・Resolve の型、provideRouter の機能、イベント、RouterLink と RouterOutlet、URL の小道具の説明文を、本物の動きと突き合わせる
 
 ## 作り直し方
 
