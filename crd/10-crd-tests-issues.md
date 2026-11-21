@@ -394,4 +394,5 @@ issues-open.json（area: core の開いている 263 件、2026-11-21 取得）�
 
 ---
 
-← 前: [変更検知のスケジューラーの説明文：provideZoneChangeDetection と zoneless](09-crd-scheduling.md)
+← 前: [変更検知のスケジューラーの説明文：provideZoneChangeDetection と zoneless](09-crd-scheduling.md)  
+次: [ApplicationRef とアプリのトークンの説明文](../cra/01-cra-app-ref.md) →

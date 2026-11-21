@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（45 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（46 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1176,3 +1176,52 @@ await cycle(); // 3 回目に戻す
 | [9](crd/09-crd-scheduling.md) | （古いコメント）引数の無い `tick()` に `@param shouldRefreshViews`。SCHEDULE\_IN\_ROOT\_ZONE の「v19 で消す」の TODO も残る | zoneless\_scheduling\_impl.ts 254〜255、zoneless\_scheduling.ts 78 | dabfb6de3dc（2024-07-10）で引数が消えた。main 同じ（L261・L78） |
 
 説明文のとおりに動いたものも多くありました。`inject` の options の 4 つと説明文の 5 つの場所、`@Optional`・`@Host` の例、`Injector.create` の `parent` と destroy、フックの呼ばれる順と `*Init` が 1 回だけのこと、OnPush の子の `ngDoCheck`（ca440551661、2026-05-20 に足された文）、`markForCheck`・`detach`・`detectChanges`・`reattach`、differ の `diff` の戻り値と trackBy と `extend`、`eventCoalescing` の 2 回と 1 回、`runCoalescing` の 10 回と 1 回、zoneless の説明文の 7 つの API は、どれも説明文のとおりです。
+
+## core の説明文の読み残し（2）
+
+### [spec と issue を読む：core の説明文（2）を固めているもの](cra/10-cra-tests-issues.md) — 4. このシリーズで見つけたもの（食い違いと不具合）
+
+どれも 8576f161ae4 の行を読み、本物の `@angular/core` 22.2.6（ページのデモと Node の記録）か、説明文の例をそのまま取り出したファイルの型検査（サイトの compiler-cli、strict・strictTemplates）で確かめたものです。「main」は ../angular の origin/main で、直っていなければ「main 同じ」と書きました。行のファイルは、断りが無ければ packages/core/src/ からの道です。
+
+| 章 | 何が起きるか | 行（8576f161ae4） | 確かめ方と main |
+| --- | --- | --- | --- |
+| 1 | （不具合）`attachView` が NG0902 を投げたあとも `_views` に残り、`viewCount` が 1 増えたまま。入れ物ごと destroy しても外れない | application/application\_ref.ts 721〜726（L724 の push が L725 より先） | Node の記録。2 行を入れ替えると 0。spec 802 は viewCount を見ない。issue なし。main 同じ |
+| 1 | （例の誤り）isStable の例の `subscribe(` を閉じる括弧が無く TS1005 | application\_ref.ts 183 | strict の tsc。353362f5a4c（2019）から。main 同じ |
+| 1 | （zone.js 前提）isStable・zone.run・tick の説明が zone のアプリの話。zoneless（既定）では isStable は PendingTasks だけで決まり、印の無い Eager のフィールドの変更は tick で描かれない | application\_ref.ts 169〜173・206〜208・222〜247・524 | ページと Node の記録。main 同じ |
+| 1 | （例の誤り）「Observable を返す例」が firstValueFrom の Promise を返す | application/application\_init.ts 96〜123 | 19edf2c057f（2024）の書き換えから。main 同じ |
+| 1 | （説明不足）APP\_ID の文字の確かめは開発モードだけ。provideStabilityDebugging の警告は最初に安定するまでだけ。同じビューを 2 回 attachView すると 2 増える | application\_tokens.ts 14〜43・stability\_debug\_impl.ts 31〜32・application\_ref.ts 715〜726 | ページと Node の記録。main 同じ |
+| 2 | （不具合）platform の scope の無い注入器を `createPlatform` に渡すと NG0201 を投げたうえ注入器が残り、以後 `getPlatform()`・`platformBrowser()`・`destroyPlatform()` がすべて NG0201 | platform/platform.ts 38〜59（L54 と L56 の順） | 新しいプロセスの Node の記録。spec なし。issue なし。main 同じ |
+| 2 | （古い文）BootstrapOptions の `ngZone`・`ngZoneEventCoalescing`・`ngZoneRunCoalescing` はもう読まれない（どれを渡しても NoopNgZone） | application\_ref.ts 94〜149、zone/ng\_zone.ts 611（getNgZone を呼ぶ行が無い） | zone.js ありの Node の記録。51ebe9a4fcc（2025-11-21）で枝が消えた。spec 577 は意味を失っている。22.2.6 で getNgZone も消えた |
+| 2 | （説明不足）platform があるときの providePlatformInitializer は呼ばれず警告も無い。assertPlatform の確かめは開発モードだけ。サーバーでは platform は呼ぶたびに別。違う JIT の options の 2 つ目は失敗せず console.error だけ | platform.ts 80〜81・111〜134・195〜221、platform\_ref.ts 23〜28、application\_ngmodule\_factory\_compiler.ts 38〜40 | Node の記録。main 同じ |
+| 3 | （不具合）3 つ入った入れ物で `move(v0, 3)` は、先に v0 を外してから添字を確かめるので、開発は assert の例外、本番は TypeError、どちらも v0 は外れたまま戻らない | linker/view\_container\_ref.ts 570〜632（L580〜590・L668〜672） | Node とページ。spec に範囲外の move の it なし。main 同じ |
+| 3 | （本番で壊れる）負・範囲外の添字の確かめは開発モードだけ。本番の insert(v, -1)・createEmbeddedView(…, {index: -1})・move(v, -1) は TypeError のうえ入れ物が壊れる。壊れたビューの insert も本番は確かめない | view\_container\_ref.ts 165・183・259・269・284・292・573・668〜672 | ページと Node の記録。main 同じ |
+| 3 | （説明文の誤り）「createComponent 関数で作り ApplicationRef に付ける例」が VCR の createComponent の例。EmbeddedViewRef.context は「目印から受け継ぐ」でなく渡したもの（丸ごとの入れ替えの非推奨が公開の説明に出ない）。maxiumum | view\_container\_ref.ts 98〜103、view\_ref.ts 94〜96、element\_ref.ts 62 | 読み比べと記録。L269 の @param は main の 6e024600e0b で直った。ほかは main 同じ |
+| 3 | （説明不足）detach は新しい ViewRef を返す。createEmbeddedView の injector は宣言側の provider より優先。createComponent の既定の injector は目印の親。environmentInjector と ngModuleRef の両方は開発だけ例外 | view\_container\_ref.ts 185・225・476〜480・655〜662 | ページと記録。main 同じ |
+| 4 | （不具合）NG0921 の文が「FirstModule vs FirstModule」と、先に登録された方を 2 回言う | linker/ng\_module\_registration.ts 31〜32 | Node の記録。e94975d109a（2018）から。spec 310 は正規表現だけ。issue なし。main 同じ |
+| 4 | （説明と API）説明では変えられない QueryList の setDirty・destroy が `/** internal */`（@internal でない）で公開 API に載る。changes は EventEmitter でなく Subject。例は TS2564 | linker/query\_list.ts 21・32〜39・163・170〜187 | goldens と strict の tsc。main 同じ |
+| 4 | （古い文）Compiler は NgModule ごとでなく root に 1 つ。getModuleId はいつも undefined。ComponentFactory は v22 で公開 API から外れた | linker/compiler.ts 23〜25・59〜64、component\_factory.ts 17・63 | ページと Node。compiler.ts 20 の link は main の 95e8dec4e22 で直った |
+| 4 | （既知の不具合）platform の DestroyRef の onDestroy が PlatformRef.destroy() で呼ばれない | linker/destroy\_ref.ts 20、platform/platform\_ref.ts 123〜140 | Node の記録。#67095（開）。main 同じ |
+| 5 | （不具合、例外の文）`input()`・`model()` を注入の文脈の外で呼ぶと、開発モードの NG0203 が「inputFunction()」「modelFunction()」と内部の名前を言う（第 6 回の viewChildFn・contentChildFn と同じ形）。本番は input() は確かめず signal を返す | authoring/input/input.ts 25・32、model/model.ts 18・24（di/contextual.ts 84 が debugFn.name を使う） | Node の記録。018f8266b3c（2024-03）から。issue なし。main 同じ |
+| 5 | （説明が足りない）model の出力は子の set・update のときだけ流れ、親から束ねた値の変化では流れない（spec 213 は流れない方を固める）。transform は値が変わったときだけ走る。束ねない required はテンプレートで NG8008、createComponent では実行時の NG0950 | model/model\_signal.ts 48〜49、input/input\_signal.ts 27〜28、input.ts 100〜101 | ページと Node。main 同じ |
+| 5 | （札の誤り）`@publicAPI`（大文字）が 11 か所。adev の安定版の札は `'publicApi'` のときだけ付く（queries.ts の 48・69・204 も同じで、こちらは @docsPrivate の型の中） | input.ts 46・103・166、input\_signal.ts 17・55、model.ts 41、model\_signal.ts 28・51、output\_emitter\_ref.ts 31、output\_ref.ts 20・29 | ts.getJSDocTags と adev の categorization.mts 165。1b1519224d1（2024-09）から。main 同じ |
+| 5 | （説明に無い）壊したあとの emit は console.warn の NG0953（#70727）。OutputOptions.alias の説明が無い。outputFromObservable の例の `<some-observable>` は置き換えの印（TS1005） | output/output\_emitter\_ref.ts 84〜93、output.ts 20〜22、rxjs-interop/src/output\_from\_observable.ts 78 | ページと tsc。main 同じ |
+| 6 | （不具合）`contentChild.required` の注入コンテキストの検査が `contentChildren` を渡すので、NG0203 の文が呼んでいない関数の名前を言う | authoring/queries.ts 186 | Node の記録（開発モード）。018f8266b3c（2024-03、#54761）から。issue なし。main 同じ |
+| 6 | （不具合）`contentChildren` だけ注入コンテキストの検査が無く、外で呼んでも例外にならず結ばれない signal を返す（AOT は直接の呼び出しを NG8110 で止めるが、別名に取り出すと止まらない） | queries.ts 322〜331 | Node の記録と ngc。018f8266b3c から。issue なし。main 同じ |
+| 6 | （頁に出ない）`@See` が大文字で、angular.dev の contentChild の頁に案内が出ない | queries.ts 271（頁の生成は adev の jsdoc-transforms.mts L253 で 'see' だけ） | angular.dev の 2 つの頁を 2026-11-22 に確かめた。6073493c5bb（2026-03）から。main 同じ |
+| 6 | （例とコメント）例の imports 抜け（NG8001）と `@Component({...})`（TS1109）、NG0203 の文の名前が viewChildFn・contentChildFn、contentChild の中のコメントが viewChild のまま、headerElElRequired | queries.ts 99・113〜118・144・257・260・275〜276・309 | strict の ngc と Node の記録。main 同じ |
+| 7 | （例が v22 で動かない）NgZone の例は、v22 の既定の OnPush では zone の中でも画面が 1% のまま。Eager を足すと説明どおり 100 回と 2 回。label は TS2564 | zone/ng\_zone.ts 45〜100（68〜69・76〜77・64） | zone.js ありの Node の記録。OnPush の既定は eae8f7e30b9（2026-03-16）。main 同じ |
+| 7 | （説明文の誤り）`runTask` は同期のエラーを投げ直さず onError に出す（説明は逆） | ng\_zone.ts 248（実装 L250〜258・L518〜522） | zone.js ありの記録（開発・本番）。6279e50d785（2017）から。spec なし。main 同じ |
+| 7 | （説明文の誤り）NgZone の isStable は macrotask が残っていても true（説明は「どちらも無い」） | ng\_zone.ts 111（実装 checkStable L354〜385） | zone.js ありの記録。main 同じ |
+| 7 | （説明不足）子の EnvironmentInjector の ErrorHandler にはテンプレートのリスナーのエラーが届かず root のものへ。EventEmitter は error を渡さないと、関数の形は捨て、observer の形は未処理のエラー。非同期の EventEmitter と PendingTasks.run はアプリの安定をふさぎ、run の失敗は ErrorHandler へ。NoopNgZone の runGuarded は投げ直す | error\_handler.ts 56〜61・146〜169、event\_emitter.ts 94・131・146・152・179〜186、pending\_tasks.ts 63〜84、ng\_zone.ts 568〜570 | ページと Node の記録。main 同じ |
+| 7 | （説明文の誤り）Testability.whenStable のコールバックは、時間切れでも安定でも引数 0 個（説明は「一覧か null」）。spec の名前「with didWork」も残る。findProviders はいつも \[\] | testability/testability.ts 187・226・233〜234・276〜284 | zone.js ありの記録。c2dd703d2ff（2024-01、#53767）から。main 同じ |
+| 7 | （例の誤り）Testability の例の第 2 引数の `{ }` 抜け（TS1005）、ErrorHandler の例の TS7006 | testability.ts 88、error\_handler.ts 68 | strict の tsc。main 同じ |
+| 7 | （古い文、直った）TransferState の説明の、もう無い ServerTransferStateModule | transfer\_state.ts 62〜63 | e8b588d8b7f（2024-03）で消えたモジュール。main の 860832591d5 と 22.2.6 で直った |
+| 8 | （開発と本番で違う）DebugElement.properties のバインディングの値は開発モードだけ。本番は DOM の値（`[value]="5"` が開発 number 5、本番 string '5'） | debug/debug\_node.ts 165〜175・695〜711（render3/instructions/dom\_property.ts 44 ほか） | ページと Node の記録。spec 927 は開発だけ。main 同じ |
+| 8 | （説明と違う）DebugElement.name が動的に作った根では `'#host'` | debug\_node.ts 150・159 | ページと記録。#71459（開）。main 同じ |
+| 8 | （型と実物）listeners の中身は DebugEventListener の実例でない素の object | debug\_node.ts 40〜45・108〜109 | ページと記録。main 同じ |
+| 8 | （古い例・言い過ぎ）context の説明が \*ngFor と NgForOf（@for では $implicit・$index の文脈）。nativeElement を「コンポーネントの根」。host のバインディングは入らないというコメント（実際は入る） | debug\_node.ts 96〜98・143・685〜687 | ページと記録。main 同じ。使われない索引（L736〜747）は main の b493d767a4b と 22.2.6 で消えた |
+| 9 | （説明文の誤り）DomSanitizer.sanitize は「HTML 以外はただの文字列なら例外」と書くが、URL は直して返し STYLE はそのまま返す。例外は SCRIPT と RESOURCE\_URL だけ | platform-browser/src/security/dom\_sanitization\_service.ts 116〜117（実装 L169〜214） | ページと記録。0331473e3ac（2023-01、#48765）の書き直しから。spec なし。main 同じ |
+| 9 | （古い文）bypassSecurityTrustUrl の「safe style URL」「&lt;img src&gt;」。22.2.6 と main では img の src は URL の文脈から外れた | dom\_sanitization\_service.ts 148〜149、core の dom\_security\_schema.ts 91〜92 | 読み比べ。表の 2 行は 22.2.6（6fa2b083e6f）と main（439ff1bdf4f）で消えた。説明文は main 同じ |
+| 9 | （内部の説明文）ɵɵsanitizeStyle を「危ないものを取り除く」（何もしない）、script の戻り値の崩れた文、bypass の「String に包む」（class に包む）、hich、NgModule の頃の「モジュールに import」 | sanitization/sanitization.ts 75〜76・157〜158・272〜273、bypass.ts 143〜199 | 読み比べとページ。resource URL の `<img src>`（L129〜130）は 22.2.6 と main で直った。ほかは main 同じ |
+
+説明文のとおりに動いたものも多くありました。signal のクエリの 4 つの関数の型と read・descendants の既定、required の NG0951、NgZone の run・runGuarded・onUnstable・onMicrotaskEmpty・onStable の順、EventEmitter の async、PendingTasks の add と run、TransferState の鍵と toJson の書き換え、DebugElement の query・queryAll・queryAllNodes と triggerEventHandler、`javascript:` の URL と `<script>`・`on*` を落とすサニタイズ、違う種類の印を渡すと例外、は説明文のとおりです。

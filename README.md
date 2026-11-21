@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 69 シリーズ・787 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 70 シリーズ・797 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -77,6 +77,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 67. [Forms の説明文の読み残し](fmd/README.md)（10 章）— AbstractControl・FormGroup・FormArray・FormControl・FormBuilder・Validators と、NgControl・リアクティブとテンプレートのディレクティブ・ControlValueAccessor の説明文を、本物の動きと突き合わせる
 68. [common の説明文の読み残し](cmd/README.md)（9 章）— NgOptimizedImage・ローダー・日付と数の書式・pipe・組み込みディレクティブ・Location の説明文を、本物の動きと突き合わせる
 69. [core の説明文の読み残し](crd/README.md)（10 章）— @Directive・@Component・クエリ・NgModule の型と、DI・ライフサイクル・differ・スケジューラーの説明文を、本物の動きと突き合わせる
+70. [core の説明文の読み残し（2）](cra/README.md)（10 章）— ApplicationRef・platform・ViewContainerRef・signal の input/output/クエリ・NgZone・ErrorHandler・DebugElement・サニタイズの説明文を、本物の動きと突き合わせる
 
 ## 作り直し方
 
