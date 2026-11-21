@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（46 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（47 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1225,3 +1225,48 @@ await cycle(); // 3 回目に戻す
 | 9 | （内部の説明文）ɵɵsanitizeStyle を「危ないものを取り除く」（何もしない）、script の戻り値の崩れた文、bypass の「String に包む」（class に包む）、hich、NgModule の頃の「モジュールに import」 | sanitization/sanitization.ts 75〜76・157〜158・272〜273、bypass.ts 143〜199 | 読み比べとページ。resource URL の `<img src>`（L129〜130）は 22.2.6 と main で直った。ほかは main 同じ |
 
 説明文のとおりに動いたものも多くありました。signal のクエリの 4 つの関数の型と read・descendants の既定、required の NG0951、NgZone の run・runGuarded・onUnstable・onMicrotaskEmpty・onStable の順、EventEmitter の async、PendingTasks の add と run、TransferState の鍵と toJson の書き換え、DebugElement の query・queryAll・queryAllNodes と triggerEventHandler、`javascript:` の URL と `<script>`・`on*` を落とすサニタイズ、違う種類の印を渡すと例外、は説明文のとおりです。
+
+## platform の説明文の読み残し
+
+### [spec と issue を読む：platform の説明文を固めているもの](pbd/07-pbd-tests-issues.md) — 4. このシリーズで見つけたもの（食い違いと不具合）
+
+どれも 8576f161ae4 の行を読み、本物のパッケージ（サイトの @angular/core・platform-browser・platform-server 22.2.6 と、npm pack で取った platform-browser-dynamic 22.2.6）をページか Node で動かした記録か、説明文の例をそのまま取り出したファイルの型検査（strict の tsc）で確かめたものです。「main」は ../angular の origin/main（d201dd76ef2）で、直っていなければ「main 同じ」と書きました。
+
+| 回 | 何が起きるか | 行（8576f161ae4） | 確かめ方と main |
+| --- | --- | --- | --- |
+| 1 | （例）例 `@Component({template: 'Hello world!'}) class Root {}; await bootstrapApplication(Root)` で描ける → selector が無いので ng-component を探し NG05104 で reject（Node の記録、dev/prod とも）。strict の ngc は通る。5771b18a989 から selector が無く、85122cb12d3 でも足されなかった | platform-browser/src/browser.ts L72〜77 | main 同じ |
+| 1 | （説明）context は「省略できる」、SSR のような上級の使い方に役立つ → ngServerMode では context なしだと NG0401 Missing Platform（create\_application.ts L47〜54、28926ba92cf 以降）。サーバーでは必須 | browser.ts L116〜118・L148〜150 | main 同じ |
+| 1 | （実装）（説明なし）platformBrowser() は今の platform を返す → createApplication / bootstrapApplication のあとに platformBrowser() を呼ぶと、開発モードは NG0400「A platform with a different configuration has been created.」、本番は今の platform。createOrReusePlatformInjector が factory の印のトークンを置かないため。逆の順は spec（bootstrap\_spec.ts L277）がある | core/src/platform/platform.ts L172〜194（createOrReusePlatformInjector）と L80〜93・L123〜131 | main 同じ |
+| 1 | （説明）provideProtractorTestingSupport の説明に options が無い → `usePendingTasksForStability`（9f479ae9641 で追加）を渡すと 4 つ目が ɵUSE\_PENDING\_TASKS。zoneless で false を渡すと保留があっても isStable() が true。spec は platform-browser に無い | browser.ts L185〜198 | main 同じ |
+| 1 | （古い）BrowserModule は「CLI の new で作ったすべてのアプリに既定で入る」→ CLI の application schematic は standalone の既定が true（ac0db66975、2023-09-21）。BrowserModule は --standalone=false のときだけ。3f55aa609f6（2016）のまま | browser.ts L287〜289 | main 同じ |
+| 1 | （説明（小））JIT のリソースの失敗は「記録して bootstrap を止めない」→ console.error のあと、ルートを作る所で「Component 'X' is not resolved」で reject（Node の JIT の記録） | browser.ts L179 | main 同じ |
+| 2 | （説明（書式））既定の機能の 3 つ目の項目 → 先頭の `*` が無く、Markdown では前の HttpClient の項目に続く（0454d4ced7e で追加） | platform-browser/src/hydration.ts L202 | main 同じ |
+| 2 | （説明）withEventReplay は「イベントの再生を有効にする」機能。既定の一覧に再生は無い → 既定のインクリメンタル（L289〜291 の ɵwithIncrementalHydration、core api.ts L337）が withEventReplay を入れる。platform-server の HTML は provideClientHydration() と (withEventReplay()) で 1 字も違わない。効くのは withNoIncrementalHydration と一緒のときだけ | hydration.ts L195〜202・L209・L111〜113 | main 同じ |
+| 2 | （実装）（説明なし）矛盾する組み合わせは例外 → 検査は開発モードだけ。本番では NoHttp+Options は Options が、Inc+NoInc は Inc が黙って勝つ（provider の表と platform-server の本番の HTML で確認）。転送キャッシュの組の例外の spec は無い | hydration.ts L262〜278 | main 同じ |
+| 2 | （古い）NgModule の例 → v22 の既定の @Component の RootCmp では NG6008・NG6009。standalone: false で通る | hydration.ts L222〜231 | main 同じ |
+| 3 | （説明）addEventListener は「登録したキーのイベント」を返す → 外す関数（onAndCancel の戻り値）。ページで typeof が function、呼ぶと鳴らない。23a98b9e513（2018）から | platform-browser/src/dom/events/key\_events.ts L75 | main 同じ |
+| 3 | （説明（小））@param doc「キーのイベントを捕まえる文書」→ super(doc) に渡すだけで使われない（event\_manager\_plugin.ts L23〜24 の TODO） | key\_events.ts L53〜54 | main 同じ |
+| 3 | （説明（小））@param zone「イベントが起きた zone」→ handler を runGuarded で呼ぶ zone（L191） | key\_events.ts L185 | main 同じ |
+| 3 | （例）`(keydown.code.alt.shiftleft)` は Alt と左 Shift に当たる → 鳴らない（shiftKey も true なので code.alt.shift.shiftleft になる。ページの合成イベントで確認） | adev/src/content/guide/templates/event-listeners.md L95〜96 | 直った（2e4e1214cc6、2026-10-26） |
+| 3 | （古い）例 `ng.probe` → ng\_probe.ts と exportNgVar('probe') は e57d5db0458（2023-03-02）で削除。今の呼び出し元は enableDebugTools / disableDebugTools だけ | platform-browser/src/dom/util.ts L14〜15 | main 同じ |
+| 3 | （説明（不足））（置き場所の説明なし）→ コンポーネントの providers の EVENT\_MANAGER\_PLUGINS は使われない（supports が呼ばれず、名前は DomEventsPlugin がそのまま付ける。例外も警告も無い）。アプリの providers なら効く（ページで確認） | event\_manager.ts L24〜25・event\_manager\_plugin.ts L15〜16 | main 同じ |
+| 3 | （説明（不足））baseHref を sourceMappingURL の前に付ける → 開発モードだけ（L581・L664）。../ を解決して pathname を書く（/app/ の外に出る）、L50 の正規表現に g が無く 2 つ目は直さない、/ と https: は飛ばす（説明に無い） | dom\_renderer.ts L115〜159（addBaseHrefToCssSourceMap） | main 同じ |
+| 4 | （説明）selector の形 ``"tag_attribute=`value string`"`` → その形の ``meta.getTag('name=`viewport`')`` は Chrome で querySelector の SyntaxError（Meta は捕まえない）。Markdown のコード表示も崩れる。886e3ebcca9（2020-05-18）、同じコミットの L49・L99・L111 は 'value string' | platform-browser/src/browser/meta.ts L124・L143 | main 同じ |
+| 4 | （説明（不足））updateTag は「既にある要素を書き換え」「書き換えた要素を返す」→ 無ければ作って返す（L137）。spec の should create meta tag if it does not exist（meta\_spec.ts L140）が固めている | meta.ts L121・L127 | main 同じ |
+| 4 | （実装）addTag/addTags は探して、あれば返す → name も property も無い定義（charset・http-equiv・itemprop）は property="undefined" で探して見つからず、毎回作る。このページの本物の head で &lt;meta charset&gt; が 1 → 2 | meta.ts L67〜71・L83〜85、L201〜204（parseSelector） | main 同じ |
+| 4 | （説明）timeChangeDetection は今の画面の 1 回の変更検知の平均 → zoneless の本番は何も検査しない tick（200 個の Eager の子の評価 0 回、0.00 ms）、開発モードは checkNoChanges の分だけ（200 回/tick）。zone.js の本番は 200 回/tick で説明どおり（Node の記録）。tools\_spec は tick が spy | browser/tools/common\_tools.ts L31〜34 | main 同じ |
+| 4 | （説明（綴り））Enabled Angular debug tools → Enables の綴りの誤り | browser/tools/tools.ts L18 | main 同じ |
+| 4 | （説明（補足））特定の文脈で安全な値の印 → 中身の無い interface で、ただの文字列も SafeHtml の型に入る（core の同じ型は cra-sanitize が先に書いた）。区別は実行時の class | security/dom\_sanitization\_service.ts L35〜75 | main 同じ |
+| 5 | （例の誤り）`renderApplication` の例が `appConfig` を宣言して `config` を渡す（TS2304）。`renderApplication(bootstrap)` は 2 つ目の引数が無く TS2554。`[...]` は省略の印（TS1109） | platform-server/src/utils.ts 316〜326 | strict の tsc。config は 28926ba92cf（2025-09）から、1 引数は b5278cc115e（2023-02）から。main 同じ |
+| 5 | （説明文の誤り）bootstrap の関数は「Injector のインスタンスで呼ぶ」とあるが、渡るのは `{platformRef}`（BootstrapContext） | utils.ts 328〜330（実装は L362） | Node の記録（`instanceof Injector` が false）。28926ba92cf から。main 同じ |
+| 5 | （例が動かない）`provideServerRendering` の例が `bootstrapApplication(AppComponent, {providers: [provideServerRendering()]})` で、BootstrapContext が無く NG0401 | platform-server/src/provide\_server.ts 22〜27・35〜37 | Node の記録。CLI のサーバーのビルドでも ngServerMode は true。main 同じ |
+| 5 | （古いコメント）`createServerPlatform` の「ngJitMode で JIT 付きかを決める」。その枝は無い | utils.ts 51〜54 | 06452af31fb（2023-04）で枝が消えた。main 同じ |
+| 5 | （コメントの誤り）`DominoAdapter.getGlobalEventTarget` の「@deprecated Ivy ではもう使われない。v14 で消す」。`Renderer2.listen('window' \| 'document' \| 'body', …)` が今も呼ぶ | platform-server/src/domino\_adapter.ts 71〜83、platform-browser/src/dom/dom\_renderer.ts 486〜487 | Node の記録（サーバーで listen が動く）。6581a1b48dc（2021-04）の EventManagerPlugin の非推奨との取り違え。main 同じ |
+| 5 | （不具合、例外の文）対象が文字列の `Renderer2.listen` で対象が見つからないと、NG05102 が「Unsupported event target null for event …」と、渡した名前でなく `null` を言う | platform-browser/src/dom/dom\_renderer.ts 487〜493 | Node の記録（開発モード）。L487 で target を上書きしてから文を作る。issue なし。main 同じ |
+| 5 | （説明不足）`document` を省くと空の文書でルートが無く NG05104。渡した Document は描いたあとルートが外れ、2 回目は NG05104。`platformProviders` の `INITIAL_CONFIG` が `document` より勝つ。url の無い `PlatformLocation` は hostname などが `'/'` | utils.ts 331〜336・L61〜70、tokens.ts 17〜26、location.ts 28〜32 | Node の記録。main 同じ |
+| 5 | （説明不足）BEFORE\_APP\_SERIALIZED は multi が要る（無いと「Cannot mix…」か「callbacks is not iterable」）。TransferState を書く関数は provideServerRendering より前に並べないと出ない。platform に置いた関数はアプリにも同じトークンがあると呼ばれない。ServerModule と provideServerRendering の両方で ng-state が 2 個 | tokens.ts 36〜44、utils.ts 208〜211、transfer\_state.ts 54〜68 | Node の記録（開発・本番）。main 同じ |
+| 5 | （説明不足）`provideServerRendering()` は呼んだだけで global の ngServerMode を true にし戻さない。`maxResponseBodySize: 0` は無視されて 1 MB。上限を外す null は渡せない | provide\_server.ts 32〜42 | Node の記録。ビルドした JS では ngServerMode は定数（#69260）。main 同じ |
+| 6 | （型と実行）`JitCompilerFactory` の .d.ts にコンストラクターが無く `new JitCompilerFactory()` が型検査に通るが、実行は TypeError「defaultOptions is not iterable」 | platform-browser-dynamic/src/compiler\_factory.ts 31〜37 | strict の tsc と Node の記録。main 同じ |
+| 6 | （説明のとおり何もしない）`createCompiler` の options（defaultEncapsulation・preserveWhitespaces）は効かない。`CompilerFactory` を inject する行は無い | compiler\_factory.ts 22〜60 | Node の記録。8c71b9fc42e（2021-11）から。main 同じ |
+| 6 | （非推奨の文の不足）「代わりに platformBrowser」は、CLI を使わない JIT で templateUrl のある NgModule を bootstrapModule するときだけ同じに動かない（「is not resolved」）。COMPILER\_OPTIONS は bootstrapApplication では読まれない | platform\_providers.ts 21〜39、core の application\_ngmodule\_factory\_compiler.ts 50〜58 | Node の記録。a4e2139620e（2025-04）の文。main 同じ |
+| 6 | （説明に無い）`ResourceLoaderImpl` は status 300 を成功、0 で本文ありを成功にする。本番では platformBrowser のあとの platformBrowserDynamic が黙って今の platform を返し、ResourceLoader が置かれない | resource\_loader/resource\_loader\_impl.ts 32〜39 | Node の記録。746f85a621a（2015）から。main 同じ |

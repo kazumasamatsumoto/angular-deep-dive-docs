@@ -305,4 +305,5 @@ testability\_spec.ts の「with didWork」（L270・L283）と、component\_spec
 
 ---
 
-← 前: [サニタイズの公開 API の説明文：DomSanitizer の約束と SecurityContext](09-cra-sanitize.md)
+← 前: [サニタイズの公開 API の説明文：DomSanitizer の約束と SecurityContext](09-cra-sanitize.md)  
+次: [bootstrapApplication と BrowserModule の説明文](../pbd/01-pbd-browser.md) →
