@@ -456,7 +456,7 @@ pnpm bazel test //packages/common/test:test \
   '--test_arg=--filter=JsonPipe|SlicePipe|LowerCasePipe|UpperCasePipe|TitleCasePipe|I18nSelectPipe'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/b-simple.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/b-simple.log）`
 
 ```
 Ran 58 of 667 specs

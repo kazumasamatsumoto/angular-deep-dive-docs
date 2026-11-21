@@ -685,7 +685,7 @@ acceptance の `lifecycle` の describe が使う橋です。1033 行目、預�
 
 ### 記録の再生：同じ操作を Node と domino で
 
-デモと同じ 2 つのファイル（`fgn-content.demo-mini.ts` と `fgn-content.demo-host.ts`）を、scratchpad の記録スクリプトが ngc と同じ道でコンパイルし、domino の上でボタンを順に押しました。@angular/core 22.1.6 の記録です。22.2.6 でも 同じ記録でした。ErrorHandler に届いたエラーは 0 件です。
+デモと同じ 2 つのファイル（`fgn-content.demo-mini.ts` と `fgn-content.demo-host.ts`）を、手元の作業フォルダの記録スクリプトが ngc と同じ道でコンパイルし、domino の上でボタンを順に押しました。@angular/core 22.1.6 の記録です。22.2.6 でも 同じ記録でした。ErrorHandler に届いたエラーは 0 件です。
 
 1. \[ng\] Angular: @if を true にした
 2. \[ng\] Angular が読んだキー: CONTENT\_ADAPTER, ON\_DESTROY, GET\_CONTEXT, RENDER
@@ -709,7 +709,7 @@ acceptance の `lifecycle` の describe が使う橋です。1033 行目、預�
 
 22.1.6（dev）の Eager のあと: &lt;!--container--&gt;&lt;!--foreign-view-head--&gt;&lt;div class="box-a"&gt;&lt;b&gt;a&lt;/b&gt;&lt;/div&gt;&lt;!--foreign-view-tail--&gt;&lt;!--foreign-component--&gt;&lt;!--container--&gt;
 
-「1 か所足した写し」は、22.1.6 の `@angular/core` を scratchpad に写し、`getFirstNativeNode` のコンテナの枝（4 節の 714〜715 行目）の先頭に 「`lContainer[FLAGS] & 4`（LogicalOnly）なら `lContainer[NATIVE]` を返す」を足したものです。../angular は変えていません。
+「1 か所足した写し」は、22.1.6 の `@angular/core` を 作業用フォルダに写し、`getFirstNativeNode` のコンテナの枝（4 節の 714〜715 行目）の先頭に 「`lContainer[FLAGS] & 4`（LogicalOnly）なら `lContainer[NATIVE]` を返す」を足したものです。../angular は変えていません。
 
 ## ここまでの呼び出し
 

@@ -1092,7 +1092,7 @@ $ pnpm bazel test //packages/language-service/test:test \
   Stats over 4 runs: max = 2.0s, min = 1.9s, avg = 1.9s, dev = 0.1s
 ```
 
-- describe の名前 `Signal input refactoring action` で 3・3・3・4 本、合計 13 本が通りました（PASSED in 2.0s。ログは scratchpad/ls-logs/e-signal-input.log）。この spec は本物の `SignalInputMigration` を言語サービスのテスト用の仮想のプロジェクトの上で走らせています。
+- describe の名前 `Signal input refactoring action` で 3・3・3・4 本、合計 13 本が通りました（PASSED in 2.0s。ログは work/ls-logs/e-signal-input.log）。この spec は本物の `SignalInputMigration` を言語サービスのテスト用の仮想のプロジェクトの上で走らせています。
 - core のマイグレーションそのものの spec は packages/core/schematics の側にあります。言語サービスの spec が確かめているのは、候補の出方・文・編集の形です。
 
 ### 直すとしたら

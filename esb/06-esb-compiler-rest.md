@@ -1105,7 +1105,7 @@ compiler-plugin.ts の 450 行目と 561 行目（onLoad の頭）で、esbuild 
 
 ## 10. どう録ったか
 
-スクリプトは `<scratchpad>/esb-demo/a/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の dist を require しました。normalizeOptions → createComponentStyleBundler → SourceFileCache → createAngularCompilation → PrimaryCompilationContext → setupBundlerContexts の順は execute-build.ts と同じです。記録は、PrimaryCompilationContext と SecondaryCompilationContext の prototype のメソッドとゲッター、FileReferenceTracker の add と update を包み、compiler-plugin の `createCompilerPlugin` を包んで、esbuild の build を Proxy で渡して onStart・onEnd・JIT の名前空間の onResolve・onLoad を記録しました。3 つめの設定は、`require.cache` に 2 つのキャッシュのストアのモジュールを中身なしで先に入れ、本物の `createPersistentCacheStore` が両方の `new` で失敗するようにしたものです。
+スクリプトは `<work>/esb-demo/a/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の dist を require しました。normalizeOptions → createComponentStyleBundler → SourceFileCache → createAngularCompilation → PrimaryCompilationContext → setupBundlerContexts の順は execute-build.ts と同じです。記録は、PrimaryCompilationContext と SecondaryCompilationContext の prototype のメソッドとゲッター、FileReferenceTracker の add と update を包み、compiler-plugin の `createCompilerPlugin` を包んで、esbuild の build を Proxy で渡して onStart・onEnd・JIT の名前空間の onResolve・onLoad を記録しました。3 つめの設定は、`require.cache` に 2 つのキャッシュのストアのモジュールを中身なしで先に入れ、本物の `createPersistentCacheStore` が両方の `new` で失敗するようにしたものです。
 
 📄 `記録のスクリプト（rec-compiler.mjs）`
 

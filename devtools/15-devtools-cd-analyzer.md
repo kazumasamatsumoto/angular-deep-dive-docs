@@ -675,7 +675,7 @@ Performance パネルに Angular の段を出すものは、もう 1 つあり�
 >
 > 記録の `lastCdPassDuration` は Node の `performance.now()` で測った小さな値（0.008〜0.07 ms ほど）で、描画やレイアウトの無い domino の上の値です。ブラウザの値とは比べられません。また Node の `performance.measure` は `detail` を受け取りますが、段として描く画面はありません。記録で確かめられるのは「何という名前で、どの順に、どの detail を付けて呼ばれたか」までです。
 
-📄 `scratchpad の記録スクリプト（cd.ts。共通の部品で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（cd.ts。共通の部品で束ねて node で実行）`
 
 ```
 // 第 15 回 devtools-cd-analyzer の記録。
@@ -835,7 +835,7 @@ pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/profiling/cd-ana
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/d-bazel.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/d-bazel.log）`
 
 ```
 //devtools/projects/ng-devtools-backend/src/lib/profiling:performance_track_test_chromium PASSED in 2.0s   1 passed

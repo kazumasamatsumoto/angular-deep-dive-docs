@@ -319,7 +319,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
    3 節の 82・89〜90 行目のとおりです。もう 1 行の「Angular is running in development mode.」は Angular が起動のときに出す別の知らせです。
 
-📄 `scratchpad の記録スクリプト（a/instruction.ts。共通の build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/instruction.ts。共通の build.mjs で束ねて node で実行）`
 
 ```
 // defer-instruction の記録: @for の中に @defer を 1 つ書き、3 行描く。
@@ -544,7 +544,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=^@defer with HMR'
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/a-instruction.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/a-instruction.log）`
 
 ```
 Ran 2 of 2693 specs

@@ -700,7 +700,7 @@ Chrome 156（macOS）で試すと、click の行き先に届くのは button（E
 - **button・checkbox・input type=text**：差し込んでも変わりません（5 節の 202・205 行目と、4 節の 303 行目）。
 - **keydown:k だけの要素**：Enter が click に書き換わるので、`k` に届かなくなります（2 節の注意）。
 
-📄 `記録のスクリプト（scratchpad/jsa-demo/c/。build.mjs で束ね、rec-run.mjs がヘッドレスの Chrome を動かす）`
+📄 `記録のスクリプト（work/jsa-demo/c/。build.mjs で束ね、rec-run.mjs がヘッドレスの Chrome を動かす）`
 
 ```
 // ===== build.mjs =====
@@ -1182,7 +1182,7 @@ pnpm bazel test //packages/core/primitives/event-dispatch/test:browser_test_chro
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/c-all.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/c-all.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed

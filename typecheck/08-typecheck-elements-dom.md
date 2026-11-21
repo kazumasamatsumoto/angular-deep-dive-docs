@@ -890,7 +890,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/typecheck/test:test \
   '--test_arg=--filter=DOM'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/b-host.log・b-dom.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/b-host.log・b-dom.log）`
 
 ```
 （4 つの shard のそれぞれが次の 2 行）

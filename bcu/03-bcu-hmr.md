@@ -489,7 +489,7 @@ ng serve でファイルを保存すると、`collectHmrCandidates` が「差し
 
 ## 7. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `aot-compilation.js` を使いました。aot-compilation.js は `collectHmrCandidates` を呼ぶたびに hmr-candidates.js の exports から引くので、その exports の関数を包んで、引数（変わったファイル・`NgtscProgram`・前回の SourceFile）と結果を記録しました。../angular-cli の hmr-candidates.ts は読むだけで、行の数を変えずに印（`__t(行番号)`）を足した文字列を transpile して、包んだ所から同じ引数で呼んでいます。dist と印つきの写しの候補は、17 組すべてで同じでした。TypeScript は最初に読んだ作業フォルダを覚えるので、組ごとに同じ場所にワークスペースを作り直してから移っています。
+スクリプトは `<work>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `aot-compilation.js` を使いました。aot-compilation.js は `collectHmrCandidates` を呼ぶたびに hmr-candidates.js の exports から引くので、その exports の関数を包んで、引数（変わったファイル・`NgtscProgram`・前回の SourceFile）と結果を記録しました。../angular-cli の hmr-candidates.ts は読むだけで、行の数を変えずに印（`__t(行番号)`）を足した文字列を transpile して、包んだ所から同じ引数で呼んでいます。dist と印つきの写しの候補は、17 組すべてで同じでした。TypeScript は最初に読んだ作業フォルダを覚えるので、組ごとに同じ場所にワークスペースを作り直してから移っています。
 
 📄 `記録のスクリプト（rec-hmr.mjs）`
 

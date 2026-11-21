@@ -555,7 +555,7 @@ angular/components · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 
 ## 7. 22.1.8 との差：#33747「remove selection behavior」
 
-0b81ad7e3c（2026-09-01、PR #33747、本文は `Removing selection behavior so Toolbar no longer listen to Enter and Space events.` と `Fixes #33684`）です。`git -C ../components merge-base --is-ancestor 0b81ad7e3c v22.1.8` は偽で、この変更は 22.1.8 に入っていません（入っているのは v22.2.0-next.4 以降のタグ）。scratchpad の diff（22.1.8 の sourcemap から戻した .ts と snapshot の差）から、キーの表と選択の部分を抜きます。`-` が 22.1.8、`+` が snapshot です。
+0b81ad7e3c（2026-09-01、PR #33747、本文は `Removing selection behavior so Toolbar no longer listen to Enter and Space events.` と `Fixes #33684`）です。`git -C ../components merge-base --is-ancestor 0b81ad7e3c v22.1.8` は偽で、この変更は 22.1.8 に入っていません（入っているのは v22.2.0-next.4 以降のタグ）。手元の作業フォルダの diff（22.1.8 の sourcemap から戻した .ts と snapshot の差）から、キーの表と選択の部分を抜きます。`-` が 22.1.8、`+` が snapshot です。
 
 📄 `diff: private/toolbar/toolbar.ts（_keydown）`
 

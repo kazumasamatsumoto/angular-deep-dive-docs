@@ -361,7 +361,7 @@ pipe はもう少し手が込んでいます。104 行目、場所は pipe の�
 > [!NOTE]
 > **さらに深く**
 >
-> このサイトの共通デモ部品（typecheck-tcb.ts）の `STRICT_CONFIG` にはまだ `suggestionsForSuboptimalTypeInference: false` がありますが、22.1.6 の generateTypeCheckBlock もこの値を読みません （scratchpad に復元した 22.1.6 の typecheck/ を grep しても、oob.ts のインタフェースにしか出てきません。いまのサイトの 22.2.6 の compiler の src では、1 つも出てきません）。
+> このサイトの共通デモ部品（typecheck-tcb.ts）の `STRICT_CONFIG` にはまだ `suggestionsForSuboptimalTypeInference: false` がありますが、22.1.6 の generateTypeCheckBlock もこの値を読みません （作業用フォルダに復元した 22.1.6 の typecheck/ を grep しても、oob.ts のインタフェースにしか出てきません。いまのサイトの 22.2.6 の compiler の src では、1 つも出てきません）。
 
 ## 4. 警告になりうる唯一の OOB：content projection
 
@@ -766,7 +766,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc --nocache_test_results 
   '--test_arg=--filter=control flow content projection diagnostics|illegal write to a template variable|let declaration value to be changed'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/e-ngtsc-oob.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/e-ngtsc-oob.log）`
 
 ```
 Ran 16 of 6690 specs

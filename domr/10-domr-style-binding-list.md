@@ -699,7 +699,7 @@ pnpm bazel test //packages/core/test/render3:render3 \
   '--test_arg=--filter=^(TNode styling linked list|styling TStylingRange)'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/c-sb-r3.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/c-sb-r3.log）`
 
 ```
 Ran 14 of 574 specs

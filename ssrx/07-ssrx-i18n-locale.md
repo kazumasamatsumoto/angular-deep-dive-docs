@@ -408,7 +408,7 @@ i18n でロケールごとにビルドしたアプリを `@angular/ssr` で配�
 
 `getPreferredLocale` と `getPotentialLocaleIdFromUrl` は `@angular/ssr` の入口から export されていないので、../angular-cli（44129f66a3）の `i18n.ts` を esbuild で束ねました。5 節の `AngularAppEngine` と `ɵsetAngularAppEngineManifest` は、このサイトの依存の配布物 22.1.7 です（ca6f08c6e5 と 5adc925414 が入っていることを、配布物の `ssr.mjs` を grep して確かめました）。2026-11-06、Node v24.22.1 で動かしました。
 
-📄 `scratchpad/ssrx-demo/_shared-c/build.mjs`
+📄 `work/ssrx-demo/_shared-c/build.mjs`
 
 ```js
 // 使い方: RESEARCH=~/angular-research node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > 記録.json
@@ -447,7 +447,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-i18n-locale/record.ts`
+📄 `work/ssrx-demo/ssrx-i18n-locale/record.ts`
 
 ```ts
 // i18n の記録。getPreferredLocale・getPotentialLocaleIdFromUrl は ../angular-cli のソース（入口に export されていない）、
@@ -654,7 +654,7 @@ console.log(JSON.stringify({ node: process.version, preferred, fromUrl, redirect
 
 ### 手元で走らせた結果
 
-練習用の複製（angular-cli-fix、44129f66a3）で `pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all` を走らせ、`//packages/angular/ssr/test:test` は「249 specs, 0 failures」でした（2026-11-06、scratchpad/ssrx-logs/c-cli-tests.log）。
+練習用の複製（angular-cli-fix、44129f66a3）で `pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all` を走らせ、`//packages/angular/ssr/test:test` は「249 specs, 0 failures」でした（2026-11-06、work/ssrx-logs/c-cli-tests.log）。
 
 複製で 5 節の行を ca6f08c6e5 の前の形に戻すと、181 行目の it が `Expected 'Accept-Language' to be 'X-Forwarded-Prefix, Accept-Language'.`、191 行目の it が `Expected '/it' to be '/app/it'.` で落ちました。205 行目の it は通ります（戻した形でも接頭辞を読まないので）。また、4 節の JSDoc の 2 つの例をそのまま it にして足すと、`Expected 'fr-FR' to be 'en-US'.` と `Expected 'en-US' to be undefined.` で落ちました（c-cli-reverted.log）。複製は `git checkout` で元に戻し、`git status --short` が空であることを確かめています。
 

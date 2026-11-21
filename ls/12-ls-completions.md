@@ -1001,7 +1001,7 @@ pnpm bazel test //packages/language-service/test:test --nocache_test_results --t
   '--test_arg=--filter=^completions (in the global scope|in an expression scope|pipe scope)'
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/c-completions.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/c-completions.log）`
 
 ```
 Ran 7 of 669 specs / Ran 6 of 668 specs / Ran 7 of 669 specs / Ran 7 of 669 specs

@@ -772,7 +772,7 @@ cd ~/angular-research/angular
 pnpm bazel test //packages/core/test/render3:render3 --nocache_test_results --test_output=all '--test_arg=--filter=Runtime i18n'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/c-runtime-start.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/c-runtime-start.log）`
 
 ```
 Randomized with seed 50429

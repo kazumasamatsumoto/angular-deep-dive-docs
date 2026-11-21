@@ -590,10 +590,10 @@ function visitNode(
 
    リンクの結果は木に無い文字列なので、その中の `ɵsetClassMetadata` は `void 0` にならず、それを包む IIFE にも印が付きません。2 回に分けた形（22.2.7 の `transform` をリンクだけ・最適化だけの 2 回に分けて呼んだもの）では、`void 0` になり、IIFE に印が付きました。ただし本番の define（`ngDevMode: false`）で esbuild 0.28.2 に通すと、どちらの形もクラスだけが残る同じ出力になりました（下の `probe9.mjs`）。
 
-📄 `1 回の走査と 2 回の走査の出力（<scratchpad>/oxc-demo/a/old/probe9.mjs）`
+📄 `1 回の走査と 2 回の走査の出力（<work>/oxc-demo/a/old/probe9.mjs）`
 
 ```
-// <scratchpad>/oxc-demo/a/old/probe9.mjs（全部）: リンクが書いたコードを、同じ走査の最適化は見るか
+// <work>/oxc-demo/a/old/probe9.mjs（全部）: リンクが書いたコードを、同じ走査の最適化は見るか
 import { createRequire } from 'node:module';
 const req = createRequire(new URL('./node_modules/@angular/build/package.json', import.meta.url));
 const cur = req('./src/tools/oxc/oxc-transform.js');
@@ -642,19 +642,19 @@ two esbuild: import"@angular/core";class d{}export{d as Foo};
 📄 `isAlreadyEdited を数えた実験`
 
 ```
-// <scratchpad>/oxc-demo/a/patched/count-run.cjs: 22.2.7 の oxc-transform.js の写しの isAlreadyEdited に、呼ばれた回数と真の回数を数える 2 行だけを足したもの
-// <scratchpad>/oxc-demo/a/old/count-old.mjs: 2b85529e82 の前の oxc-transform.ts に同じ 2 行を足したもの
+// <work>/oxc-demo/a/patched/count-run.cjs: 22.2.7 の oxc-transform.js の写しの isAlreadyEdited に、呼ばれた回数と真の回数を数える 2 行だけを足したもの
+// <work>/oxc-demo/a/old/count-old.mjs: 2b85529e82 の前の oxc-transform.ts に同じ 2 行を足したもの
 // 入力: サイトの node_modules の @angular/{core,common,router,forms,platform-browser,cdk,aria}/fesm2022 の .mjs 全部
 // options: { link: true, advancedOptimizations: true, topLevelSafeMode: false, sideEffects: false, sourcemap: false }
 22.2.7（traversePostOrder）    {"files":130,"bytes":3136805,"sameOutput":130,"filesWithNgDeclare":60,"isAlreadyEdited":{"calls":25524,"hits":0}}
 2b85529e82 の前（Visitor）      {"files":130,"isAlreadyEdited":{"calls":25524,"hits":62}}
-// <scratchpad>/oxc-demo/a/old/compare-old.mjs: 2 つの版の出力を比べたもの
+// <work>/oxc-demo/a/old/compare-old.mjs: 2 つの版の出力を比べたもの
 {"files":130,"same":130,"diff":[]}
 ```
 
 > **🧪 DEMO — 本物の traversePostOrder が訪ねた順と、古い版との比べ（記録の再生）**
 >
-> `<scratchpad>/oxc-demo/a/record-traversal.mjs` が、@angular/build 22.2.7（oxc-parser 0.156.0）の `traversePostOrder` を Node v24.22.1 で呼んだ記録です。入力は次の TypeScript で、`parseSync('demo.ts', …, { range: true })` で読みました。
+> `<work>/oxc-demo/a/record-traversal.mjs` が、@angular/build 22.2.7（oxc-parser 0.156.0）の `traversePostOrder` を Node v24.22.1 で呼んだ記録です。入力は次の TypeScript で、`parseSync('demo.ts', …, { range: true })` で読みました。
 >
 > （ボタンを押すと、訪ねた順に 1 つずつ、入力の中の位置とコンテキストが出ます）
 >

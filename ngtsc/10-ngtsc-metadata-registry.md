@@ -931,7 +931,7 @@ pipe の handler は `@Directive` の handler（[第 9 回](09-ngtsc-directive-h
 
    `getMeta` は 2 節で登録した `PipeMeta` を返します。`isPure: false` は 196 行目で読んだ値です。平らにする関数はディレクティブ用なので、pipe では使われません。
 
-📄 `記録に使ったスクリプト（scratchpad の記録スクリプト）`
+📄 `記録に使ったスクリプト（手元の作業フォルダの記録スクリプト）`
 
 ```
 // 第 10 回の記録。angular-deep-dive を cwd にして `node <このファイル>` で走らせる。
@@ -1185,7 +1185,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=should compile Pipes|should compile pure Pipes|should retain metadata for non-standalone declarations'
 ```
 
-📄 `出力（抜粋。2026-11-05 に実行。ログは scratchpad/ngtsc-logs/c-ngtsc-inherit.log・c-ngtsc-pipe2.log）`
+📄 `出力（抜粋。2026-11-05 に実行。ログは work/ngtsc-logs/c-ngtsc-inherit.log・c-ngtsc-pipe2.log）`
 
 ```
 # filter=inherited directives（shard ごと: 4 → 1 → 2 → 3 の順に出た）

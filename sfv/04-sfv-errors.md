@@ -356,7 +356,7 @@ class MinValidationError extends BaseNgValidationError {
 📄 `Node で確かめた記録（@angular/forms 22.2.6）`
 
 ```
-$ node probe3.mjs        # <scratchpad>/sfv-demo/b、@angular/forms 22.2.6
+$ node probe3.mjs        # <work>/sfv-demo/b、@angular/forms 22.2.6
 // requiredError({kind: 'x', message: 'm', extra: 1}) と minError(3, {min: 9}) を作って読む
 kind required extra 1 keys [ '__brand', 'kind', 'fieldTree', 'message', 'extra' ]
 min 3 keys [ '__brand', 'kind', 'fieldTree', 'message', 'min' ]

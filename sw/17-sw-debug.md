@@ -456,7 +456,7 @@ pnpm bazel test //packages/service-worker/worker/test:test \
   '--test_arg=--filter=serving ngsw/state|messageerror events|unhandledrejection events'
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/sw-logs/e-debug.log）`
+📄 `出力（2026-11-03。ログは work/sw-logs/e-debug.log）`
 
 ```
 Ran 6 of 153 specs

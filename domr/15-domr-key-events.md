@@ -380,7 +380,7 @@ pnpm bazel test //packages/platform-browser/test:test \
   --nocache_test_results --test_output=all --test_arg=--filter=KeyEventsPlugin
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/d-key.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/d-key.log）`
 
 ```
 Ran 6 of 159 specs

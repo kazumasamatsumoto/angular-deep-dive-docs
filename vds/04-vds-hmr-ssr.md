@@ -496,7 +496,7 @@ origin/main の de91345c13（2026-09-25）が、両方の middleware に `resetC
 
 > **🧪 DEMO — HMR の枠とページの状態（記録の再生）**
 >
-> `<scratchpad>/vds-demo/b/record-hmr.mjs` が、@angular/build 22.1.7・vite 8.1.5 の `ng serve` を起動したまま、ヘッドレス Chrome でページを開き、ファイルを 1 つずつ書き換えた記録です。枠は Chrome DevTools Protocol の `Network.webSocketFrameReceived` で取りました（`connected` と `ping` は省いた）。書き換えたファイルは最後に元に戻しています。赤い値は「SSR なし（既定）」の同じ段と違うところです。
+> `<work>/vds-demo/b/record-hmr.mjs` が、@angular/build 22.1.7・vite 8.1.5 の `ng serve` を起動したまま、ヘッドレス Chrome でページを開き、ファイルを 1 つずつ書き換えた記録です。枠は Chrome DevTools Protocol の `Network.webSocketFrameReceived` で取りました（`connected` と `ping` は省いた）。書き換えたファイルは最後に元に戻しています。赤い値は「SSR なし（既定）」の同じ段と違うところです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/vds-hmr-ssr)
 
@@ -780,7 +780,7 @@ pnpm bazel test //packages/angular/build:test --nocache_test_results --test_outp
 📄 `作業木（../angular-cli-fix から作り、使い終えて消した）`
 
 ```
-# 作業木（<scratchpad>/vds-wt-b、44129f66a3）に、origin/main の de91345c13 の spec だけを入れる
+# 作業木（<work>/vds-wt-b、44129f66a3）に、origin/main の de91345c13 の spec だけを入れる
 git -C ~/angular-research/angular-cli show de91345c13 -- packages/angular/build/src/tools/vite/middlewares/ssr-middleware_spec.ts | git apply
 pnpm bazel test //packages/angular/build:test --nocache_test_results --test_output=all "--test_arg=--filter=SSR dev-server middleware"
 packages/angular/build/src/tools/vite/middlewares/ssr-middleware_spec.ts:66:7 - error TS2554: Expected 1-2 arguments, but got 3.

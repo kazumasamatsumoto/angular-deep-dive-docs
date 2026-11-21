@@ -617,7 +617,7 @@ cd ~/angular-research/angular
 pnpm bazel test //packages/forms/test:test \
   --test_arg=--filter="Validators minLength" --test_output=all
 
-# 2026-11-01 にこのマシンで走らせた結果（~/…/scratchpad/forms-logs/b-forms-validators.log から抜粋）
+# 2026-11-01 にこのマシンで走らせた結果（~/…/work/forms-logs/b-forms-validators.log から抜粋）
 Ran 13 of 1153 specs
 13 specs, 0 failures
 //packages/forms/test:test                                               PASSED in 0.8s

@@ -488,7 +488,7 @@ pnpm bazel test //packages/compiler/test:test \
   '--test_arg=--filter=^(PlaceholderRegistry|I18nParser (placeholders|interpolation)|Utils formatI18nPlaceholderName)'
 ```
 
-2026-11-03 の結果は **Ran 20 of 403 specs、20 specs, 0 failures、PASSED in 0.7s**（ログは `scratchpad/i18n-logs/a-placeholders.log`）。
+2026-11-03 の結果は **Ran 20 of 403 specs、20 specs, 0 failures、PASSED in 0.7s**（ログは `work/i18n-logs/a-placeholders.log`）。
 
 ### 直すとしたら、どこから
 

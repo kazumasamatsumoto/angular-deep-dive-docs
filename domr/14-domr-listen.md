@@ -91,7 +91,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 30 │ ]);
 ```
 
-最後に命令を書き出す `reify` の段で、`target` の文字列がこの表で関数の参照に変わります（使う側の行は [reify の章](../compiler/16-compiler-reify-emit.md)で引用しています）。結果の命令は `ɵɵlistener('resize', fn, ɵɵresolveWindow)` です。**表に無い文字列なら、その場でコンパイルエラー**です。このサイトの node\_modules の `@angular/compiler` 22.1.6 で JIT コンパイルしてみると、`host: {'(windw:resize)': 'f()'}` は `Unexpected global target 'windw' defined for 'resize' event. Supported list of global targets: window,document,body.` で止まりました（scratchpad/d-verify/jit-target.mjs）。
+最後に命令を書き出す `reify` の段で、`target` の文字列がこの表で関数の参照に変わります（使う側の行は [reify の章](../compiler/16-compiler-reify-emit.md)で引用しています）。結果の命令は `ɵɵlistener('resize', fn, ɵɵresolveWindow)` です。**表に無い文字列なら、その場でコンパイルエラー**です。このサイトの node\_modules の `@angular/compiler` 22.1.6 で JIT コンパイルしてみると、`host: {'(windw:resize)': 'f()'}` は `Unexpected global target 'windw' defined for 'resize' event. Supported list of global targets: window,document,body.` で止まりました（work/d-verify/jit-target.mjs）。
 
 > [!NOTE]
 > **ポイント**
@@ -436,7 +436,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   --nocache_test_results --test_output=all '--test_arg=--filter=^event listeners'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/d-listener.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/d-listener.log）`
 
 ```
 Ran 25 of 2693 specs

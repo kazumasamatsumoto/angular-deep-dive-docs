@@ -391,7 +391,7 @@ HTML にする直前、platform-server は `annotateForHydration` を呼び、�
 
    塊 1 は、`ɵɵdeferWhen` が最初の評価で `true` を見て、placeholder を描かずに `triggerDeferBlock` を呼び、サーバーなのでそこで止まりました。塊 7 は、`ɵɵdeferOnImmediate` が「`@loading` があれば placeholder を描かない」ので、同じく何も描かれずに止まりました。比べると、`@loading` の無い塊 6 には placeholder があります。どちらも、記録の環境（Node・domino・JIT）ではなく命令の行で決まる動きです（テストと直し方の節）。
 
-📄 `scratchpad の記録スクリプト（server.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（server.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 15 回 defer-server の記録。
@@ -571,7 +571,7 @@ pnpm bazel test //packages/platform-server/test:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/d-server.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/d-server.log）`
 
 ```
 Ran 11 of 399 specs

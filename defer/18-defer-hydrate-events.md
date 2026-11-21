@@ -82,7 +82,7 @@ HTML に入った契約の 1 行は次のとおりです。hover の 3 つが、
 window.__jsaction_bootstrap(document.body,"ng",["click","keydown","mouseenter","mouseover","focusin"],[]);
 ```
 
-このサイトでも、シリーズを 1 ページで読むページの章は `hydrate on viewport` の塊なので（incremental-hydration の 0 節）、まだハイドレートしていない章の中のボタンやリンクには `jsaction="click:;" ngb="dN"` が付きます。2026-11-02 に作った本番ビルド（scratchpad/build-prod/browser）を `grep` すると、`series/animations/index.html` には `jsaction="click:;" ngb="d19"` の要素が 137 個ありました。そのボタンを押すと、この章の道でその章がハイドレートされます。
+このサイトでも、シリーズを 1 ページで読むページの章は `hydrate on viewport` の塊なので（incremental-hydration の 0 節）、まだハイドレートしていない章の中のボタンやリンクには `jsaction="click:;" ngb="dN"` が付きます。2026-11-02 に作った本番ビルド（work/build-prod/browser）を `grep` すると、`series/animations/index.html` には `jsaction="click:;" ngb="d19"` の要素が 137 個ありました。そのボタンを押すと、この章の道でその章がハイドレートされます。
 
 ## 1. 契約が登録するイベントの種類：mouseenter は登録されない
 
@@ -377,7 +377,7 @@ window.__jsaction_bootstrap(document.body,"ng",["click","keydown","mouseenter","
 
    `hydrate when` でハイドレーションが始まった直後に押すと、キューには積まれます（2 段目）が、3 節の 297 行目から呼んだ `triggerHydrationFromBlockName` は、`d0` がもう `hydrating` にあるので、渡し直す関数ごと何もせずに戻ります（[第 17 回](17-defer-hydration-queue.md)の 2 節）。最初にハイドレーションを始めた `hydrate when` は渡し直す関数を持っていないので、4 節の 497 行目が呼ばれません。3 段目で、`(click)` は 1 度も呼ばれず、キューにイベントが残ったまま、jsaction だけが消えています。この場面では塊が 1 つだけなので、登録簿が空になり、契約も `cleanUp()` されています（契約の種類が空）。これは開いている #71296（2026-10-11）が報告している形です。
 
-📄 `scratchpad の記録スクリプト（events.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（events.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 18 回 defer-hydrate-events の記録。
@@ -670,7 +670,7 @@ pnpm bazel test //packages/platform-server/test:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/e-events.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/e-events.log）`
 
 ```
 Ran 4 of 399 specs

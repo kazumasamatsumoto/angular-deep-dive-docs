@@ -709,7 +709,7 @@ pnpm bazel test //packages/core/test:test \
   '--test_arg=--filter=^keyvalue differ '
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/a-class-style.log・a-kv-differ.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/a-class-style.log・a-kv-differ.log）`
 
 ```
 # common（NgClass 40 件 + NgStyle 15 件）

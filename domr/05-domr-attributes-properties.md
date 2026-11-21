@@ -717,7 +717,7 @@ pnpm bazel test //packages/core/test:test --nocache_test_results --test_output=a
 pnpm bazel test //packages/platform-browser/test:test_web_chromium --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/b-attr-acceptance.log・b-ngreflect.log・b-web-chromium.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/b-attr-acceptance.log・b-ngreflect.log・b-web-chromium.log）`
 
 ```
 //packages/core/test/acceptance:acceptance

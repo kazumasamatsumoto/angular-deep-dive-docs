@@ -170,7 +170,7 @@ $ diff max_length.ts min_length.ts   # 同じく本体だけ
 📄 `記録：2 つの maxLength・配列と Set・NaN を混ぜた max・注入器`
 
 ```
-# <scratchpad>/sfv-demo/a/rec-limits.mjs を Node 24 で実行（サイトの node_modules の @angular/forms 22.2.6）
+# <work>/sfv-demo/a/rec-limits.mjs を Node 24 で実行（サイトの node_modules の @angular/forms 22.2.6）
 --- maxLength(p.text, 10) と maxLength(p.text, 5)
 text="abcdefghijklmno"  maxLength()=5  errors: maxLength(10) maxLength(5)
 text="abcdefg"          maxLength()=5  errors: maxLength(5)

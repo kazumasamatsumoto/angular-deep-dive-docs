@@ -458,7 +458,7 @@ pnpm bazel test //packages/platform-browser/test:test --nocache_test_results --t
   '--test_arg=--filter=DefaultDomRendererV2|ShadowDOM Support'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/b-web-chromium.log・b-node-skip.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/b-web-chromium.log・b-node-skip.log）`
 
 ```
 //packages/platform-browser/test:test_web_chromium

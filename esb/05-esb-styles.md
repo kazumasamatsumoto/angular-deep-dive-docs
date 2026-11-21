@@ -1076,7 +1076,7 @@ Sass のコンパイルが失敗すると、CSS が無いので `loadedUrls`（�
 
 1. **ファイル**
 
-   `<scratchpad>/esb-demo/b/styles-app` に入力のファイルと、node\_modules の代わりの 2 つの小さなパッケージ（demo-theme・fake-tailwind）を置きました。esbuild・sass-embedded・sass・postcss はサイトの node\_modules のものを絶対パスで読みます。less と tailwindcss はサイトに無いので入れていません。
+   `<work>/esb-demo/b/styles-app` に入力のファイルと、node\_modules の代わりの 2 つの小さなパッケージ（demo-theme・fake-tailwind）を置きました。esbuild・sass-embedded・sass・postcss はサイトの node\_modules のものを絶対パスで読みます。less と tailwindcss はサイトに無いので入れていません。
 2. **束ねる**
 
    下の `rec-styles.mjs` を、作業フォルダを styles-app にして 2 回（既定と `NG_BUILD_SASS_EMBEDDED=0`）走らせました。
@@ -1084,7 +1084,7 @@ Sass のコンパイルが失敗すると、CSS が無いので `loadedUrls`（�
 
    `watch-chain.mjs` が子プロセスで `ng build --watch` を起こし、ファイルを書き換え、最後に自分の子だけを止めます。
 
-📄 `<scratchpad>/esb-demo/b/rec-styles.mjs`
+📄 `<work>/esb-demo/b/rec-styles.mjs`
 
 ```js
 // 本物の @angular/build 22.2.7 の createStylesheetBundleOptions（StylesheetPluginFactory.create に Sass・Less・CSS の言語）と
@@ -1168,7 +1168,7 @@ for (const c of out.cases) console.log(c.id, c.ms + 'ms', 'E', c.errors.length, 
 
 ```
 
-📄 `<scratchpad>/esb-demo/b/rec-chain.mjs`
+📄 `<work>/esb-demo/b/rec-chain.mjs`
 
 ```js
 import { createRequire } from 'node:module';
@@ -1190,7 +1190,7 @@ shutdownSassWorkerPool();
 
 ```
 
-📄 `<scratchpad>/esb-demo/b/watch-chain.mjs`
+📄 `<work>/esb-demo/b/watch-chain.mjs`
 
 ```js
 // ng build --watch を子プロセスで起こし、真ん中の _chain-b.scss を直して再ビルドが起きるかを見る。最後に自分の子だけを止める。

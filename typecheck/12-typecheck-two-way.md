@@ -626,7 +626,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=two-way|strictOutputEventTypes'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/c-twoway.log・c-ngtsc-twoway.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/c-twoway.log・c-ngtsc-twoway.log）`
 
 ```
 ==================== Test output for //packages/compiler-cli/src/ngtsc/typecheck/test:test:

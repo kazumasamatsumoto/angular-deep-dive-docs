@@ -47,7 +47,7 @@ cd ~/angular-research/angular
 pnpm bazel query 'tests(//packages/service-worker/...)'
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/sw-logs/e-query-tests.log）`
+📄 `出力（2026-11-03。ログは work/sw-logs/e-query-tests.log）`
 
 ```
 js_test rule //packages/service-worker:service-worker_api

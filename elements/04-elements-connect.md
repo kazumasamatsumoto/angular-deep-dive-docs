@@ -622,7 +622,7 @@ slots\_spec.ts は `ViewEncapsulation.ShadowDom` のコンポーネントで、�
 
 これは記録です。このページの上ではなく、サイトの `node_modules`（`@angular/*` 22.1.6）を esbuild で束ねた小さなページを、ヘッドレスの Chrome で開いて動かしました（JIT。ハイドレーションなし）。
 
-📄 `scratchpad/el-a-exp/exp.ts（全文）`
+📄 `work/el-a-exp/exp.ts（全文）`
 
 ```
 // 実験: 配布物 @angular/elements 22.1.6 を JIT で動かす（ハイドレーションなしのアプリ）。
@@ -803,7 +803,7 @@ UA: 155.0.8043.0
 
 ### 手元で走らせた結果
 
-この章の spec もすべて同じ 2 つのターゲットに入っていて、Chromium・Firefox ともに 59 passed, 0 failed, 5 skipped でした（2026-11-06。ログは scratchpad/el-logs/a-test.log。絞り込みは効かない）。
+この章の spec もすべて同じ 2 つのターゲットに入っていて、Chromium・Firefox ともに 59 passed, 0 failed, 5 skipped でした（2026-11-06。ログは work/el-logs/a-test.log。絞り込みは効かない）。
 
 ### 直すとしたら
 
@@ -812,7 +812,7 @@ UA: 155.0.8043.0
 - **spec の名前**：extract-projectable-nodes\_spec.ts の 83 行目と 99 行目（と 99 行目の「eve」）。動きではなく名前の直しです。
 - #42247（投影した子がテンプレートの末尾に入る）と #42246（`ngAfterContentInit` のときに投影した子がまだ無い）は、このデモと記録の形（つなぐ前に子を入れる）では起きませんでした。どちらも 2021-05 の issue で、元の再現（StackBlitz）は動かしていません。本家に PR を出すことは勧めません。issue の表は[第 8 回](08-elements-tests-issues.md)です。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開いて操作しました。card では connectedCallback のときの子は 6 個で、h3 と p\[card-title\] が見出しの ng-content、p・文字・コメント・span\[ngprojectas\] が本文の ng-content（em の前）に移り、ngAfterContentInit のときに .el-cn-hd の子は 3 個・.el-cn-bd の子は 6 個でした。つないだあとに足した p は要素の直下（テンプレートの後ろ）でした。title-only では h3 だけが見出しへ移り、ほかの 5 つは要素の先頭に残りました。ホストには ng-version="22.1.6" が付いていました。「外して 50ms 後に同じ要素をつなぎ直す」では、外したあとに ngOnDestroy が出て、つなぎ直すと connectedCallback は出ましたが constructor は出ず、子は前のテンプレートの div 2 つのままでした。コンソールの警告とエラーは 0 件でした（scratchpad/el-a-exp/verify.mjs、2026-11-06）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開いて操作しました。card では connectedCallback のときの子は 6 個で、h3 と p\[card-title\] が見出しの ng-content、p・文字・コメント・span\[ngprojectas\] が本文の ng-content（em の前）に移り、ngAfterContentInit のときに .el-cn-hd の子は 3 個・.el-cn-bd の子は 6 個でした。つないだあとに足した p は要素の直下（テンプレートの後ろ）でした。title-only では h3 だけが見出しへ移り、ほかの 5 つは要素の先頭に残りました。ホストには ng-version="22.1.6" が付いていました。「外して 50ms 後に同じ要素をつなぎ直す」では、外したあとに ngOnDestroy が出て、つなぎ直すと connectedCallback は出ましたが constructor は出ず、子は前のテンプレートの div 2 つのままでした。コンソールの警告とエラーは 0 件でした（work/el-a-exp/verify.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

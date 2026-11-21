@@ -358,7 +358,7 @@ pnpm bazel test //src/aria/private/behaviors/list-typeahead:unit_tests_chromium 
 grep -cE '^\s*it\(' src/aria/private/behaviors/list-typeahead/list-typeahead.spec.ts
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/aria-logs/b-behaviors.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/aria-logs/b-behaviors.log）`
 
 ```
 src/aria/private/behaviors/list-typeahead/unit_tests_bundle.spec.js:

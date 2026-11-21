@@ -563,7 +563,7 @@ export class Second {}
 
 診断は trait の中に溜まっていて、ここでまとめて取り出します（NgCompiler の診断の集め方は[第 18 回](18-ngtsc-diagnostics-perf.md)）。クラス全体の metaDiagnostics（792〜794 行目）、Analyzed か Resolved の analysis の診断（796〜801 行目）、Resolved の resolve の診断（802〜804 行目）の順です。
 
-📄 `記録のスクリプト（scratchpad の記録スクリプト compile.mjs。angular-deep-dive を cwd にして node で走らせる）`
+📄 `記録のスクリプト（手元の作業フォルダの記録スクリプト compile.mjs。angular-deep-dive を cwd にして node で走らせる）`
 
 ```
 // 第 8 回（ngtsc-trait-resolve-compile）の記録。
@@ -785,7 +785,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   --nocache_test_results --test_output=all '--test_arg=--filter=local compilation'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/b-transform-mode.log・b-ngtsc-local.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/b-transform-mode.log・b-ngtsc-local.log）`
 
 ```
 Ran 12 of 36 specs

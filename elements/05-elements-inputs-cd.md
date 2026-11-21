@@ -458,7 +458,7 @@ pnpm bazel test //packages/elements/test:test_chromium \
   '--test_arg=--filter=disconnect' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/el-logs/b-all.log・b-filter.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/el-logs/b-all.log・b-filter.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 59 passed, 0 failed, 5 skipped
@@ -487,7 +487,7 @@ Chromium: |██████████| 1/1 test files | 59 passed, 0 failed,
 
 ### 本番ビルドで確かめた結果
 
-ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright-core で 6 節のデモを操作しました。「要素を作ってつなぐ」では、押してから 1 ms 以内に constructor と DOM の書き換え（中身は空、MutationRecord 3 件）が出て、ngOnChanges は 0 回でした。「同じ値 "A" を 2 回」を初めて押すと、2 回の代入の読み返しはどちらも "A"、15.4 ms 後に ngOnChanges（undefined → "A"、firstChange: true）と DOM の書き換え（中身「A」）が 1 回ずつで、もう一度押すと代入の 2 行だけでした。「違う値を続けて 3 回」は、14.3 ms 後に ngOnChanges（"A" → "v3"、firstChange: false）と DOM の書き換えが 1 回ずつでした。属性の 2 回は、初めては 15.1 ms 後に 1 回ずつ（"v3" → "C"）、2 回目に押すと代入の 2 行だけでした。@angular/elements の配布物は、最初に「要素を作ってつなぐ」を押したときに別の chunk（4.8 kB）として初めて読み込まれ、ページを開いたときの main と初期の chunk には入っていませんでした（esbuild の stats.json でも、@angular/elements を入力に持つのはその chunk だけ）。「外す」のあと要素は 0 個、コンソールの警告とエラーは 0 件でした（scratchpad/el-b/verify/verify.mjs、2026-11-06）。
+ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright-core で 6 節のデモを操作しました。「要素を作ってつなぐ」では、押してから 1 ms 以内に constructor と DOM の書き換え（中身は空、MutationRecord 3 件）が出て、ngOnChanges は 0 回でした。「同じ値 "A" を 2 回」を初めて押すと、2 回の代入の読み返しはどちらも "A"、15.4 ms 後に ngOnChanges（undefined → "A"、firstChange: true）と DOM の書き換え（中身「A」）が 1 回ずつで、もう一度押すと代入の 2 行だけでした。「違う値を続けて 3 回」は、14.3 ms 後に ngOnChanges（"A" → "v3"、firstChange: false）と DOM の書き換えが 1 回ずつでした。属性の 2 回は、初めては 15.1 ms 後に 1 回ずつ（"v3" → "C"）、2 回目に押すと代入の 2 行だけでした。@angular/elements の配布物は、最初に「要素を作ってつなぐ」を押したときに別の chunk（4.8 kB）として初めて読み込まれ、ページを開いたときの main と初期の chunk には入っていませんでした（esbuild の stats.json でも、@angular/elements を入力に持つのはその chunk だけ）。「外す」のあと要素は 0 個、コンソールの警告とエラーは 0 件でした（work/el-b/verify/verify.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

@@ -904,7 +904,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
 pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_results --test_output=all '--test_arg=--filter=runtime i18n dynamic TNodes'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/c-insert-before.log・c-acc-attrs.log・c-acc-dynamic.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/c-insert-before.log・c-acc-attrs.log・c-acc-dynamic.log）`
 
 ```
 # render3（addTNodeAndUpdateInsertBeforeIndex）

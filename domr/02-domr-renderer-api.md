@@ -592,7 +592,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=renderer factory lifecycle|custom renderer|Renderer2 destruction hooks|animation renderer factory'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/a-acc-factory.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/a-acc-factory.log）`
 
 ```
 Randomized with seed 54144

@@ -455,7 +455,7 @@ pnpm bazel test //packages/compiler/test:test --nocache_test_results --test_outp
 pnpm bazel test //packages/platform-browser/test:test_web_chromium --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/b-cssvar-node.log・b-compiler-ns.log・b-web-chromium.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/b-cssvar-node.log・b-compiler-ns.log・b-web-chromium.log）`
 
 ```
 //packages/platform-browser/test:test

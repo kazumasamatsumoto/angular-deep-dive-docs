@@ -559,7 +559,7 @@ pnpm bazel test //packages/core/schematics/migrations/self-closing-tags-migratio
   --nocache_test_results --test_output=all
 ```
 
-11 specs, 0 failures、PASSED in 0.7s（Elapsed 0.909s、2026-11-03。ログは scratchpad/mig-logs/b-selfclosing-mig.log）。spec のファイルの it 11 本と一致しました。
+11 specs, 0 failures、PASSED in 0.7s（Elapsed 0.909s、2026-11-03。ログは work/mig-logs/b-selfclosing-mig.log）。spec のファイルの it 11 本と一致しました。
 
 ### 直すとしたら
 

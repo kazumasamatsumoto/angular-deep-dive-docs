@@ -744,7 +744,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc --nocache_test_results 
   '--test_arg=--filter=ngtsc extended template checks'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/e-extended-checks.log と e-ngtsc-extended.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/e-extended-checks.log と e-ngtsc-extended.log）`
 
 ```
 # 1 本目（2 ターゲット）

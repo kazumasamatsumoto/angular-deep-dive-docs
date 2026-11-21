@@ -37,7 +37,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 まず、どの書き方がどの命令になるのかを、実物のコンパイルで確かめます。このサイトの `node_modules` の `@angular/compiler-cli` 22.1.6 の `ngc` で、下の 2 つのコンポーネントをコンパイルした出力です（抜粋。インデントだけ整えました）。
 
-📄 `ngc の出力（scratchpad で compilationMode: full。出力の .js から抜粋）`
+📄 `ngc の出力（作業用フォルダで compilationMode: full。出力の .js から抜粋）`
 
 ```
 // 入力（Stage のテンプレート）
@@ -449,7 +449,7 @@ pnpm bazel test //packages/core/test/render3:render3 \
   '--test_arg=--filter=^static styling'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/c-so-acc.log・c-so-r3.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/c-so-acc.log・c-so-r3.log）`
 
 ```
 # acceptance

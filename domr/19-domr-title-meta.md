@@ -699,14 +699,14 @@ pnpm bazel test //packages/platform-browser/test:test --nocache_test_results --t
   '--test_arg=--filter=^title service '
 ```
 
-📄 `出力（2026-11-04 に実行。ログは scratchpad/domr-logs/e-pb-meta.log・e-pb-title.log）`
+📄 `出力（2026-11-04 に実行。ログは work/domr-logs/e-pb-meta.log・e-pb-title.log）`
 
 ```
 ^Meta service   Ran 23 of 159 specs / 23 specs, 0 failures   PASSED in 0.8s（real 1.52 秒）
 ^title service  Ran 4 of 159 specs / 4 specs, 0 failures     PASSED in 0.8s（real 1.49 秒）
 ```
 
-- `BrowserGetTestability` の `addToWindow`・`findTestabilityInTree` を直接確かめる spec は見つかりませんでした（`grep -rn "addToWindow\|getAllAngularTestabilities" packages | grep _spec.ts` は core の testability\_spec.ts の偽物の getter だけ）。bootstrap\_spec.ts の it `should register each application with the testability registry` が `TestabilityRegistry.findTestabilityInTree` を通して間接的に使いますが、これは `:test_web` でしか走りません。Node の `:test` で `--test_arg=--filter=testability registry` を付けると `Ran 0 of 159 specs` で PASSED になりました（0 件でも PASSED になる例）。ブラウザのほうは `pnpm bazel test //packages/platform-browser/test:test_web --nocache_test_results` で、`test_web_chromium`（PASSED in 2.8s）と `test_web_firefox`（PASSED in 7.0s）の 2 つが走り、両方 PASSED でした（絞らずに全部、コマンド全体 real 8.80 秒。ログは scratchpad/domr-logs/e-pb-test-web.log）。
+- `BrowserGetTestability` の `addToWindow`・`findTestabilityInTree` を直接確かめる spec は見つかりませんでした（`grep -rn "addToWindow\|getAllAngularTestabilities" packages | grep _spec.ts` は core の testability\_spec.ts の偽物の getter だけ）。bootstrap\_spec.ts の it `should register each application with the testability registry` が `TestabilityRegistry.findTestabilityInTree` を通して間接的に使いますが、これは `:test_web` でしか走りません。Node の `:test` で `--test_arg=--filter=testability registry` を付けると `Ran 0 of 159 specs` で PASSED になりました（0 件でも PASSED になる例）。ブラウザのほうは `pnpm bazel test //packages/platform-browser/test:test_web --nocache_test_results` で、`test_web_chromium`（PASSED in 2.8s）と `test_web_firefox`（PASSED in 7.0s）の 2 つが走り、両方 PASSED でした（絞らずに全部、コマンド全体 real 8.80 秒。ログは work/domr-logs/e-pb-test-web.log）。
 
 ### 直すとしたら
 

@@ -40,7 +40,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 📄 `ターミナル`
 
 ```
-# scratchpad/build-loc-e/run1（2026-11-03）
+# work/build-loc-e/run1（2026-11-03）
 $ cat src/main.js
 const name = 'Kazu';
 document.title = $localize`:site header|greeting@@hello:Hello ${name}:NAME:!`;
@@ -609,7 +609,7 @@ ES5 の形は 38 行目、関数の呼び出し `$localize(…)` を訪ねます
 📄 `ターミナル`
 
 ```
-# scratchpad/build-loc-e/plugin-demo.mjs（2026-11-03）
+# work/build-loc-e/plugin-demo.mjs（2026-11-03）
 # @angular/localize/tools の makeEs2015TranslatePlugin を @babel/core 8.0.1 の transformSync に渡す
 code      = 'const s = $localize`:@@hello:Hello ${user.name}:NAME:, you have ${n + 1}:COUNT: new`;'
 翻訳      = { hello: ɵparseTranslation('{$COUNT} nouveaux, {$NAME}') }
@@ -864,7 +864,7 @@ code      = 'const s = $localize`:@@hello:Hello ${user.name}:NAME:, you have ${n
 
 この関数が投げたとき、どうなるかを本物で確かめました。
 
-📄 `出力（scratchpad/build-loc-e/run2、2026-11-03。スタックは抜粋）`
+📄 `出力（work/build-loc-e/run2、2026-11-03。スタックは抜粋）`
 
 ```
 # run2: target-language="../evil" の XLIFF を、3 つのファイル（$localize を含む main.js・含まない plain.js・a.txt）に
@@ -930,7 +930,7 @@ pnpm bazel test //packages/localize/tools/test:test --nocache_test_results --tes
 pnpm bazel test //packages/localize/tools/test/translate/integration:integration --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/i18n-logs/e-ch18.log・e-ch18int.log）`
+📄 `出力（2026-11-03。ログは work/i18n-logs/e-ch18.log・e-ch18int.log）`
 
 ```
 Ran 33 of 530 specs / Ran 33 of 530 specs / Ran 35 of 532 specs / Ran 35 of 532 specs   （4 shard、合わせて 136 本）

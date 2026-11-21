@@ -937,7 +937,7 @@ NgModule の時代の問題です。`import {SomeModule} from 'some-lib/deep/pat
 
 もう 1 つの `UnifiedModulesAliasingHost` は `getAliasIn` で別名の式を返し、スコープの側が 1 節の `cloneWithAlias` で Reference に付けます。それを読むのがこの `AliasStrategy` で、`NoAliasing` が無く、別名が付いていれば、その式をそのまま返します（233 行目の importedFile は 'unknown'）。
 
-📄 `記録のスクリプト（scratchpad の記録スクリプト refs.mjs。angular-deep-dive を cwd にして node で走らせる）`
+📄 `記録のスクリプト（手元の作業フォルダの記録スクリプト refs.mjs。angular-deep-dive を cwd にして node で走らせる）`
 
 ```
 // 第 6 回（ngtsc-references-imports）の記録。
@@ -1236,7 +1236,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   --nocache_test_results --test_output=all '--test_arg=--filter=import generation'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/b-imports-all.log・b-imports-relative.log・b-ngtsc-imports.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/b-imports-all.log・b-imports-relative.log・b-ngtsc-imports.log）`
 
 ```
 64 specs, 0 failures

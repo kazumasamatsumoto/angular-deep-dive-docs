@@ -646,7 +646,7 @@ f76e8a98c10（2026-06-16）は、サーバーで受けた応答に `Set-Cookie` 
 | `getAll('x-total')` | `null` | NG02802: Angular detected that the \`x-total\` header is accessed, but the value of the head |
 | `keys()` | `["ETag"]` | （なし） |
 
-📄 `scratchpad/httpx-b/key/build.mjs`
+📄 `work/httpx-b/key/build.mjs`
 
 ```js
 // 使い方: node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > 記録.json
@@ -686,7 +686,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/httpx-b/key/record.ts`
+📄 `work/httpx-b/key/record.ts`
 
 ```ts
 // 第 5 回 httpx-transfer-cache-key の記録。../angular（8576f161ae4）の transfer_cache.ts を束ねて Node で動かす。
@@ -985,7 +985,7 @@ describe `generateHash` は、1368 行目で Web Crypto の `crypto.subtle.diges
 
 ### 手元で走らせた結果
 
-../angular で `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all "--test_arg=--filter=^TransferCache "` で 「Ran 71 of 410 specs / 71 specs, 0 failures」でした（2026-11-06、scratchpad/httpx-logs/b-count.log）。4 つのターゲットをまとめて走らせた結果は[第 6 回](06-httpx-tests-issues.md)にあります。
+../angular で `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all "--test_arg=--filter=^TransferCache "` で 「Ran 71 of 410 specs / 71 specs, 0 failures」でした（2026-11-06、work/httpx-logs/b-count.log）。4 つのターゲットをまとめて走らせた結果は[第 6 回](06-httpx-tests-issues.md)にあります。
 
 ### 直すとしたら
 
@@ -995,7 +995,7 @@ describe `generateHash` は、1368 行目で Web Crypto の `crypto.subtle.diges
 - 595 行目（「64-bit keyspace」）と response.ts 206・207 行目のコメントは、実物（32 ビット、Fetch が既定）と合っていません。
 - #70947 は PR #70946 が開いています。本家に PR や issue を出すことは勧めません。issue の全体は[第 6 回](06-httpx-tests-issues.md)にあります。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、8 つのボタンを順に押しました。「params の順番」「2 進の本文」「Blob と FormData の本文」の 3 つは同じキーで、B はバックエンドに届かず A の応答（from: TransferState）を受け取りました。ほかの 5 つは違うキーで、B はバックエンドへ行きました。キーの値は 7 節の Node の記録（../angular のソース）と 1 文字も違わず、たとえば GET /api/items は e050c57f…、2 進の本文は 6bd2d8a4… でした。配布物の 22.1.6 とソースの makeCacheKey が同じ結果を出すことが、ここで確かめられます。コンソールの警告とエラーは 0 件でした。最初に押したときに読み込まれた JS は 680 バイトと 706 バイトの 2 つで、どちらも main と共有の chunk から名前を引き直すだけのものです（@angular/common/http の本体は、provideClientHydration のためにもともと main にあります）。scratchpad/httpx-b/verify.mjs、verify.json。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、8 つのボタンを順に押しました。「params の順番」「2 進の本文」「Blob と FormData の本文」の 3 つは同じキーで、B はバックエンドに届かず A の応答（from: TransferState）を受け取りました。ほかの 5 つは違うキーで、B はバックエンドへ行きました。キーの値は 7 節の Node の記録（../angular のソース）と 1 文字も違わず、たとえば GET /api/items は e050c57f…、2 進の本文は 6bd2d8a4… でした。配布物の 22.1.6 とソースの makeCacheKey が同じ結果を出すことが、ここで確かめられます。コンソールの警告とエラーは 0 件でした。最初に押したときに読み込まれた JS は 680 バイトと 706 バイトの 2 つで、どちらも main と共有の chunk から名前を引き直すだけのものです（@angular/common/http の本体は、provideClientHydration のためにもともと main にあります）。work/httpx-b/verify.mjs、verify.json。
 
 ## 聞かれそうな質問
 

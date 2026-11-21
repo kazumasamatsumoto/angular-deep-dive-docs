@@ -178,7 +178,7 @@ pnpm bazel test //packages/angular/build:test --nocache_test_results --test_outp
 
 ## 4. 行を変えると、どの spec が落ちるか
 
-作業木（`git -C ~/angular-research/angular-cli-fix worktree add <scratchpad>/vit-wt-b 44129f66a3`）で行を変え、統合の target を `--flaky_test_attempts=1` で走らせました。1 回の実行で 2〜3 か所をまとめて変え、落ちた it の名前で切り分けています。
+作業木（`git -C ~/angular-research/angular-cli-fix worktree add <work>/vit-wt-b 44129f66a3`）で行を変え、統合の target を `--flaky_test_attempts=1` で走らせました。1 回の実行で 2〜3 か所をまとめて変え、落ちた it の名前で切り分けています。
 
 | 場所 | 変えたこと | 結果 | 章 |
 | --- | --- | --- | --- |

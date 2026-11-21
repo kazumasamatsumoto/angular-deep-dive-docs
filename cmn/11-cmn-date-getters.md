@@ -805,7 +805,7 @@ pnpm bazel test //packages/common/test:test --nocache_test_results --test_output
   '--test_arg=--filter=^Format date formatDate should (format each component|format with timezones|support timezones|return correct ISO 8601|return thursday|show the correct time|wrap negative|support years|format date with year)'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/c-date-getters.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/c-date-getters.log）`
 
 ```
 Ran 10 of 667 specs

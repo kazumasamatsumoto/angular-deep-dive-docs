@@ -335,7 +335,7 @@ angular/angular · 読了 約 11 分 · 発展 · [サイトで読む（デモ�
 
 ### 本番ビルドで確かめた結果
 
-ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright-core で 7 節のデモを操作しました。「作ってつなぐ」で connectedCallback の中に constructor（インスタンス #1）が出ました。「外す → すぐ戻す」と「隣の枠へ移す」（2 回）では disconnectedCallback と connectedCallback が同じ時刻に続き、40 ms 後もインスタンス #1 のままで、ngOnDestroy は出ませんでした。「外す → 50 ms 待って戻す」は、1 回目が 18.3 ms に ngOnDestroy（#1）・戻しても constructor なし（中身「インスタンス #1」のまま）、2 回目が ngOnDestroy なし・戻すと constructor（#2）で中身「インスタンス #1インスタンス #2」、3 回目が 18.2 ms に ngOnDestroy（#2）・戻しても constructor なし、でした。そのあと「外す」と「枠 A に戻す」を手で押すと constructor（#3）が出ました。シリーズを 1 ページで読むページ（/series/elements）でも、第 5 回と第 7 回のデモの要素は同じように作られ、どちらのページでもコンソールの警告とエラーは 0 件でした（scratchpad/el-b/verify/verify.mjs、2026-11-06）。
+ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright-core で 7 節のデモを操作しました。「作ってつなぐ」で connectedCallback の中に constructor（インスタンス #1）が出ました。「外す → すぐ戻す」と「隣の枠へ移す」（2 回）では disconnectedCallback と connectedCallback が同じ時刻に続き、40 ms 後もインスタンス #1 のままで、ngOnDestroy は出ませんでした。「外す → 50 ms 待って戻す」は、1 回目が 18.3 ms に ngOnDestroy（#1）・戻しても constructor なし（中身「インスタンス #1」のまま）、2 回目が ngOnDestroy なし・戻すと constructor（#2）で中身「インスタンス #1インスタンス #2」、3 回目が 18.2 ms に ngOnDestroy（#2）・戻しても constructor なし、でした。そのあと「外す」と「枠 A に戻す」を手で押すと constructor（#3）が出ました。シリーズを 1 ページで読むページ（/series/elements）でも、第 5 回と第 7 回のデモの要素は同じように作られ、どちらのページでもコンソールの警告とエラーは 0 件でした（work/el-b/verify/verify.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

@@ -307,7 +307,7 @@ it('call the leave handler directly', async () => {
 | `//packages/core/test/acceptance:acceptance_web_chromium` | animation\_spec.ts（新しい仕組み。51 本）を含む acceptance 全部 | 2743 passed, 0 failed, 3 skipped / PASSED in 6.8s | 担当 E が --nocache\_test\_results で実行 |
 | `//packages/core/test/acceptance:acceptance（Node）` | 同じ spec を Node で。--test\_arg=--filter="legacy animations compatibility" | Ran 0 of 2693 specs / PASSED in 1.3s | 担当 E |
 | `//packages/animations/browser/test:test_web_chromium` | 旧エンジン（MockAnimationDriver を使う spec が多い） | 124 passed, 0 failed / PASSED in 1.3s | 担当 E が --nocache\_test\_results で実行 |
-| `//packages/core/test:test_web_chromium` | core のユニット（longest\_animation\_spec・legacy\_animation/\*） | 1591 passed, 4 skipped | シリーズの準備で実行（scratchpad/anim-logs） |
+| `//packages/core/test:test_web_chromium` | core のユニット（longest\_animation\_spec・legacy\_animation/\*） | 1591 passed, 4 skipped | シリーズの準備で実行（work/anim-logs） |
 | `//packages/animations/test:test_web_chromium` | 旧 API（AnimationBuilder など） | 14 passed | 同上 |
 | `//packages/platform-browser/animations/test:test_web_chromium` | NoopAnimationsModule・BrowserAnimationsModule | 21 passed, 1 skipped | 同上 |
 | `//packages/platform-browser/animations/async/test:test_web_chromium` | provideAnimationsAsync | 15 passed, 1 skipped | 同上 |

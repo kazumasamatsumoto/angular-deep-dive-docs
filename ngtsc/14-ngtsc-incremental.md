@@ -1074,7 +1074,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc --nocache_test_results 
   '--test_arg=--filter=ngtsc incremental compilation with errors'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/d-unit.log・d-ngtsc-ngtscincrementalcompilation.log・d-ngtsc-ngtscincrementalcompilationwitherrors.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/d-unit.log・d-ngtsc-ngtscincrementalcompilation.log・d-ngtsc-ngtscincrementalcompilationwitherrors.log）`
 
 ```
 # incremental/test（cycles・transform と同時に 3 つ）

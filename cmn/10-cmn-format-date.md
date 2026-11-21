@@ -603,7 +603,7 @@ pnpm bazel test //packages/common/test:test \
   --nocache_test_results --test_output=all '--test_arg=--filter=^Format date '
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/c-format-date.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/c-format-date.log）`
 
 ```
 Ran 38 of 667 specs

@@ -280,7 +280,7 @@ pnpm bazel test //packages/compiler/test:test \
   '--test_arg=--filter=^(I18nParser|Message|PlaceholderRegistry|digest|i18nPreserveWhitespaceForLegacyExtraction|i18n AST|Utils) '
 ```
 
-2026-11-03 にこのマシンで走らせた結果は **Ran 65 of 403 specs、65 specs, 0 failures、PASSED in 0.8s** でした（ビルドのキャッシュあり、ログは `scratchpad/i18n-logs/a-overview.log`）。`--filter` は 0 件に当たっても PASSED になるので、必ず「Ran N of M」を見ます。
+2026-11-03 にこのマシンで走らせた結果は **Ran 65 of 403 specs、65 specs, 0 failures、PASSED in 0.8s** でした（ビルドのキャッシュあり、ログは `work/i18n-logs/a-overview.log`）。`--filter` は 0 件に当たっても PASSED になるので、必ず「Ran N of M」を見ます。
 
 ### 直すとしたら、どこから
 

@@ -1169,7 +1169,7 @@ pnpm bazel test //packages/language-service/test:test --nocache_test_results --t
   '--test_arg=--filter=^find references and rename locations'
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/c-references.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/c-references.log）`
 
 ```
 Ran 31 of 595 specs / Ran 31 of 595 specs / Ran 31 of 595 specs / Ran 32 of 596 specs

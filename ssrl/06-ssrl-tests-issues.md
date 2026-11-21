@@ -93,9 +93,9 @@ console.log(JSON.stringify(out));
 
 ```
 # 練習用の作業木（../angular-cli-fix から 44129f66a3 で作った別の場所）。node_modules は ../angular-cli-fix のものを symlink
-git -C ~/angular-research/angular-cli-fix worktree add <scratchpad>/ssrl-wt-b 44129f66a3
-ln -s ~/angular-research/angular-cli-fix/node_modules <scratchpad>/ssrl-wt-b/node_modules
-cd <scratchpad>/ssrl-wt-b
+git -C ~/angular-research/angular-cli-fix worktree add <work>/ssrl-wt-b 44129f66a3
+ln -s ~/angular-research/angular-cli-fix/node_modules <work>/ssrl-wt-b/node_modules
+cd <work>/ssrl-wt-b
 
 pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test //packages/angular/build:test \
   --nocache_test_results --test_output=all

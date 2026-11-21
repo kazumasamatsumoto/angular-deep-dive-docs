@@ -642,7 +642,7 @@ pnpm bazel test //packages/common/test:test \
   '--test_arg=--filter=^(ngIf directive|NgSwitch|ngPlural) '
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/a-if-switch.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/a-if-switch.log）`
 
 ```
 Ran 35 of 667 specs

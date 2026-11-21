@@ -369,7 +369,7 @@ pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_result
   "--test_arg=--filter=serving ngsw/state"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/d-safe-404.log・d-safe-degraded.log・d-safe-state.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/d-safe-404.log・d-safe-degraded.log・d-safe-state.log）`
 
 ```
 ### filter=Driver (unregisters when manifest 404s|does not unregister)

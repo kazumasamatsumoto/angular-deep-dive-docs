@@ -813,7 +813,7 @@ spec の ``'should support `templateUrl` (string) fetched from the server'``（3
 
 > **🧪 DEMO — UpgradeComponent のフックの順（記録の再生）**
 >
-> `<scratchpad>/upg-demo/a/record-upgrade.mjs` の記録です（AngularJS 1.8.3・@angular/upgrade 22.1.6・@angular/core 22.1.6・jsdom 26.1.0）。AngularJS の `ng1Card` は `bindings: {title: '<', label: '@', value: '=', onPick: '&'}`・`templateUrl: 'card.html'`（run で `$templateCache` に入れた）・`transclude: {head: '?cardHead'}`・`require: {box: '?^^ng1Box'}` です。Angular の `ng2-host`（downgrade したもの）のテンプレートに `<ng1-card [title]="t" label="L-…" [value]="v" (valueChange)="…" (onPick)="…">` を置き、継承したクラスで 5 つのフックに記録を足しました。左に寄せた行が Angular、右に寄せて線を付けた行が AngularJS のフックです。
+> `<work>/upg-demo/a/record-upgrade.mjs` の記録です（AngularJS 1.8.3・@angular/upgrade 22.1.6・@angular/core 22.1.6・jsdom 26.1.0）。AngularJS の `ng1Card` は `bindings: {title: '<', label: '@', value: '=', onPick: '&'}`・`templateUrl: 'card.html'`（run で `$templateCache` に入れた）・`transclude: {head: '?cardHead'}`・`require: {box: '?^^ng1Box'}` です。Angular の `ng2-host`（downgrade したもの）のテンプレートに `<ng1-card [title]="t" label="L-…" [value]="v" (valueChange)="…" (onPick)="…">` を置き、継承したクラスで 5 つのフックに記録を足しました。左に寄せた行が Angular、右に寄せて線を付けた行が AngularJS のフックです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/upg-upgrade-component)
 

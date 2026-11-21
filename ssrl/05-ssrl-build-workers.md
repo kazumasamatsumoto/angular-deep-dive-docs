@@ -619,7 +619,7 @@ server.ts が無いとき（static で ssr の入口なし、または outputMod
 
 > **🧪 DEMO — 22.2.7 の fetch-patch.js をワーカーの中で呼んだ記録（13 件）**
 >
-> `workerData.assetFiles` に 3 つ（{"/data.json":"&lt;scratchpad&gt;/fx/data.json","/日本語.txt":"&lt;scratchpad&gt;/fx/jp.txt","/base/style.css":"&lt;scratchpad&gt;/fx/style.css"}）を入れたワーカーで、元の fetch を「呼ばれたら覚えて 599 を返す」偽物にしてから、`patchFetchToLoadInMemoryAssets(new URL('http://localhost:4321/'))` を呼びました。
+> `workerData.assetFiles` に 3 つ（{"/data.json":"&lt;work&gt;/fx/data.json","/日本語.txt":"&lt;work&gt;/fx/jp.txt","/base/style.css":"&lt;work&gt;/fx/style.css"}）を入れたワーカーで、元の fetch を「呼ばれたら覚えて 599 を返す」偽物にしてから、`patchFetchToLoadInMemoryAssets(new URL('http://localhost:4321/'))` を呼びました。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ssrl-build-workers)
 
@@ -1105,7 +1105,7 @@ getAllRoutes の終わり（[プリレンダー](../platform/06-ssr-prerender.md
 
 ## 10. 記録の取り方
 
-小さなアプリは `<scratchpad>/ssrl-demo/b/app` に置き、node\_modules はこのサイトのものを symlink で借りました（npm install はしていません）。`NODE_OPTIONS="--require=…/rec.cjs" NG_BUILD_MAX_WORKERS=1 npx ng build -c <設定>` で 6 通りにビルドしています。rec.cjs は本体のスレッドで `@angular/build` の `worker-pool.js` の `WorkerPool` を包んだクラスに差し替え、server-rendering の 2 つのワーカーの execArgv に自分自身の `--require` を足して、ワーカーの中でも `http.createServer` と元の fetch を包みます。@angular/build のファイルは書き換えていません（exports の関数を包むだけです）。2026-11-19、Node v24.22.1 です。
+小さなアプリは `<work>/ssrl-demo/b/app` に置き、node\_modules はこのサイトのものを symlink で借りました（npm install はしていません）。`NODE_OPTIONS="--require=…/rec.cjs" NG_BUILD_MAX_WORKERS=1 npx ng build -c <設定>` で 6 通りにビルドしています。rec.cjs は本体のスレッドで `@angular/build` の `worker-pool.js` の `WorkerPool` を包んだクラスに差し替え、server-rendering の 2 つのワーカーの execArgv に自分自身の `--require` を足して、ワーカーの中でも `http.createServer` と元の fetch を包みます。@angular/build のファイルは書き換えていません（exports の関数を包むだけです）。2026-11-19、Node v24.22.1 です。
 
 📄 `記録用の前読み（rec.cjs）`
 
@@ -1352,7 +1352,7 @@ out.fetch = await new Promise((resolve, reject) => {
   w.once('message', (m) => { resolve(m); w.terminate(); });
   w.once('error', reject);
 });
-out.assetFiles = Object.fromEntries(Object.entries(assetFiles).map(([k, v]) => [k, '<scratchpad>/fx/' + path.basename(v)]));
+out.assetFiles = Object.fromEntries(Object.entries(assetFiles).map(([k, v]) => [k, '<work>/fx/' + path.basename(v)]));
 
 // RenderMode（@angular/ssr）と RouteRenderMode（@angular/build の models.js）
 // render-worker.ts の initialize と同じく、先に @angular/compiler を読まないとどうなるか（別のプロセスで）

@@ -725,7 +725,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
    パネルが先にいるので、その場面の記録の #14 で `backendReady` が届いたその場で 4 節の 153〜159 行目が走り、#16 で `contentScriptConnected` がパネルに届きます。そのあとの並びは「ページが先」と同じです。
 
-📄 `scratchpad の記録スクリプト（a/messaging.ts。node messaging.mjs と場面の名前で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/messaging.ts。node messaging.mjs と場面の名前で実行）`
 
 ```
 // devtools-messaging の記録: ページ（detect-angular・content script・backend）→ background（TabManager）→ パネル（ChromeMessageBus）
@@ -841,7 +841,7 @@ process.exit(0);
 
 ```
 
-📄 `scratchpad の記録スクリプト（a/fake-extension.ts。window.postMessage と chrome.runtime の代わり）`
+📄 `手元の作業フォルダの記録スクリプト（a/fake-extension.ts。window.postMessage と chrome.runtime の代わり）`
 
 ```
 // devtools-messaging / devtools-detect の記録用: ページの window.postMessage と chrome.runtime の代わり。
@@ -1093,7 +1093,7 @@ pnpm bazel test //devtools/projects/shell-browser/src/app:tab_manager_test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/a-tests.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/a-tests.log）`
 
 ```
 //devtools/projects/shell-browser/src/app:tab_manager_test_chromium   10 passed, 0 failed   PASSED in 2.3s

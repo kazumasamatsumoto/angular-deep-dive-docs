@@ -541,7 +541,7 @@ $ git show ce57763985 -- …/runners/vitest/build-options.ts   # origin/main、2
 
 > **🧪 DEMO — 6 通りの ng test と、ビルドの options・仮想のファイル・出力（記録の再生）**
 >
-> `<scratchpad>/vit-demo/a/record.mjs` が、@angular/build 22.1.7・vitest 4.1.11・jsdom 28.1.0・@angular/core 22.1.6 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です（前の章と同じアプリ。library の project を 1 つ足した）。zone.js（0.16.2）は、アプリの `node_modules` に symlink を足すか外すかで出し入れしました。`hook.cjs` が `getVitestBuildOptions`・`buildApplicationInternal`・esbuild の options を作る 2 つの関数を包み、引数と戻り値と出力のファイルの一覧を書き出しています。
+> `<work>/vit-demo/a/record.mjs` が、@angular/build 22.1.7・vitest 4.1.11・jsdom 28.1.0・@angular/core 22.1.6 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です（前の章と同じアプリ。library の project を 1 つ足した）。zone.js（0.16.2）は、アプリの `node_modules` に symlink を足すか外すかで出し入れしました。`hook.cjs` が `getVitestBuildOptions`・`buildApplicationInternal`・esbuild の options を作る 2 つの関数を包み、引数と戻り値と出力のファイルの一覧を書き出しています。
 >
 > polyfills なし・zone.js なし
 >

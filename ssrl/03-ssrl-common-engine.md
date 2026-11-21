@@ -233,7 +233,7 @@ angular/angular-cli · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 
 > **🧪 DEMO — enablePerformanceProfiler の出力（記録の再生）**
 >
-> `<scratchpad>/ssrl-demo/a/perf/record.mjs` が、Node v24.22.1 で @angular/ssr 22.2.7 の `new CommonEngine({ enablePerformanceProfiler: true, allowedHosts: ['localhost'] })` を作り、JIT の小さなアプリ（`PendingTasks` で 20 ms 待つ `<h1 class="title">` だけ）を描画した記録です。`console.log` を差し替えて受け取りました。一時ディレクトリに `browser/index.html`・`styles.css`・作り置きの `about/index.html` を置いています。
+> `<work>/ssrl-demo/a/perf/record.mjs` が、Node v24.22.1 で @angular/ssr 22.2.7 の `new CommonEngine({ enablePerformanceProfiler: true, allowedHosts: ['localhost'] })` を作り、JIT の小さなアプリ（`PendingTasks` で 20 ms 待つ `<h1 class="title">` だけ）を描画した記録です。`console.log` を差し替えて受け取りました。一時ディレクトリに `browser/index.html`・`styles.css`・作り置きの `about/index.html` を置いています。
 >
 > L118 の Retrieve SSG Page は、/ の pagePath が documentFilePath と同じなので L170 で undefined → L121 の Render Page → L123 で inlineCriticalCss が false でないので L124 の Inline Critical CSS。
 >
@@ -451,7 +451,7 @@ angular/angular-cli · 読了 約 12 分 · 発展 · [サイトで読む（デ�
 
 ### 重なりの spec と直し方（作業木で書いて走らせた）
 
-📄 `<scratchpad>/ssrl-wt-a/packages/angular/ssr/node/test/peformance-profiler_spec.ts`
+📄 `<work>/ssrl-wt-a/packages/angular/ssr/node/test/peformance-profiler_spec.ts`
 
 ```ts
 // node/test/peformance-profiler_spec.ts（作業木で新しく書いたもの）
@@ -520,7 +520,7 @@ describe('runMethodAndMeasurePerf', () => {
 ```
 # ../angular-cli-fix（44129f66a3）で、変えずに
 pnpm bazel test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all
-# 作業木 <scratchpad>/ssrl-wt-a に peformance-profiler_spec.ts（と第 2 回の handler_spec.ts）を足して
+# 作業木 <work>/ssrl-wt-a に peformance-profiler_spec.ts（と第 2 回の handler_spec.ts）を足して
 pnpm bazel test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all
 # 上の diff を当ててもう一度
 pnpm bazel test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all

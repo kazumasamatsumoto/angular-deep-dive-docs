@@ -81,7 +81,7 @@ git -C ../angular log --format='%h %ad %s' --date=short -E --grep='#67913([^0-9]
 📄 `出力（抜粋）`
 
 ```
-# scratchpad/build-loc-e/issue-60566.mjs（2026-11-03。@angular/localize/tools 22.1.6）
+# work/build-loc-e/issue-60566.mjs（2026-11-03。@angular/localize/tools 22.1.6）
 target : "Hello {title} account"
 xlf    : "Hello " [
   'error: Unexpected character "EOF" (Do you have an unescaped "{" in your template? ...)',
@@ -100,7 +100,7 @@ json   : "My {counter, selectordinal, =1 {} =2 {second} =3 {third} other {#th} }
 📄 `出力`
 
 ```
-# scratchpad/build-loc-e/nested-47370.mjs と nested-cli.cjs（2026-11-03）
+# work/build-loc-e/nested-47370.mjs と nested-cli.cjs（2026-11-03）
 入力: x = $localize`:@@outer:Account locked. Try again in ${this.p(4, $localize`:@@s:second`, $localize`:@@pl:seconds`)}:t:.`;
 
 # @angular/localize/tools 22.1.6 の makeEs2015TranslatePlugin（翻訳なし、ignore）
@@ -163,7 +163,7 @@ JeanMeche が「v21 は #63923 で CLDR 47 を使う」と答えて閉じまし�
 
 ## 4. このシリーズで見つけた「不具合らしきもの」
 
-第 17〜18 回では、サイトの node\_modules の本物（`@angular/localize/tools` 22.1.6）を scratchpad の小さなスクリプトと CLI で走らせて確かめました。../angular のファイルは変えていません。どれも `gh search issues` / `gh search prs` で同じ報告は見つかりませんでした（2026-11-03）。**本家に issue や PR を出すことは勧めません。**手元で同じ形を spec にして確かめ、issue を読むときの手がかりにします。
+第 17〜18 回では、サイトの node\_modules の本物（`@angular/localize/tools` 22.1.6）を 手元の作業フォルダの小さなスクリプトと CLI で走らせて確かめました。../angular のファイルは変えていません。どれも `gh search issues` / `gh search prs` で同じ報告は見つかりませんでした（2026-11-03）。**本家に issue や PR を出すことは勧めません。**手元で同じ形を spec にして確かめ、issue を読むときの手がかりにします。
 
 | 場所 | 入力の形 | 結果 | 行（章） |
 | --- | --- | --- | --- |

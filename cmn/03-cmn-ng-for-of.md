@@ -904,7 +904,7 @@ pnpm bazel test //packages/core/test:test \
   '--test_arg=--filter=^(iterable differ|IterableDiffers) '
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/a-ngfor.log・a-it-differ.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/a-ngfor.log・a-it-differ.log）`
 
 ```
 # common（ng_for_spec.ts の 34 件）

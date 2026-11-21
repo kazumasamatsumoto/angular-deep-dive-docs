@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（44 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（45 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -127,7 +127,7 @@
 
 ### [issue と PR を読む：i18n の今](loc/20-loc-issues.md) — 4. このシリーズで見つけた「不具合らしきもの」
 
-第 17〜18 回では、サイトの node\_modules の本物（`@angular/localize/tools` 22.1.6）を scratchpad の小さなスクリプトと CLI で走らせて確かめました。../angular のファイルは変えていません。どれも `gh search issues` / `gh search prs` で同じ報告は見つかりませんでした（2026-11-03）。**本家に issue や PR を出すことは勧めません。**手元で同じ形を spec にして確かめ、issue を読むときの手がかりにします。
+第 17〜18 回では、サイトの node\_modules の本物（`@angular/localize/tools` 22.1.6）を 手元の作業フォルダの小さなスクリプトと CLI で走らせて確かめました。../angular のファイルは変えていません。どれも `gh search issues` / `gh search prs` で同じ報告は見つかりませんでした（2026-11-03）。**本家に issue や PR を出すことは勧めません。**手元で同じ形を spec にして確かめ、issue を読むときの手がかりにします。
 
 | 場所 | 入力の形 | 結果 | 行（章） |
 | --- | --- | --- | --- |
@@ -144,10 +144,10 @@
 
 第 17・18 回で、本物の配布物（サイトの node\_modules の `@angular/service-worker` 22.1.6）をデモの偽物の上で、TypeScript のソースを SwTestHarness の上で走らせて確かめました。../angular のファイルは変えていません。どれも `gh search issues` で同じ報告は見つかりませんでした（2026-11-03。「dataGroups offline」「safeFetch」など）。**本家に issue や PR を出すことは勧めません**（0 節のとおり、security に関わらない直しは受け付けられません）。issue を読むときの手がかりにします。
 
-📄 `出力（scratchpad/sw-logs/e-harness-scratch.log）`
+📄 `出力（work/sw-logs/e-harness-scratch.log）`
 
 ```
-# scratchpad/sw-e-work/harness-datagroup.ts（SwTestHarness。../angular は読むだけ）
+# work/sw-e-work/harness-datagroup.ts（SwTestHarness。../angular は読むだけ）
 # asset の /index.html、performance のデータグループ ^/api/.*$。初期化のあと server.online = false
 /index.html -> 200 OK                     ← アセットのキャッシュ
 /other.txt -> 504 Gateway Timeout         ← Driver.safeFetch（return await）
@@ -321,7 +321,7 @@ Debug log:
 
 次は、このページ（本番ビルド）を開いて、5 節のデモの要素をページの外から操作した記録です。**これは記録です**（デモのボタンではこの操作をしません。コンソールにエラーが出るからです）。
 
-📄 `scratchpad/el-b/verify/verify.mjs（抜粋。playwright-core で操作）`
+📄 `work/el-b/verify/verify.mjs（抜粋。playwright-core で操作）`
 
 ```
 // /chapter/elements-outputs/ を開き、5 節のデモの「要素を作ってつなぐ」を押したあと
@@ -729,15 +729,15 @@ await cycle(); // 3 回目に戻す
 
 | ソースの行 | 見つけたこと | 再現 | 既存の issue / PR | 章 |
 | --- | --- | --- | --- | --- |
-| `tools/oxc/oxc-transform.ts 403〜406（adjustTypeScriptEnumsInStatements）` | enum の各メンバーの代入の右辺だけを isPure で見る。enum Reg { A = register("a") } は TypeScript が Reg\[Reg\["A"\] = register("a")\] = "A" と出すので、呼び出しが左辺に入り、印付きの IIFE に包まれる（使われなければ呼び出しごと消せる形）。Babel の版も右辺だけを見ていた | &lt;scratchpad&gt;/oxc-demo/a/record-transform.mjs の 6 つ目の入力（Live、Date.now()）と、&lt;scratchpad&gt;/oxc-demo/a/patched/ の条件を足した写し（第 1 回） | なし（"enum side effect pure annotation" "enum initializer function call removed" で検索） | 第 1 回 |
-| `tools/oxc/oxc-transform.ts 212（analyzeClassStaticProperties）と 543〜547` | static のキーが計算されたもの（static \[key\] = 1）かを見ない。oxc-parser は \[key\] のキーも Identifier にするので名前 key のプロパティとして判定され、static \[ɵfac\] = register() は Angular の static の名前として値を見ずに包まれる | &lt;scratchpad&gt;/oxc-demo/a/record-transform.mjs の 4 つ目の入力（class E）と Node での確かめ（第 1 回） | なし（"static computed property pure" で検索） | 第 1 回 |
-| `tools/oxc/oxc-transform.ts 144・148（isPure）` | 単項演算子の種類と、オブジェクトのプロパティのキーを見ないので、delete globalThis.foo と { \[register()\]: 1 } も純粋とみなし、それを static に持つクラスが包まれる。Babel の scope.isPure より広い | &lt;scratchpad&gt;/oxc-demo/a/record-transform.mjs の横での確かめ（第 1 回の 2 節） | なし（"isPure delete" "advancedOptimizations computed" で検索） | 第 1 回 |
-| `tools/oxc/oxc-transform.ts の isAlreadyEdited（CallExpression・NewExpression の枝の最初）` | 後順の走査（2b85529e82・f4dad31cce の後）では、書き換えた範囲の内側を後から訪ねることが無いので、この確かめが真を返す場面が無い | &lt;scratchpad&gt;/oxc-demo/a/record-traversal.mjs と old/ の比べ（第 2 回） | —（ふるまいは変わらない。消してよいかの記録） | 第 2 回 |
-| `tools/angular/linker/oxc-ast-host.ts 271〜276（getRange）` | 行と桁をいつも 0 で返す。リンクするテンプレートの誤りの「ファイル@行:桁」が、oxc では @0:14、同じ入力の Babel のリンカーでは @5:26 になる | &lt;scratchpad&gt;/oxc-demo/b/linker/record.mjs の「テンプレートに誤り」（第 3 回の記録） | なし（2026-11-18、gh で "linker error location" "oxc linker getRange" などを検索） | 第 3 回 |
-| `tools/angular/transformers/jit-resource-transformer.ts 196 と 113〜120` | JIT で、styles の値が変数（文字列でも配列でもない）かつ styleUrl / styleUrls があると、styles のキーが 2 つになり、変数のスタイルが渡らない | &lt;scratchpad&gt;/oxc-demo/b/ts/record.mjs の「styles が変数・styleUrl あり」（第 4 回の記録） | なし（"jit styles styleUrl" などで検索）。@ngtools/webpack の replace\_resources.ts も同じ形の分岐 | 第 4 回 |
-| `tools/angular/transformers/jit-bootstrap-transformer.ts 72〜76（44129f66a3）` | 名前だけを消す集合を作っても、消す関数がファイルの直下しか見ないので、platformBrowserDynamic の名前が import に残る | &lt;scratchpad&gt;/oxc-demo/b/ts/record.mjs の「ほかの名前と同じ import」（HEAD の版） | origin/main の 174eb34540 で直った（#34582 の続き。22.2.x は a4ce7bf461、22.2.7 に入っている） | 第 4 回 |
-| `tools/angular/linker/string-ast-factory.ts 93（wrapOperand）` | 両端だけを見るので (a) \|\| (b) を包まれた式とみなし、! を付けると !(a) \|\| (b) になる。記録の 4 つのリンクでは、この形の文字列は渡ってこなかった | &lt;scratchpad&gt;/oxc-demo/b/linker/record.mjs の単体の呼び出し（UNIT の最後の行） | なし | 第 3 回 |
-| `3 節の表の 0 failures の 10 行` | 行を変えても spec が落ちない（spec の無い行）。不具合ではなく、固める spec が無いことの記録 | &lt;scratchpad&gt;/oxc-demo/b/mut/mutate.mjs（作業木で 1 行ずつ） | — | 第 1〜3 回 |
+| `tools/oxc/oxc-transform.ts 403〜406（adjustTypeScriptEnumsInStatements）` | enum の各メンバーの代入の右辺だけを isPure で見る。enum Reg { A = register("a") } は TypeScript が Reg\[Reg\["A"\] = register("a")\] = "A" と出すので、呼び出しが左辺に入り、印付きの IIFE に包まれる（使われなければ呼び出しごと消せる形）。Babel の版も右辺だけを見ていた | &lt;work&gt;/oxc-demo/a/record-transform.mjs の 6 つ目の入力（Live、Date.now()）と、&lt;work&gt;/oxc-demo/a/patched/ の条件を足した写し（第 1 回） | なし（"enum side effect pure annotation" "enum initializer function call removed" で検索） | 第 1 回 |
+| `tools/oxc/oxc-transform.ts 212（analyzeClassStaticProperties）と 543〜547` | static のキーが計算されたもの（static \[key\] = 1）かを見ない。oxc-parser は \[key\] のキーも Identifier にするので名前 key のプロパティとして判定され、static \[ɵfac\] = register() は Angular の static の名前として値を見ずに包まれる | &lt;work&gt;/oxc-demo/a/record-transform.mjs の 4 つ目の入力（class E）と Node での確かめ（第 1 回） | なし（"static computed property pure" で検索） | 第 1 回 |
+| `tools/oxc/oxc-transform.ts 144・148（isPure）` | 単項演算子の種類と、オブジェクトのプロパティのキーを見ないので、delete globalThis.foo と { \[register()\]: 1 } も純粋とみなし、それを static に持つクラスが包まれる。Babel の scope.isPure より広い | &lt;work&gt;/oxc-demo/a/record-transform.mjs の横での確かめ（第 1 回の 2 節） | なし（"isPure delete" "advancedOptimizations computed" で検索） | 第 1 回 |
+| `tools/oxc/oxc-transform.ts の isAlreadyEdited（CallExpression・NewExpression の枝の最初）` | 後順の走査（2b85529e82・f4dad31cce の後）では、書き換えた範囲の内側を後から訪ねることが無いので、この確かめが真を返す場面が無い | &lt;work&gt;/oxc-demo/a/record-traversal.mjs と old/ の比べ（第 2 回） | —（ふるまいは変わらない。消してよいかの記録） | 第 2 回 |
+| `tools/angular/linker/oxc-ast-host.ts 271〜276（getRange）` | 行と桁をいつも 0 で返す。リンクするテンプレートの誤りの「ファイル@行:桁」が、oxc では @0:14、同じ入力の Babel のリンカーでは @5:26 になる | &lt;work&gt;/oxc-demo/b/linker/record.mjs の「テンプレートに誤り」（第 3 回の記録） | なし（2026-11-18、gh で "linker error location" "oxc linker getRange" などを検索） | 第 3 回 |
+| `tools/angular/transformers/jit-resource-transformer.ts 196 と 113〜120` | JIT で、styles の値が変数（文字列でも配列でもない）かつ styleUrl / styleUrls があると、styles のキーが 2 つになり、変数のスタイルが渡らない | &lt;work&gt;/oxc-demo/b/ts/record.mjs の「styles が変数・styleUrl あり」（第 4 回の記録） | なし（"jit styles styleUrl" などで検索）。@ngtools/webpack の replace\_resources.ts も同じ形の分岐 | 第 4 回 |
+| `tools/angular/transformers/jit-bootstrap-transformer.ts 72〜76（44129f66a3）` | 名前だけを消す集合を作っても、消す関数がファイルの直下しか見ないので、platformBrowserDynamic の名前が import に残る | &lt;work&gt;/oxc-demo/b/ts/record.mjs の「ほかの名前と同じ import」（HEAD の版） | origin/main の 174eb34540 で直った（#34582 の続き。22.2.x は a4ce7bf461、22.2.7 に入っている） | 第 4 回 |
+| `tools/angular/linker/string-ast-factory.ts 93（wrapOperand）` | 両端だけを見るので (a) \|\| (b) を包まれた式とみなし、! を付けると !(a) \|\| (b) になる。記録の 4 つのリンクでは、この形の文字列は渡ってこなかった | &lt;work&gt;/oxc-demo/b/linker/record.mjs の単体の呼び出し（UNIT の最後の行） | なし | 第 3 回 |
+| `3 節の表の 0 failures の 10 行` | 行を変えても spec が落ちない（spec の無い行）。不具合ではなく、固める spec が無いことの記録 | &lt;work&gt;/oxc-demo/b/mut/mutate.mjs（作業木で 1 行ずつ） | — | 第 1〜3 回 |
 
 ## SSR のサーバールートの内側：ルートを取り出し、木で照合し、応答を組み立てる
 
@@ -1104,3 +1104,75 @@ await cycle(); // 3 回目に戻す
 | [9](cmd/09-cmd-tests-issues.md) | （spec の前提）web の suite の日付の 2 本が、JST のマシンで落ちる（Node では通る。`--test_env=TZ=UTC` でも同じ） | test/i18n/format\_date\_spec.ts 373〜375、test/pipes/date\_pipe\_spec.ts L169〜171 | 2 節。main 同じ（date\_pipe\_spec.ts は main で L167〜169 にずれる） |
 
 第 5〜8 回の説明文で、書いてあるとおりに動いたものも多くありました。NgIf の then・else・as と 1 回の購読、NgForOf の局所変数と trackBy、NgSwitch の「一致したものは全部」と `===`、NgClass の空白の区切り、NgStyle の `null`、NgTemplateOutlet の例、NgComponentOutlet の 2 つの例、SlicePipe・TitleCasePipe・KeyValuePipe の例のファイルの「期待される出力」、PathLocationStrategy と HashLocationStrategy の例の URL、末尾のスラッシュの 2 つの戦略は、どれも説明文のとおりです。
+
+## core の説明文の読み残し
+
+### [spec と issue を読む：core の説明文を固めているもの](crd/10-crd-tests-issues.md) — 5. このシリーズで見つけたもの（食い違いと不具合）
+
+どれも 8576f161ae4 の行を読み、本物の @angular/core 22.2.6（ページのデモと Node の記録）か、説明文の例をそのまま取り出したファイルの型検査（サイトの compiler-cli、`--strict`・`strictTemplates`）で確かめたものです。「main」は ../angular の origin/main（d201dd76ef2、2026-11-19）で、直っていなければ「main 同じ」と書きました。行のファイルは、断りが無ければ packages/core/src/ からの道です。
+
+| 章 | 何が起きるか | 行（8576f161ae4） | 確かめ方と main |
+| --- | --- | --- | --- |
+| [1](crd/01-crd-directive.md) | （不具合）`queries: {x: new ContentChildren(...)}` が JIT では入らない（AOT は入る）。JIT の `directiveMetadata` は `metadata.queries` を読まない | metadata/directives.ts 264〜300、render3/jit/directive.ts 394 | Node の JIT で `this.c === undefined`。spec は ngtsc\_spec.ts 3295（AOT）だけ。main 同じ |
+| [1](crd/01-crd-directive.md) | （例の誤り）queries の例のフィールドを `,` で区切っていて TS1442。直しても imports が無く NG8001 | directives.ts 285〜286 | strict の ngc。main 同じ |
+| [1](crd/01-crd-directive.md) | （食い違い）「要素の境をまたぐ selector は使えない」と書くが、`'form input'`・`'div > span'` はエラーにならず最後の要素名だけが残る。`:not(.a, .b)` は診断でなく `TS500` で止まる | directives.ts 127〜128 | 本物と ngc。main 同じ |
+| [1](crd/01-crd-directive.md) | （説明不足）exportAs はカンマで区切って複数の名前にできる（型は string） | directives.ts 240〜262 | AOT・JIT とも。spec linker/integration\_spec.ts 465。main 同じ |
+| [1](crd/01-crd-directive.md) | （食い違い）host の静的な属性を「host が指す property に伝わる」と書くが、属性に値を書くだけ（テンプレートの同じ属性が勝つ、class は足し合わせ） | directives.ts 312〜313 | 本物。main 同じ |
+| [1](crd/01-crd-directive.md) | （食い違い）outputs の alias を「handler が付く DOM の property」と書く。実際はテンプレートの (イベント名) | directives.ts 197〜201 | 本物。main 同じ |
+| [1](crd/01-crd-directive.md) | （例の誤り）outputs・exportAs の例に imports が無く NG8001/NG8003、inputs の例は TS2564 | directives.ts 166〜177・205〜228・245〜259 | strict の ngc。main 同じ |
+| [1](crd/01-crd-directive.md) | （説明不足）`[attr=value]` の値は大文字小文字を区別しない、`#id` も書ける | directives.ts 123 | 本物。spec directive\_spec.ts 320。main 同じ |
+| [1](crd/01-crd-directive.md) | （例の誤字）閉じタグが `<form>` | directives.ts 137 | main 同じ |
+| [1](crd/01-crd-directive.md) | （説明不足）handler が例外を投げても false 扱いで preventDefault | directives.ts 320〜322（実装 render3/view/listeners.ts 92〜95） | 本物。main 同じ |
+| [2](crd/02-crd-component.md) | （食い違い）「OnPush が既定」。クラスは OnPush だが、デコレーターの props が `{changeDetection: Eager, ...c}` を入れるので `new Component({}).changeDetection === 1`、TestBed の override のあと `onPush` が false | metadata/directives.ts 554・682 | Node の記録。main は f1c87829991 で g3 だけ直った。PR #69898（開） |
+| [2](crd/02-crd-component.md) | （食い違い）template と templateUrl を両方書くとエラーにならず、AOT は templateUrl、JIT は template を使う | directives.ts 567・574 | 本物。main 同じ |
+| [2](crd/02-crd-component.md) | （例の誤り）preserveWhitespaces の例。1 文字の `\n` は残る | directives.ts 485 | 本物。main 同じ |
+| [2](crd/02-crd-component.md) | （食い違い）input・output が「DOM の property」に結ばれ変更検知で更新、HostListener の結果で要素を更新 | directives.ts 773〜774・836・885・911・1012 | 本物（返り値は false かどうかだけ）。main 同じ |
+| [2](crd/02-crd-component.md) | （例の誤り）HostBinding の例の閉じ括弧が無く TS1434、HostListener の `keydown.enter` の例は TS2345（#40778）、ほかの例も TS2564・TS7006・NG8001 | directives.ts 434〜459・787〜817・960〜967・1025〜1039・1056〜1057 | strict の ngc。main 同じ |
+| [2](crd/02-crd-component.md) | （古い例）resource\_loading の例の `renderComponent` は消えた関数（TS2552） | metadata/resource\_loading.ts 29・38 | 8d2e5e6c4f5（2022）で消えた。main 同じ |
+| [2](crd/02-crd-component.md) | （古い文）pipe は NgModule に属さないと使えない、name に `-` は使えない（宣言はエラーにならない） | directives.ts 708〜710・731〜732 | 本物。main 同じ |
+| [2](crd/02-crd-component.md) | （spec の名前）`should not remove whitespaces by default` が消える方を待つ | test/linker/integration\_spec.ts 2087 | 2 節。main 同じ |
+| [2](crd/02-crd-component.md) | （説明不足）status が 200 でなければ失敗（204 や file:// の 0 も NG0918） | resource\_loading.ts 165 | 読み比べと spec。main 同じ |
+| [3](crd/03-crd-query-module.md) | （書式の崩れ）ContentChild の静的・動的の表の 1 行目が折り返していて表として組めない | metadata/di.ts 256〜263 | 3348f8820b0（2023、#51146）から。main 同じ |
+| [3](crd/03-crd-query-module.md) | （例の誤り）例のフィールド `template;`・`someService: SomeService` が strict で TS7008・TS2564 | di.ts 135・139・241・245・350・436・440 | strict の tsc。main 同じ |
+| [3](crd/03-crd-query-module.md) | （例の誤り）`@NgModule({declarations: [NgFor]})` は NG6001（standalone でほかのパッケージの宣言） | metadata/ng\_module.ts 98〜107 | ngc。main 同じ |
+| [3](crd/03-crd-query-module.md) | （書式、main で直った）`** Note: ***` が太字にならない | di.ts 126・338 | 95e8dec4e22（2026-09-23）で直った |
+| [4](crd/04-crd-injectable-token.md) | （例の誤り）standalone の循環 import の例で、後で定義するクラスを imports が読み TS2449。順を入れ替えても input.required を渡さず NG8008 | di/forward\_ref.ts 41〜65 | strict の ngc。24d803b0a2e（2023）から。main 同じ |
+| [4](crd/04-crd-injectable-token.md) | （例の食い違い）forwardRef の例は `{provide: Door, deps: [Lock]}` で作るので `@Inject(forwardRef(...))` が読まれない | packages/examples/core/di/ts/forward\_ref/forward\_ref\_spec.ts 23〜47 | 本物（deps の provider は ɵfac を使わない。第 6 回の 4 節と同じ理由）。main 同じ |
+| [4](crd/04-crd-injectable-token.md) | （食い違い）InjectionToken の `providedIn: null` も `\|\|` で 'root'（@Injectable の null とは逆） | di/injection\_token.ts 91・113 | 本物。main 同じ |
+| [4](crd/04-crd-injectable-token.md) | （言い方）'any' は「遅延モジュールごとに 1 つ」と書くが、聞かれた injector ごとに 1 つ | di/injectable.ts 96〜97（実装 r3\_injector.ts 557） | 本物。main 同じ |
+| [4](crd/04-crd-injectable-token.md) | （不具合）factory が例外を投げると記録が CIRCULAR のまま残り、2 回目の get が本当の理由でなく NG0200 Circular dependency | di/r3\_injector.ts 524〜549（hydrate） | 本物（root の子にだけ依存を置く再現）。issue・PR は見つからない。main 同じ |
+| [4](crd/04-crd-injectable-token.md) | （綴り）「defition」 | di/jit/service.ts 23 | main 同じ |
+| [5](crd/05-crd-provider.md) | （例の取り違え）region TypeProvider の中身は `{provide: Greeting, useClass: Greeting}`（ClassProvider の形）、region ClassProvider の中身は `useValue`（ValueProvider の形） | packages/examples/core/di/ts/provider\_spec.ts 15〜24・57〜71（provider.ts 276・303 が指す） | 読み比べ。main 同じ |
+| [5](crd/05-crd-provider.md) | （例の誤り）`@Injectable(SomeModule, {deps: []})` は TS2554（引数は 1 つ） | di/interface/provider.ts 111〜114 | strict の tsc。main 同じ |
+| [5](crd/05-crd-provider.md) | （型との食い違い）StaticClassSansProvider の useClass は省けると書くが型は必須（省く形は ConstructorSansProvider）。provide は「たいてい Type か InjectionToken、any でもよい」と書くが型は `Type<any>` | provider.ts 61〜62・142・144 | tsc。main 同じ |
+| [5](crd/05-crd-provider.md) | （文の誤り）「この形は TypeProvider の短い形」が自分自身を指す。L267 の `Type'` は main で直った | provider.ts 267・270 | 95e8dec4e22 で L267 だけ直った。L270 は main 同じ |
+| [5](crd/05-crd-provider.md) | （食い違い）型引数なしの ModuleWithProviders は「非推奨」と書くが、型引数は必須で TS2314 | provider.ts 389 | tsc。main 同じ |
+| [5](crd/05-crd-provider.md) | （開発と本番で違う）multi と普通の provider を混ぜると、開発は「Cannot mix」、本番は黙って置き換えるか `Cannot read properties of undefined (reading 'push')` | di/r3\_injector.ts 497〜521（L512） | 記録。spec static\_injector\_spec.ts 158 は開発の文だけ。main 同じ |
+| [5](crd/05-crd-provider.md) | （開発と本番で違う）EnvironmentProviders を `@Component.providers` に入れると、開発は NG0207、本番は `Cannot convert undefined or null to object` | r3\_injector.ts 645〜647、provider.ts 349〜351 | 記録。spec di\_spec.ts 415 は開発だけ。main 同じ |
+| [5](crd/05-crd-provider.md) | （開発と本番で違う）importProvidersFrom に standalone のコンポーネントを渡すと、開発は NG0800、本番は通ってその imports の providers を集める | di/provider\_collection.ts 96〜99・107・164〜174 | 記録。spec di\_spec.ts 311 は開発だけ。main 同じ |
+| [5](crd/05-crd-provider.md) | （古い文）ViewEngine・StaticInjector の名前 | di/interface/defs.ts 33〜34・100・114・165 | 8c71b9fc42e（2021）で消えた。main 同じ |
+| [6](crd/06-crd-inject.md) | （食い違い）`inject` は「成功しなければ `null`」と書くが、options なしで見つからなければ NG0201（型は `T`） | di/injector\_compatibility.ts 172・241 | 本物。7f65089de86（2022）の文が InjectFlags の削除のあと残った。main 同じ（L166・L235） |
+| [6](crd/06-crd-inject.md) | （名前の誤り、main で直った）実装の `@param flags`（引数は `options`） | injector\_compatibility.ts 238〜240 | 6e024600e0b（2026-10-08）で直った |
+| [6](crd/06-crd-inject.md) | （例の食い違い）useFactory の例の `new Car(engine)` が、1 つ目の例の引数の無い Car と合わず TS2554 | injector\_compatibility.ts 250〜259・269 | strict の ngc。main 同じ（L263） |
+| [6](crd/06-crd-inject.md) | （古いコメント）`InternalInjectFlags` を「上の `InjectFlags` の写し」と書くが、公開の `InjectFlags` は v20 で消えた | di/interface/injector.ts 19〜24・48 | 611baaf0695（2025-03-11）で消えた。main 同じ |
+| [6](crd/06-crd-inject.md) | （食い違い）`@Self` を「解決は階層を上へたどる」と書く。実際は親へ行かない（spec 98 も） | di/metadata.ts 127〜128 | 本物。0a2132ef104（2016）の文。main 同じ |
+| [6](crd/06-crd-inject.md) | （例の誤り）@SkipSelf の例の deps に SkipSelf が無く、2 つ目は `new Self()`。例外は依存が無いから出る | packages/examples/core/di/ts/metadata\_spec.ts 125・131 | 本物。82c77ce2320（2019）で ReflectiveInjector から書き換えたとき。main 同じ |
+| [6](crd/06-crd-inject.md) | （食い違い）`Injector.get` は「notFoundValue が undefined なら例外」と書くが、optional なら `null`（spec 127 も） | di/injector.ts 65 | 本物。main 同じ |
+| [6](crd/06-crd-inject.md) | （古い文）`INJECTOR` を使うと `StaticInjector` を tree-shake できる。StaticInjector は 2021 年に消えた | di/injector\_token.ts 16〜17 | 8c71b9fc42e（2021-11-09）で消えた。main 同じ |
+| [6](crd/06-crd-inject.md) | （説明不足）`Injector.create` の `name` は開発モードの NG0201 の「Source:」だけで、`runInInjectionContext` の中の `inject` の例外には付かない。destroy の後の get・2 回目の destroy は NG0205 | injector.ts 96・140〜147（実装 create\_injector.ts 51〜53、r3\_injector.ts 404〜409） | 記録。main 同じ |
+| [7](crd/07-crd-lifecycle.md) | （古い文）`ChangeDetectorRef` の例の説明「OnPush を既定の CheckAlways の代わりに」。v22 の既定は OnPush | change\_detection/change\_detector\_ref.ts 33〜34 | 本物（書かない子は OnPush）。eae8f7e30b9（2026-03-16）から。main 同じ |
+| [7](crd/07-crd-lifecycle.md) | （古い文）OnPush は「`Default`（CheckAlways）に戻すまで」。`Default` は deprecated で `Eager` | change\_detection/constants.ts 20〜21 | 読み比べ。main 同じ |
+| [7](crd/07-crd-lifecycle.md) | （食い違い）`ngAfterViewChecked` は「コンポーネントのビューを確かめ終えたあと」と書くが、OnPush で飛ばした回にも呼ばれる | change\_detection/lifecycle\_hooks.ts 224〜225・240〜242 | デモ（ngAfterViewChecked +3、表示は変わらない）。f1ab3942187（2018）の文。main 同じ |
+| [7](crd/07-crd-lifecycle.md) | （食い違い）`firstChange` は「最初に代入された値か」と書くが、インスタンスの最初の ngOnChanges かどうか（入力ごとではない）。1 回目の `previousValue` は `undefined`（#67516） | change\_detection/simple\_change.ts 22・27（実装 render3/features/ng\_onchanges\_feature.ts 113〜117） | デモ（`setInput('b')` が firstChange=false）。main 同じ |
+| [7](crd/07-crd-lifecycle.md) | （不具合）コンポーネントの `useFactory` のサービスの `ngOnDestroy` が呼ばれない（`useClass` は呼ばれる） | render3/di\_setup.ts 260〜269（説明文は lifecycle\_hooks.ts 119） | デモで再現。#28738（開、2019）。spec providers\_spec.ts 495 が今の振る舞いを固める。main 同じ |
+| [7](crd/07-crd-lifecycle.md) | （説明が狭い）AfterViewInit・AfterViewChecked を「コンポーネントのビュー」と書くが、ビューを持たないディレクティブにも呼ばれる | lifecycle\_hooks.ts 196〜197・215 | デモ。main 同じ |
+| [8](crd/08-crd-differs.md) | （食い違い）`forEachOperation` の `currentIndex` を「record.currentIndex は元の位置、引数は途中の位置」と書くが、どちらも新しい一覧の位置で同じ数 | change\_detection/differs/iterable\_differs.ts 64〜66（実装 default\_iterable\_differ.ts 93・123） | デモ（全部の操作で同じ）と spec 430。8c7e93bebeb（2016）から。main 同じ |
+| [8](crd/08-crd-differs.md) | （古い文）`IterableDiffers`・`KeyValueDiffers` を「NgClass が使う」と書く。NgClass は differ を使わない | iterable\_differs.ts 190、keyvalue\_differs.ts 118 | 1be6b0a58a9（2024-01-08）で最後の引数も外れた。main 同じ |
+| [8](crd/08-crd-differs.md) | （写しの文）`KeyValueChanges.forEachPreviousItem` の「どこへ動いたか」。KeyValue の記録に位置は無い | keyvalue\_differs.ts 53〜54 | デモ。main 同じ |
+| [8](crd/08-crd-differs.md) | （例の誤り）`function userTrackBy(index, user)` は strict で TS7006 ×2 | iterable\_differs.ts 146〜148 | strict の ngc。14abc68ccf9（2021）から。main 同じ |
+| [8](crd/08-crd-differs.md) | （内部のコメント）番号の「3)」が 2 つ、「rather then」 | default\_iterable\_differ.ts 342〜351・358 | 1bd304e7abc（2014）から。main 同じ |
+| [9](crd/09-crd-scheduling.md) | （言い方）runCoalescing の変更検知は「requestAnimation の中」と書くが、`setTimeout` と `requestAnimationFrame` の早い方 | change\_detection/scheduling/ng\_zone\_scheduling.ts 214（実装 zone/ng\_zone.ts 406） | Node の記録（rAF の無い環境で setTimeout の側）。main 同じ（L215） |
+| [9](crd/09-crd-scheduling.md) | （古いコメント）`PROVIDED_NG_ZONE` を「bootstrapModule と一緒に使われていないか確かめる」と書く。実際は両方 provide の警告（NG0408）にだけ使い、L140 は bootstrapModule で使えと書く | ng\_zone\_scheduling.ts 75〜77（使う所 platform/bootstrap.ts 96） | Node の記録（bootstrapModule の applicationProviders で NgZone が届く）。main 同じ |
+| [9](crd/09-crd-scheduling.md) | （古いコメント）引数の無い `tick()` に `@param shouldRefreshViews`。SCHEDULE\_IN\_ROOT\_ZONE の「v19 で消す」の TODO も残る | zoneless\_scheduling\_impl.ts 254〜255、zoneless\_scheduling.ts 78 | dabfb6de3dc（2024-07-10）で引数が消えた。main 同じ（L261・L78） |
+
+説明文のとおりに動いたものも多くありました。`inject` の options の 4 つと説明文の 5 つの場所、`@Optional`・`@Host` の例、`Injector.create` の `parent` と destroy、フックの呼ばれる順と `*Init` が 1 回だけのこと、OnPush の子の `ngDoCheck`（ca440551661、2026-05-20 に足された文）、`markForCheck`・`detach`・`detectChanges`・`reattach`、differ の `diff` の戻り値と trackBy と `extend`、`eventCoalescing` の 2 回と 1 回、`runCoalescing` の 10 回と 1 回、zoneless の説明文の 7 つの API は、どれも説明文のとおりです。

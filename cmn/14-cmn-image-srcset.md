@@ -555,7 +555,7 @@ pnpm bazel test //packages/common/test:test --nocache_test_results --test_output
   "--test_arg=--filter=Image directive (fill mode|loaders .ngSrcset. values|loaders sizes attribute|loaders automatic srcset generation)"
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/e-ss.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/e-ss.log）`
 
 ```
 Ran 36 of 667 specs

@@ -596,7 +596,7 @@ pnpm bazel run //packages/core/schematics/migrations/signal-migration/test:test_
 > [!WARNING]
 > **ハマりどころ**
 >
-> このシリーズでは ../angular を変えない約束なので、`bazel run` は走らせていません（golden が一致していれば 34 行目で何も書かずに終わりますが、それも含めて走らせていない）。上の手順は golden\_test\_runner.ts の 35〜44 行目と BUILD.bazel、dev-infra の runner を読んだ結果です。scratchpad に runner だけを取り出して動かすことも試しましたが、rules\_js の起動スクリプトが `RUNFILES` を要求し、拡張子なしの import（`../../../utils/tsurge/testing/diff`）も素の Node では解決できなかったので、確かめられていません。
+> このシリーズでは ../angular を変えない約束なので、`bazel run` は走らせていません（golden が一致していれば 34 行目で何も書かずに終わりますが、それも含めて走らせていない）。上の手順は golden\_test\_runner.ts の 35〜44 行目と BUILD.bazel、dev-infra の runner を読んだ結果です。作業用フォルダに runner だけを取り出して動かすことも試しましたが、rules\_js の起動スクリプトが `RUNFILES` を要求し、拡張子なしの import（`../../../utils/tsurge/testing/diff`）も素の Node では解決できなかったので、確かめられていません。
 
 📄 `angular/packages/core/schematics/migrations/signal-migration/test/BUILD.bazel` L74–106 （▶ の行: 75, 82–86, 98–101）
 
@@ -680,7 +680,7 @@ pnpm bazel run //packages/core/schematics/migrations/signal-migration/test:test_
    `--test_arg=--filter=<describe の名前>` で絞り、各 shard の「Ran N of M」の N の合計が、足した it の数と合うかを見ます。0 件でも PASSED になります。
 5. **全部を走らせる**
 
-   最後に `pnpm bazel test //packages/core/schematics/...`。2026-11-03 の手元では 67 ターゲット全部が PASSED でした（初回ビルド込み 61.8 秒、scratchpad/mig-logs/base.log）。
+   最後に `pnpm bazel test //packages/core/schematics/...`。2026-11-03 の手元では 67 ターゲット全部が PASSED でした（初回ビルド込み 61.8 秒、work/mig-logs/base.log）。
 
 ## 6. 手元で走らせた結果
 
@@ -704,7 +704,7 @@ pnpm bazel test //packages/core/schematics/migrations/signal-migration/test:test
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/mig-logs/b-*.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/mig-logs/b-*.log）`
 
 ```
 //packages/core/schematics/test:test（filter=self-closing-tags migration）

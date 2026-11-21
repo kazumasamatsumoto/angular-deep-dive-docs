@@ -1139,7 +1139,7 @@ environment-options と normalize-cache の「44129f66a3」の欄は、22.2.7 �
 
 ## 10. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `src/utils/` の .js を require しました。44129f66a3 は、../angular-cli の .ts を esbuild の `transformSync` で .js にし、`./xxx` の読み込みを 22.2.7 の dist に、パッケージを @angular/build から解決したパスに書き換えたものです。環境変数は `PATH` と指定した変数だけを渡した子プロセスで読み、ファイルを読む関数には一時のフォルダ（`<tmp>`、終わったら消す）を使いました。
+スクリプトは `<work>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `src/utils/` の .js を require しました。44129f66a3 は、../angular-cli の .ts を esbuild の `transformSync` で .js にし、`./xxx` の読み込みを 22.2.7 の dist に、パッケージを @angular/build から解決したパスに書き換えたものです。環境変数は `PATH` と指定した変数だけを渡した子プロセスで読み、ファイルを読む関数には一時のフォルダ（`<tmp>`、終わったら消す）を使いました。
 
 📄 `記録のスクリプト（rec-options.mjs）`
 

@@ -925,7 +925,7 @@ f086eccc36 と 4d564f66f6 の正規表現は「当てはまったら拒む」（
 
 `false` を渡すと環境変数は使われません（`??` は `false` では右に行かない）。`NG_TRUST_PROXY_HEADERS=*` はエンジンを作るときに投げます。配布物 22.1.7 の `fesm2022/_validation-chunk.mjs` にも、ここで読んだ関数が同じ形で入っています（今のこのサイトの依存の 22.2.7 の同じファイルも、22.1.7 と 1 文字も違いません。第 4 回 9 節で同じ入力の結果が一致することを確かめました）。
 
-📄 `scratchpad/ssrx-demo/ssrx-proxy-headers/build.mjs`
+📄 `work/ssrx-demo/ssrx-proxy-headers/build.mjs`
 
 ```js
 // 使い方: node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > record.json
@@ -947,7 +947,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-proxy-headers/record.ts`
+📄 `work/ssrx-demo/ssrx-proxy-headers/record.ts`
 
 ```ts
 // 第 5 回 ssrx-proxy-headers の記録。../angular-cli（44129f66a3）の @angular/ssr のソースを束ねて Node で動かす。

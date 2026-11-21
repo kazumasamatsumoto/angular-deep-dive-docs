@@ -207,7 +207,7 @@ host は引数を `unknown` で受け、25〜27 行目の `isNode`（`type` を�
    `[1, , 2]` の穴（`null` の要素）と `...a` は、値が静的に決まらないので `FatalLinkerError` です。124 行目、ほかの要素は節点のまま配列に入れます。中身を読むのは、部分リンカーがその要素について次の問い合わせをするときです。
 2. **142 行目：`Property` だけ**
 
-   `{ ...a }` の `SpreadElement` はここで止まります。oxc の `Property` には、`{ [a]: 1 }`（computed）・`{ get b() {…} }`・`{ c() {} }` も入ります。この関数は `computed` と `kind` を見ないので、22.2.7 で試すとキーはそれぞれ `a`・`b`・`c` になり、値は `Literal`・`FunctionExpression`・`FunctionExpression` でした（`<scratchpad>/oxc-demo/b/probe/computed.mjs`）。部分宣言の出力にこの形は出てきません。
+   `{ ...a }` の `SpreadElement` はここで止まります。oxc の `Property` には、`{ [a]: 1 }`（computed）・`{ get b() {…} }`・`{ c() {} }` も入ります。この関数は `computed` と `kind` を見ないので、22.2.7 で試すとキーはそれぞれ `a`・`b`・`c` になり、値は `Literal`・`FunctionExpression`・`FunctionExpression` でした（`<work>/oxc-demo/b/probe/computed.mjs`）。部分宣言の出力にこの形は出てきません。
 3. **152〜163 行目：キーは 3 種類**
 
    識別子・文字列・数のキーを、どれも文字列のキーにします（157 行目の `String()` で `3` は `'3'`）。165 行目、値は節点のまま `Map` に入れます。記録の `parseObjectLiteral` の答えが `Map{minVersion, version, type, …}` なのはこれです。
@@ -784,7 +784,7 @@ $ git show 7e5510e464 -- …/linker/oxc-linker.ts   # 2026-08-05（抜粋。当�
 📄 `sourceMapping の true と false で同じ宣言をリンクした記録`
 
 ```
-$ node <scratchpad>/oxc-demo/b/probe/srcmap.mjs
+$ node <work>/oxc-demo/b/probe/srcmap.mjs
 # 22.2.7 の OxcAstHost・StringAstFactory と本物の LinkerEnvironment / FileLinker で、末尾に
 # //# sourceMappingURL=lib.mjs.map がある ɵɵngDeclareComponent をリンクした。fileSystem は noopFileSystem と同じ形の偽物で、呼ばれたものを記録する
 sourceMapping true  [["readFile","/lib.mjs.map"],["warn","Unable to fully load /lib.mjs for source-map flattening: Unexpected end of JSON input"]]  /*@__PURE__*/ i0.ɵɵdefineComponent({…
@@ -825,7 +825,7 @@ origin/main の 43aab6a1cf（09-21、#34136、Fixes #34129）は、host の全�
 
 > **🧪 DEMO — 5 つの部分宣言のリンク：host が答えたこと、factory が組んだ文字列（記録の再生）**
 >
-> `<scratchpad>/oxc-demo/b/linker/record.mjs` が、@angular/build 22.2.7（このサイトの node\_modules）の `transform('lib.mjs', code, { link: true, advancedOptimizations: false })` を Node v24.22.1 で呼んだ記録です（@angular/compiler-cli 22.2.6、oxc-parser 0.156.0）。`OxcAstHost` と `StringAstFactory` の prototype のメソッドを実行中だけ包み、引数・答え・組んだ文字列を 1 呼び出しずつ書き出しました。節点は `型〈元のソースの文字〉`、改行は ⏎ で表します。何もしない `setSourceMapRange` は数だけ残しています。
+> `<work>/oxc-demo/b/linker/record.mjs` が、@angular/build 22.2.7（このサイトの node\_modules）の `transform('lib.mjs', code, { link: true, advancedOptimizations: false })` を Node v24.22.1 で呼んだ記録です（@angular/compiler-cli 22.2.6、oxc-parser 0.156.0）。`OxcAstHost` と `StringAstFactory` の prototype のメソッドを実行中だけ包み、引数・答え・組んだ文字列を 1 呼び出しずつ書き出しました。節点は `型〈元のソースの文字〉`、改行は ⏎ で表します。何もしない `setSourceMapRange` は数だけ残しています。
 >
 > 手書き。コンストラクタの引数 1 つを注入する factory
 >
@@ -922,7 +922,7 @@ origin/main の 43aab6a1cf（09-21、#34136、Fixes #34129）は、host の全�
 pnpm bazel test //packages/angular/build:test --nocache_test_results --test_output=all \
   '--test_arg=--filter=^(oxc-|OxcAstHost|StringAstFactory|adjust-static-class-members oxc|adjust-typescript-enums oxc|elide-angular-metadata oxc|pure-toplevel-functions oxc|lazyRoutesTransformer)'
 # 2) 作業木（44129f66a3）で 1 行ずつ変え、tools/oxc と tools/angular/linker の .ts を transpileModule で直して Node の jasmine で走らせる
-node <scratchpad>/oxc-demo/b/mut/mutate.mjs <scratchpad>/oxc-wt-b
+node <work>/oxc-demo/b/mut/mutate.mjs <work>/oxc-wt-b
 ```
 
 📄 `結果（出力から抜き出したもの）`

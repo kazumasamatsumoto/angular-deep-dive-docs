@@ -680,7 +680,7 @@ pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_result
   "--test_arg=--filter=Driver (updates to new content|updates a specific client|sends a notification message after finding|initializes the service worker on message)"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/d-swupdate-app.log・d-swupdate-comm.log・d-swupdate-worker.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/d-swupdate-app.log・d-swupdate-comm.log・d-swupdate-worker.log）`
 
 ```
 ### //packages/service-worker/test:test filter=SwUpdate

@@ -610,7 +610,7 @@ LView（コンポーネントのインスタンスごとの配列。[ivy-lview �
 
 domino（Node の上の DOM の代わり）で意味の無い値はありません。この章で使う値は、どれも DOM の形と `window.ng` の返り値だけで決まります。記録のスクリプトの全文です（共通の部品 harness.ts は[第 1 回](01-devtools-overview.md)に全文があります）。
 
-📄 `scratchpad の記録スクリプト（component-tree.ts、共通の build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（component-tree.ts、共通の build.mjs で束ねて node で実行）`
 
 ```
 // 第 5 回 devtools-component-tree の記録。
@@ -831,7 +831,7 @@ pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/directive-forest
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/b-bazel.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/b-bazel.log）`
 
 ```
 component-tree/test_bundle.spec.js   Chromium 1/1 test files | 12 passed, 0 failed
@@ -845,7 +845,7 @@ tree-strategies/test_bundle.spec.js  Chromium 1/1 test files | 8 passed, 0 faile
 ```
 
 - 1 つの `:test` が `:test_chromium` と `:test_firefox` の 2 つのターゲットになり、同じ spec が 2 つのブラウザで走ります。
-- it を絞り込めるかは、`--test_arg=--grep=selectMode` を identity-tracker のターゲットで試しました。件数は 11 件のまま変わらず、効きませんでした（scratchpad/devtools-logs/b-bazel-filter.log）。この章ではターゲット全体を走らせています。
+- it を絞り込めるかは、`--test_arg=--grep=selectMode` を identity-tracker のターゲットで試しました。件数は 11 件のまま変わらず、効きませんでした（work/devtools-logs/b-bazel-filter.log）。この章ではターゲット全体を走らせています。
 
 ### 直すとしたら
 

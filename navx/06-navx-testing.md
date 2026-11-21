@@ -562,7 +562,7 @@ pnpm bazel test //packages/router/test:test --nocache_test_results --test_output
 
 1 節の既定が本当に spec に守られているかを、作業木で確かめました。
 
-📄 `scratchpad/nav-logs/b-wt-c795-revert.log（要点）`
+📄 `work/nav-logs/b-wt-c795-revert.log（要点）`
 
 ```
 # 作業木（8576f161ae4）で browser.ts の 32 行目を

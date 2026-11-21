@@ -696,11 +696,11 @@ VS Code でテンプレートの `@if` や `{{ … }}` に色が付くのは、�
 
 ### #62697：ICU の `{{{` の色
 
-#62697（2025-07-17、open）は、`one {{{count}} Bundle}` のような ICU の式で、3 つ目の波括弧が赤くなり、括弧の対応も崩れるという報告です。atscott さんが「vscode-ng-language-service の #1991 と実質同じ」とコメントしています。TextMate の文法には ICU の規則がありません（`syntaxes/src` を `plural`・`icu` で grep して 0 件）。2 節の template.ts の 17 行目は最初の `{{` で補間を始めるので、Angular のパーサが「ICU の `{` + 補間 `{{count}}`」と読むところを、文法は「補間 `{{` + 式 `{count` + `}}`」と読みます。手元で、リポジトリの `vscode-tmgrammar-test` を scratchpad のファイルに対して動かし（`-s template.ng -g syntaxes/template.json -g syntaxes/expression.json`）、行の先頭を 0 として 6〜7 文字目の `{{` が補間の始まり、8 文字目の `{` が名前の付かない式の中の文字、14〜15 文字目の `}}` が補間の終わりになることを確かめました（ICU の `}` は補間の外に残ります）。意味のトークンの側も 158 行目の `visitIcu` が空なので、ICU の中には何も付けません。直すなら TextMate の文法（template.ts か新しい文法）です。
+#62697（2025-07-17、open）は、`one {{{count}} Bundle}` のような ICU の式で、3 つ目の波括弧が赤くなり、括弧の対応も崩れるという報告です。atscott さんが「vscode-ng-language-service の #1991 と実質同じ」とコメントしています。TextMate の文法には ICU の規則がありません（`syntaxes/src` を `plural`・`icu` で grep して 0 件）。2 節の template.ts の 17 行目は最初の `{{` で補間を始めるので、Angular のパーサが「ICU の `{` + 補間 `{{count}}`」と読むところを、文法は「補間 `{{` + 式 `{count` + `}}`」と読みます。手元で、リポジトリの `vscode-tmgrammar-test` を 手元の作業フォルダのファイルに対して動かし（`-s template.ng -g syntaxes/template.json -g syntaxes/expression.json`）、行の先頭を 0 として 6〜7 文字目の `{{` が補間の始まり、8 文字目の `{` が名前の付かない式の中の文字、14〜15 文字目の `}}` が補間の終わりになることを確かめました（ICU の `}` は補間の外に残ります）。意味のトークンの側も 158 行目の `visitIcu` が空なので、ICU の中には何も付けません。直すなら TextMate の文法（template.ts か新しい文法）です。
 
 ### @boundary の色が消えた経緯
 
-2026-04-10 の f4a5650ed9c（Alex Rickabaugh さん「add support for @boundary blocks」#70463）は、言語サービスの各所と一緒に `syntaxes/template-blocks.json` を 19 行変えて、22 行目の並びに `boundary` を、式に `when` の規則を足しました。**このとき src/template-blocks.ts は変わっていません**（`git show --stat` で JSON だけ）。その後 2026-08-28 の d470afa8b2f（同じ #70463 の SSR のテストを足すコミット）の差分に template-blocks.json の 19 行が入っていて、`boundary` と `when` の規則が消え、JSON は src から作った形に戻っています。いまの `syntaxes_4_test`（3 節）は src と JSON が一致しているので通りますが（9 節）、`@boundary` には色が付きません。scratchpad で `@boundary { … }` と `@defer { … }` を並べてスナップショットを取ると、`@defer` には `keyword.control.block.kind.ng` が付き、`@boundary` には何も付きませんでした。main では 2026-09-21 の 8c6e6a52896「add syntax highlighting for @boundary block」が**src/template-blocks.ts の側**に `boundary` を足しています（gh で確認。このスナップショットより後）。「JSON は生成物なので src を直す」（syntaxes/README.md の冒頭の太字）を守らないと、次に誰かが作り直したときに消える、という実例です。
+2026-04-10 の f4a5650ed9c（Alex Rickabaugh さん「add support for @boundary blocks」#70463）は、言語サービスの各所と一緒に `syntaxes/template-blocks.json` を 19 行変えて、22 行目の並びに `boundary` を、式に `when` の規則を足しました。**このとき src/template-blocks.ts は変わっていません**（`git show --stat` で JSON だけ）。その後 2026-08-28 の d470afa8b2f（同じ #70463 の SSR のテストを足すコミット）の差分に template-blocks.json の 19 行が入っていて、`boundary` と `when` の規則が消え、JSON は src から作った形に戻っています。いまの `syntaxes_4_test`（3 節）は src と JSON が一致しているので通りますが（9 節）、`@boundary` には色が付きません。作業用フォルダで `@boundary { … }` と `@defer { … }` を並べてスナップショットを取ると、`@defer` には `keyword.control.block.kind.ng` が付き、`@boundary` には何も付きませんでした。main では 2026-09-21 の 8c6e6a52896「add syntax highlighting for @boundary block」が**src/template-blocks.ts の側**に `boundary` を足しています（gh で確認。このスナップショットより後）。「JSON は生成物なので src を直す」（syntaxes/README.md の冒頭の太字）を守らないと、次に誰かが作り直したときに消える、という実例です。
 
 ## 7. テストと直し方
 
@@ -769,7 +769,7 @@ pnpm bazel test //vscode-ng-language-service/syntaxes/test:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/d-semantic.log と d-syntaxes.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/d-semantic.log と d-syntaxes.log）`
 
 ```
 （semantic tokens）

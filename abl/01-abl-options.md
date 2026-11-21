@@ -836,7 +836,7 @@ normalizeOptions を呼ぶ前に、58〜64 行目で環境変数（`bazelEsbuild
 
 ## 12. 記録の取り方
 
-ワークスペースは `<scratchpad>/abl-demo/a/app` に、カウンターのアプリ（~/angular-research/angular-deep-dive-video/demo/counter）を写して作り、node\_modules はこのサイトのものを symlink で借りました。スクリプトは配布物の `src/builders/application/options.js` を絶対パスで require して `normalizeOptions` を呼びます。BuilderContext の代わりに、`workspaceRoot`・`logger`・`getProjectMetadata`（angular.json の project をそのまま返す）だけを持つオブジェクトを渡しています。architect を通さないので、schema の検査と既定値は当たりません。3 節の appShell の確かめと 4 節の index の確かめは、同じ依存で `ng build` を走らせました。
+ワークスペースは `<work>/abl-demo/a/app` に、カウンターのアプリ（~/angular-research/angular-deep-dive-video/demo/counter）を写して作り、node\_modules はこのサイトのものを symlink で借りました。スクリプトは配布物の `src/builders/application/options.js` を絶対パスで require して `normalizeOptions` を呼びます。BuilderContext の代わりに、`workspaceRoot`・`logger`・`getProjectMetadata`（angular.json の project をそのまま返す）だけを持つオブジェクトを渡しています。architect を通さないので、schema の検査と既定値は当たりません。3 節の appShell の確かめと 4 節の index の確かめは、同じ依存で `ng build` を走らせました。
 
 📄 `記録のスクリプト（rec-options.mjs）`
 

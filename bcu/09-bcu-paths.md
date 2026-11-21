@@ -950,7 +950,7 @@ xxHash（暗号向けではない、速い 64 ビットのハッシュ）は Web
 
 ## 9. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `src/utils/` の .js を require しました。source-map.ts の 44129f66a3 は、../angular-cli の .ts を esbuild の `transformSync` で .js にしたものです（このファイルは型の import しか持たないので、そのまま動きます）。path.ts の `win32` は、子プロセスで `process.platform` を上書きしてから require したもので、`node:path` は macOS の POSIX のままです。version.ts は、偽の `node_modules/@angular/core/package.json` を置いた一時のフォルダごとに子プロセスで呼びました。
+スクリプトは `<work>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `src/utils/` の .js を require しました。source-map.ts の 44129f66a3 は、../angular-cli の .ts を esbuild の `transformSync` で .js にしたものです（このファイルは型の import しか持たないので、そのまま動きます）。path.ts の `win32` は、子プロセスで `process.platform` を上書きしてから require したもので、`node:path` は macOS の POSIX のままです。version.ts は、偽の `node_modules/@angular/core/package.json` を置いた一時のフォルダごとに子プロセスで呼びました。
 
 📄 `記録のスクリプト（rec-paths.mjs）`
 

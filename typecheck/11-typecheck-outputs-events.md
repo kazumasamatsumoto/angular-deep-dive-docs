@@ -426,7 +426,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/typecheck/test:test \
   '--test_arg=--filter=outputs|checkTypeOfOutputEvents|checkTypeOfAnimationEvents|checkTypeOfDomEvents|targeting|DOM events'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/c-outputs.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/c-outputs.log）`
 
 ```
 ==================== Test output for //packages/compiler-cli/src/ngtsc/typecheck/test:test:

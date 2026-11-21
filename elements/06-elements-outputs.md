@@ -320,7 +320,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
 次は、このページ（本番ビルド）を開いて、5 節のデモの要素をページの外から操作した記録です。**これは記録です**（デモのボタンではこの操作をしません。コンソールにエラーが出るからです）。
 
-📄 `scratchpad/el-b/verify/verify.mjs（抜粋。playwright-core で操作）`
+📄 `work/el-b/verify/verify.mjs（抜粋。playwright-core で操作）`
 
 ```
 // /chapter/elements-outputs/ を開き、5 節のデモの「要素を作ってつなぐ」を押したあと
@@ -374,7 +374,7 @@ await cycle(); // 3 回目に戻す
 
 ### 本番ビルドで確かめた結果
 
-ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright-core で 5 節のデモを操作しました。「要素を作ってつなぐ」で ready（detail "ngOnInit で emit"）の 1 行だけが 0.9 ms に出て、born は出ませんでした。中のボタンを順に押すと picked（detail 1）・legacy（{"n":2}）・renamed-out（"x"）が出て、renamed は 1 回も出ませんでした。どの行も CustomEvent が true、bubbles・composed・cancelable が false、eventPhase が 2 で、親の枠のリスナーは 0 回でした。picked のボタンにフォーカスして Enter を押しても picked が出ました。「addEventListener を append のあとにする」でつなぐと、表は空のままでした。コンソールの警告とエラーは 0 件でした（scratchpad/el-b/verify/verify.mjs、2026-11-06）。
+ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright-core で 5 節のデモを操作しました。「要素を作ってつなぐ」で ready（detail "ngOnInit で emit"）の 1 行だけが 0.9 ms に出て、born は出ませんでした。中のボタンを順に押すと picked（detail 1）・legacy（{"n":2}）・renamed-out（"x"）が出て、renamed は 1 回も出ませんでした。どの行も CustomEvent が true、bubbles・composed・cancelable が false、eventPhase が 2 で、親の枠のリスナーは 0 回でした。picked のボタンにフォーカスして Enter を押しても picked が出ました。「addEventListener を append のあとにする」でつなぐと、表は空のままでした。コンソールの警告とエラーは 0 件でした（work/el-b/verify/verify.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

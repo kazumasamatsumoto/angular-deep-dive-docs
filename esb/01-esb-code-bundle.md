@@ -809,7 +809,7 @@ conditions（package.json の exports のどの枝を選ぶか）の土台です
 
 ## 8. どう録ったか
 
-スクリプトは `<scratchpad>/esb-demo/a/` に置き、ワークスペースの node\_modules はサイトのものを symlink で借りました（終わってから消しました）。@angular/build は Node v24.22.1 でサイトの node\_modules の dist の .js を絶対パスで require し、normalizeOptions には builder の context の代わりに `workspaceRoot`・`logger`・`getProjectMetadata` だけの物を渡しています。コンポーネントのスタイルの bundler には空のオブジェクトを渡しました。5 つの関数は options を作るだけで、プラグインの `setup` を呼ばないので、それで足ります。
+スクリプトは `<work>/esb-demo/a/` に置き、ワークスペースの node\_modules はサイトのものを symlink で借りました（終わってから消しました）。@angular/build は Node v24.22.1 でサイトの node\_modules の dist の .js を絶対パスで require し、normalizeOptions には builder の context の代わりに `workspaceRoot`・`logger`・`getProjectMetadata` だけの物を渡しています。コンポーネントのスタイルの bundler には空のオブジェクトを渡しました。5 つの関数は options を作るだけで、プラグインの `setup` を呼ばないので、それで足ります。
 
 📄 `記録のスクリプト（rec-bundle.mjs）`
 

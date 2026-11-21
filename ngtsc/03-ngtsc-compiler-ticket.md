@@ -984,7 +984,7 @@ handler の配列は Component → Directive → Pipe（1588 行目）→ Servic
 >
 > (3) で emit したのは、記録のスクリプトが `prepareEmit()` の変換で `ts.Program.emit` を呼んだからで、本物の道具はこの組み合わせ（resource-only のチケットのあとに emit）を使いません。「.html を変えたのに出力が古い」という報告を読むときは、まず呼び出し側がどのチケットを作っているかを確かめます。
 
-📄 `scratchpad の記録スクリプト（ticket.mjs、angular-deep-dive を cwd にして node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（ticket.mjs、angular-deep-dive を cwd にして node で実行）`
 
 ```
 // ngtsc-compiler-ticket の記録: 同じプロジェクトを 3 回コンパイルする。
@@ -1282,7 +1282,7 @@ cd ~/angular-research/angular
 pnpm bazel test //packages/compiler-cli/src/ngtsc/core/test:test '--test_arg=--filter=resource-only changes' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。ログは scratchpad/ngtsc-logs/a-core-resource.log）`
+📄 `出力（2026-11-05 に実行。ログは work/ngtsc-logs/a-core-resource.log）`
 
 ```
 Ran 4 of 28 specs

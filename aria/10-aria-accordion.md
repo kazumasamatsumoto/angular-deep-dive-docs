@@ -520,7 +520,7 @@ angular/components · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 ## 5. このページの 22.2.7 との差：ngAccordionTrigger 属性と、トリガーに移ったリスナー
 
-📄 `accordion/accordion-trigger.ts の host（scratchpad/aria-22.1.8-vs-snapshot.diff から）`
+📄 `accordion/accordion-trigger.ts の host（work/aria-22.1.8-vs-snapshot.diff から）`
 
 ```
 --- 22.1.8（この章を書いたときのサイトの node_modules から復元）

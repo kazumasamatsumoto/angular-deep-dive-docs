@@ -683,7 +683,7 @@ $ git show 01afbf418c -- packages/angular/build/src/builders/unit-test/test-disc
 
 > **🧪 DEMO — 10 通りの ng test と、findTests・getTestEntrypoints の記録（記録の再生）**
 >
-> `<scratchpad>/vit-demo/a/record.mjs` が、@angular/build 22.1.7・@angular/cli 22.1.7・vitest 4.1.11・jsdom 28.1.0 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です。アプリ（`<app>`）はコンポーネント 2 つ・spec 4 つ・`.test.ts` 1 つで、`broken.spec.ts` はわざと落ちます。`node --require hook.cjs` で `@angular/build` の関数を包み、引数と戻り値を書き出しました（この章で使うのは `normalizeOptions`・`validateDependencies`・`findTests`・`getTestEntrypoints` の 4 つ）。1 回ごとにプロセスの group を止め、`.angular` のキャッシュを消してから次を走らせています。読みやすさのため、全部の回に `--reporters=verbose` を付けました。
+> `<work>/vit-demo/a/record.mjs` が、@angular/build 22.1.7・@angular/cli 22.1.7・vitest 4.1.11・jsdom 28.1.0 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です。アプリ（`<app>`）はコンポーネント 2 つ・spec 4 つ・`.test.ts` 1 つで、`broken.spec.ts` はわざと落ちます。`node --require hook.cjs` で `@angular/build` の関数を包み、引数と戻り値を書き出しました（この章で使うのは `normalizeOptions`・`validateDependencies`・`findTests`・`getTestEntrypoints` の 4 つ）。1 回ごとにプロセスの group を止め、`.angular` のキャッシュを消してから次を走らせています。読みやすさのため、全部の回に `--reporters=verbose` を付けました。
 >
 > include を書かない
 >

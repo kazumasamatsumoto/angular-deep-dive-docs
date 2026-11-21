@@ -590,7 +590,7 @@ a3a77649754（fix、2026-08-17）より前は、この購読が `afterRenderEffe
 >
 > (6) は、このページの記録（Node・domino・@angular/core 22.1.6）で起きたことですが、原因の 2 か所（core の 648 行目の `new NodeInjector` と、バックエンドの同一性での比べ）は環境に関係しないコードです。2026-11-05 の main でも、`getInjectorParent` は `new NodeInjector(…)` を返し、バックエンドの比べ（main では `injector-tree/injector-tree.ts` に移った）は `node.injector === providedIn` のままでした（gh api で読んだだけで、手元のブラウザでは確かめていません）。
 
-📄 `scratchpad の記録スクリプト（injector.ts。共通の部品で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（injector.ts。共通の部品で束ねて node で実行）`
 
 ```
 // 第 16 回 devtools-injector-tree の記録。
@@ -818,7 +818,7 @@ pnpm bazel test //devtools/projects/ng-devtools/src/lib/devtools-tabs/injector-t
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/d-bazel.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/d-bazel.log）`
 
 ```
 //devtools/projects/ng-devtools/src/lib/devtools-tabs/injector-tree:test_chromium PASSED in 2.1s   18 passed

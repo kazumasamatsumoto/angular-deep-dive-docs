@@ -789,7 +789,7 @@ pnpm bazel test //packages/localize/schematics/ng-add:test \
   '--test_arg=--filter=polyfills'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/d-tag-runtime.log・d-f13-messages.log・d-f13-ngadd.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/d-tag-runtime.log・d-f13-messages.log・d-f13-ngadd.log）`
 
 ```
 //packages/localize/src/localize/test:test   9 specs, 0 failures   PASSED in 0.2s

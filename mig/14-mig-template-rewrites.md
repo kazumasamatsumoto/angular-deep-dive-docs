@@ -887,7 +887,7 @@ pnpm bazel test //packages/core/schematics/ng-generate/ngclass-to-class-migratio
   "--test_arg=--filter=NgClass migration"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/mig-logs/b-selfclosing-mig.log・b-selfclosing-test.log・b-ngstyle-test.log・b-ngclass.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/mig-logs/b-selfclosing-mig.log・b-selfclosing-test.log・b-ngstyle-test.log・b-ngclass.log）`
 
 ```
 //packages/core/schematics/migrations/self-closing-tags-migration:test

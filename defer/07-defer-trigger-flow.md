@@ -267,7 +267,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
    最初は Regular が 2（補足の 1 つ ＋ interaction）、Prefetch が 1（timer）。50 ms の prefetch で Prefetch だけが null になり、`loadingState` は COMPLETE、文字は「待機」のまま、リスナーは残っています。クリックで Regular も null になり、350〜353 行目の COMPLETE の枝で loading を通らず本体が出ました。
 
-📄 `scratchpad の記録スクリプト（trigger-flow.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（trigger-flow.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 7 回 defer-trigger-flow の記録。
@@ -505,7 +505,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=@defer `on` conditions'
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/b-trigger-flow.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/b-trigger-flow.log）`
 
 ```
 Ran 2 of 2693 specs

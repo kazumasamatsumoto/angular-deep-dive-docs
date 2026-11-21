@@ -830,7 +830,7 @@ pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/component-inspec
 pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/shared/highlighter:test_chromium //devtools/projects/ng-devtools-backend/src/lib/shared/highlighter:test_firefox --nocache_test_results --runs_per_test=8 --test_output=errors
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/c-all.log と c-highlighter-runs.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/c-all.log と c-highlighter-runs.log）`
 
 ```
 component-inspector:test_chromium  Chromium: 1/1 test files | 5 passed, 0 failed   (0.9s)   PASSED in 3.1s

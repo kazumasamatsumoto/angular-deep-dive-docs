@@ -784,7 +784,7 @@ angular/angular-cli · 読了 約 13 分 · 発展 · [サイトで読む（デ�
 
 配布物（このサイトの依存の `@angular/ssr` 22.1.7）にも同じ関数があります。入口からは出ていませんが、`fesm2022/_validation-chunk.mjs` を場所で直接読み、同じ `validateRequest` に同じ入力を渡すと、45 通りのうち 45 通りで、ソースを束ねたものとエラーの文まで一致しました。22.1.7 にはこの章の修正がすべて入っています。
 
-📄 `scratchpad/ssrx-demo/ssrx-host-validation/build.mjs`
+📄 `work/ssrx-demo/ssrx-host-validation/build.mjs`
 
 ```js
 // 使い方: node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > record.json
@@ -806,7 +806,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-host-validation/record.ts`
+📄 `work/ssrx-demo/ssrx-host-validation/record.ts`
 
 ```ts
 // 第 4 回 ssrx-host-validation の記録。../angular-cli（44129f66a3）の @angular/ssr のソースを束ねて Node で動かす。
@@ -1050,7 +1050,7 @@ process.exit(0);
 
 ### 手元で走らせた結果
 
-練習用の複製（44129f66a3）で `pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all` を走らせ、`//packages/angular/ssr/test:test` が「249 specs, 0 failures」、`//packages/angular/ssr/node/test:test` が「42 specs, 0 failures」でした（2026-11-06、scratchpad/ssrx-logs/b-base.log）。`"--test_arg=--filter=^Validation Utils "` で絞ると「Ran 55 of 249 specs」、`"--test_arg=--filter=^AngularAppEngine Invalid host headers "` で「Ran 4 of 249 specs」です（b-filter.log）。
+練習用の複製（44129f66a3）で `pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all` を走らせ、`//packages/angular/ssr/test:test` が「249 specs, 0 failures」、`//packages/angular/ssr/node/test:test` が「42 specs, 0 failures」でした（2026-11-06、work/ssrx-logs/b-base.log）。`"--test_arg=--filter=^Validation Utils "` で絞ると「Ran 55 of 249 specs」、`"--test_arg=--filter=^AngularAppEngine Invalid host headers "` で「Ran 4 of 249 specs」です（b-filter.log）。
 
 **修正を戻すと落ちるか。**複製で 163 行目を `if (allowedHosts.has(hostname)) {`（3b99ee140d の前）に戻して走らせると、「249 specs, 1 failure」で、落ちたのは `Validation Utils validateUrl should pass for all hostnames when "*" is used`（205 行目）の 1 つだけでした。bazel はこのターゲットを flaky として 3 回まで走らせるので、ログには同じ失敗が 3 回出ます（b-revert-star.log）。戻したあと `git status --short` が空であることを確かめました。
 

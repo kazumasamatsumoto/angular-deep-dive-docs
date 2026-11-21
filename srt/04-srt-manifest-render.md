@@ -525,7 +525,7 @@ $ git show 37f1a74913   # 2026-06-16「avoid caching non-SSG page lookups」node
 
 > **🧪 DEMO — 手書きの manifest で AngularServerApp を動かす（記録の再生）**
 >
-> `<scratchpad>/srt-demo/b/render/record.mjs` が、Node v24.22.1 で `ɵsetAngularAppManifest(manifest)` を呼び、`ɵgetOrCreateAngularServerApp().handle(new Request('http://localhost…'))` に下の 11 通りを送った記録です。manifest は手で書いたもの（`index.server.html`・`index.csr.html`・`ssg/index.html` の 3 つの assets、`routes` なし）で、アプリは zoneless・JIT です。`provideEnvironmentInitializer` で `IS_DISCOVERING_ROUTES` と `PlatformRef.onDestroy` を見て、起動と破棄の時刻（リクエストを送ってからのミリ秒）を書き出しています。同じスクリプトを、このサイトの @angular/ssr 22.2.7 と、node\_modules の外に展開した 22.1.7（@angular/core などはこのサイトの 22.2.6 を共有）で走らせました。
+> `<work>/srt-demo/b/render/record.mjs` が、Node v24.22.1 で `ɵsetAngularAppManifest(manifest)` を呼び、`ɵgetOrCreateAngularServerApp().handle(new Request('http://localhost…'))` に下の 11 通りを送った記録です。manifest は手で書いたもの（`index.server.html`・`index.csr.html`・`ssg/index.html` の 3 つの assets、`routes` なし）で、アプリは zoneless・JIT です。`provideEnvironmentInitializer` で `IS_DISCOVERING_ROUTES` と `PlatformRef.onDestroy` を見て、起動と破棄の時刻（リクエストを送ってからのミリ秒）を書き出しています。同じスクリプトを、このサイトの @angular/ssr 22.2.7 と、node\_modules の外に展開した 22.1.7（@angular/core などはこのサイトの 22.2.6 を共有）で走らせました。
 >
 > `/slow` は部品のコンストラクタで `PendingTasks` を 300 ms 持ち、`/hang` は持ったまま放しません。どちらも 50 ms で `AbortController.abort('client went away')` を呼びました。「次の時刻へ」で、2 つの版の出来事を同じ時刻の物差しで 1 つずつ出します。
 >

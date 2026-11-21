@@ -611,7 +611,7 @@ angular/angular-cli · 読了 約 12 分 · 中核 · [サイトで読む（デ�
 
 `Hooks`・`ServerAssets`・`AngularServerApp`・`CommonEngineInlineCriticalCssProcessor` は ../angular-cli（44129f66a3）のソースを esbuild で束ね、beasties は同じ版の 0.5.4 を練習用の複製の `node_modules` から読みました。`@angular/*` はこのサイトの依存の 22.1.6、`CommonEngine` は配布物の `@angular/ssr/node` 22.1.7（bb72145f9a の行が入っていることを grep で確かめた）です。一時ディレクトリの場所は記録から外しています。2026-11-06、Node v24.22.1。
 
-📄 `scratchpad/ssrx-demo/_shared-c/build.mjs`
+📄 `work/ssrx-demo/_shared-c/build.mjs`
 
 ```js
 // 使い方: RESEARCH=~/angular-research node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > 記録.json
@@ -650,7 +650,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-assets-css/record.ts`
+📄 `work/ssrx-demo/ssrx-assets-css/record.ts`
 
 ```ts
 // アセットと重要 CSS の記録。Hooks・ServerAssets・AngularServerApp・CommonEngineInlineCriticalCssProcessor は

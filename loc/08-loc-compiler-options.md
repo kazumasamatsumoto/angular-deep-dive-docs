@@ -980,7 +980,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   "--test_arg=--filter=ngtsc xi18n"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/b-legacy2.log・b-xi18n.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/b-legacy2.log・b-xi18n.log）`
 
 ```
 //packages/compiler/test:test

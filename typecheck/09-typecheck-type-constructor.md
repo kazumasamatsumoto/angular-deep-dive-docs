@@ -904,7 +904,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/typecheck/test:test \
   '--test_arg=--filter=type constructors|type parameter emitter|ngtsc typechecking|useInlineTypeConstructors|circular'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/c-ctor.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/c-ctor.log）`
 
 ```
 ==================== Test output for //packages/compiler-cli/src/ngtsc/typecheck/test:test:

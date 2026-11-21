@@ -1067,7 +1067,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 - 「input() / model() / output()」の場面では、`model()` の 1 つが inputs の `size` と outputs の `size: "sizeChange"` の 2 つになります。
 - 「抽象 @Directive() と派生」の場面で、`Child` の meta は `usesInheritance: true`・`deps: null` です。出力は `features: [i0.ɵɵInheritDefinitionFeature]` と、親のファクトリを使う `ɵɵgetInheritedFactory` になります。
 
-📄 `記録に使ったスクリプト（scratchpad の記録スクリプト）`
+📄 `記録に使ったスクリプト（手元の作業フォルダの記録スクリプト）`
 
 ```
 // 第 9 回の記録。angular-deep-dive を cwd にして `node <このファイル>` で走らせる。
@@ -1317,7 +1317,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=undecorated classes using Angular features|compiling invalid @Directives|should compile Directives without errors|should compile abstract Directives without errors'
 ```
 
-📄 `出力（抜粋。2026-11-05 に実行。ログは scratchpad/ngtsc-logs/c-directive-unit.log・c-ngtsc-directive.log）`
+📄 `出力（抜粋。2026-11-05 に実行。ログは work/ngtsc-logs/c-directive-unit.log・c-ngtsc-directive.log）`
 
 ```
 Ran 16 of 92 specs

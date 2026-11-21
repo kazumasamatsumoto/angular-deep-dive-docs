@@ -393,7 +393,7 @@ pnpm bazel test //src/aria/private/behaviors/list-focus:unit_tests_chromium --no
 grep -cE '^\s*it\(' src/aria/private/behaviors/list-focus/list-focus.spec.ts
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/aria-logs/b-behaviors.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/aria-logs/b-behaviors.log）`
 
 ```
 src/aria/private/behaviors/list-focus/unit_tests_bundle.spec.js:

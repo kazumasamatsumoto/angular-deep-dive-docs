@@ -1105,7 +1105,7 @@ origin/main の 174eb34540（10-29）は、消す関数を import の宣言・im
 
 > **🧪 DEMO — 3 つの transformer の入力と出力（記録の再生）**
 >
-> `<scratchpad>/oxc-demo/b/ts/record.mjs` が、@angular/build 22.2.7（このサイトの node\_modules）の transformer の `.js` を、同じ node\_modules の typescript 6.0.3 のメモリの上の Program の `emit` に `before` として渡し、Node v24.22.1 で記録しました。`@angular/core` などは型だけの `.d.ts` の偽物です。`fileProcessor` は `worker-ABCD1234.js` を返す偽物で、パスに `broken` があるときだけ元のパスを返します。TypeScript が先頭に出す `__decorate` の helper（どの出力でも同じ 6 行）は落としてあります。
+> `<work>/oxc-demo/b/ts/record.mjs` が、@angular/build 22.2.7（このサイトの node\_modules）の transformer の `.js` を、同じ node\_modules の typescript 6.0.3 のメモリの上の Program の `emit` に `before` として渡し、Node v24.22.1 で記録しました。`@angular/core` などは型だけの `.d.ts` の偽物です。`fileProcessor` は `worker-ABCD1234.js` を返す偽物で、パスに `broken` があるときだけ元のパスを返します。TypeScript が先頭に出す `__decorate` の helper（どの出力でも同じ 6 行）は落としてあります。
 >
 > `createJitResourceTransformer`：JIT の emit の before の 1 番目（jit-compilation.ts 147 行目）として createJitResourceTransformer だけを渡した
 >

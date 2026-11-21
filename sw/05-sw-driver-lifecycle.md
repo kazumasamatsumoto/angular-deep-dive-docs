@@ -618,7 +618,7 @@ pnpm bazel test //packages/service-worker/worker/test:test \
   '--test_arg=--filter=^Driver (activates without waiting|claims all clients|initializes)'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/b-lifecycle.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/b-lifecycle.log）`
 
 ```
 Ran 6 of 153 specs

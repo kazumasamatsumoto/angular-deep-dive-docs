@@ -682,7 +682,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=runtime error when generating TCB|short-circuit safe navigation chains'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/b-safenav.log・b-misc.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/b-safenav.log・b-misc.log）`
 
 ```
 Ran 6 of 1747 specs

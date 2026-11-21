@@ -371,7 +371,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   --test_arg=--filter="animate.leave|animation element duplication"
 ```
 
-📄 `出力（抜粋。2026-11-01 に実行。ログは scratchpad/anim-logs/c-*.log）`
+📄 `出力（抜粋。2026-11-01 に実行。ログは work/anim-logs/c-*.log）`
 
 ```
 # acceptance_web_chromium

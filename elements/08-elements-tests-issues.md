@@ -182,7 +182,7 @@ pnpm bazel test //packages/elements/test:test_chromium \
   '--test_arg=--filter=disconnect' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/el-logs/b-all.log・b-filter.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/el-logs/b-all.log・b-filter.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 59 passed, 0 failed, 5 skipped

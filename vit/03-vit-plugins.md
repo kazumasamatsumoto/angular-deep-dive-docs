@@ -740,7 +740,7 @@ $ git show be517539f4 -- …/runners/vitest/plugins.ts   # origin/main、2026-11
 
 > **🧪 DEMO — runnerConfig と coverage を変えた ng test（記録の再生）**
 >
-> `<scratchpad>/vit-demo/b/record.mjs` が、@angular/build 22.1.7・vitest 4.1.11・jsdom 28.1.0 の `ng test --watch=false` を Node v24.22.1 で起動した記録です。アプリは zoneless の小さなもの（`<app>`）で、コンポーネント 1 つと spec 3 本（`broken.spec.ts` はわざと落ちる）。node\_modules はこのサイトのものへの symlink です。`node --import hook.mjs` で `@angular/build` の `import('vitest/node')` だけを包みのモジュールに向け、`startVitest` の引数、`angular:vitest-configuration` の config hook の入口と出口、`this.warn`、project の Vite の plugin の並びを書き出しました。読んでいるソース（vitest 5 向けの 44129f66a3）との違いは、5 節の `extends: false` の 2 行が 22.1.7 に無いことだけです（`git diff v22.1.7 44129f66a3` で確かめた）。
+> `<work>/vit-demo/b/record.mjs` が、@angular/build 22.1.7・vitest 4.1.11・jsdom 28.1.0 の `ng test --watch=false` を Node v24.22.1 で起動した記録です。アプリは zoneless の小さなもの（`<app>`）で、コンポーネント 1 つと spec 3 本（`broken.spec.ts` はわざと落ちる）。node\_modules はこのサイトのものへの symlink です。`node --import hook.mjs` で `@angular/build` の `import('vitest/node')` だけを包みのモジュールに向け、`startVitest` の引数、`angular:vitest-configuration` の config hook の入口と出口、`this.warn`、project の Vite の plugin の並びを書き出しました。読んでいるソース（vitest 5 向けの 44129f66a3）との違いは、5 節の `extends: false` の 2 行が 22.1.7 に無いことだけです（`git diff v22.1.7 44129f66a3` で確かめた）。
 >
 > runnerConfig なし。angular.json の test は builder の名前だけ。
 >
@@ -787,7 +787,7 @@ pnpm bazel test //packages/angular/build:unit-test_integration_tests --nocache_t
 
 target は `packages/angular/build/BUILD.bazel` の `jasmine_test(name = "unit-test_integration_tests")`（`shard_count = 5`、`flaky = True`）で、中身の Vitest は 5.0.0、coverage は `@vitest/coverage-v8` だけが deps に入っています。1 回目の実行で shard 4 の `should enable coverage when set in runnerConfig file without builder option`（167 行目）が `Expected false to be true.` で落ち、`flaky = True` のため bazel が 2 回目を走らせて通りました。
 
-この 4 つの警告の it（379・411・443・476 行目）は、どれも警告の文言を確かめる `expect(logs)` がコメントになっていて、「`TODO: Re-enable once Vite logs are remapped through build system`」とあります（0aab1158d6 から）。`this.warn` は Vite のログに出るので、harness の `logs` に届かないからです。そこで作業木（`git -C ~/angular-research/angular-cli-fix worktree add <scratchpad>/vit-wt-b 44129f66a3`）で行を消して、同じ target を走らせました。
+この 4 つの警告の it（379・411・443・476 行目）は、どれも警告の文言を確かめる `expect(logs)` がコメントになっていて、「`TODO: Re-enable once Vite logs are remapped through build system`」とあります（0aab1158d6 から）。`this.warn` は Vite のログに出るので、harness の `logs` に届かないからです。そこで作業木（`git -C ~/angular-research/angular-cli-fix worktree add <work>/vit-wt-b 44129f66a3`）で行を消して、同じ target を走らせました。
 
 📄 `作業木で行を消して走らせた結果`
 

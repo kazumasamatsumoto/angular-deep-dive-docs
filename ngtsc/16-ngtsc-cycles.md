@@ -764,7 +764,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc --nocache_test_results 
   '--test_arg=--filter=cycle detection'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/d-unit.log・d-ngtsc-cycledetection.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/d-unit.log・d-ngtsc-cycledetection.log）`
 
 ```
 # cycles/test（incremental・transform と同時に 3 つ）

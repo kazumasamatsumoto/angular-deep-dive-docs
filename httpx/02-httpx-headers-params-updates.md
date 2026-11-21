@@ -563,7 +563,7 @@ HttpParams で配列を一度に足すのは `appendAll` です。258〜261 行�
 
 ### 手元で走らせた結果
 
-../angular で `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all --test_arg=--filter=HttpHeaders` は「24 specs, 0 failures」（1.2 秒、2026-11-06、scratchpad/httpx-logs/a-filter-headers.log）。headers\_spec.ts の it は 24 個で、ほかのファイルに名前が `HttpHeaders` を含む it はありません。全体（Node・Chromium・Firefox で 410 ずつ）は[第 1 回](01-httpx-request-options.md)のテストの節のとおり全部通りました。
+../angular で `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all --test_arg=--filter=HttpHeaders` は「24 specs, 0 failures」（1.2 秒、2026-11-06、work/httpx-logs/a-filter-headers.log）。headers\_spec.ts の it は 24 個で、ほかのファイルに名前が `HttpHeaders` を含む it はありません。全体（Node・Chromium・Firefox で 410 ずつ）は[第 1 回](01-httpx-request-options.md)のテストの節のとおり全部通りました。
 
 同じ `--test_arg=--filter=HttpHeaders` を `//packages/common/http/test:test_web` に付けると、Chromium も Firefox も「410 passed, 0 failed」で、全部が走りました（4.9 秒、a-web-filter.log）。ブラウザの組（web test runner）には名前の絞り込みが届きません。1 つの it だけ走らせたいときは Node の `:test` を使います。
 
@@ -573,7 +573,7 @@ HttpParams で配列を一度に足すのは `appendAll` です。258〜261 行�
 - 3 節の delete の数の違いは、spec が両方を決めているので「直す」ではなく振る舞いの変更です。
 - #44149 は 6 節のとおり既存の動きを変えるので、ラベルが `breaking changes` です。この章の行だけでは決まらず、どのヘッダーを区切ってよいかの表が要ります。本家に PR や issue を出すことは勧めません。issue の全体は[第 6 回](06-httpx-tests-issues.md)です。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、6 つの更新を順に積みました。ヘッダーは append で \['1','1','2','3'\]、set('X-TRACE','9') で \['9'\]、値つき delete で \['9'\]、set('x-trace', \[\]) で \['9'\] のまま、配列の append で \['9','a','b'\]、名前だけの delete で null と keys() が \[\] でした。keys() は名前だけの delete まで \['X-Trace'\] のままです。やり直してから値つき delete を 2 回押すと、ヘッダーは 1 回目で \['2'\]、パラメータは \['1','2'\] → \['2'\] でした。h0 と p0 は最後まで \['1','1','2'\] のままでした。送る形と受け取る形は、送ったヘッダーが {"X-Trace":"1,2,3",…}、受け取った X-Trace が \["1, 2"\]、Headers から作った Set-Cookie が \["a=1","b=2"\]、文字列から作った X-Trace が \["1","2"\] でした。/api/ への通信は 0 件、コンソールの警告とエラーは 0 件です（scratchpad/a-httpx/verify/verify.mjs、prod.json）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、6 つの更新を順に積みました。ヘッダーは append で \['1','1','2','3'\]、set('X-TRACE','9') で \['9'\]、値つき delete で \['9'\]、set('x-trace', \[\]) で \['9'\] のまま、配列の append で \['9','a','b'\]、名前だけの delete で null と keys() が \[\] でした。keys() は名前だけの delete まで \['X-Trace'\] のままです。やり直してから値つき delete を 2 回押すと、ヘッダーは 1 回目で \['2'\]、パラメータは \['1','2'\] → \['2'\] でした。h0 と p0 は最後まで \['1','1','2'\] のままでした。送る形と受け取る形は、送ったヘッダーが {"X-Trace":"1,2,3",…}、受け取った X-Trace が \["1, 2"\]、Headers から作った Set-Cookie が \["a=1","b=2"\]、文字列から作った X-Trace が \["1","2"\] でした。/api/ への通信は 0 件、コンソールの警告とエラーは 0 件です（work/a-httpx/verify/verify.mjs、prod.json）。
 
 ## 聞かれそうな質問
 

@@ -308,7 +308,7 @@ $ git show 276c917b349 -- packages/forms/signals/src/field/node.ts
 📄 `記録：minDate・maxDate、Invalid Date、ローカル時刻の下限`
 
 ```
-# <scratchpad>/sfv-demo/a/rec-dates.mjs を Node 24 で実行（サイトの node_modules の @angular/forms 22.2.6）
+# <work>/sfv-demo/a/rec-dates.mjs を Node 24 で実行（サイトの node_modules の @angular/forms 22.2.6）
 $ TZ=Asia/Tokyo node rec-dates.mjs
 --- minDate(p.d, 2026-06-01) と maxDate(p.d, 2026-08-31)
 MIN は MIN_DATE を指す: true  MAX は MAX_DATE を指す: true

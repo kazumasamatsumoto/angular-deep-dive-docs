@@ -785,7 +785,7 @@ INFO: Elapsed time: 1.046s, Critical Path: 0.85s
 
 ### 手元での実験：同じ tsconfig が build と test にあるとき
 
-8 節の 4 つめのステップを、本物のバンドルで確かめました。../angular は変えず、scratchpad に書いた小さなスクリプトから、このサイトの node\_modules にある `@angular/core` 22.1.6 の `collection.json` を `SchematicTestRunner` で読み、メモリの中の `HostTree` に次のワークスペースを置いて `signal-input-migration` を走らせます（`@angular/core` の型は node\_modules の `types/*.d.ts` を Tree に写して解決させる）。
+8 節の 4 つめのステップを、本物のバンドルで確かめました。../angular は変えず、作業用フォルダに書いた小さなスクリプトから、このサイトの node\_modules にある `@angular/core` 22.1.6 の `collection.json` を `SchematicTestRunner` で読み、メモリの中の `HostTree` に次のワークスペースを置いて `signal-input-migration` を走らせます（`@angular/core` の型は node\_modules の `types/*.d.ts` を Tree に写して解決させる）。
 
 📄 `angular.json と src/app.ts（抜粋）`
 

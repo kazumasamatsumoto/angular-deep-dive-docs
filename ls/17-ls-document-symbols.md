@@ -1245,7 +1245,7 @@ Ran 2 of 684 specs
   Stats over 4 runs: max = 1.7s, min = 1.5s, avg = 1.6s, dev = 0.1s
 ```
 
-- 4 つの shard に 1・2・2・2 本が散って、合計 7 本が通りました（PASSED in 1.7s。ログは scratchpad/ls-logs/e-outlining.log）。フィルタの文字列は describe の名前です。
+- 4 つの shard に 1・2・2・2 本が散って、合計 7 本が通りました（PASSED in 1.7s。ログは work/ls-logs/e-outlining.log）。フィルタの文字列は describe の名前です。
 - **文書のシンボルは、言語サービスの単体の spec にはありません。**`getTemplateDocumentSymbols` を grep しても packages/language-service/test には出てこず、testing/src/buffer.ts にも包みがありません。この機能を足した cfd0f9950c0（2026-03-16、kbrilla、#65488 を解決）にも spec は入っていません。
 - 代わりに、同じ日の 0b697f14105「cover document symbols microsyntax cases」が、本物の LSP サーバーを起動する結合テスト `vscode-ng-language-service/integration/lsp/ivy_spec.ts` に 898 行を足しています。今のファイルでは、最初の describe の中に折りたたみの it が 2 本（「provides folding ranges for inline templates」など）、文書のシンボルの it が 17 本あります（下の引用はその 1 本目の後半）。ただし、このスナップショットではこのターゲットがビルドに失敗するので（integration/project の ng-packagr が TS2307 で落ちる）、手元では走らせていません。
 

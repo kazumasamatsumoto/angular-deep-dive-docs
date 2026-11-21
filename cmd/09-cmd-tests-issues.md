@@ -371,4 +371,5 @@ JSDoc の ```` ```html ```` や ```` ```ts ```` の中は文字列で、どの b
 
 ---
 
-← 前: [Location と LocationStrategy の説明文](08-cmd-location.md)
+← 前: [Location と LocationStrategy の説明文](08-cmd-location.md)  
+次: [@Directive の説明文：selector・inputs・host・providers・exportAs](../crd/01-crd-directive.md) →

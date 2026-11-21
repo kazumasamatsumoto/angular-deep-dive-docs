@@ -675,7 +675,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/d-nested.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/d-nested.log）`
 
 ```
 Ran 8 of 2693 specs

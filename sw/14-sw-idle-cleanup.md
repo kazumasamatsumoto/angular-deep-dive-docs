@@ -536,7 +536,7 @@ pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_result
 pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_results --test_output=all --test_arg=--filter=applicationMaxAge
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/d-idle-sched.log・d-idle-cleanup.log・d-idle-maxage.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/d-idle-sched.log・d-idle-cleanup.log・d-idle-maxage.log）`
 
 ```
 ### filter=IdleScheduler

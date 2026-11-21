@@ -708,7 +708,7 @@ SSR が無ければ 216〜217 行目で `ssr` 自体を `undefined` にします
 
 > **🧪 DEMO — 4 通りの ng serve と、Vite に渡った設定（記録の再生）**
 >
-> `<scratchpad>/vds-demo/a/record.mjs` が、@angular/build 22.1.7・vite 8.1.5・@angular/cli 22.1.7 の `ng serve` を Node v24.22.1 で 127.0.0.1 に起動した記録です。アプリは zoneless の小さな 1 コンポーネント（`<app>`）で、node\_modules はこのサイトのものへの symlink です。`node --import hook.mjs` で `@angular/build` の `require('vite')` だけを包みのモジュールに向け、`createServer()` に渡った設定と listen の後の値を書き出しています。終わるたびにサーバーを止め、port が空いたことを確かめました。
+> `<work>/vds-demo/a/record.mjs` が、@angular/build 22.1.7・vite 8.1.5・@angular/cli 22.1.7 の `ng serve` を Node v24.22.1 で 127.0.0.1 に起動した記録です。アプリは zoneless の小さな 1 コンポーネント（`<app>`）で、node\_modules はこのサイトのものへの symlink です。`node --import hook.mjs` で `@angular/build` の `require('vite')` だけを包みのモジュールに向け、`createServer()` に渡った設定と listen の後の値を書き出しています。終わるたびにサーバーを止め、port が空いたことを確かめました。
 >
 > port を決めて起動。prebundle は既定の true、キャッシュは有効。
 >

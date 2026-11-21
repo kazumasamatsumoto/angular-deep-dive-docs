@@ -290,7 +290,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 >
 > 記録の 22.1.6 と、このシリーズが読むソース（22.2.0-next.7）は版が違います。`packages/core/src/defer/` の `ɵɵdefer`・`renderDeferBlockState`・`applyDeferBlockState` は配布物（`node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs`）でも同じ処理でしたが、LView の先頭の欄の数 `HEADER_OFFSET` はソースが 28、22.1.6 が 27 です。記録の `index`（塊の TNode の番号）はこの数を含むので、ソースで同じテンプレートを描くと 1 つずつ大きくなります。
 
-📄 `scratchpad の共通の部品（_shared/harness.ts）`
+📄 `手元の作業フォルダの共通の部品（_shared/harness.ts）`
 
 ```
 // defer シリーズの記録用の共通部品。
@@ -448,7 +448,7 @@ export async function writeJson(path: string, data: unknown) {
 
 ```
 
-📄 `scratchpad の共通の部品（_shared/build.mjs）`
+📄 `手元の作業フォルダの共通の部品（_shared/build.mjs）`
 
 ```
 // 使い方: node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > 記録.json
@@ -474,7 +474,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 
 ```
 
-📄 `scratchpad の記録スクリプト（a/overview.ts。build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/overview.ts。build.mjs で束ねて node で実行）`
 
 ```
 // defer-overview の記録: 状態の違う 3 つの @defer の塊を置いたアプリを、ブラウザのプラットフォームで起動し、
@@ -696,7 +696,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=^@defer '
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/a-acceptance.log・a-overview-all.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/a-acceptance.log・a-overview-all.log）`
 
 ```
 Ran 7 of 2693 specs

@@ -441,7 +441,7 @@ pnpm bazel test //packages/service-worker/worker/test:test \
   '--test_arg=--filter=^Driver (bypasses the ServiceWorker|handles actual errors|serving ngsw/state|bugs ignores)'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/b-fetch.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/b-fetch.log）`
 
 ```
 Ran 8 of 153 specs

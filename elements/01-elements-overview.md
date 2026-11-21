@@ -491,7 +491,7 @@ pnpm bazel test //packages/elements/test:test_chromium \
   '--test_arg=--filter=extractProjectableNodes' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/el-logs/a-test.log・a-filter.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/el-logs/a-test.log・a-filter.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 59 passed, 0 failed, 5 skipped
@@ -515,7 +515,7 @@ Chromium: |██████████| 1/1 test files | 59 passed, 0 failed,
 - 偽の strategy だけで transform を確かめている点：本物の道（属性の文字列 → `setInput` → transform）の it は、component-factory-strategy\_spec.ts の `TestComponent` に transform 付きの入力を足し、describe `after connected`（82 行目）に足す形になります（第 3 回）。
 - 2026-09-24 に開かれた #70905（つながる・外れるをコンポーネントに知らせる API）は、2026-10-06 に「NOT\_PLANNED」で閉じられています。issue の全体は[第 8 回](08-elements-tests-issues.md)で読みます。本家に PR を出すことは勧めません。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright で 1 から順に押しました。ページを開いた時点では @angular/elements の chunk は読み込まれず、「1. 作る」を押したときに 1 つだけ増えました（main には @angular/elements が入っていません）。表は、define と createElement → connectedCallback → strategy を作った → constructor → appendChild から戻った、の順で、つないだときに ngOnChanges は出ませんでした。setAttribute のあとは約 13ms 後に ngOnChanges(userName: undefined → '属性1'（firstChange）)、プロパティのあとも約 13ms 後に ngOnChanges が出て、書いた直後に読んだ userName は新しい値でした。中のボタンでは liked.emit(1) のすぐあとに addEventListener が detail = 1・bubbles = false で受け、外すと disconnectedCallback の約 18ms 後に ngOnDestroy が出ました。外したあとは「2. つなぐ」が押せず、「1. 作る」からやり直すと新しい constructor が出ました。別の章へ移ったあと、この章の要素は文書に残っておらず、コンソールの警告とエラーは 0 件でした（scratchpad/el-a-exp/verify.mjs、2026-11-06）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、playwright で 1 から順に押しました。ページを開いた時点では @angular/elements の chunk は読み込まれず、「1. 作る」を押したときに 1 つだけ増えました（main には @angular/elements が入っていません）。表は、define と createElement → connectedCallback → strategy を作った → constructor → appendChild から戻った、の順で、つないだときに ngOnChanges は出ませんでした。setAttribute のあとは約 13ms 後に ngOnChanges(userName: undefined → '属性1'（firstChange）)、プロパティのあとも約 13ms 後に ngOnChanges が出て、書いた直後に読んだ userName は新しい値でした。中のボタンでは liked.emit(1) のすぐあとに addEventListener が detail = 1・bubbles = false で受け、外すと disconnectedCallback の約 18ms 後に ngOnDestroy が出ました。外したあとは「2. つなぐ」が押せず、「1. 作る」からやり直すと新しい constructor が出ました。別の章へ移ったあと、この章の要素は文書に残っておらず、コンソールの警告とエラーは 0 件でした（work/el-a-exp/verify.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

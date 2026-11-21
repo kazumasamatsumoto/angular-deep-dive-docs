@@ -787,7 +787,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc --nocache_test_results 
   '--test_arg=--filter=whose name needs to be quoted'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/d-ngtsc-declaration-onlyemission.log・d-ngtsc-quoted.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/d-ngtsc-declaration-onlyemission.log・d-ngtsc-quoted.log）`
 
 ```
 # declaration-only emission

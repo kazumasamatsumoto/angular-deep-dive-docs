@@ -160,10 +160,10 @@ gkalpak は 2020 年に「`Driver#sync()`（というより `CacheTable#write()`
 
 第 17・18 回で、本物の配布物（サイトの node\_modules の `@angular/service-worker` 22.1.6）をデモの偽物の上で、TypeScript のソースを SwTestHarness の上で走らせて確かめました。../angular のファイルは変えていません。どれも `gh search issues` で同じ報告は見つかりませんでした（2026-11-03。「dataGroups offline」「safeFetch」など）。**本家に issue や PR を出すことは勧めません**（0 節のとおり、security に関わらない直しは受け付けられません）。issue を読むときの手がかりにします。
 
-📄 `出力（scratchpad/sw-logs/e-harness-scratch.log）`
+📄 `出力（work/sw-logs/e-harness-scratch.log）`
 
 ```
-# scratchpad/sw-e-work/harness-datagroup.ts（SwTestHarness。../angular は読むだけ）
+# work/sw-e-work/harness-datagroup.ts（SwTestHarness。../angular は読むだけ）
 # asset の /index.html、performance のデータグループ ^/api/.*$。初期化のあと server.online = false
 /index.html -> 200 OK                     ← アセットのキャッシュ
 /other.txt -> 504 Gateway Timeout         ← Driver.safeFetch（return await）

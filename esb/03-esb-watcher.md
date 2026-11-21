@@ -684,7 +684,7 @@ chokidar（Node の fs.watch や、定期的に stat を取る polling で監視
 
 ## 8. どう録ったか
 
-スクリプトは `<scratchpad>/esb-demo/a/` に置きました。44129f66a3 の watcher.ts は、練習用の作業木のファイルを esbuild で 1 つの .js にし（@parcel/watcher・chokidar・picomatch はサイトの node\_modules から読む）、22.2.7 はサイトの node\_modules の `utils/watcher.js` をそのまま require しました。操作ごとに新しい一時フォルダを作り、事前に置くファイルは 6 秒前に書き（「作って 1.1 秒」だけ 1.1 秒前）、watcher を作って add し、400 ms 待ってから操作し、1.5 秒後に close しています。
+スクリプトは `<work>/esb-demo/a/` に置きました。44129f66a3 の watcher.ts は、練習用の作業木のファイルを esbuild で 1 つの .js にし（@parcel/watcher・chokidar・picomatch はサイトの node\_modules から読む）、22.2.7 はサイトの node\_modules の `utils/watcher.js` をそのまま require しました。操作ごとに新しい一時フォルダを作り、事前に置くファイルは 6 秒前に書き（「作って 1.1 秒」だけ 1.1 秒前）、watcher を作って add し、400 ms 待ってから操作し、1.5 秒後に close しています。
 
 📄 `記録のスクリプト（rec-watch.mjs）`
 

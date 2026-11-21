@@ -222,8 +222,8 @@ cd ~/angular-research/angular-cli-fix   # 44129f66a3
 pnpm bazel test //packages/angular/build:karma_integration_tests --nocache_test_results --test_output=all
 
 # 行を変えるときは作業木で（終わったら git worktree remove --force で消した）
-git -C ~/angular-research/angular-cli-fix worktree add --detach <scratchpad>/kar-wt-b 44129f66a3
-cd <scratchpad>/kar-wt-b
+git -C ~/angular-research/angular-cli-fix worktree add --detach <work>/kar-wt-b 44129f66a3
+cd <work>/kar-wt-b
 ~/angular-research/angular-cli-fix/node_modules/.bin/bazel test //packages/angular/build:karma_integration_tests \
   --nocache_test_results --test_output=errors --flaky_test_attempts=1
 ```

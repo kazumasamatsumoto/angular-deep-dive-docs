@@ -289,7 +289,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
 ## 5. 無限に繰り返すアニメーションと #67350
 
-145 行目と 50 行目の「infinite を飛ばす」は、2026-03-02 のコミット 9758ea9ee95（`refactor(core): ignore infinite animations in animate api`、本文に `fixes: #67350`）で入りました。#67350 は「21.2 の新しい animate.leave の振る舞いで、内側に無限のアニメーションがあるコンポーネントが消えない」という報告で、2026-02-27 に開かれ同じ日に閉じられています（scratchpad の issues JSON の createdAt / closedAt）。同じ変更は 21.2 系にも f5e9a862c20 として入り、v21.2.1 から含まれます（`git tag --contains` で確かめた）。
+145 行目と 50 行目の「infinite を飛ばす」は、2026-03-02 のコミット 9758ea9ee95（`refactor(core): ignore infinite animations in animate api`、本文に `fixes: #67350`）で入りました。#67350 は「21.2 の新しい animate.leave の振る舞いで、内側に無限のアニメーションがあるコンポーネントが消えない」という報告で、2026-02-27 に開かれ同じ日に閉じられています（手元の作業フォルダの issues JSON の createdAt / closedAt）。同じ変更は 21.2 系にも f5e9a862c20 として入り、v21.2.1 から含まれます（`git tag --contains` で確かめた）。
 
 無限のアニメーションしか無い要素は、長さ 0 の扱いになり（2 節で飛ばされ、何も残らない）、enter ならクラスをすぐ外し、leave なら要素をすぐ消します。acceptance の `describe('infinite animations')`（animation\_spec.ts:2760）の 2 本がそれを確かめています。
 

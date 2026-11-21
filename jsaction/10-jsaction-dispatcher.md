@@ -208,7 +208,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 > [!NOTE]
 > **さらに深く**
 >
-> 配列を空にするのは誰か。最初の版（666d6465758、2024-03-27）の `setEventReplayer` のコメントには「The event replayer is also responsible for dequeuing events」とあり、例の中で `queue.length = 0` をしていました。その後の整理でコメントは消え、いまの 115〜121 行目の `createEventReplayer` と README の `eventReplayer` の例は、どちらも配列を空にしません。手元で、../angular のソースを esbuild で束ねて Node で動かすと（scratchpad/jsa-demo/d/replayer-twice.ts）、再生のイベント A を渡して microtask を待ち、次に B を渡すと、2 回目の `eventReplayer` には A と B の両方が入り、A が 2 回再生されました。Angular は `eventReplayer` を渡さない `EventDispatcher` だけを使うので（1 節の 68〜70 行目）、この形は Angular のアプリでは起きません。
+> 配列を空にするのは誰か。最初の版（666d6465758、2024-03-27）の `setEventReplayer` のコメントには「The event replayer is also responsible for dequeuing events」とあり、例の中で `queue.length = 0` をしていました。その後の整理でコメントは消え、いまの 115〜121 行目の `createEventReplayer` と README の `eventReplayer` の例は、どちらも配列を空にしません。手元で、../angular のソースを esbuild で束ねて Node で動かすと（work/jsa-demo/d/replayer-twice.ts）、再生のイベント A を渡して microtask を待ち、次に B を渡すと、2 回目の `eventReplayer` には A と B の両方が入り、A が 2 回再生されました。Angular は `eventReplayer` を渡さない `EventDispatcher` だけを使うので（1 節の 68〜70 行目）、この形は Angular のアプリでは起きません。
 
 📄 `記録：replayer-twice.mjs の出力（2026-11-06）`
 
@@ -423,10 +423,10 @@ replay B
 
 同じ `Event` を 2 つの `EventDispatcher` が配ると、2 つ目の 4 節の 112 行目で `Object.defineProperty` が `TypeError: Cannot redefine property: stopPropagation` を投げます。入れ子の入れ物に 2 つの契約を置いた、配布物の公開の入口だけを使う確かめです。
 
-📄 `scratchpad/jsa-demo/d/two-dispatchers.ts（esbuild で束ね、ヘッドレスの Chrome で実行）`
+📄 `work/jsa-demo/d/two-dispatchers.ts（esbuild で束ね、ヘッドレスの Chrome で実行）`
 
 ```
-// scratchpad/jsa-demo/d/two-dispatchers.ts（配布物 @angular/core 22.1.6 の公開の入口だけを使う）
+// work/jsa-demo/d/two-dispatchers.ts（配布物 @angular/core 22.1.6 の公開の入口だけを使う）
 import { EventContract, EventContractContainer, EventDispatcher, registerDispatcher } from '@angular/core/primitives/event-dispatch';
 const out: string[] = [];
 document.body.innerHTML = '<div id="outer-c"><div id="inner-c"><button id="b" jsaction="click:x">b</button></div></div>';
@@ -452,7 +452,7 @@ done
 （HeadlessChrome/155.0.8043.0、2026-11-06）
 ```
 
-内側の契約は行き先 `x` に渡し、外側の契約の配り役が 112 行目で例外を投げています（外側の受け手は呼ばれません）。**このサイトでもこの形になります**。このサイトはインクリメンタルハイドレーションを使うので、`<body>` の Angular の `EventContract` はアプリが壊れるまで残り（[第 11 回](11-jsaction-angular.md)）、ページの click をすべて `EventDispatcher` に渡します。`dispatchToDelegate` は行き先があってもなくても先に泡立ちの準備（event-replay の章の 7 節の 86 行目）をするので、`<body>` の契約も、届いた click の `stopPropagation` を必ず貼ります。2026-11-06 の本番ビルドの `/chapter/event-replay/` をヘッドレスの Chrome で開き、ハイドレーションのあとに、上の確かめと同じ配布物の束で `<body>` の中に自分の入れ物と `EventContract`・`EventDispatcher` を 1 組だけ置いて押すと、自分の受け手は呼ばれ、そのあと `<body>` の契約の側で `ERROR TypeError: Cannot redefine property: stopPropagation` がコンソールに出ました（scratchpad/jsa-demo/d/one-in-site.ts・run-one-in-site.mjs）。だから下のデモは、デモの枠のリスナーで本物の `stopPropagation` を呼び、click を `<body>` まで届けないようにしています。
+内側の契約は行き先 `x` に渡し、外側の契約の配り役が 112 行目で例外を投げています（外側の受け手は呼ばれません）。**このサイトでもこの形になります**。このサイトはインクリメンタルハイドレーションを使うので、`<body>` の Angular の `EventContract` はアプリが壊れるまで残り（[第 11 回](11-jsaction-angular.md)）、ページの click をすべて `EventDispatcher` に渡します。`dispatchToDelegate` は行き先があってもなくても先に泡立ちの準備（event-replay の章の 7 節の 86 行目）をするので、`<body>` の契約も、届いた click の `stopPropagation` を必ず貼ります。2026-11-06 の本番ビルドの `/chapter/event-replay/` をヘッドレスの Chrome で開き、ハイドレーションのあとに、上の確かめと同じ配布物の束で `<body>` の中に自分の入れ物と `EventContract`・`EventDispatcher` を 1 組だけ置いて押すと、自分の受け手は呼ばれ、そのあと `<body>` の契約の側で `ERROR TypeError: Cannot redefine property: stopPropagation` がコンソールに出ました（work/jsa-demo/d/one-in-site.ts・run-one-in-site.mjs）。だから下のデモは、デモの枠のリスナーで本物の `stopPropagation` を呼び、click を `<body>` まで届けないようにしています。
 
 ## 7. DEMO：本物の EventDispatcher で泡立ちと stopPropagation を見る
 
@@ -632,7 +632,7 @@ pnpm bazel test //packages/core/primitives/event-dispatch/test:browser_test_chro
   '--test_arg=--filter=EventDispatcher' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/d-all.log・d-filter-browser.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/d-all.log・d-filter-browser.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed
@@ -655,7 +655,7 @@ Chromium: |██████████| 1/1 test files | 111 passed, 0 failed
 - 2025-11 以降の 25 件の修正のうち、dispatcher.ts に触れたものは 0 件、event\_dispatcher.ts に触れたものは 2 件で、どちらも動きを変えません（bb628d8b508 が 194〜195 行目の `export {}` を足し、4f9ee3c056a が 17 行目の import に `// 3p-only` の印を付けた。どちらも束ね方のための変更）。表は[第 12 回](12-jsaction-tests-issues.md)にあります。
 - 本家に PR を出すことは勧めません。見つけた形は、手元で spec の形にして確かめ、issue を読むときの手がかりにします。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155）で本番ビルドのこのページを開き、playwright で操作しました。inner を押すと focus（innerFocus・eventPhase 1）、click inner、click outer（どちらも eventPhase 3。currentTarget はそれぞれ inner と outer、target はどちらも inner）の 3 行が出て、枠に届いた click は 1 回でした。stopPropagation にすると click は inner の 1 行だけで、枠は 0 回でした。outer にフォーカスすると outerFocus の 1 行だけ、そこから Tab で inner に移ると innerFocus だけが出ました。「あとで登録」にして inner を押すと、表は空のまま枠だけが 1 回になり、登録すると focus・click inner・click outer の 3 行がどれも eventPhase 101 で出て、preventDefault は「\`preventDefault\` called during event replay.」の例外でした。片付けのあとは outer と inner の jsaction が消え、コンソールの警告とエラーは 0 件でした（scratchpad/jsa-demo/d/verify-demos.mjs、2026-11-06）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155）で本番ビルドのこのページを開き、playwright で操作しました。inner を押すと focus（innerFocus・eventPhase 1）、click inner、click outer（どちらも eventPhase 3。currentTarget はそれぞれ inner と outer、target はどちらも inner）の 3 行が出て、枠に届いた click は 1 回でした。stopPropagation にすると click は inner の 1 行だけで、枠は 0 回でした。outer にフォーカスすると outerFocus の 1 行だけ、そこから Tab で inner に移ると innerFocus だけが出ました。「あとで登録」にして inner を押すと、表は空のまま枠だけが 1 回になり、登録すると focus・click inner・click outer の 3 行がどれも eventPhase 101 で出て、preventDefault は「\`preventDefault\` called during event replay.」の例外でした。片付けのあとは outer と inner の jsaction が消え、コンソールの警告とエラーは 0 件でした（work/jsa-demo/d/verify-demos.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

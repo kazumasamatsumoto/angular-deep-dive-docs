@@ -214,7 +214,7 @@ pnpm bazel test //packages/platform-server/test:event_replay_test \
 📄 `出力（抜粋）`
 
 ```
-# 2026-11-06（scratchpad/jsa-logs/d-all.log・d-filter-browser.log・d-filter-server.log）
+# 2026-11-06（work/jsa-logs/d-all.log・d-filter-browser.log・d-filter-server.log）
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed
 Firefox:  |██████████| 1/1 test files | 111 passed, 0 failed
 23 specs, 0 failures
@@ -243,7 +243,7 @@ Ran 3 of 23 specs
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/jsaction-tests-issues)
 
-📄 `scratchpad/jsa-demo/d/specmap.mjs（spec の表を作ったスクリプト。node で実行）`
+📄 `work/jsa-demo/d/specmap.mjs（spec の表を作ったスクリプト。node で実行）`
 
 ```
 // 5 つの spec ファイルの describe / it を行番号つきで拾い、関係する章を規則で付けて JSON にする（読むだけ）。

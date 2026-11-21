@@ -1380,7 +1380,7 @@ watch 中の無効化は L1 だけです（343〜344 行目）。L2 の古い行
 
 ## 9. どう録ったか
 
-2 つのスクリプトを scratchpad に置き、Node v24.22.1 で動かしました。1 つめはサイトの node\_modules の @angular/build の dist（`src/utils/cache/cache.js` などの .js）を絶対パスで require し、package.json の exports（外から読める入口の制限）を通らずにクラスを取り出しています。`PersistentLoadResultCache` の鍵のハッシュには xxhash の初期化が要るので、先に `utils/hash.js` の `initializeHash()` を await します。2 つめは、カウンターのアプリをコピーして node\_modules をサイトのものの symlink にし、`NG_BUILD_CACHE_STORE` を変えながら ng.js の build を 2 回呼び、LMDB は `lmdb` の `open` で読み取り専用に開いて全部の鍵を数えました。出力のパスは `<work>` と `<app>` に置き換えてあります。
+2 つのスクリプトを 作業用フォルダに置き、Node v24.22.1 で動かしました。1 つめはサイトの node\_modules の @angular/build の dist（`src/utils/cache/cache.js` などの .js）を絶対パスで require し、package.json の exports（外から読める入口の制限）を通らずにクラスを取り出しています。`PersistentLoadResultCache` の鍵のハッシュには xxhash の初期化が要るので、先に `utils/hash.js` の `initializeHash()` を await します。2 つめは、カウンターのアプリをコピーして node\_modules をサイトのものの symlink にし、`NG_BUILD_CACHE_STORE` を変えながら ng.js の build を 2 回呼び、LMDB は `lmdb` の `open` で読み取り専用に開いて全部の鍵を数えました。出力のパスは `<work>` と `<app>` に置き換えてあります。
 
 📄 `記録のスクリプト（record-cache.mjs）`
 

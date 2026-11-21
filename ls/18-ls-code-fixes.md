@@ -1340,7 +1340,7 @@ $ pnpm bazel test //packages/language-service/test:test \
 //packages/language-service/test:test                                    PASSED in 1.7s
 ```
 
-- `code fixes`（describe の名前）で 8・9・9・9 本、合計 35 本が通りました（PASSED in 3.0s。ログは scratchpad/ls-logs/e-codefix-all.log）。
+- `code fixes`（describe の名前）で 8・9・9・9 本、合計 35 本が通りました（PASSED in 3.0s。ログは work/ls-logs/e-codefix-all.log）。
 - LSP サーバーを通した確かめは、結合テスト `vscode-ng-language-service/integration/lsp/ivy_spec.ts` の最後のほうに it が 4 本あります（「should fix error when property does not exist on type」、選んだ範囲が診断より広い場合、`should work` の中の `fixSpelling` と `fixMissingMember` の「全部直す」の resolve）。このスナップショットではこのターゲットがビルドに失敗するので、手元では走らせていません。
 - `quote` で絞ると 3 本でした。code\_fixes\_spec の 2 本に加えて、completions\_spec.ts の「should not include the trailing quote inside the RHS of a two-way binding」も名前に `quote` を含むからです。フィルタは spec の名前の部分一致なので、絞った本数は必ず確かめます。
 

@@ -842,7 +842,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=HMR code generation'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/e-hmr.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/e-hmr.log）`
 
 ```
 Ran 26 of 6676 specs

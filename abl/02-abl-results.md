@@ -884,7 +884,7 @@ dev-server は Result のファイルを 1 つずつ updateResultRecord に渡�
 
 ## 10. 記録の取り方
 
-小さなアプリは `<scratchpad>/abl-demo/a/` の下に、スクリプトが毎回作り直します（カウンターのアプリに counter.css と public/asset.txt を足し、assets に public を 2 回、2 つめは `output: 'static'` で書いたもの）。node\_modules はこのサイトのものを symlink で借り、キャッシュは切っています。`@angular/build/private` の `buildApplicationInternal` を、BuilderContext の代わりのオブジェクト（workspaceRoot・target・logger・signal・getProjectMetadata）で呼び、Node のプロセスの cwd をワークスペースにしてから、ファイルを書き換えては Result が 1.5 秒止まるまで待ちます。ディスクの記録は、公開の `buildApplication`（ディスクに書く）を同じように動かし、各回の後に `dist/browser` を一覧にしました。
+小さなアプリは `<work>/abl-demo/a/` の下に、スクリプトが毎回作り直します（カウンターのアプリに counter.css と public/asset.txt を足し、assets に public を 2 回、2 つめは `output: 'static'` で書いたもの）。node\_modules はこのサイトのものを symlink で借り、キャッシュは切っています。`@angular/build/private` の `buildApplicationInternal` を、BuilderContext の代わりのオブジェクト（workspaceRoot・target・logger・signal・getProjectMetadata）で呼び、Node のプロセスの cwd をワークスペースにしてから、ファイルを書き換えては Result が 1.5 秒止まるまで待ちます。ディスクの記録は、公開の `buildApplication`（ディスクに書く）を同じように動かし、各回の後に `dist/browser` を一覧にしました。
 
 📄 `記録のスクリプト（rec-results.mjs）`
 

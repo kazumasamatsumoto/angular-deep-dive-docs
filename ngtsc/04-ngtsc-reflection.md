@@ -1036,7 +1036,7 @@ import でなければ（同じファイルで宣言したクラスなど）、1
 
    同じ名前 `label` が `Getter`（型 `string`）と `Setter` の 2 行になります。`protected readonly id` は `Protected`（672 行目）、`#hidden` は `EcmaScriptPrivate`、`'quoted-name'` は文字列の名前（715 行目）です。コンストラクタもメンバーの 1 つとして出てきます。引数の無いコンストラクタなので、`getConstructorParameters` は `null` ではなく `[]` です。
 
-📄 `scratchpad の記録スクリプト（reflection.mjs、angular-deep-dive を cwd にして node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（reflection.mjs、angular-deep-dive を cwd にして node で実行）`
 
 ```
 // ngtsc-reflection の記録: 本物の TypeScriptReflectionHost に、いくつかのクラスを読ませる。
@@ -1392,7 +1392,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/reflection/test:test '--test_a
 pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc '--test_arg=--filter=from a type-only import (clause|specifier) as injection token' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/a-units.log・a-reflection-ctor.log・a-ngtsc-typeonly2.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/a-units.log・a-reflection-ctor.log・a-ngtsc-typeonly2.log）`
 
 ```
 //packages/compiler-cli/src/ngtsc/reflection/test:test   84 specs, 0 failures   PASSED in 0.5s

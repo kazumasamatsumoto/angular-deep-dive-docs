@@ -70,7 +70,7 @@ Alan Agius 12 / SkyZeroZx 7 / Kristiyan Kostadinov 5 / Matthieu Riegler 3 / leon
 
 ```
 # ラベルごとの open-*.json・closed-*.json（開いている / 2025-11-01 以降に閉じた）は、
-# シリーズの準備で 2026-11-04 に gh で取ったもの（scratchpad/domr-logs/）。ここから下は、この章のために走らせたもの
+# シリーズの準備で 2026-11-04 に gh で取ったもの（work/domr-logs/）。ここから下は、この章のために走らせたもの
 
 # 番号で重ねたあと、コメントの数・PR・閉じた PR か commit を GraphQL でまとめて（読むだけ）
 gh api graphql -f query='query { repository(owner:"angular", name:"angular") {
@@ -201,7 +201,7 @@ DOMR-COMMON に挙げた 8 つの commit を `git show --stat` と本文で読�
 📄 `bazel のターゲット（../angular で。2026-11-04）`
 
 ```
-# DOMR-COMMON の基準（2026-11-04、--nocache_test_results、4 つ同時で 25 秒。ログは scratchpad/domr-logs/base.log）
+# DOMR-COMMON の基準（2026-11-04、--nocache_test_results、4 つ同時で 25 秒。ログは work/domr-logs/base.log）
 //packages/platform-browser/test:test        PASSED in 2.8s
 //packages/core/test/render3:render3         PASSED in 3.4s
 //packages/core/test:test                    PASSED in 3.4s（4 シャード）

@@ -415,7 +415,7 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 
    塊が壊されるたびに `remove` が呼ばれますが、4 節の 81 行目のとおり、配列が空になった最後の 1 回だけが `clearTimeout` を呼びました。
 
-📄 `scratchpad の記録スクリプト（timer.ts。共通の build.mjs で束ねて node で実行。共通の harness.ts と build.mjs は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（timer.ts。共通の build.mjs で束ねて node で実行。共通の harness.ts と build.mjs は第 1 回に全文）`
 
 ```
 // 第 10 回（defer-timer）の記録。
@@ -646,7 +646,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/c-timer.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/c-timer.log）`
 
 ```
 Ran 2 of 2693 specs

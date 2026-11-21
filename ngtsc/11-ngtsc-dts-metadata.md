@@ -811,7 +811,7 @@ host directives の型引数は `[{ directive: typeof DeferredContentAware; inpu
 - `AccordionTrigger`：v16 からの入力の表で、`panel` は `required: true`、全部 `isSignal: true`。出力の `expanded → expandedChange` は `model()` の出力側です（`InputOrOutput` の `isSignal` は出力では `false`）。
 - `AccordionPanel`：host directives の `DeferredContentAware` が 7 節の 419 行目で `Reference` になり、公開した `preserveContent` の入力も読めています。
 
-📄 `記録に使ったスクリプト（scratchpad の記録スクリプト）`
+📄 `記録に使ったスクリプト（手元の作業フォルダの記録スクリプト）`
 
 ```
 // 第 11 回の記録。angular-deep-dive を cwd にして `node <このファイル>` で走らせる。
@@ -1093,7 +1093,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=should properly type-check inherited directives'
 ```
 
-📄 `出力（抜粋。2026-11-05 に実行。ログは scratchpad/ngtsc-logs/c-metadata-all.log・c-ngtsc-dts-inherit.log）`
+📄 `出力（抜粋。2026-11-05 に実行。ログは work/ngtsc-logs/c-metadata-all.log・c-ngtsc-dts-inherit.log）`
 
 ```
 ==================== Test output for //packages/compiler-cli/src/ngtsc/metadata/test:test:

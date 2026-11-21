@@ -933,7 +933,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
    `ROW` は `row` と同じく 3 行に当たります。`<app-row` と `<input` は 0 件です（6 節の 209〜215 行目）。`[UiFocus UiTooltip]` は両方を持つ `input` だけ、`@for` はコンポーネントの名前として 2 つの塊の行に当たります。
 
-📄 `scratchpad の記録スクリプト（forest-ui.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（forest-ui.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 8 回 devtools-forest-ui の記録。
@@ -1160,7 +1160,7 @@ pnpm bazel test $Q/directive-forest:test $Q/directive-forest/component-data-sour
 pnpm bazel test $Q:test --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/b-bazel.log・b-bazel-explorer.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/b-bazel.log・b-bazel-explorer.log）`
 
 ```
 directive-forest/test_bundle.spec.js                        46 passed, 0 failed

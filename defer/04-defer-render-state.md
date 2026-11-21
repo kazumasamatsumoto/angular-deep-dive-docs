@@ -486,7 +486,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=^@defer (directive matching|DI|NgModules) '
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/a-render-state.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/a-render-state.log）`
 
 ```
 Ran 4 of 2693 specs

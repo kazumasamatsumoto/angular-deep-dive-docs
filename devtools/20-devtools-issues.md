@@ -58,7 +58,7 @@ git log --since=2025-11-01 --format='%h %ad %an | %s' --date=short -- devtools  
 git log --format='%h %ad %s' --date=short HEAD..origin/main -- devtools           # 30 個
 ```
 
-- 開いているもの・閉じたものの JSON は、2026-11-05 にシリーズの準備で取ったもの（scratchpad/devtools-logs/open-area--devtools.json・closed-area--devtools.json）です。同じ欄は上の 1・2 行目の形で取れます。
+- 開いているもの・閉じたものの JSON は、2026-11-05 にシリーズの準備で取ったもの（work/devtools-logs/open-area--devtools.json・closed-area--devtools.json）です。同じ欄は上の 1・2 行目の形で取れます。
 - ラベルの無いものは 3 行目の `gh search issues … devtools` の 28 件から探しました。多くは別の area（core・router・docs など）の話で、DevTools そのものに近いのは #70927（ページの要素からテンプレートのソースへ飛びたい、`area: compiler`）だけでした。#53703 は Redux DevTools（別の拡張）の話なので入れていません。
 - 「PR・commit」の列は、`closedByPullRequestsReferences`、`gh pr list --search`、commit の本文の `Fixes #番号`、メンバーのコメントのどれかで見つけたものだけです。`gh pr list --search 57516` は番号が本文に偶然入った別の PR（node の版上げ）も返したので、中身を見て外しました。
 - 表の「内容」は題そのものではなく日本語で短くし、「章」と「どこ」は第 1〜18 回のどこを開いて読むかです。この付け方は下の make-issues-data.mjs の `NOTES` に書いてあります。
@@ -75,11 +75,11 @@ git log --format='%h %ad %s' --date=short HEAD..origin/main -- devtools         
 - 閉じた 26 件のうち 5 件が[第 17 回](17-devtools-signal-graph.md)の話（塊・見張り・ブレークポイント・文書）で、signal のグラフは 2026 年にいちばん動いた場所です。
 - 閉じた理由が `NOT_PLANNED`・`DUPLICATE` の 5 件は、再現が無い（#68589）・DevTools の話でない（#68008）・期待どおりの動き（#57392）・本当のリークではない（#66087）などで、メンバーのコメントに理由が書かれています。
 
-📄 `scratchpad の make-issues-data.mjs（gh の JSON からこの表の data.ts を作る。全文）`
+📄 `手元の作業フォルダの make-issues-data.mjs（gh の JSON からこの表の data.ts を作る。全文）`
 
 ```
 // 第 20 回 devtools-issues の data.ts を作る。
-// gh で取った JSON（scratchpad/devtools-logs/ の open-area--devtools.json・closed-area--devtools.json・
+// gh で取った JSON（work/devtools-logs/ の open-area--devtools.json・closed-area--devtools.json・
 // e-closed-refs.json・e-search-open.json、どれも 2026-11-05 に取得）の番号・状態・ラベル・日付・コメントの数・閉じた PR に、
 // このスクリプトの NOTES（内容の日本語の短い説明・種類・章・どこ・PR と commit）を足して、1 つの表にする。
 // NOTES はこのシリーズを書く途中で、gh issue view・gh pr view・git log --grep・git show で確かめて書いた。
@@ -156,7 +156,7 @@ if (missing.length) throw new Error('NOTES が無い: ' + missing.join(', '));
 const self = readFileSync(new URL(import.meta.url), 'utf8');
 writeFileSync(
   out,
-  `// 自動生成 — 手で編集しないこと（scratchpad の make-issues-data.mjs が作った）。\n\n` +
+  `// 自動生成 — 手で編集しないこと（手元の作業フォルダの make-issues-data.mjs が作った）。\n\n` +
     `export const ROWS = ${JSON.stringify(rows, null, 1)} as const;\n\n` +
     `export const SCRIPT = ${JSON.stringify(self)};\n`,
 );

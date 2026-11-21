@@ -506,7 +506,7 @@ angular/angular · 読了 約 13 分 · 発展 · [サイトで読む（デモ�
 
    同じ失敗でも、`@error` の塊が無いと、500 ms 待っても安定しませんでした。`hydrating` に 3 つ、登録簿に `d0`・`d1` が残り、中と内の jsaction もそのままです。理由は 7 節で読みます。
 
-📄 `scratchpad の記録スクリプト（queue.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（queue.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 17 回 defer-hydration-queue の記録。
@@ -779,7 +779,7 @@ pnpm bazel test //packages/platform-server/test:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/e-cleanup.log・e-partial.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/e-cleanup.log・e-partial.log）`
 
 ```
 # 1 つ目（cleanup の describe だけ）

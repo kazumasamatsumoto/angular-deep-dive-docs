@@ -21,7 +21,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
 ## 1. spec の地図
 
-ファイルごとの一番外の `describe` と、`it(` で始まる行の数（grep で数えたもの）、Node で実際に走った数です。Node の数は、一番外の `describe` の名前ごとに `--test_arg=--filter=^名前 ` で走らせて「Ran N of 410 specs」を読んだもの（scratchpad/httpx-logs/b-count.log）で、合計は 410 です。
+ファイルごとの一番外の `describe` と、`it(` で始まる行の数（grep で数えたもの）、Node で実際に走った数です。Node の数は、一番外の `describe` の名前ごとに `--test_arg=--filter=^名前 ` で走らせて「Ran N of 410 specs」を読んだもの（work/httpx-logs/b-count.log）で、合計は 410 です。
 
 | ファイル | 行数 | 一番外の describe（行） | it の行 | Node で走った数 |
 | --- | --- | --- | --- | --- |
@@ -364,7 +364,7 @@ pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_o
   "--test_arg=--filter=^TransferCache "
 ```
 
-📄 `scratchpad/httpx-logs/b-all.log（要点）`
+📄 `work/httpx-logs/b-all.log（要点）`
 
 ```
 //packages/common/http/test:test                     PASSED in 2.8s   410 specs, 0 failures
@@ -407,7 +407,7 @@ Executed 6 out of 6 tests: 6 tests pass.   （INFO: Elapsed time: 4.804s）
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/httpx-tests-issues)
 
-本番ビルドをヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で開いて確かめると、最初は「開いている」で 36 件、「すべて」で 89 件、章を第 5 回にすると 5 件（そのうち開いているのは 2 件）、語に `xsrf` を入れると 3 件で、コンソールの警告とエラーは 0 件でした（2026-11-06、scratchpad/httpx-b/verify.json）。
+本番ビルドをヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で開いて確かめると、最初は「開いている」で 36 件、「すべて」で 89 件、章を第 5 回にすると 5 件（そのうち開いているのは 2 件）、語に `xsrf` を入れると 3 件で、コンソールの警告とエラーは 0 件でした（2026-11-06、work/httpx-b/verify.json）。
 
 表から読めることです。
 
@@ -415,7 +415,7 @@ Executed 6 out of 6 tests: 6 tests pass.   （INFO: Elapsed time: 4.804s）
 - 2026 年に開いた 7 件のうち 3 件（#70947・#70226・#70856）には PR が付いて、どれも開いたままです（#70947 と #70226 は報告した人が自分で、#70856 はメンテナーが PR を出している）。#70947 と #70226 は[第 5 回](05-httpx-transfer-cache-key.md)の行で、今のソースでも起きることを確かめました。
 - 2026 年に閉じた 26 件は、COMPLETED が 13・NOT\_PLANNED が 12・DUPLICATE が 1 です。NOT\_PLANNED には、#70738（`\0` で区切りがずれる）や #69882（転送キャッシュに当たった `httpResource` がインターセプタを通らない）のように、「意図した振る舞い」と答えて閉じたものが入っています。
 
-📄 `scratchpad/httpx-b/issues/make-data.mjs`
+📄 `work/httpx-b/issues/make-data.mjs`
 
 ```js
 // 第 6 回 httpx-tests-issues の表のデータを作る。
@@ -426,7 +426,7 @@ Executed 6 out of 6 tests: 6 tests pass.   （INFO: Elapsed time: 4.804s）
 // 使い方: node make-data.mjs  →  angular-deep-dive/src/app/pages/chapters/httpx-tests-issues.data.ts
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-const LOGS = '<scratchpad>/httpx-logs/';
+const LOGS = '<work>/httpx-logs/';
 const NG = '~/angular-research/angular';
 const OUT = '~/angular-research/angular-deep-dive/src/app/pages/chapters/httpx-tests-issues.data.ts';
 const HERE = new URL('.', import.meta.url).pathname;
@@ -581,7 +581,7 @@ const COMMITS = commitLines
     return { h, d, s, srcAdd: src.add, srcDel: src.del, specAdd: spec.add };
   });
 
-const body = `// 自動生成 — 手で編集しないこと（scratchpad/httpx-b/issues/make-data.mjs が作った）。
+const body = `// 自動生成 — 手で編集しないこと（work/httpx-b/issues/make-data.mjs が作った）。
 // issue の欄（番号・状態・日付・ラベル・コメント数）は 2026-11-06 に gh で取ったもの。ja・ch・link はこの章の書き手が付けたもの。
 export const SPECS = ${JSON.stringify(SPECS)} as const;
 

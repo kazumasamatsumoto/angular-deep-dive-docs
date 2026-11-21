@@ -687,7 +687,7 @@ pnpm bazel test //packages/compiler/test:test \
   '--test_arg=--filter=^(I18nParser|Message|i18n AST|Utils metadata serialization parseI18nMeta)'
 ```
 
-2026-11-03 の結果は **Ran 42 of 403 specs、42 specs, 0 failures、PASSED in 0.7s**（ログは `scratchpad/i18n-logs/a-markup.log`）。`I18nMetaVisitor` の `i18n-*` の枝（3 節）を確かめる spec は compiler の単体テストには無く、セキュリティのエラーは core の `packages/core/test/linker/security_integration_spec.ts` の `describe('translation')`（302 行目）が TestBed（JIT のコンパイラ）を通して確かめています。`'should throw error on translated event attributes'`（379 行目）と `'should not throw error on translating "on" attribute'`（388 行目）が、3 節の `on` の規則の両側です。`pnpm bazel test //packages/core/test:test --test_arg=--filter='^security integration tests translation'` で **4 shard の合計 10 specs、0 failures、PASSED in 1.5s**（`a-security.log`）でした。
+2026-11-03 の結果は **Ran 42 of 403 specs、42 specs, 0 failures、PASSED in 0.7s**（ログは `work/i18n-logs/a-markup.log`）。`I18nMetaVisitor` の `i18n-*` の枝（3 節）を確かめる spec は compiler の単体テストには無く、セキュリティのエラーは core の `packages/core/test/linker/security_integration_spec.ts` の `describe('translation')`（302 行目）が TestBed（JIT のコンパイラ）を通して確かめています。`'should throw error on translated event attributes'`（379 行目）と `'should not throw error on translating "on" attribute'`（388 行目）が、3 節の `on` の規則の両側です。`pnpm bazel test //packages/core/test:test --test_arg=--filter='^security integration tests translation'` で **4 shard の合計 10 specs、0 failures、PASSED in 1.5s**（`a-security.log`）でした。
 
 ### 直すとしたら、どこから
 

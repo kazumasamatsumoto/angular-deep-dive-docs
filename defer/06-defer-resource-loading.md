@@ -348,7 +348,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
    NG0750 の文が ErrorHandler に届き、「(used in the 'Root' component template)」と、274 行目の「The loading resulted in the following error」の文が付いています。画面は「読み込み中」のまま、DEFER\_BLOCK\_STATE も Loading のままでした（7 節）。
 
-📄 `scratchpad の記録スクリプト（resource-loading.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（resource-loading.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 6 回 defer-resource-loading の記録。
@@ -611,7 +611,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=@defer error handling'
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/b-resource-loading.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/b-resource-loading.log）`
 
 ```
 Ran 6 of 2693 specs

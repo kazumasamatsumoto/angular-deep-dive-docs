@@ -496,7 +496,7 @@ index 936c4f6a81a..0034b47a31d 100644
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ssrx-location-allowed-hosts)
 
-📄 `scratchpad/ssrx-demo/ssrx-location-allowed-hosts/record.ts`
+📄 `work/ssrx-demo/ssrx-location-allowed-hosts/record.ts`
 
 ```ts
 // このサイトの依存の @angular/platform-server 22.1.6 の renderApplication を Node で呼び、
@@ -582,7 +582,7 @@ writeFileSync('record.json', JSON.stringify({ node: process.version, angular: VE
 ```
 *記録を取ったスクリプトの全文*
 
-📄 `scratchpad/ssrx-demo/_shared-a/build.mjs`
+📄 `work/ssrx-demo/_shared-a/build.mjs`
 
 ```js
 // 使い方: RESEARCH_ROOT=<angular-research の場所> node build.mjs <記録のスクリプト.ts> <出力.mjs>
@@ -741,7 +741,7 @@ await build({
 
 ### 手元で走らせた結果
 
-../angular で `pnpm bazel test //packages/platform-server/test:test --nocache_test_results --test_output=all "--test_arg=--filter=PlatformLocation|allowedHosts|isHostAllowed"` は 「Ran 22 of 399 specs / 22 specs, 0 failures」でした（platform\_location\_spec.ts の 12 個、utils\_spec.ts の 10 個。2026-11-06、scratchpad/ssrx-logs/a-filter-PlatformLocation\_all.log）。全体は 399 specs, 0 failures です。
+../angular で `pnpm bazel test //packages/platform-server/test:test --nocache_test_results --test_output=all "--test_arg=--filter=PlatformLocation|allowedHosts|isHostAllowed"` は 「Ran 22 of 399 specs / 22 specs, 0 failures」でした（platform\_location\_spec.ts の 12 個、utils\_spec.ts の 10 個。2026-11-06、work/ssrx-logs/a-filter-PlatformLocation\_all.log）。全体は 399 specs, 0 failures です。
 
 ### 直すとしたら
 

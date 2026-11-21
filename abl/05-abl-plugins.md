@@ -1545,7 +1545,7 @@ angular.json の `scripts` に並べた .js は、import でつながったモ�
 
 ## 11. どう録ったか
 
-スクリプトは scratchpad に置き、作業用のフォルダに小さな入口と、偽のパッケージ（ESM の esm-pkg、CommonJS の cjs-pkg と cjs-dep、それぞれ LICENSE か license の欄つき）を書き、rxjs・tslib・@angular/localize はサイトの node\_modules を symlink で借りました。wasm は 63 バイトの小さなモジュール（`./env.js` の log を import し、add を export）と、そこに 12,000 バイトのカスタムセクションを足した版を、スクリプトの中でバイト列から作っています。esbuild はサイトの node\_modules の 0.28.2、プラグインは @angular/build 22.2.7 の dist の .js を絶対パスで require して、1 つずつ `plugins` に差しました。wasm の初期化のコードは、`build.onLoad` を包んで戻り値を横から記録しています。10 節のカウンターのアプリの記録は 2 つめのスクリプトです。
+スクリプトは 作業用フォルダに置き、作業用のフォルダに小さな入口と、偽のパッケージ（ESM の esm-pkg、CommonJS の cjs-pkg と cjs-dep、それぞれ LICENSE か license の欄つき）を書き、rxjs・tslib・@angular/localize はサイトの node\_modules を symlink で借りました。wasm は 63 バイトの小さなモジュール（`./env.js` の log を import し、add を export）と、そこに 12,000 バイトのカスタムセクションを足した版を、スクリプトの中でバイト列から作っています。esbuild はサイトの node\_modules の 0.28.2、プラグインは @angular/build 22.2.7 の dist の .js を絶対パスで require して、1 つずつ `plugins` に差しました。wasm の初期化のコードは、`build.onLoad` を包んで戻り値を横から記録しています。10 節のカウンターのアプリの記録は 2 つめのスクリプトです。
 
 📄 `記録のスクリプト（record-plugins.mjs）`
 

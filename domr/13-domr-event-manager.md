@@ -331,7 +331,7 @@ pnpm bazel test //packages/platform-browser/test:test_web_chromium \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/d-em-node.log・d-web.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/d-em-node.log・d-web.log）`
 
 ```
 # 1 本目

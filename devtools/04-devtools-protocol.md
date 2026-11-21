@@ -584,7 +584,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 
    通した瞬間に `_throttled.getLatestComponentExplorerView` が true になり、同じ ms の 2 回目は 78〜80 行目で落とされます。100ms 以上あとの「120ms 後」は、また通ります。
 
-📄 `scratchpad の記録スクリプト（a/protocol.ts。build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/protocol.ts。build.mjs で束ねて node で実行）`
 
 ```
 // devtools-protocol の記録: 本物の PriorityAwareMessageBus を、手で作った下の bus（片道 40ms かかる管）の上に作り、
@@ -746,7 +746,7 @@ pnpm bazel test //devtools/projects/protocol:test --nocache_test_results --test_
 pnpm bazel test //devtools/projects/protocol:test_chromium --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/a-tests.log・a-filter.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/a-tests.log・a-filter.log）`
 
 ```
 //devtools/projects/protocol:test_chromium   1/1 test files | 3 passed, 0 failed   PASSED in 1.9s

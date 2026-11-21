@@ -673,9 +673,9 @@ FormArray の型引数は「要素 1 つの control の型」で、35 行目の 
 
 ## 7. 型を tsc で確かめる
 
-型はデモでは見えないので、scratchpad に小さな `.ts` を置き、当時のこのサイトの node\_modules の @angular/forms 22.1.6 を読ませて `tsc --noEmit`（`strict: true`）にかけました。`assertType<Equals<A, B>>()` は、A と B が同じ型でなければ型エラーになる小さな道具です。`@ts-expect-error` の行は「ここで型エラーになる」ことを確かめています（エラーにならなければ逆に tsc が落ちます）。
+型はデモでは見えないので、作業用フォルダに小さな `.ts` を置き、当時のこのサイトの node\_modules の @angular/forms 22.1.6 を読ませて `tsc --noEmit`（`strict: true`）にかけました。`assertType<Equals<A, B>>()` は、A と B が同じ型でなければ型エラーになる小さな道具です。`@ts-expect-error` の行は「ここで型エラーになる」ことを確かめています（エラーにならなければ逆に tsc が落ちます）。
 
-📄 `scratchpad/b-typecheck/typed.ts`
+📄 `work/b-typecheck/typed.ts`
 
 ```ts
 import {FormArray, FormBuilder, FormControl, FormGroup, UntypedFormControl, Validators} from '@angular/forms';

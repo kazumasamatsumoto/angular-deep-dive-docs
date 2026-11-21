@@ -580,7 +580,7 @@ pnpm bazel test //packages/core/primitives/event-dispatch/test:browser_test_chro
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/b-base.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/b-base.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed

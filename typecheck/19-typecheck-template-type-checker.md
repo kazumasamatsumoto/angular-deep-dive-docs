@@ -872,7 +872,7 @@ pnpm bazel test //packages/language-service/test:test --nocache_test_results --t
   '--test_arg=--filter=^quick info'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/e-ttc.log と e-ls-quickinfo.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/e-ttc.log と e-ls-quickinfo.log）`
 
 ```
 # 1 本目

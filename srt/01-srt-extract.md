@@ -776,7 +776,7 @@ index 915d7c2b9a..816155c4df 100644
 
 > **🧪 DEMO — getRoutesFromAngularRouterConfig と extractRoutesAndCreateRouteTree の記録（再生）**
 >
-> `<scratchpad>/srt-demo/a/record-extract.mjs` を Node v24.22.1 で走らせた記録です。アプリは JIT（`@angular/compiler` を先に読み込む）・zoneless で、@angular/core と router は 22.2.6。同じアプリを 2 つの版で取り出しました。「44129f66a3 の src」はこの章で行番号を読んでいる `packages/angular/ssr/src` を esbuild で束ねたもの、「npm の 22.2.7」はこのサイトが依存している @angular/ssr 22.2.7 です（44129f66a3 より後の 0b9a52cc95・b3bbada1ef などが入っている）。`getRoutes` は `invokeGetPrerenderParams = false`・`includePrerenderFallbackRoutes = true`・先読みの表ありで呼び、`extract` は manifest を渡して呼びました。URL は `http://localhost/` だけで、外への通信はありません。赤い行は、もう一方の版に同じ値の行が無いものです。
+> `<work>/srt-demo/a/record-extract.mjs` を Node v24.22.1 で走らせた記録です。アプリは JIT（`@angular/compiler` を先に読み込む）・zoneless で、@angular/core と router は 22.2.6。同じアプリを 2 つの版で取り出しました。「44129f66a3 の src」はこの章で行番号を読んでいる `packages/angular/ssr/src` を esbuild で束ねたもの、「npm の 22.2.7」はこのサイトが依存している @angular/ssr 22.2.7 です（44129f66a3 より後の 0b9a52cc95・b3bbada1ef などが入っている）。`getRoutes` は `invokeGetPrerenderParams = false`・`includePrerenderFallbackRoutes = true`・先読みの表ありで呼び、`extract` は manifest を渡して呼びました。URL は `http://localhost/` だけで、外への通信はありません。赤い行は、もう一方の版に同じ値の行が無いものです。
 >
 > withRoutes なし。children・loadChildren（providers つき）・loadComponent・redirectTo・\*\* を持つ Router の設定（base href: `/`）
 >

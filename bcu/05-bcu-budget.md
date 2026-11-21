@@ -478,7 +478,7 @@ ng build の最後に出る表と、予算（angular.json の `budgets`）の警
 
 ## 8. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `utils/bundle-calculator.js` と `utils/stats-table.js` を require しました（Node v24.22.1）。色は listr2 の `color` が環境変数を読んで決めるので、`FORCE_COLOR=1` で走らせ、SGR の制御文字（太字・dim・緑・シアン・赤・黄・マゼンタと、その解除）を読んで「文字と色の名前」の切れ端に直しました。閾値の列だけは、22.2.7 が `calculateThresholds` を export しないので、../angular-cli の 44129f66a3 の bundle-calculator.ts を transpile し、require を dist の `schema.js` と `format-bytes.js` につないで呼んでいます。
+スクリプトは `<work>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `utils/bundle-calculator.js` と `utils/stats-table.js` を require しました（Node v24.22.1）。色は listr2 の `color` が環境変数を読んで決めるので、`FORCE_COLOR=1` で走らせ、SGR の制御文字（太字・dim・緑・シアン・赤・黄・マゼンタと、その解除）を読んで「文字と色の名前」の切れ端に直しました。閾値の列だけは、22.2.7 が `calculateThresholds` を export しないので、../angular-cli の 44129f66a3 の bundle-calculator.ts を transpile し、require を dist の `schema.js` と `format-bytes.js` につないで呼んでいます。
 
 📄 `記録のスクリプト（rec-budget.mjs）`
 

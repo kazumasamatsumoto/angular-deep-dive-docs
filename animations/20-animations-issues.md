@@ -137,7 +137,7 @@ git -C ../angular-main merge-base --is-ancestor <hash> 8576f161ae4 && echo yes |
 
 ## 4. この 1 年のコミット 30 件
 
-シリーズの準備で取った一覧（scratchpad の `commits-animations-1y.txt`、../angular-main、2025-10-31〜2026-10-08）です。取り方の記録が無いので、この 1 年の animations のコミットの全部ではありません。参考に、`git log --since=2025-11-01 -- packages/animations packages/core/src/animation packages/platform-browser/animations` は 46 件でした。
+シリーズの準備で取った一覧（手元の作業フォルダの `commits-animations-1y.txt`、../angular-main、2025-10-31〜2026-10-08）です。取り方の記録が無いので、この 1 年の animations のコミットの全部ではありません。参考に、`git log --since=2025-11-01 -- packages/animations packages/core/src/animation packages/platform-browser/animations` は 46 件でした。
 
 | type | 件数 |
 | --- | --- |

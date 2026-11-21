@@ -37,7 +37,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 小さなコンポーネントを 1 つ書き、このサイトの node\_modules にある `@angular/compiler-cli` 22.1.6 の `ngc` でコンパイルしました。
 
-📄 `scratchpad/b-ngc/src/demo.ts（コンパイルしたもの）`
+📄 `work/b-ngc/src/demo.ts（コンパイルしたもの）`
 
 ```
 @Pipe({name: 'twice', pure: false})
@@ -59,7 +59,7 @@ export class Demo {
 📄 `ターミナル`
 
 ```
-# scratchpad/b-ngc に src/demo.ts（上のコンポーネント）と tsconfig.json を置き、
+# work/b-ngc に src/demo.ts（上のコンポーネント）と tsconfig.json を置き、
 # このサイトの node_modules の @angular/compiler-cli 22.1.6 でコンパイルした
 node node_modules/@angular/compiler-cli/bundles/src/bin/ngc.js -p tsconfig.json
 cat out/demo.js
@@ -618,7 +618,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=^components using pure function instructions internally'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/b-pipe-acc.log・b-pure-acc.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/b-pipe-acc.log・b-pure-acc.log）`
 
 ```
 Ran 43 of 2693 specs

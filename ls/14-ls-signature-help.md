@@ -618,7 +618,7 @@ pnpm bazel test //packages/language-service/test:test \
   --nocache_test_results --test_output=all "--test_arg=--filter=linked editing ranges"
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/d-sig.log と d-linked.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/d-sig.log と d-linked.log）`
 
 ```
 （signature help）

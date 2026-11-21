@@ -1010,7 +1010,7 @@ pnpm bazel test //packages/language-service/test:test \
   "--test_arg=--filter=disabling specific hint categories"
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/d-inlay.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/d-inlay.log）`
 
 ```
 ==================== Test output for //packages/language-service/test:test (shard 2 of 4):

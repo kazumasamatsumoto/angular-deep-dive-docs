@@ -306,7 +306,7 @@ golden の 2157 行目の `Annotations` と 2165 行目の `InferArgsFromInputSc
 
 手元で `tsc` に推論の結果を表示させた記録です（わざと型エラーにして、エラーの文に型を出させています）。
 
-📄 `<scratchpad>/wmcp-demo/a/types/infer.ts（22.1.6 用。8576f161ae4 用は同じ形を 5.1.0 の型で組み立てたもの）`
+📄 `<work>/wmcp-demo/a/types/infer.ts（22.1.6 用。8576f161ae4 用は同じ形を 5.1.0 の型で組み立てたもの）`
 
 ```
 import {Injector, declareExperimentalWebMcpTool, provideExperimentalWebMcpTools} from '@angular/core';

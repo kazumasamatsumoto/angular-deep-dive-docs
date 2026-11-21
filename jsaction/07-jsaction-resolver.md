@@ -368,7 +368,7 @@ Chrome 156（macOS）で試すと、次のようになりました。
 
 Shift と Cmd のクリックも早期の契約には貯まりますが、渡し直されませんでした。ハイドレーションのあとに同じように押せば、Angular がボタンに直接付けたリスナーが動くので、違いが出るのはハイドレーションの前に押したときだけです。同じ理由で、incremental hydration の眠っている塊の中を Shift を押しながら押しても、行き先が決まらないので `invokeRegisteredReplayListeners` は呼ばれません（コードから読んだことで、記録はしていません）。
 
-📄 `記録のスクリプト（scratchpad/jsa-demo/c/。build.mjs で束ね、rec-run.mjs と e2e-clickmod.mjs がヘッドレスの Chrome を動かす）`
+📄 `記録のスクリプト（work/jsa-demo/c/。build.mjs で束ね、rec-run.mjs と e2e-clickmod.mjs がヘッドレスの Chrome を動かす）`
 
 ```
 // ===== build.mjs =====
@@ -765,7 +765,7 @@ pnpm bazel test //packages/core/primitives/event-dispatch/test:browser_test_chro
   '--test_arg=--filter=is action key' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/c-all.log・c-filter.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/c-all.log・c-filter.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed

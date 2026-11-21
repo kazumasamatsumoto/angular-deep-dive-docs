@@ -902,7 +902,7 @@ src/defer/rendering.ts:245:  profiler(ProfilerEvent.DeferBlockStateStart);
 >
 > 時間の値について：Node の `performance.now()` は本物の高分解能の時計なので、値は「Node の上で JavaScript を実行した時間」です。アプリが小さく、domino（Node の上の DOM）には描画もレイアウトも無いので、どれも 0.001〜0.4 ms ほどの小さな値になります。ブラウザで同じアプリを記録した値とは比べられません。値の大小ではなく、**どの出来事に、どのディレクティブの、どの項目に足されたか**を見てください。
 
-📄 `scratchpad の記録スクリプト（capture.ts。共通の部品で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（capture.ts。共通の部品で束ねて node で実行）`
 
 ```
 // 第 13 回 devtools-profiler-capture の記録。
@@ -1031,7 +1031,7 @@ pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib:client_event_sub
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/d-bazel-capture.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/d-bazel-capture.log）`
 
 ```
 Chromium: 1/1 test files | 2 passed, 0 failed

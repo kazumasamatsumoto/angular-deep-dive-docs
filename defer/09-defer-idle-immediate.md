@@ -405,7 +405,7 @@ diff --git a/packages/core/src/defer/idle_scheduler.ts b/packages/core/src/defer
 
    塊のビューが壊されると、しまっておいた取り消しの関数（2 節の 98 行目）が呼ばれ、`remove` → `cancelBucket` で id 4・5 が `cancelIdleCallback` されました。
 
-📄 `scratchpad の記録スクリプト（idle.ts。共通の build.mjs で束ねて node で実行。共通の harness.ts と build.mjs は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（idle.ts。共通の build.mjs で束ねて node で実行。共通の harness.ts と build.mjs は第 1 回に全文）`
 
 ```
 // 第 9 回（defer-idle-immediate）の記録。
@@ -660,7 +660,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/c-idle.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/c-idle.log）`
 
 ```
 Ran 24 of 2693 specs

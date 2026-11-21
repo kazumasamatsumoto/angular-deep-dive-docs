@@ -873,7 +873,7 @@ pnpm bazel test //packages/compiler-cli/test/compliance/full:full \
   "--test_arg=--filter=r3_view_compiler_i18n/(localize_legacy_message_ids|es5_support|element_attributes|namespaces)"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/b-consts.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/b-consts.log）`
 
 ```
 //packages/compiler-cli/test/compliance/full:full（shard 2）

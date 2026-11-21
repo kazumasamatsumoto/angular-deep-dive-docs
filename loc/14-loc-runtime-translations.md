@@ -490,7 +490,7 @@ pnpm bazel test //packages/localize/src/utils/test:test //packages/localize/test
   '--test_arg=--filter=translat|Translation|makeTemplateObject'
 ```
 
-📄 `出力（2026-11-03 に実行。ログは scratchpad/i18n-logs/d-f14-translat.log）`
+📄 `出力（2026-11-03 に実行。ログは work/i18n-logs/d-f14-translat.log）`
 
 ```
 //packages/localize/src/utils/test:test   Ran 22 of 41 specs   PASSED in 0.1s

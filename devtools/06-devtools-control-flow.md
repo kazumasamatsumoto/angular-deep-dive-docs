@@ -636,7 +636,7 @@ core が「塊」として返すのは 14〜15 行目の `Defer` と `For` の 2
 
    `rootNodes` が `app-heavy` に替わり、静的なノードの代わりに `app-heavy` が子になります。`triggers` は `{defer: ['on idle'], hydrate: [], prefetch: []}` です。
 
-📄 `scratchpad の記録スクリプト（control-flow.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（control-flow.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 6 回 devtools-control-flow の記録。
@@ -917,7 +917,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance '--test_arg=--filter=
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/b-bazel.log・b-bazel-core-cf.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/b-bazel.log・b-bazel-core-cf.log）`
 
 ```
 tree-strategies/test_bundle.spec.js  Chromium 1/1 test files | 8 passed, 0 failed（Firefox も 8 件）

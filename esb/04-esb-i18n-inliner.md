@@ -1585,7 +1585,7 @@ angular/angular-cli · 読了 約 13 分 · 発展 · [サイトで読む（デ�
 
 1. **アプリ**
 
-   `<scratchpad>/esb-demo/b/i18n-app` に、カウンターと次の 2 つの翻訳ファイルを置き、`node_modules` はサイトのものを symlink で借りました。
+   `<work>/esb-demo/b/i18n-app` に、カウンターと次の 2 つの翻訳ファイルを置き、`node_modules` はサイトのものを symlink で借りました。
 2. **フック**
 
    `NODE_OPTIONS="--require hook-inliner.cjs" npx ng build` で、`I18nInliner.prototype.inlineAll` と `WorkerPool.prototype.run` を包み、渡った出力・ワーカーへの仕事・返った出力の `$localize` の行を JSON に書きました。
@@ -1647,7 +1647,7 @@ export class Counter {
 }
 ```
 
-📄 `<scratchpad>/esb-demo/b/hook-inliner.cjs`
+📄 `<work>/esb-demo/b/hook-inliner.cjs`
 
 ```js
 // ng build の中の I18nInliner.inlineAll を包み、渡ったものと返ったものを JSON に書く。
@@ -1740,7 +1740,7 @@ proto.inlineAll = async function (files, locales) {
 
 ```
 
-📄 `<scratchpad>/esb-demo/b/rec-encoder.mjs`
+📄 `<work>/esb-demo/b/rec-encoder.mjs`
 
 ```js
 import { createRequire } from 'node:module';
@@ -1778,7 +1778,7 @@ console.log(JSON.stringify(out, null, 1).slice(0, 2500));
 
 ```
 
-📄 `<scratchpad>/esb-demo/b/rec-template-update.mjs`
+📄 `<work>/esb-demo/b/rec-template-update.mjs`
 
 ```js
 import { createRequire } from 'node:module';

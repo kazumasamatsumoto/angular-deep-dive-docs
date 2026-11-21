@@ -801,7 +801,7 @@ DevTools の Components タブでコンポーネントを選び、signal のグ�
 
 記録のときの環境の都合を 2 つ書いておきます。core は `window` があるときだけ effect を記録する注入器プロファイラを入れる（`publishDefaultGlobalUtils`）ので、Node では描画の前に `globalThis.window` を置きました。また JIT では `input()` を入力として知らせるために、AOT のコンパイラが JIT 向けに足すのと同じ `@Input({isSignal: true, …})` を手で付けました。記録のスクリプトの全文です（共通の部品 harness.ts は[第 1 回](01-devtools-overview.md)に全文があります）。
 
-📄 `scratchpad の記録スクリプト（signal-graph.ts、共通の build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（signal-graph.ts、共通の build.mjs で束ねて node で実行）`
 
 ```
 // 第 17 回 devtools-signal-graph の記録。
@@ -1211,7 +1211,7 @@ pnpm bazel test //devtools/projects/ng-devtools/src/lib/shared/signal-graph:test
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/e-signal-graph.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/e-signal-graph.log）`
 
 ```
 signal-graph:test_chromium            26 passed, 0 failed   PASSED in 2.2s

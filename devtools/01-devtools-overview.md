@@ -457,7 +457,7 @@ DevTools の開発者は、拡張を入れ直さなくても試せるように�
 
 `harness.ts` は、本物の @angular/core 22.1.6 を開発モード（JIT）で platform-server（domino という Node 向けの DOM）に描画し、`window`・`document` をグローバルに置きます。domino に無い `ResizeObserver` などは「何もしない代わり」を置いています。これは環境の代わりで、devtools のロジックではありません。domino では大きさ・位置・時間が 0 になるので、ほかの章でもそういう値は意味を持ちません。`build.mjs` は、記録のスクリプトと devtools のソースと @angular/\* を esbuild で 1 つのファイルに束ねます。
 
-📄 `scratchpad の共通の部品（_shared/harness.ts）`
+📄 `手元の作業フォルダの共通の部品（_shared/harness.ts）`
 
 ```
 // devtools シリーズの記録用の共通部品。
@@ -559,7 +559,7 @@ export async function writeJson(path: string, data: unknown) {
 
 ```
 
-📄 `scratchpad の共通の部品（_shared/build.mjs）`
+📄 `手元の作業フォルダの共通の部品（_shared/build.mjs）`
 
 ```
 // 使い方: node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > 記録.json
@@ -585,7 +585,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 
 ```
 
-📄 `scratchpad の記録スクリプト（a/overview.ts。build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/overview.ts。build.mjs で束ねて node で実行）`
 
 ```
 // devtools-overview の記録: 小さなアプリを描画し、
@@ -706,7 +706,7 @@ pnpm bazel test //devtools/projects/protocol:test //devtools/projects/shared-uti
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/a-tests.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/a-tests.log）`
 
 ```
 //devtools/projects/protocol:test_chromium                       PASSED in 1.9s   (3 passed)

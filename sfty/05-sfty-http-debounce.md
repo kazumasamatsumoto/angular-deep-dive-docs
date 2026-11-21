@@ -531,7 +531,7 @@ Ran 21 of 539 specs / 21 specs, 0 failures
 $ pnpm bazel test //packages/forms/signals/test/node:test --nocache_test_results --test_output=all "--test_arg=--filter=^resources "
 Ran 13 of 539 specs / 13 specs, 0 failures
 
-# 作業木: git -C ~/angular-research/angular-fix worktree add <scratchpad>/sfty-wt-b 8576f161ae4
+# 作業木: git -C ~/angular-research/angular-fix worktree add <work>/sfty-wt-b 8576f161ae4
 # （そこで ~/angular-research/angular/node_modules/.bin/bazel test … を直接走らせ、終えてから worktree remove --force で消した）
 # W1: git -C ~/angular-research/angular show cf37344a4d6 -- packages/forms/signals/test | git apply
 $ bazel test //packages/forms/signals/test/node:test --nocache_test_results --test_output=all "--test_arg=--filter=^debounce "

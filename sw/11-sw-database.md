@@ -548,7 +548,7 @@ cd ~/angular-research/angular
 pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_results --test_output=all '--test_arg=--filter=cache naming|names the caches correctly'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/c-names.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/c-names.log）`
 
 ```
 Ran 4 of 153 specs

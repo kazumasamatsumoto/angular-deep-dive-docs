@@ -621,7 +621,7 @@ cd ~/angular-research/angular
 pnpm bazel test //devtools/projects/ng-devtools/src/lib/devtools-tabs/directive-explorer/property-resolver:test //devtools/projects/ng-devtools/src/lib/shared/object-tree-explorer:test --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/c-all.log。ほかのターゲットと一緒に走らせ、全体で 44.4 秒）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/c-all.log。ほかのターゲットと一緒に走らせ、全体で 44.4 秒）`
 
 ```
 property-resolver:test_chromium   Chromium: 1/1 test files | 8 passed, 0 failed   (0.8s)

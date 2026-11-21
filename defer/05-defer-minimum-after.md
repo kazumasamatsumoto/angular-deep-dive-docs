@@ -333,7 +333,7 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 
    placeholder を描いた時点で FROZEN\_UNTIL が 499 です。5〜6 ms のトリガーは 375 行目で NEXT に Loading を覚えるだけ。読み込み 100ms なら 105 ms に NEXT が Complete に上書きされ、502 ms に本体（Loading を通らない）。1500ms なら 511 ms に Loading が描き直しに回り、**after の 300 ms はそこから数える**ので 810 ms に Loading、1805 ms に本体でした。
 
-📄 `scratchpad の記録スクリプト（minimum-after.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（minimum-after.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 5 回 defer-minimum-after の記録。
@@ -543,7 +543,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=@defer minimum and after conditions'
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/b-minimum-after.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/b-minimum-after.log）`
 
 ```
 Ran 7 of 2693 specs

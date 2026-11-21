@@ -630,7 +630,7 @@ pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_result
   "--test_arg=--filter=Driver (shows notifications for push|notification click events|notification close events)"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/d-push-app.log・d-push-worker.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/d-push-app.log・d-push-worker.log）`
 
 ```
 ### //packages/service-worker/test:test filter=SwPush

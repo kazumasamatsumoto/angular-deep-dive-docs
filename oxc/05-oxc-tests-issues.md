@@ -320,12 +320,12 @@ createAngularCompilation：1 + 1 + 1 + 2 = 5 specs, 0 failures
 📄 `作業木で走らせたコマンド`
 
 ```
-git -C ~/angular-research/angular-cli-fix worktree add --detach <scratchpad>/oxc-wt-b 44129f66a3
+git -C ~/angular-research/angular-cli-fix worktree add --detach <work>/oxc-wt-b 44129f66a3
 # run.mjs：作業木の tools/oxc と tools/angular/linker の .ts（spec を含む）を transpileModule で CJS にして、
 #          ../angular-cli-fix の node_modules（NODE_PATH）の jasmine で走らせる。行を変えない作業木では 150 specs, 0 failures（bazel の 159 から lazy-routes の 9 を除いた数と同じ）
 # mutate.mjs：1 行を変える → run.mjs → 戻す、を 12 回
-node <scratchpad>/oxc-demo/b/mut/mutate.mjs <scratchpad>/oxc-wt-b
-git -C ~/angular-research/angular-cli-fix worktree remove --force <scratchpad>/oxc-wt-b   # 終わったら消した
+node <work>/oxc-demo/b/mut/mutate.mjs <work>/oxc-wt-b
+git -C ~/angular-research/angular-cli-fix worktree remove --force <work>/oxc-wt-b   # 終わったら消した
 ```
 
 | 場所（tools/ から） | 変えたこと | 150 specs の結果 | 章 | 落ちない理由（spec の入力を grep して確かめた） |
@@ -353,7 +353,7 @@ git -C ~/angular-research/angular-cli-fix worktree remove --force <scratchpad>/o
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/oxc-tests-issues)
 
-開いている issue で、このシリーズの行に一番近いのは #34198 です。後ろで宣言するクラスを、前のクラスの static の宣言（`deps` など）が名前で参照する FESM で、unit-test の builder が ReferenceError で止まるという報告で、まだ返事がありません。手元で作った同じ形（前のクラスの `ɵɵngDeclareComponent` の `dependencies` が後ろのクラスを指す）を 22.2.7 の oxc のリンカーと Babel のリンカーに通すと、どちらも `dependencies: [Parent]` を static の初期化の中に置き、評価すると両方とも ReferenceError でした。違いは、Babel が純粋関数の定数（`_c0`）をファイルの先頭に置き、oxc が IIFE の中に置くことだけで、報告の差はこの形では再現できていません（`<scratchpad>/oxc-demo/b/probe/tdz.mjs`）。
+開いている issue で、このシリーズの行に一番近いのは #34198 です。後ろで宣言するクラスを、前のクラスの static の宣言（`deps` など）が名前で参照する FESM で、unit-test の builder が ReferenceError で止まるという報告で、まだ返事がありません。手元で作った同じ形（前のクラスの `ɵɵngDeclareComponent` の `dependencies` が後ろのクラスを指す）を 22.2.7 の oxc のリンカーと Babel のリンカーに通すと、どちらも `dependencies: [Parent]` を static の初期化の中に置き、評価すると両方とも ReferenceError でした。違いは、Babel が純粋関数の定数（`_c0`）をファイルの先頭に置き、oxc が IIFE の中に置くことだけで、報告の差はこの形では再現できていません（`<work>/oxc-demo/b/probe/tdz.mjs`）。
 
 ## 5. origin/main の続き
 
@@ -389,15 +389,15 @@ eb1edeb514 2026-09-21 refactor(@angular/build): relocate non-esbuild utilities o
 
 | ソースの行 | 見つけたこと | 再現 | 既存の issue / PR | 章 |
 | --- | --- | --- | --- | --- |
-| `tools/oxc/oxc-transform.ts 403〜406（adjustTypeScriptEnumsInStatements）` | enum の各メンバーの代入の右辺だけを isPure で見る。enum Reg { A = register("a") } は TypeScript が Reg\[Reg\["A"\] = register("a")\] = "A" と出すので、呼び出しが左辺に入り、印付きの IIFE に包まれる（使われなければ呼び出しごと消せる形）。Babel の版も右辺だけを見ていた | &lt;scratchpad&gt;/oxc-demo/a/record-transform.mjs の 6 つ目の入力（Live、Date.now()）と、&lt;scratchpad&gt;/oxc-demo/a/patched/ の条件を足した写し（第 1 回） | なし（"enum side effect pure annotation" "enum initializer function call removed" で検索） | 第 1 回 |
-| `tools/oxc/oxc-transform.ts 212（analyzeClassStaticProperties）と 543〜547` | static のキーが計算されたもの（static \[key\] = 1）かを見ない。oxc-parser は \[key\] のキーも Identifier にするので名前 key のプロパティとして判定され、static \[ɵfac\] = register() は Angular の static の名前として値を見ずに包まれる | &lt;scratchpad&gt;/oxc-demo/a/record-transform.mjs の 4 つ目の入力（class E）と Node での確かめ（第 1 回） | なし（"static computed property pure" で検索） | 第 1 回 |
-| `tools/oxc/oxc-transform.ts 144・148（isPure）` | 単項演算子の種類と、オブジェクトのプロパティのキーを見ないので、delete globalThis.foo と { \[register()\]: 1 } も純粋とみなし、それを static に持つクラスが包まれる。Babel の scope.isPure より広い | &lt;scratchpad&gt;/oxc-demo/a/record-transform.mjs の横での確かめ（第 1 回の 2 節） | なし（"isPure delete" "advancedOptimizations computed" で検索） | 第 1 回 |
-| `tools/oxc/oxc-transform.ts の isAlreadyEdited（CallExpression・NewExpression の枝の最初）` | 後順の走査（2b85529e82・f4dad31cce の後）では、書き換えた範囲の内側を後から訪ねることが無いので、この確かめが真を返す場面が無い | &lt;scratchpad&gt;/oxc-demo/a/record-traversal.mjs と old/ の比べ（第 2 回） | —（ふるまいは変わらない。消してよいかの記録） | 第 2 回 |
-| `tools/angular/linker/oxc-ast-host.ts 271〜276（getRange）` | 行と桁をいつも 0 で返す。リンクするテンプレートの誤りの「ファイル@行:桁」が、oxc では @0:14、同じ入力の Babel のリンカーでは @5:26 になる | &lt;scratchpad&gt;/oxc-demo/b/linker/record.mjs の「テンプレートに誤り」（第 3 回の記録） | なし（2026-11-18、gh で "linker error location" "oxc linker getRange" などを検索） | 第 3 回 |
-| `tools/angular/transformers/jit-resource-transformer.ts 196 と 113〜120` | JIT で、styles の値が変数（文字列でも配列でもない）かつ styleUrl / styleUrls があると、styles のキーが 2 つになり、変数のスタイルが渡らない | &lt;scratchpad&gt;/oxc-demo/b/ts/record.mjs の「styles が変数・styleUrl あり」（第 4 回の記録） | なし（"jit styles styleUrl" などで検索）。@ngtools/webpack の replace\_resources.ts も同じ形の分岐 | 第 4 回 |
-| `tools/angular/transformers/jit-bootstrap-transformer.ts 72〜76（44129f66a3）` | 名前だけを消す集合を作っても、消す関数がファイルの直下しか見ないので、platformBrowserDynamic の名前が import に残る | &lt;scratchpad&gt;/oxc-demo/b/ts/record.mjs の「ほかの名前と同じ import」（HEAD の版） | origin/main の 174eb34540 で直った（#34582 の続き。22.2.x は a4ce7bf461、22.2.7 に入っている） | 第 4 回 |
-| `tools/angular/linker/string-ast-factory.ts 93（wrapOperand）` | 両端だけを見るので (a) \|\| (b) を包まれた式とみなし、! を付けると !(a) \|\| (b) になる。記録の 4 つのリンクでは、この形の文字列は渡ってこなかった | &lt;scratchpad&gt;/oxc-demo/b/linker/record.mjs の単体の呼び出し（UNIT の最後の行） | なし | 第 3 回 |
-| `3 節の表の 0 failures の 10 行` | 行を変えても spec が落ちない（spec の無い行）。不具合ではなく、固める spec が無いことの記録 | &lt;scratchpad&gt;/oxc-demo/b/mut/mutate.mjs（作業木で 1 行ずつ） | — | 第 1〜3 回 |
+| `tools/oxc/oxc-transform.ts 403〜406（adjustTypeScriptEnumsInStatements）` | enum の各メンバーの代入の右辺だけを isPure で見る。enum Reg { A = register("a") } は TypeScript が Reg\[Reg\["A"\] = register("a")\] = "A" と出すので、呼び出しが左辺に入り、印付きの IIFE に包まれる（使われなければ呼び出しごと消せる形）。Babel の版も右辺だけを見ていた | &lt;work&gt;/oxc-demo/a/record-transform.mjs の 6 つ目の入力（Live、Date.now()）と、&lt;work&gt;/oxc-demo/a/patched/ の条件を足した写し（第 1 回） | なし（"enum side effect pure annotation" "enum initializer function call removed" で検索） | 第 1 回 |
+| `tools/oxc/oxc-transform.ts 212（analyzeClassStaticProperties）と 543〜547` | static のキーが計算されたもの（static \[key\] = 1）かを見ない。oxc-parser は \[key\] のキーも Identifier にするので名前 key のプロパティとして判定され、static \[ɵfac\] = register() は Angular の static の名前として値を見ずに包まれる | &lt;work&gt;/oxc-demo/a/record-transform.mjs の 4 つ目の入力（class E）と Node での確かめ（第 1 回） | なし（"static computed property pure" で検索） | 第 1 回 |
+| `tools/oxc/oxc-transform.ts 144・148（isPure）` | 単項演算子の種類と、オブジェクトのプロパティのキーを見ないので、delete globalThis.foo と { \[register()\]: 1 } も純粋とみなし、それを static に持つクラスが包まれる。Babel の scope.isPure より広い | &lt;work&gt;/oxc-demo/a/record-transform.mjs の横での確かめ（第 1 回の 2 節） | なし（"isPure delete" "advancedOptimizations computed" で検索） | 第 1 回 |
+| `tools/oxc/oxc-transform.ts の isAlreadyEdited（CallExpression・NewExpression の枝の最初）` | 後順の走査（2b85529e82・f4dad31cce の後）では、書き換えた範囲の内側を後から訪ねることが無いので、この確かめが真を返す場面が無い | &lt;work&gt;/oxc-demo/a/record-traversal.mjs と old/ の比べ（第 2 回） | —（ふるまいは変わらない。消してよいかの記録） | 第 2 回 |
+| `tools/angular/linker/oxc-ast-host.ts 271〜276（getRange）` | 行と桁をいつも 0 で返す。リンクするテンプレートの誤りの「ファイル@行:桁」が、oxc では @0:14、同じ入力の Babel のリンカーでは @5:26 になる | &lt;work&gt;/oxc-demo/b/linker/record.mjs の「テンプレートに誤り」（第 3 回の記録） | なし（2026-11-18、gh で "linker error location" "oxc linker getRange" などを検索） | 第 3 回 |
+| `tools/angular/transformers/jit-resource-transformer.ts 196 と 113〜120` | JIT で、styles の値が変数（文字列でも配列でもない）かつ styleUrl / styleUrls があると、styles のキーが 2 つになり、変数のスタイルが渡らない | &lt;work&gt;/oxc-demo/b/ts/record.mjs の「styles が変数・styleUrl あり」（第 4 回の記録） | なし（"jit styles styleUrl" などで検索）。@ngtools/webpack の replace\_resources.ts も同じ形の分岐 | 第 4 回 |
+| `tools/angular/transformers/jit-bootstrap-transformer.ts 72〜76（44129f66a3）` | 名前だけを消す集合を作っても、消す関数がファイルの直下しか見ないので、platformBrowserDynamic の名前が import に残る | &lt;work&gt;/oxc-demo/b/ts/record.mjs の「ほかの名前と同じ import」（HEAD の版） | origin/main の 174eb34540 で直った（#34582 の続き。22.2.x は a4ce7bf461、22.2.7 に入っている） | 第 4 回 |
+| `tools/angular/linker/string-ast-factory.ts 93（wrapOperand）` | 両端だけを見るので (a) \|\| (b) を包まれた式とみなし、! を付けると !(a) \|\| (b) になる。記録の 4 つのリンクでは、この形の文字列は渡ってこなかった | &lt;work&gt;/oxc-demo/b/linker/record.mjs の単体の呼び出し（UNIT の最後の行） | なし | 第 3 回 |
+| `3 節の表の 0 failures の 10 行` | 行を変えても spec が落ちない（spec の無い行）。不具合ではなく、固める spec が無いことの記録 | &lt;work&gt;/oxc-demo/b/mut/mutate.mjs（作業木で 1 行ずつ） | — | 第 1〜3 回 |
 
 ## 聞かれそうな質問
 

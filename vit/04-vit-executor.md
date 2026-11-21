@@ -722,7 +722,7 @@ Karma の executor は自分で Vitest のような後片付けを持たず、`e
 
 > **🧪 DEMO — ng test の出来事を出た順に（記録の再生）**
 >
-> `<scratchpad>/vit-demo/b/record.mjs` が、@angular/build 22.1.7・vitest 4.1.11・jsdom 28.1.0 の `ng test` を Node v24.22.1 で起動した記録です（[前の章](03-vit-plugins.md)と同じアプリ）。`NG_TEST_LOG=1`（watch は 2）で executor の debug のログを出し、包んだ `vitest/node` が `[vit-wrap] startVitest`・`configureVitest`・`close-start` などの印を同じ stdout に書いたので、出た順に並んでいます。ms は起動からの時間です。builder のログは architect の logger を通って出るので、同じ ms の中では包みの印と前後することがあります（たとえば 215 行目の `Disposing` は 222 行目の `close()` より先に呼ばれますが、印のほうが先に出ています）。watch の記録では `src/app/` の 3 つのファイルを 1 つずつ書き換え、終わったら元に戻し、SIGINT で止めました。ほかの場合も含めて、起動したプロセスは終わったことを確かめています。
+> `<work>/vit-demo/b/record.mjs` が、@angular/build 22.1.7・vitest 4.1.11・jsdom 28.1.0 の `ng test` を Node v24.22.1 で起動した記録です（[前の章](03-vit-plugins.md)と同じアプリ）。`NG_TEST_LOG=1`（watch は 2）で executor の debug のログを出し、包んだ `vitest/node` が `[vit-wrap] startVitest`・`configureVitest`・`close-start` などの印を同じ stdout に書いたので、出た順に並んでいます。ms は起動からの時間です。builder のログは architect の logger を通って出るので、同じ ms の中では包みの印と前後することがあります（たとえば 215 行目の `Disposing` は 222 行目の `close()` より先に呼ばれますが、印のほうが先に出ています）。watch の記録では `src/app/` の 3 つのファイルを 1 つずつ書き換え、終わったら元に戻し、SIGINT で止めました。ほかの場合も含めて、起動したプロセスは終わったことを確かめています。
 >
 > 3 本の spec（1 本はわざと落ちる）を 1 回だけ走らせる。
 >
@@ -767,7 +767,7 @@ pnpm bazel test //packages/angular/build:test --nocache_test_results --test_outp
 //packages/angular/build:test                                            PASSED in 0.8s
 ```
 
-unit の target の `--filter` は 3 つの describe の名前の正規表現で、4 つの shard に 7 本ずつ、合わせて 28 本（browser-provider の 14 本と test-discovery の 14 本）が通りました。次に、作業木（`git -C ~/angular-research/angular-cli-fix worktree add <scratchpad>/vit-wt-b 44129f66a3`）で行を変えて走らせました。
+unit の target の `--filter` は 3 つの describe の名前の正規表現で、4 つの shard に 7 本ずつ、合わせて 28 本（browser-provider の 14 本と test-discovery の 14 本）が通りました。次に、作業木（`git -C ~/angular-research/angular-cli-fix worktree add <work>/vit-wt-b 44129f66a3`）で行を変えて走らせました。
 
 📄 `作業木で executor.ts を変えて走らせた結果`
 

@@ -988,7 +988,7 @@ pnpm bazel test //packages/language-service/test:test \
   "--test_arg=--filter=element attribute scope"
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/d-attr.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/d-attr.log）`
 
 ```
 ==================== Test output for //packages/language-service/test:test (shard 4 of 4):

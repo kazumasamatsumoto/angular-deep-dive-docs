@@ -59,7 +59,7 @@ $ cd ~/angular-research/angular        # 8576f161ae4
 $ pnpm bazel test //packages/forms/signals/test/node:test --nocache_test_results --test_output=all
 $ pnpm bazel test //packages/forms/signals/test/web:test_chromium --nocache_test_results --test_output=all
 $ pnpm bazel test //packages/forms/signals/test/node:test --nocache_test_results --test_output=all "--test_arg=--filter=FieldTree proxy"
-# 作業木は git -C ~/angular-research/angular-fix worktree add <scratchpad>/sft-wt-b 8576f161ae4 で作り、
+# 作業木は git -C ~/angular-research/angular-fix worktree add <work>/sft-wt-b 8576f161ae4 で作り、
 # そこで ~/angular-research/angular/node_modules/.bin/bazel test … を直接走らせた（終わってから worktree remove --force で消した）
 ```
 

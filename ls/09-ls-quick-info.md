@@ -883,7 +883,7 @@ pnpm bazel test //packages/language-service/test:test --nocache_test_results --t
   '--test_arg=--filter=quick info.*blocks'
 ```
 
-📄 `出力（抜粋。2026-11-03 に実行。ログは scratchpad/ls-logs/c-quick-info.log）`
+📄 `出力（抜粋。2026-11-03 に実行。ログは work/ls-logs/c-quick-info.log）`
 
 ```
 Ran 7 of 668 specs

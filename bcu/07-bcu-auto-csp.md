@@ -567,7 +567,7 @@ headless Chrome の記録では、`onclick` 属性のボタンを押すと `scri
 
 ## 11. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `auto-csp.js` を require しました。44129f66a3 は、../angular-cli の `auto-csp.ts` を読み、esbuild の `transformSync` で .js にして、`html-rewriting-stream` だけ 22.2.7 の物を指すように書き換えて使いました（このファイルは 2 つの版で同じです）。ブラウザの記録は、手元の 127.0.0.1 のサーバーと headless Chrome の CDP です。外部には取りに行きません。
+スクリプトは `<work>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `auto-csp.js` を require しました。44129f66a3 は、../angular-cli の `auto-csp.ts` を読み、esbuild の `transformSync` で .js にして、`html-rewriting-stream` だけ 22.2.7 の物を指すように書き換えて使いました（このファイルは 2 つの版で同じです）。ブラウザの記録は、手元の 127.0.0.1 のサーバーと headless Chrome の CDP です。外部には取りに行きません。
 
 📄 `記録のスクリプト（rec-csp.mjs）`
 

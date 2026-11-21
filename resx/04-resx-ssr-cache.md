@@ -314,7 +314,7 @@ diff --git a/packages/platform-browser/src/hydration.ts b/packages/platform-brow
 
 「id あり」では、ブラウザの loader は 0 回、テンプレートは最初から `resolved` を見て、サーバーの `<p>` をそのまま使いました。「id なし」では、最初の描画の後に `<p class="v">`（サーバーの DOM）と `<p class="l">loading</p>`（ブラウザで作った DOM）が並び、loader が 1 回呼ばれた後に「browser で読んだ値」になりました。最後の `<p class="v">` がサーバーと同じノードなのは、使われなかったサーバーの DOM を片付けるのが安定した後（[provideClientHydration の章](../platform/07-hydration-provide.md)の 8 節）で、それより前に `@if` の側へ戻ったからです。1 節の #62897 の「一瞬」は、この 1 つ目の描画です。
 
-📄 `scratchpad/resx-demo/b/ssr/record.ts`
+📄 `work/resx-demo/b/ssr/record.ts`
 
 ```ts
 // このサイトの依存の @angular/* 22.1.6 を Node で動かし、resource の id（5a7c1e62dc2）が
@@ -479,7 +479,7 @@ writeFileSync('record.json', JSON.stringify({ node: process.version, angular: VE
 ```
 *記録を取ったスクリプトの全文*
 
-📄 `scratchpad/resx-demo/b/ssr/build.mjs`
+📄 `work/resx-demo/b/ssr/build.mjs`
 
 ```js
 // 使い方: RESEARCH_ROOT=<angular-research の場所> node build.mjs <記録のスクリプト.ts> <出力.mjs>

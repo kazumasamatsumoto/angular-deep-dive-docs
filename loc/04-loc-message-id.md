@@ -605,7 +605,7 @@ pnpm bazel test //packages/localize/tools/test/migrate/integration:integration \
   --nocache_test_results --test_output=all
 ```
 
-2026-11-03 の結果は、compiler が **Ran 12 of 403 specs、12 specs, 0 failures、PASSED in 0.8s**、`migrateFile` が 4 shard で 1 + 1 + 2 + 1 = **5 specs、PASSED in 1.0s**、integration が **5 specs、PASSED in 0.3s** でした（ログは `scratchpad/i18n-logs/a-message-id.log`・`a-migrate.log`・`a-migrate-int.log`）。
+2026-11-03 の結果は、compiler が **Ran 12 of 403 specs、12 specs, 0 failures、PASSED in 0.8s**、`migrateFile` が 4 shard で 1 + 1 + 2 + 1 = **5 specs、PASSED in 1.0s**、integration が **5 specs、PASSED in 0.3s** でした（ログは `work/i18n-logs/a-message-id.log`・`a-migrate.log`・`a-migrate-int.log`）。
 
 ### 直すとしたら、どこから
 

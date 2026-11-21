@@ -226,7 +226,7 @@ git switch -c docs-fix-commit-scope-diagram upstream/main
 
    図の 30〜34 行目の 5 行だけを書き換えます。並びは設定（＝箇条書き）と同じアルファベット順にし、折り返しは元の最も長い行（31・32 行目、92 文字）を超えないようにしました。30 行目の頭（` │ └─⫸ Commit Scope: `）と 31〜34 行目の頭の空白は、元のまま 1 文字も変えていません。行数も 5 行のままなので、図の下の `│` と `└─⫸ Commit Type` の位置は動きません。
 
-📄 `git diff（../angular は変更せず、scratchpad のコピーで作った差分）`
+📄 `git diff（../angular は変更せず、手元の作業フォルダのコピーで作った差分）`
 
 ````
 diff --git a/contributing-docs/commit-message-guidelines.md b/contributing-docs/commit-message-guidelines.md

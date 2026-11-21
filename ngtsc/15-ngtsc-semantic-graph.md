@@ -1203,7 +1203,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc --nocache_test_results 
   '--test_arg=--filter=remote scoping'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/d-ngtsc-ngtscincrementalcompilationsem.log・d-ngtsc-remotescoping.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/d-ngtsc-ngtscincrementalcompilationsem.log・d-ngtsc-remotescoping.log）`
 
 ```
 # ngtsc incremental compilation (semantic changes)

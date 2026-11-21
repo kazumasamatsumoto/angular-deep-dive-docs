@@ -383,7 +383,7 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 >
 > `httpResource.blob(url, {parse: (b) => URL.createObjectURL(b), defaultValue: ''})` のような書き方で 「`Type 'string' is not assignable to type 'HttpResourceRequest'`」と出たら、url の形が悪いのではありません。記録の n6 がその形です。n7 のように `parse` の引数に `(b: Blob)` と型を書くか、`httpResource.blob<string>(…)` と型引数を書けば（n8）通ります。
 
-📄 `scratchpad/httpx-b/types/check-types.mjs`
+📄 `work/httpx-b/types/check-types.mjs`
 
 ```js
 // 第 4 回 httpx-resource-types の記録: httpResource の呼び方ごとに、TypeScript が選ぶ戻り値の型と、型のエラーを集める。
@@ -741,7 +741,7 @@ describe `types` は、実行して結果を見る it ではなく、**コンパ
 
 ### 手元で走らせた結果
 
-../angular で `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all --test_arg=--filter=httpResource` と、名前で絞ると 「Ran 22 of 410 specs / 22 specs, 0 failures」でした（2026-11-06。ログは scratchpad/httpx-logs/b-filter-node.log）。Node の側（`zoneless_jasmine_test`）は jasmine の `--filter` が効きます。ブラウザの側で同じ引数を渡しても 410 件ぜんぶが走ることは[第 6 回](06-httpx-tests-issues.md)で確かめました。
+../angular で `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all --test_arg=--filter=httpResource` と、名前で絞ると 「Ran 22 of 410 specs / 22 specs, 0 failures」でした（2026-11-06。ログは work/httpx-logs/b-filter-node.log）。Node の側（`zoneless_jasmine_test`）は jasmine の `--filter` が効きます。ブラウザの側で同じ引数を渡しても 410 件ぜんぶが走ることは[第 6 回](06-httpx-tests-issues.md)で確かめました。
 
 📄 `angular/packages/common/http/test/resource_spec.ts` L28–39 （▶ の行: 30, 34, 38）
 
@@ -769,7 +769,7 @@ resource\_spec は 30 行目で `ngServerMode` を `isNode` にするので、No
 - 3 節の i・n1（型を書かない `parse` と `defaultValue` で、text・blob・arrayBuffer がエラーになり、文が原因と関係ない）は、型の宣言の並びと既定の型引数から来ています。直すなら resource.ts の `HttpResourceFn` の宣言（186 行目の `text` や 122 行目の `arrayBuffer`）で、確かめるのは describe `types`（403 行目）です。型を変えると 16 個のシグネチャと公開 API の golden（`goldens/public-api/common/http/index.api.md`）が一緒に動くので、小さな修正にはなりません。
 - 本家に PR や issue を出すことは勧めません。issue の全体は[第 6 回](06-httpx-tests-issues.md)にあります。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、7 つのボタンを順に押しました（httpResource と parse と defaultValue のあとでは reload() も）。バックエンドが受け取った responseType は json・text・blob・arraybuffer の順に変わり、どれも最初の effect の行は loading（headers と statusCode は undefined）、約 300ms あとの行で resolved・X-Total-Count: 42・200 になりました。parse と defaultValue は loading の間 "（まだ）"、そのあと "ADA"、バックエンドは /api/users/1?fields=name を受け取りました。parse が投げると error になり、value() は投げ、headers は X-Total-Count: 42、statusCode は 200 のままでした。404 は error・X-Request-Id: r-404・404 です。reload() では reloading の間 value は前の値のまま、headers と statusCode は undefined で、応答のあとに戻りました。コンソールの警告とエラーは 0 件でした。最初に押したときに読み込まれた JS は 680 バイトと 706 バイトの 2 つで、どちらも main と共有の chunk から名前を引き直すだけのものです。このサイトの main には、provideClientHydration のために @angular/common/http（httpResource の工場の行を含む）がもともと入っていて、httpx シリーズより前の 2026-11-02 の本番ビルドの main にも同じ行があります。このデモの文字列（/api/users/1 など）は main に 0 件で、章の chunk にだけあります（scratchpad/httpx-b/verify.mjs、verify.json）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、7 つのボタンを順に押しました（httpResource と parse と defaultValue のあとでは reload() も）。バックエンドが受け取った responseType は json・text・blob・arraybuffer の順に変わり、どれも最初の effect の行は loading（headers と statusCode は undefined）、約 300ms あとの行で resolved・X-Total-Count: 42・200 になりました。parse と defaultValue は loading の間 "（まだ）"、そのあと "ADA"、バックエンドは /api/users/1?fields=name を受け取りました。parse が投げると error になり、value() は投げ、headers は X-Total-Count: 42、statusCode は 200 のままでした。404 は error・X-Request-Id: r-404・404 です。reload() では reloading の間 value は前の値のまま、headers と statusCode は undefined で、応答のあとに戻りました。コンソールの警告とエラーは 0 件でした。最初に押したときに読み込まれた JS は 680 バイトと 706 バイトの 2 つで、どちらも main と共有の chunk から名前を引き直すだけのものです。このサイトの main には、provideClientHydration のために @angular/common/http（httpResource の工場の行を含む）がもともと入っていて、httpx シリーズより前の 2026-11-02 の本番ビルドの main にも同じ行があります。このデモの文字列（/api/users/1 など）は main に 0 件で、章の chunk にだけあります（work/httpx-b/verify.mjs、verify.json）。
 
 ## 聞かれそうな質問
 

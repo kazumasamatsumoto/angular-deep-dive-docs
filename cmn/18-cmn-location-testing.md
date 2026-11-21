@@ -761,7 +761,7 @@ pnpm bazel test //packages/common/test:test \
   '--test_arg=--filter=provideLocationMocks'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/d-location-class.log・d-mocks.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/d-location-class.log・d-mocks.log）`
 
 ```
 Ran 22 of 667 specs

@@ -845,7 +845,7 @@ when its return value is unused.
 
 > **🧪 DEMO — 本物の transform を 6 通りの入力で（記録の再生）**
 >
-> `<scratchpad>/oxc-demo/a/record-transform.mjs` が、@angular/build 22.2.7（oxc-parser 0.156.0・magic-string 1.4.1）の `transform` を Node v24.22.1 で呼んだ記録です。判定の列は、コンパイル済みの `oxc-transform.js` の 16〜231 行目（モジュールの先頭の `const` と `function`）をそのまま取り出して評価した関数を、同じ木に当てた結果です。`functionDepth` と `classDepth` は、`transform` が実際に訪ねたときのコンテキストを `traversePostOrder` を包んで記録したものです。
+> `<work>/oxc-demo/a/record-transform.mjs` が、@angular/build 22.2.7（oxc-parser 0.156.0・magic-string 1.4.1）の `transform` を Node v24.22.1 で呼んだ記録です。判定の列は、コンパイル済みの `oxc-transform.js` の 16〜231 行目（モジュールの先頭の `const` と `function`）をそのまま取り出して評価した関数を、同じ木に当てた結果です。`functionDepth` と `classDepth` は、`transform` が実際に訪ねたときのコンテキストを `traversePostOrder` を包んで記録したものです。
 >
 > ワーカーが node\_modules/@angular/ かつ sideEffects: false のファイルに渡す options（topLevelSafeMode: false）。
 >
@@ -886,10 +886,10 @@ pnpm bazel test //packages/angular/build:test --nocache_test_results --test_outp
 - **計算されたキー**: `analyzeClassStaticProperties` の 212 行目と、`adjustStaticMembersInStatements` の 543〜547 行目。`element.computed`（クラスの外の代入なら `left.computed`）が真のときは包めない側に倒す形です。spec は `adjust-static-class-members_oxc_spec.ts` に足します。
 - **isPure**: 135〜156 行目。148 行目に `p.computed` のときキーも見る条件を、144 行目に `delete` を除く条件を足す形です。`isPure` を直接見る unit の spec は無いので、static の spec に入力を足して確かめます。
 
-📄 `条件を足した写しで変換した実験（<scratchpad>/oxc-demo/a/patched/）`
+📄 `条件を足した写しで変換した実験（<work>/oxc-demo/a/patched/）`
 
 ```
-// <scratchpad>/oxc-demo/a/patched/: 22.2.7 の oxc-transform.js（コンパイル済み）の写しの 351 行目の条件に、次を足して同じ入力を変換した実験
+// <work>/oxc-demo/a/patched/: 22.2.7 の oxc-transform.js（コンパイル済み）の写しの 351 行目の条件に、次を足して同じ入力を変換した実験
                     !isPure(enumValueAssignment.right) ||
 +                   (enumValueAssignment.left.type === 'MemberExpression' &&
 +                       enumValueAssignment.left.computed &&

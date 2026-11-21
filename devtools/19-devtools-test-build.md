@@ -523,7 +523,7 @@ e2e は `devtools/cypress/integration/*.e2e.js` の 10 ファイルで、15 行�
 
 > **🧪 DEMO — ターゲットごとのブラウザ・件数・時間（記録の再生）**
 >
-> これは記録です。2026-11-05 に ../angular（8576f161ae4）で bazel を走らせたログ（scratchpad/devtools-logs/e-\*.log）から、下の parse-bazel.mjs がターゲットごとの行だけを JSON に切り出しました。数は手で書いていません。「件数」と「テストの時間」は web test runner の出力（`N passed, M failed`・`Finished running tests in`）、「PASSED in」は bazel の要約の行です。「`//devtools/...` 全部」は `--test_output=errors` で走らせたので、件数の欄は空です。
+> これは記録です。2026-11-05 に ../angular（8576f161ae4）で bazel を走らせたログ（work/devtools-logs/e-\*.log）から、下の parse-bazel.mjs がターゲットごとの行だけを JSON に切り出しました。数は手で書いていません。「件数」と「テストの時間」は web test runner の出力（`N passed, M failed`・`Finished running tests in`）、「PASSED in」は bazel の要約の行です。「`//devtools/...` 全部」は `--test_output=errors` で走らせたので、件数の欄は空です。
 >
 > 回のボタンを押してください。
 >
@@ -547,12 +547,12 @@ e2e は `devtools/cypress/integration/*.e2e.js` の 10 ファイルで、15 行�
 
    「Chrome 版の拡張をビルドする」の回は 1.5 秒で、すべての作業がキャッシュに当たりました（その前に `//devtools/...` のテストを走らせたとき、同じものが作られていた）。できたものは `.bazelrc` の `--symlink_prefix=dist/` のため `bazel-bin` ではなく `dist/bin/devtools/projects/shell-browser/src/prodapp` にあり、2.4 MB、manifest の `permissions` に `debugger`（[第 17 回](17-devtools-signal-graph.md)のブレークポイント）が入っていました。
 
-📄 `scratchpad の記録スクリプト（run-bazel.sh。第 17〜19 回のターゲットを走らせる）`
+📄 `手元の作業フォルダの記録スクリプト（run-bazel.sh。第 17〜19 回のターゲットを走らせる）`
 
 ```
 #!/bin/zsh
-# 第 17〜19 回で使う spec のターゲットを走らせ、ログを scratchpad/devtools-logs/e-*.log に残す。
-S=<scratchpad>
+# 第 17〜19 回で使う spec のターゲットを走らせ、ログを work/devtools-logs/e-*.log に残す。
+S=<work>
 cd ~/angular-research/angular
 P=//devtools/projects
 run() { local name=$1; shift; { date; echo "+ pnpm bazel test $* --nocache_test_results --test_output=all"; /usr/bin/time -p pnpm bazel test "$@" --nocache_test_results --test_output=all; echo "exit=$?"; } > $S/devtools-logs/e-$name.log 2>&1; }
@@ -562,10 +562,10 @@ run test-build $P/ng-devtools-backend/src/lib:client_event_subscribers_test $P/n
 
 ```
 
-📄 `scratchpad の記録スクリプト（parse-bazel.mjs。ログから JSON を作る）`
+📄 `手元の作業フォルダの記録スクリプト（parse-bazel.mjs。ログから JSON を作る）`
 
 ```
-// 第 19 回 devtools-test-build の記録。bazel のログ（scratchpad/devtools-logs/e-*.log）から、
+// 第 19 回 devtools-test-build の記録。bazel のログ（work/devtools-logs/e-*.log）から、
 // ターゲットごとの「ブラウザ・件数・テストの時間・PASSED in」と、走らせたコマンド・全体の時間だけを JSON にする。
 // 使い方: node parse-bazel.mjs <ログのディレクトリ> <出力.json>
 import { readFileSync, writeFileSync } from 'node:fs';

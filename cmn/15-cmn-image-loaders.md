@@ -836,7 +836,7 @@ pnpm bazel test //packages/common/test:test --nocache_test_results --test_output
   "--test_arg=--filter=Image directive loaders should"
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/e-node-loaders.log・e-ld.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/e-node-loaders.log・e-ld.log）`
 
 ```
 Ran 53 of 667 specs

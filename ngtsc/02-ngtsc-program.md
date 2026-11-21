@@ -811,7 +811,7 @@ shim かどうかは名前で決まります。164 行目で、コンストラ�
 
    `getTsProgram() === getReuseTsProgram()` が `false` です。`app.component.ngtypecheck.ts` の中身を比べると、`getTsProgram()` では 40 行目の 1 行のまま、`getReuseTsProgram()` では TCB が書き込まれています（テンプレートを持つのは `App` だけなので、`shout.pipe.ngtypecheck.ts` と `index.ngtypecheck.ts` は 1 行のままです）。TCB の先頭の import のパスが `../` を 7 回たどる長い形になっているのは記録した環境（一時ディレクトリの場所）で出たもので、この章ではその理由を追いません。
 
-📄 `scratchpad の記録スクリプト（program.mjs、angular-deep-dive を cwd にして node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（program.mjs、angular-deep-dive を cwd にして node で実行）`
 
 ```
 // ngtsc-program の記録: NgtscProgram を作り、getTsProgram().getSourceFiles() のうち、プロジェクトのファイルを並べる。
@@ -1047,7 +1047,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc '--test_arg=--filter=fl
 pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc '--test_arg=--filter=disableTypeScriptVersionCheck' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/a-units.log・a-ngtsc-flat.log・a-ngtsc-tsversion.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/a-units.log・a-ngtsc-flat.log・a-ngtsc-tsversion.log）`
 
 ```
 //packages/compiler-cli/src/ngtsc/shims/test:test        48 specs, 0 failures  PASSED in 0.6s

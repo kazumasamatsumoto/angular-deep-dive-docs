@@ -403,7 +403,7 @@ Ran 1 of 611 specs / Ran 2 of 612 specs / Ran 1 of 611 specs / Ran 1 of 611 spec
 
 ## 7. spec の無い行を確かめる
 
-作業木（`git -C ~/angular-research/angular-cli-fix worktree add <scratchpad>/vds-wt-b 44129f66a3`）で、第 3〜4 回の行を 1 行ずつ壊し、dev-server の spec を全部走らせました（1 回の実行で 4 か所まとめて）。
+作業木（`git -C ~/angular-research/angular-cli-fix worktree add <work>/vds-wt-b 44129f66a3`）で、第 3〜4 回の行を 1 行ずつ壊し、dev-server の spec を全部走らせました（1 回の実行で 4 か所まとめて）。
 
 | 壊した行 | 変更 | 結果 | 章 |
 | --- | --- | --- | --- |
@@ -417,7 +417,7 @@ Chrome DevTools の JSON には、2025-04 に「2 回目の起動から返らな
 📄 `足した spec（作業木だけ。本家には出していない）`
 
 ```
-// <scratchpad>/vds-wt-b に足したファイル: tests/behavior/serve-chrome-devtools_spec.ts（ライセンスの見出しは省略）
+// <work>/vds-wt-b に足したファイル: tests/behavior/serve-chrome-devtools_spec.ts（ライセンスの見出しは省略）
 import { executeDevServer } from '../../index';
 import { executeOnceAndFetch } from '../execute-fetch';
 import { describeServeBuilder } from '../jasmine-helpers';

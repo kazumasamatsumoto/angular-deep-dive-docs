@@ -600,7 +600,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 
 記録 — 手元の tsc で型エラーにした 13 の形
 
-同じことを型の側で確かめた記録です。`<scratchpad>/sfty-demo/b/tsc/path.ts` に 13 の形を書き、サイトの `node_modules` の TypeScript 6.0.3 と `@angular/forms` 22.2.6 の `.d.ts` で `npx tsc --noEmit --strict --moduleResolution bundler --skipLibCheck path.ts` を走らせました（`M` はモデルの型の略。長い文は「…」で縮めています）。
+同じことを型の側で確かめた記録です。`<work>/sfty-demo/b/tsc/path.ts` に 13 の形を書き、サイトの `node_modules` の TypeScript 6.0.3 と `@angular/forms` 22.2.6 の `.d.ts` で `npx tsc --noEmit --strict --moduleResolution bundler --skipLibCheck path.ts` を走らせました（`M` はモデルの型の略。長い文は「…」で縮めています）。
 
 |   | 書いたもの | 行:列 | tsc の結果 | 理由 |
 | --- | --- | --- | --- | --- |
@@ -619,7 +619,7 @@ angular/angular · 読了 約 14 分 · 発展 · [サイトで読む（デモ�
 | P13 | `required(p.items[0].t)` | 91:12 | TS7053: Element implicitly has an 'any' type because expression of type '0' can't be used to index type 'SchemaPath&lt;{ t: string; }\[\], 1, Child&gt;'. | 757〜758 行目。配列の path には子が無い。要素に下りる道は applyEach だけ |
 | G1 | `function g1<T>(m: WritableSignal<{directValue: T \| null}>) { form(m, p => required(p.directValue)) }` | generic.ts 13:14 | TS2345: Argument of type 'CompatSchemaPath&lt;AbstractControl&lt;any, any, any&gt; & Exclude&lt;T, undefined&gt;, Child&gt; \| SchemaPath&lt;Exclude&lt;T, undefined&gt; \| null, 1, Child&gt; \| undefined' is not assignable to parameter of type 'SchemaPath&lt;Exclude&lt;T, undefined&gt; \| null, 1, Child&gt;'. | 開いている #65705 と同じ文。T が決まらないと 780 行目の (TModel & undefined) が消えず、750 行目の分かれ道も両方残る。T を string に決めた g2 は通る |
 
-P10 を型を無視して実行すると（`<scratchpad>/sfty-demo/b/node/rec-compat.mjs`、Node 24 と 22.2.6）、`required(p.ctrl)` も `validate(p.ctrl, …)` も例外を出さずに登録され、`f.ctrl().errors()` は `[]`、`validate` の関数は 1 回も呼ばれませんでした。control のフィールドの検証は control の側の状態を読むので（[forms-sf-submit-compat](../forms/19-forms-sf-submit-compat.md)）、付けたルールは黙って使われません。`Unsupported` は、その「黙って効かない」を型エラーにして先に知らせる印です。test/node/compat/compat.spec.ts の 498 行目の it も、型を外して実行時に同じ呼び出しをしています（テストと直し方）。
+P10 を型を無視して実行すると（`<work>/sfty-demo/b/node/rec-compat.mjs`、Node 24 と 22.2.6）、`required(p.ctrl)` も `validate(p.ctrl, …)` も例外を出さずに登録され、`f.ctrl().errors()` は `[]`、`validate` の関数は 1 回も呼ばれませんでした。control のフィールドの検証は control の側の状態を読むので（[forms-sf-submit-compat](../forms/19-forms-sf-submit-compat.md)）、付けたルールは黙って使われません。`Unsupported` は、その「黙って効かない」を型エラーにして先に知らせる印です。test/node/compat/compat.spec.ts の 498 行目の it も、型を外して実行時に同じ呼び出しをしています（テストと直し方）。
 
 ## 9. この形になるまで
 
@@ -740,7 +740,7 @@ $ pnpm bazel test //packages/forms/signals/test/node:test --nocache_test_results
 Ran 0 of 539 specs / 0 specs, 0 failures      # types.spec.ts は関数の中の describe で、実行時には登録されない（第 6 回）
 ```
 
-`@ts-expect-error` の検査は、`node/BUILD.bazel` の `ng_project`（spec を TypeScript としてコンパイルする手順）で行われます。注記の次の行が型エラーにならないと、TypeScript が `TS2578: Unused '@ts-expect-error' directive` を出してコンパイルが失敗し、テストは 1 本も走りません。作業木（`git -C ~/angular-research/angular-fix worktree add <scratchpad>/sfty-wt-b 8576f161ae4`、終えてから `worktree remove --force` で消しました）で 1 か所ずつ型を変えた結果です。
+`@ts-expect-error` の検査は、`node/BUILD.bazel` の `ng_project`（spec を TypeScript としてコンパイルする手順）で行われます。注記の次の行が型エラーにならないと、TypeScript が `TS2578: Unused '@ts-expect-error' directive` を出してコンパイルが失敗し、テストは 1 本も走りません。作業木（`git -C ~/angular-research/angular-fix worktree add <work>/sfty-wt-b 8576f161ae4`、終えてから `worktree remove --force` で消しました）で 1 か所ずつ型を変えた結果です。
 
 |   | 変えたところ | node:test の結果 |
 | --- | --- | --- |

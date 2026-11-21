@@ -491,7 +491,7 @@ pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_result
 pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/c-hash.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/c-hash.log）`
 
 ```
 # フィルタあり

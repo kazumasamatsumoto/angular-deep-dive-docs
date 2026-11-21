@@ -639,7 +639,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance_web_chromium \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/c-dom.log と c-web.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/c-dom.log と c-web.log）`
 
 ```
 （Node）Ran 21 of 2693 specs

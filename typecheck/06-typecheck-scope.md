@@ -554,7 +554,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/typecheck/test:test \
   '--test_arg=--filter=type check blocks'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/b-tcb.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/b-tcb.log）`
 
 ```
 Ran 239 of 1747 specs

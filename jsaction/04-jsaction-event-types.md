@@ -514,7 +514,7 @@ pnpm bazel test //packages/platform-server/test:event_replay_test \
   '--test_arg=--filter=should not replay mouse events' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/b-base.log・b-filter.log・b-server.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/b-base.log・b-filter.log・b-server.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed

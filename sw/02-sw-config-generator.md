@@ -738,7 +738,7 @@ pnpm bazel test //packages/service-worker/config/test:test \
   '--test_arg=--filter=processNavigationUrls'
 ```
 
-2026-11-03 にこのマシンで走らせた結果です（ログは `scratchpad/sw-logs/a-config.log` と `a-config-filter.log`）。フィルタ無しで **10 specs, 0 failures、PASSED in 3.1s**（Elapsed 4.2 秒）。`--filter=processNavigationUrls` で **Ran 3 of 10 specs、PASSED in 0.6s**。`--filter` は 0 件に当たっても PASSED になるので、必ず「Ran N of M」を見ます。走らせる前と後で `git status --short` は同じでした。
+2026-11-03 にこのマシンで走らせた結果です（ログは `work/sw-logs/a-config.log` と `a-config-filter.log`）。フィルタ無しで **10 specs, 0 failures、PASSED in 3.1s**（Elapsed 4.2 秒）。`--filter=processNavigationUrls` で **Ran 3 of 10 specs、PASSED in 0.6s**。`--filter` は 0 件に当たっても PASSED になるので、必ず「Ran N of M」を見ます。走らせる前と後で `git status --short` は同じでした。
 
 ### 直すとしたら、どこから
 

@@ -573,7 +573,7 @@ $ git show 5064dc75acb -- packages/common/upgrade/src   # (#32037)、2019-08-07�
 
 > **🧪 DEMO — $locationShim の同期（記録の再生）**
 >
-> `<scratchpad>/lshim-demo/a/record-sync.mjs` が、@angular/common 22.1.6・@angular/upgrade 22.1.6・AngularJS 1.8.3・zone.js 0.16.3 を jsdom 26.1.0 の上で起動し、`history.pushState` を包んで記録したものです。ブラウザの中では何も起動せず、このページの URL も変えません。「次の段へ」で 1 段ずつ進めてください。赤い値は、ブラウザと `$location` が食い違っているところです。
+> `<work>/lshim-demo/a/record-sync.mjs` が、@angular/common 22.1.6・@angular/upgrade 22.1.6・AngularJS 1.8.3・zone.js 0.16.3 を jsdom 26.1.0 の上で起動し、`history.pushState` を包んで記録したものです。ブラウザの中では何も起動せず、このページの URL も変えません。「次の段へ」で 1 段ずつ進めてください。赤い値は、ブラウザと `$location` が食い違っているところです。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/lshim-sync)
 
@@ -603,7 +603,7 @@ $ git show 5064dc75acb -- packages/common/upgrade/src   # (#32037)、2019-08-07�
 📄 `AngularJS 1.8.3 の $browser の popstate の聞き手（比べる用）`
 
 ```
-$ cd <scratchpad>/upg-ng   # AngularJS 1.8.3 の $browser（npm の angular）
+$ cd <work>/upg-ng   # AngularJS 1.8.3 の $browser（npm の angular）
 $ grep -n "function fireStateOrUrlChange" -A 11 node_modules/angular/angular.js
 6765:  function fireStateOrUrlChange() {
 6766-    var prevLastHistoryState = lastHistoryState;
@@ -714,12 +714,12 @@ pnpm bazel test //packages/common/upgrade/test:test --nocache_test_results --tes
 📄 `作業木の作り方（../angular は触らない）`
 
 ```
-git -C ~/angular-research/angular-fix worktree add <scratchpad>/lshim-wt-a 8576f161ae4
-cd <scratchpad>/lshim-wt-a
+git -C ~/angular-research/angular-fix worktree add <work>/lshim-wt-a 8576f161ae4
+cd <work>/lshim-wt-a
 ln -s ~/angular-research/angular-fix/node_modules node_modules
 # upgrade.spec.ts に it を 1 つ足して走らせる → 失敗を見る → location_shim.ts を 1 行直して走らせる
 pnpm bazel test //packages/common/upgrade/test:test --nocache_test_results --test_output=all
-git -C ~/angular-research/angular-fix worktree remove --force <scratchpad>/lshim-wt-a
+git -C ~/angular-research/angular-fix worktree remove --force <work>/lshim-wt-a
 ```
 
 📄 `足した it`

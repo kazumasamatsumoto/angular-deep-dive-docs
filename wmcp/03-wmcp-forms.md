@@ -436,7 +436,7 @@ annotations の 2 つは 6e299da8cfc（2026-08-31）で入りました。コミ�
 
 > **🧪 DEMO — フォームをツールにする（記録の再生）**
 >
-> `<scratchpad>/wmcp-demo/b/record-forms.mjs` が、@angular/core・forms・platform-browser 22.2.6 を jsdom 26.1.0（Node v24.22.1）の上で動かした記録です。`document.modelContext` に `registerTool` を覚えるだけの作り物を置き、`createApplication({providers: [provideExperimentalWebMcpForms()]})` の注入器で `form()` を呼び、登録されたツールの `execute` を直接呼びました。ブラウザの中では何も登録しません。場面を選び、「次の段へ」で 1 段ずつ進めてください。
+> `<work>/wmcp-demo/b/record-forms.mjs` が、@angular/core・forms・platform-browser 22.2.6 を jsdom 26.1.0（Node v24.22.1）の上で動かした記録です。`document.modelContext` に `registerTool` を覚えるだけの作り物を置き、`createApplication({providers: [provideExperimentalWebMcpForms()]})` の注入器で `form()` を呼び、登録されたツールの `execute` を直接呼びました。ブラウザの中では何も登録しません。場面を選び、「次の段へ」で 1 段ずつ進めてください。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/wmcp-forms)
 

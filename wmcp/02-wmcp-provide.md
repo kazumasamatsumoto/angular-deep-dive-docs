@@ -426,7 +426,7 @@ index 0047f8a9a99..bc4f7e3fa0a 100644
 
 同じタプルの形を、公式の型になった 22.2.6 の `WebMcpToolDescriptor` で手元で試した記録です。
 
-📄 `<scratchpad>/wmcp-demo/a/types/infer-tuple.ts`
+📄 `<work>/wmcp-demo/a/types/infer-tuple.ts`
 
 ```ts
 // #70159 / #71658 の形（タプルに写した型）を 22.2.6 の WebMcpToolDescriptor で試す

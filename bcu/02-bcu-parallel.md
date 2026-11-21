@@ -467,7 +467,7 @@ JIT（`aot: false`）では Angular のコンパイラを使わず、TypeScript 
 
 ## 8. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `tools/angular/compilation/factory.js` を require しました。メインからワーカーへの頼みは `WorkerPool.prototype.run`（Piscina の `run`）を包んで記録し、ホストの関数の呼び返しはデモが渡す `hostOptions` の中で `threadId` と一緒に記録しました。ワークスペースと共有の小道具（`harness.mjs`）は [前回](01-bcu-aot.md)と同じです。
+スクリプトは `<work>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `tools/angular/compilation/factory.js` を require しました。メインからワーカーへの頼みは `WorkerPool.prototype.run`（Piscina の `run`）を包んで記録し、ホストの関数の呼び返しはデモが渡す `hostOptions` の中で `threadId` と一緒に記録しました。ワークスペースと共有の小道具（`harness.mjs`）は [前回](01-bcu-aot.md)と同じです。
 
 📄 `記録のスクリプト（rec-parallel.mjs）`
 

@@ -435,7 +435,7 @@ webpack 版の builder は、今は 2 つの道の分かれ目です（入口で
 
 > **🧪 DEMO — Karma の builder に渡った options と警告（記録）**
 >
-> `<scratchpad>/kar-demo/b/record.mjs` が、@angular/build 22.2.7・karma 6.4.4・zone.js 0.16.2 で、[前の章](03-kar-serve.md)と同じアプリの 2 つの target を Node v24.22.1 で起動した記録です。`test` は `@angular/build:karma`、`test-ut` は `@angular/build:unit-test` の `runner: "karma"` で、どちらも `tsConfig`・`browsers`・`exclude` だけを書き、assets と styles は `test` には直に、`test-ut` には build の target に書きました。`hook.cjs` が Karma の builder の `execute` に渡った options、`transforms.karmaOptions` の前後、application builder の options を書いています。executor の警告は `execute` より前に出るので、端末の出力から拾いました。
+> `<work>/kar-demo/b/record.mjs` が、@angular/build 22.2.7・karma 6.4.4・zone.js 0.16.2 で、[前の章](03-kar-serve.md)と同じアプリの 2 つの target を Node v24.22.1 で起動した記録です。`test` は `@angular/build:karma`、`test-ut` は `@angular/build:unit-test` の `runner: "karma"` で、どちらも `tsConfig`・`browsers`・`exclude` だけを書き、assets と styles は `test` には直に、`test-ut` には build の target に書きました。`hook.cjs` が Karma の builder の `execute` に渡った options、`transforms.karmaOptions` の前後、application builder の options を書いています。executor の警告は `execute` より前に出るので、端末の出力から拾いました。
 >
 > `ng run demo:test --watch=false` — @angular/build:karma（test の target）。終了コード 1
 >

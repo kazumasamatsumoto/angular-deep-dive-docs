@@ -38,7 +38,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 📄 `ターミナル（読むだけ）`
 
 ```
-# データは 2026-11-02 に取ったもの（scratchpad/tc-logs/ の 4 つの JSON。読むだけで、コメント・リアクション・ラベル付けはしない）
+# データは 2026-11-02 に取ったもの（work/tc-logs/ の 4 つの JSON。読むだけで、コメント・リアクション・ラベル付けはしない）
 # open-tc.json などは次の形（closed は closedAt も）
 gh issue list -R angular/angular --label "compiler: template type-checking" --state open --limit 100 \
   --json number,title,createdAt,updatedAt,comments,labels,url

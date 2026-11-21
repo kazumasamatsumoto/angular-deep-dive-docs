@@ -204,7 +204,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=@defer with OnPush'
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/b-when.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/b-when.log）`
 
 ```
 Ran 4 of 2693 specs

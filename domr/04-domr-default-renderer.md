@@ -588,7 +588,7 @@ pnpm bazel test //packages/platform-browser/test:test_web --nocache_test_results
 pnpm bazel test //packages/core/test:test_web_chromium --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/a-acc-dom.log・a-web.log・a-core-svg.log・a-core-web.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/a-acc-dom.log・a-web.log・a-core-svg.log・a-core-web.log）`
 
 ```
 Ran 1 of 2693 specs

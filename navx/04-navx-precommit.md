@@ -665,11 +665,11 @@ pnpm bazel test //packages/router/test:test --nocache_test_results --test_output
   14 specs, 0 failures
 ```
 
-dom-navigation の spec は Node で 91 件。Router の側は `withPlatformNavigation` の名前で絞って 14 件で、どちらも失敗は 0 でした（scratchpad/nav-logs/b-domnav.log・b-router-wpn.log）。Router の Node の 14 件には、ブラウザでしか作られない `real platform navigation` の 2 件は入りません（[第 7 回](07-navx-tests-issues.md)）。
+dom-navigation の spec は Node で 91 件。Router の側は `withPlatformNavigation` の名前で絞って 14 件で、どちらも失敗は 0 でした（work/nav-logs/b-domnav.log・b-router-wpn.log）。Router の Node の 14 件には、ブラウザでしか作られない `real platform navigation` の 2 件は入りません（[第 7 回](07-navx-tests-issues.md)）。
 
 e8c44a00f9a の 3 行が本当に spec に守られているかを、作業木で確かめました。
 
-📄 `scratchpad/nav-logs/b-wt-e8c4-revert.log（要点）`
+📄 `work/nav-logs/b-wt-e8c4-revert.log（要点）`
 
 ```
 # 作業木（8576f161ae4）で navigation_state_manager.ts の

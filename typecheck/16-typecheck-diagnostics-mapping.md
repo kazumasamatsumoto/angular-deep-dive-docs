@@ -236,7 +236,7 @@ TypeScript のエラーは全部がテンプレートの誤りではありませ
 
 手元で、本物の ngc（このサイトの node\_modules の 22.1.6、`strictTemplates: true`）にかけて確かめました。
 
-📄 `ngc -p tsconfig.json の出力（抜粋。2026-11-02、scratchpad の小さなプロジェクト）`
+📄 `ngc -p tsconfig.json の出力（抜粋。2026-11-02、手元の作業フォルダの小さなプロジェクト）`
 
 ```
 src/cmps.ts:7:48 - error TS2339: Property 'nope' does not exist on type 'IfDup'.

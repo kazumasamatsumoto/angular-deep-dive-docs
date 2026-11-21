@@ -226,7 +226,7 @@ peek 系を「動かずに覗く」目的で使っているのは、src/aria で
 > [!NOTE]
 > **さらに深く**
 >
-> **activeItem が無いときの prev は、末尾ではなく末尾の 1 つ手前から始まります。** 114 行目の `startIndex` が `-1` で wrap のとき、117 行目の最初の 1 歩は `(-1 - 1 + n) % n = n - 2` です。さらに、ループの `i` は 0〜n-1 を回り続けて `-1`（＝ startIndex）にならないので、focusable な項目が 1 つも無いと 122 行目のループは終わりません。これは scratchpad に list-focus.ts と list-navigation.ts をそのまま写し、Node で動かして確かめました（5 項目で `peekPrev()` が index 3 を返す。全部無効・softDisabled=false・wrap で `next()` を呼ぶと `isFocusable` が 10 万回を超えて呼ばれ続ける）。ふだんの Listbox では起きにくい形です。`activeItem` は `setDefaultState` が先に決め（[第 9 回](09-aria-listbox.md)）、全部無効なら `isListDisabled()` が真で ListboxPattern の `onKeydown` が何もしません（private/listbox/listbox.ts:236）。spec の `getListFocus` は必ず最初の項目を `activeItem` にする（list-focus.spec.ts:23）ので、この形を確かめる it はありません。意図した動きかどうかはソースからは分かりません。
+> **activeItem が無いときの prev は、末尾ではなく末尾の 1 つ手前から始まります。** 114 行目の `startIndex` が `-1` で wrap のとき、117 行目の最初の 1 歩は `(-1 - 1 + n) % n = n - 2` です。さらに、ループの `i` は 0〜n-1 を回り続けて `-1`（＝ startIndex）にならないので、focusable な項目が 1 つも無いと 122 行目のループは終わりません。これは 作業用フォルダに list-focus.ts と list-navigation.ts をそのまま写し、Node で動かして確かめました（5 項目で `peekPrev()` が index 3 を返す。全部無効・softDisabled=false・wrap で `next()` を呼ぶと `isFocusable` が 10 万回を超えて呼ばれ続ける）。ふだんの Listbox では起きにくい形です。`activeItem` は `setDefaultState` が先に決め（[第 9 回](09-aria-listbox.md)）、全部無効なら `isListDisabled()` が真で ListboxPattern の `onKeydown` が何もしません（private/listbox/listbox.ts:236）。spec の `getListFocus` は必ず最初の項目を `activeItem` にする（list-focus.spec.ts:23）ので、この形を確かめる it はありません。意図した動きかどうかはソースからは分かりません。
 
 ## 4. items の部分配列で動く
 
@@ -369,7 +369,7 @@ grep -cE '^\s*it\(' src/aria/private/behaviors/list-navigation/list-navigation.s
 grep -cE '^\s*it\(' src/aria/private/behaviors/list-focus/list-focus.spec.ts
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/aria-logs/b-behaviors.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/aria-logs/b-behaviors.log）`
 
 ```
 src/aria/private/behaviors/list-navigation/unit_tests_bundle.spec.js:

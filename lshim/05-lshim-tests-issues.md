@@ -309,8 +309,8 @@ angular/angular · 読了 約 10 分 · 基礎 · [サイトで読む（デモ�
 
 ```
 # 8576f161ae4 の作業木を ../angular-fix から作り、依存を入れる（作業木は使い終えたら消す）
-git -C ~/angular-research/angular-fix worktree add --detach <scratchpad>/lshim-wt-b 8576f161ae4
-cd <scratchpad>/lshim-wt-b && pnpm install --frozen-lockfile
+git -C ~/angular-research/angular-fix worktree add --detach <work>/lshim-wt-b 8576f161ae4
+cd <work>/lshim-wt-b && pnpm install --frozen-lockfile
 
 pnpm bazel test //packages/common/upgrade/test:test --nocache_test_results --test_output=all
 pnpm bazel test //packages/common/upgrade/test:test --nocache_test_results --test_output=all \
@@ -347,7 +347,7 @@ Ran 9 of 64 specs
 
 ## 6. 行を変えて、どの spec が落ちるか
 
-作業木（8576f161ae4）で 1 か所ずつ変えては `//packages/common/upgrade/test:test` を走らせ、元に戻しました。変えるスクリプトの全文は `<scratchpad>/lshim-demo/b/mutate.py` で、ログは 1 つずつ残しています。赤い行が「消しても 1 つも落ちない」行です。
+作業木（8576f161ae4）で 1 か所ずつ変えては `//packages/common/upgrade/test:test` を走らせ、元に戻しました。変えるスクリプトの全文は `<work>/lshim-demo/b/mutate.py` で、ログは 1 つずつ残しています。赤い行が「消しても 1 つも落ちない」行です。
 
 | どこ | 変えたこと | 結果 | 落ちた it |
 | --- | --- | --- | --- |

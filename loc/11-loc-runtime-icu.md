@@ -1192,7 +1192,7 @@ pnpm bazel test //packages/core/test/render3:render3 --nocache_test_results --te
 pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_results --test_output=all '--test_arg=--filter=runtime i18n should support ICU expressions'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/c-parse-icu.log・c-acc-icu.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/c-parse-icu.log・c-acc-icu.log）`
 
 ```
 # render3（i18n_parse）

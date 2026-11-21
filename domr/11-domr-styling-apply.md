@@ -542,7 +542,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=^styling (should set !important|should apply a unit|should not sanitize|should convert camelCased|should combine all styling)'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/c-sa-r3.log・c-sa-acc.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/c-sa-r3.log・c-sa-acc.log）`
 
 ```
 # render3

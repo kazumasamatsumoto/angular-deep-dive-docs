@@ -22,7 +22,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
 ## 1. spec の地図
 
-ファイルごとの describe（括弧は行）と、`it(` で始まる行の数（grep で数えたもの）、実際に走った数です。走った数は 2026-11-07 に `--test_arg=--filter=…` で名前を絞って「Ran N of … specs」を読んだものです（scratchpad/nav-logs/b-\*.log）。
+ファイルごとの describe（括弧は行）と、`it(` で始まる行の数（grep で数えたもの）、実際に走った数です。走った数は 2026-11-07 に `--test_arg=--filter=…` で名前を絞って「Ran N of … specs」を読んだものです（work/nav-logs/b-\*.log）。
 
 | ファイル（packages/ の下） | 行数 | describe と it の数 | it の行 | Node | ブラウザ | 章 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -221,7 +221,7 @@ pnpm bazel test //packages/router/test:test --nocache_test_results --test_output
 pnpm bazel test //packages/router/test:test_web --nocache_test_results --test_output=all
 ```
 
-📄 `scratchpad/nav-logs/b-*.log（要点）`
+📄 `work/nav-logs/b-*.log（要点）`
 
 ```
 //packages/core/primitives/dom-navigation/testing/test:test              PASSED   91 specs, 0 failures
@@ -277,7 +277,7 @@ gh で 2026-11-07 に取った「Navigation API」を含む issue 48 件（開�
 - 2026-10 の 4 件（#71551・#71287・#71594・#71596）は同じ人が issue を書き、自分で PR を出しています。3 件は merge され、#71596 の PR #71597 は approve を受けて開いたままです（2026-11-07）。
 - 要望としては 2022 年（#46136、NOT\_PLANNED）と 2023 年（#53321）に出ていて、#53321 は 2026-09-04 に COMPLETED で閉じられました。
 
-📄 `scratchpad/navb/issues/make-data.mjs`
+📄 `work/navb/issues/make-data.mjs`
 
 ```js
 // 第 7 回 navx-tests-issues の表のデータを作る（2026-11-07）。
@@ -346,7 +346,7 @@ const src = JSON.parse(readFileSync(new URL('../../nav-logs/issues-navapi.json',
 const inJson = new Set(src.map((i) => i.number));
 for (const i of ISSUES) i.inJson = inJson.has(i.n);
 
-const out = `// 自動生成 — 手で編集しないこと（scratchpad/navb/issues/make-data.mjs が作った）。
+const out = `// 自動生成 — 手で編集しないこと（work/navb/issues/make-data.mjs が作った）。
 // COMMITS は ../angular-main（74961c66242）の git log と git show --numstat。ISSUES の番号・日付・状態は 2026-11-07 に gh で取ったもの。ja・ch・link はこの章の書き手が付けたもの。
 export const COMMITS = ${JSON.stringify(COMMITS)} as const;
 export const ISSUES = ${JSON.stringify(ISSUES)} as const;

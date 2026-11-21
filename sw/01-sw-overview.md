@@ -289,7 +289,7 @@ pnpm bazel test //packages/service-worker:service-worker_api \
 pnpm bazel test //packages/service-worker/... --nocache_test_results
 ```
 
-2026-11-03 にこのマシンで最初の 1 本を走らせた結果は、`service-worker_api` と `service-worker_errors` が **PASSED in 1.0s** ずつ（Elapsed 2.7 秒、ビルドのキャッシュあり、ログは `scratchpad/sw-logs/a-api.log`）。走らせる前と後で `git status --short` は同じでした。
+2026-11-03 にこのマシンで最初の 1 本を走らせた結果は、`service-worker_api` と `service-worker_errors` が **PASSED in 1.0s** ずつ（Elapsed 2.7 秒、ビルドのキャッシュあり、ログは `work/sw-logs/a-api.log`）。走らせる前と後で `git status --short` は同じでした。
 
 ### 直すとしたら、どこから
 

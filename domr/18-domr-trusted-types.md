@@ -849,7 +849,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=^(iframe processing|SVG animation processing) '
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/e-r3-sanit.log・e-accept-iframe-svg.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/e-r3-sanit.log・e-accept-iframe-svg.log）`
 
 ```
 //packages/core/test/render3:render3

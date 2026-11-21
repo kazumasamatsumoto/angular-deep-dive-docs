@@ -20,7 +20,7 @@ angular/angular-cli · 読了 約 10 分 · 基礎 · [サイトで読む（デ�
 
 ## 1. spec の地図
 
-`test/` の下の 12 ファイルの it の行は合わせて 249 で、走る数（249 specs）と同じです。下の表の数は `<scratchpad>/srt-demo/b/specmap.py` が数えました（describe は字下げ 4 文字まで、括弧の中は行と it の数）。
+`test/` の下の 12 ファイルの it の行は合わせて 249 で、走る数（249 specs）と同じです。下の表の数は `<work>/srt-demo/b/specmap.py` が数えました（describe は字下げ 4 文字まで、括弧の中は行と it の数）。
 
 | ファイル（test/） | 行 | it | describe | 固めている約束 | 章 |
 | --- | --- | --- | --- | --- | --- |
@@ -71,9 +71,9 @@ spec の manifest の `bootstrap` です。107 行目は第 4 回の表の「`bo
 pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_output=all
 # 名前で絞る。jasmine の --filter は正規表現で、一番外の describe の名前から始まる「完全な名前」に当てる
 pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_output=all '--test_arg=--filter=^RouteTree '
-# 作業木（git -C ../angular-cli-fix worktree add <scratchpad>/srt-wt-b 44129f66a3）で 1 か所ずつ変える
-python3 <scratchpad>/srt-demo/b/mut/mutate.py <scratchpad>/srt-wt-b            # T1〜T16
-python3 <scratchpad>/srt-demo/b/mut/mutate.py <scratchpad>/srt-wt-b T17 T18 T19 T20
+# 作業木（git -C ../angular-cli-fix worktree add <work>/srt-wt-b 44129f66a3）で 1 か所ずつ変える
+python3 <work>/srt-demo/b/mut/mutate.py <work>/srt-wt-b            # T1〜T16
+python3 <work>/srt-demo/b/mut/mutate.py <work>/srt-wt-b T17 T18 T19 T20
 ```
 
 📄 `自分で走らせた結果（2026-11-18）`

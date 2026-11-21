@@ -993,12 +993,12 @@ ngsw.json の `hashTable` を作る関数です。283 行目でハッシュを�
 
 ### bazel の外で同じ部品を動かす
 
-ハーネスはただの TypeScript なので、scratchpad に小さなスクリプトを書き、サイトの node\_modules の esbuild で ../angular のファイルを**読むだけ**で束ねれば、Node でそのまま動きます（../angular のファイルは変えていません）。第 17 回の「起こし直した直後の /ngsw/state」と、4 節のデータグループのオフラインも、この形で確かめました。
+ハーネスはただの TypeScript なので、作業用フォルダに小さなスクリプトを書き、サイトの node\_modules の esbuild で ../angular のファイルを**読むだけ**で束ねれば、Node でそのまま動きます（../angular のファイルは変えていません）。第 17 回の「起こし直した直後の /ngsw/state」と、4 節のデータグループのオフラインも、この形で確かめました。
 
 📄 `ターミナル`
 
 ```
-# scratchpad/sw-e-work/（../angular のファイルは読むだけ。esbuild でここに束ねる）
+# work/sw-e-work/（../angular のファイルは読むだけ。esbuild でここに束ねる）
 node build-harness.mjs harness-datagroup.ts harness-datagroup.mjs && node harness-datagroup.mjs
 node build-harness.mjs harness-clone.ts harness-clone.mjs && node harness-clone.mjs
 
@@ -1007,7 +1007,7 @@ await esbuild.build({ entryPoints: [process.argv[2]], bundle: true, format: 'esm
   outfile: process.argv[3], nodePaths: ['~/angular-research/angular/node_modules'] });
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/sw-logs/e-harness-scratch.log）`
+📄 `出力（2026-11-03。ログは work/sw-logs/e-harness-scratch.log）`
 
 ```
 # harness-datagroup.mjs（asset の /index.html と、performance のデータグループ ^/api/.*$）
@@ -1076,7 +1076,7 @@ pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_result
 📄 `出力（2026-11-03）`
 
 ```
-# 起こし直しの 3 本（scratchpad/sw-logs/e-harness-restart.log）
+# 起こし直しの 3 本（work/sw-logs/e-harness-restart.log）
 Ran 3 of 153 specs
 3 specs, 0 failures
 Finished in 0.012 seconds

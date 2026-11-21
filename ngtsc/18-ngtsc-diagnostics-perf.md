@@ -852,7 +852,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=diagnostic guide links'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/e-diag-unit.log・e-guide.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/e-diag-unit.log・e-guide.log）`
 
 ```
 # diagnostics/test:test

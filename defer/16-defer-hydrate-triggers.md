@@ -557,7 +557,7 @@ cfe2cda1100（2026-07-23、fix、#69908「ルートの中の `@defer (hydrate �
 
    `hydrate when` は、親のビューの変更検知で式が `true` になったときに始まります。`d4` は jsaction のイベントでしか目を覚まさず、`d7` は `never` なので、DOM はサーバーの中身のまま残ります。
 
-📄 `scratchpad の記録スクリプト（hydrate.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（hydrate.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 16 回 defer-hydrate-triggers の記録。
@@ -746,7 +746,7 @@ pnpm bazel test //packages/platform-server/test:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/d-hydrate.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/d-hydrate.log）`
 
 ```
 Ran 11 of 399 specs

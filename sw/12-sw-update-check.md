@@ -479,7 +479,7 @@ cd ~/angular-research/angular
 pnpm bazel test //packages/service-worker/worker/test:test --nocache_test_results --test_output=all '--test_arg=--filter=updates to new content when requested|detects new version even if only|checks for updates on|does not make concurrent checks|updates when refreshed|sends a notification message after finding'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/c-update.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/c-update.log）`
 
 ```
 Ran 7 of 153 specs

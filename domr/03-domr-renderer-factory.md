@@ -418,7 +418,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=renderer factory lifecycle'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/a-server-shadow.log・a-acc-lifecycle.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/a-server-shadow.log・a-acc-lifecycle.log）`
 
 ```
 Ran 4 of 399 specs

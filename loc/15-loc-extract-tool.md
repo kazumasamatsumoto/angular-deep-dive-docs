@@ -704,7 +704,7 @@ var templateObject_1;
 
 ## 7. 手元で走らせる：ngc → esbuild → MessageExtractor
 
-ブラウザではこの道具は動かないので（Babel と `fs` を使う Node 専用のコード）、2026-11-03 に scratchpad の中に小さなアプリを作り、このサイトの `node_modules` の `ngc`・`esbuild`・`@angular/localize/tools`（22.1.6）で試しました。テンプレートには、わざと同じ `@@hello` を違う文に付けてあります。
+ブラウザではこの道具は動かないので（Babel と `fs` を使う Node 専用のコード）、2026-11-03 に 手元の作業フォルダの中に小さなアプリを作り、このサイトの `node_modules` の `ngc`・`esbuild`・`@angular/localize/tools`（22.1.6）で試しました。テンプレートには、わざと同じ `@@hello` を違う文に付けてあります。
 
 📄 `src/app.html`
 
@@ -734,7 +734,7 @@ export class App {
 📄 `ターミナル`
 
 ```
-cd scratchpad/build-loc-d/extract-demo   # node_modules はサイトのものへのシンボリックリンク
+cd work/build-loc-d/extract-demo   # node_modules はサイトのものへのシンボリックリンク
 ./node_modules/.bin/ngc -p tsconfig.json  # src/app.ts + src/app.html → out/app.js + out/app.js.map
 ./node_modules/.bin/esbuild out/app.js --bundle --format=esm --sourcemap \
   --outfile=dist/main.js '--external:@angular/*'
@@ -747,7 +747,7 @@ node extract.mjs        # MessageExtractor と checkDuplicateMessages を直接�
 
 `extract.mjs` は `MessageExtractor` を `useSourceMaps` の `true` と `false` で 2 回呼び、各メッセージの ID・文・位置（1 始まりで表示）・式の `text` を出し、最後に `checkDuplicateMessages` を 3 つの設定で呼ぶだけのスクリプトです。
 
-📄 `node extract.mjs の出力（抜粋。ログは scratchpad/i18n-logs/d-extract-node.log）`
+📄 `node extract.mjs の出力（抜粋。ログは work/i18n-logs/d-extract-node.log）`
 
 ```
 --- dist/main.js（useSourceMaps: true）: 5 件
@@ -792,7 +792,7 @@ id=es5Hello customId=es5Hello legacyIds=[]
 --- checkDuplicateMessages(ignore): hasErrors=false messages=0
 ```
 
-📄 `localize-extract の出力（scratchpad/i18n-logs/d-extract-cli.log）`
+📄 `localize-extract の出力（work/i18n-logs/d-extract-cli.log）`
 
 ```
 $ localize-extract -s 'dist/*.js' -f xlf2 -o i18n/messages.xlf
@@ -951,7 +951,7 @@ pnpm bazel test //packages/localize/tools/test/extract/integration:integration \
   --nocache_test_results --test_output=all '--test_arg=--filter=duplicateMessageHandling'
 ```
 
-📄 `出力（2026-11-03 に実行。ログは scratchpad/i18n-logs/d-f15-extract.log・d-f15-integration.log・d-f15-dup.log）`
+📄 `出力（2026-11-03 に実行。ログは work/i18n-logs/d-f15-extract.log・d-f15-integration.log・d-f15-dup.log）`
 
 ```
 //packages/localize/tools/test:test（filter=extractMessages、shard 4）

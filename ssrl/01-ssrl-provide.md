@@ -335,7 +335,7 @@ TypeScript のオーバーロード（同じ名前の関数に、呼べる形を
 
 > **🧪 DEMO — provideServerRendering が返す木と、注入器の値（記録の再生）**
 >
-> `<scratchpad>/ssrl-demo/a/provide/record.mjs` が、Node v24.22.1 で @angular/ssr 22.2.7（@angular/core・platform-server 22.2.6）の `provideServerRendering` を下の 10 通りで呼んだ記録です。返った値を `ɵproviders` で辿って木にし、そのあと `createEnvironmentInjector`（`INJECTOR_SCOPE` を `'root'` にしたもの）を作って値を読みました。`Shell` は JIT の `Component` で作ったコンポーネント、`R` と `R2` は `[{ path: '**', renderMode: Server か Prerender }]` です。`SERVER_ROUTES_CONFIG` は公開されていないので、`withRoutes([]).ɵproviders[0].provide` から取っています。
+> `<work>/ssrl-demo/a/provide/record.mjs` が、Node v24.22.1 で @angular/ssr 22.2.7（@angular/core・platform-server 22.2.6）の `provideServerRendering` を下の 10 通りで呼んだ記録です。返った値を `ɵproviders` で辿って木にし、そのあと `createEnvironmentInjector`（`INJECTOR_SCOPE` を `'root'` にしたもの）を作って値を読みました。`Shell` は JIT の `Component` で作ったコンポーネント、`R` と `R2` は `[{ path: '**', renderMode: Server か Prerender }]` です。`SERVER_ROUTES_CONFIG` は公開されていないので、`withRoutes([]).ɵproviders[0].provide` から取っています。
 >
 > ROUTES（multi）と、provideEnvironmentInitializer が包んだ ENVIRONMENT\_INITIALIZER が足されます。注入器を作ると appShellRoute が書き足されます（338 行目）。
 >
@@ -370,7 +370,7 @@ TypeScript のオーバーロード（同じ名前の関数に、呼べる形を
 
 ### spec を足すとしたら（作業木で書いて走らせた）
 
-📄 `<scratchpad>/ssrl-wt-a/packages/angular/ssr/test/routes/route-config_spec.ts`
+📄 `<work>/ssrl-wt-a/packages/angular/ssr/test/routes/route-config_spec.ts`
 
 ```ts
 // test/routes/route-config_spec.ts（作業木で新しく書いたもの。抜粋）
@@ -413,7 +413,7 @@ describe('provideServerRendering', () => {
 ```
 # ../angular-cli-fix（44129f66a3、pnpm install 済み）で、変えずに
 pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_output=all
-# 作業木（git -C ../angular-cli-fix worktree add <scratchpad>/ssrl-wt-a 44129f66a3）に spec を足して
+# 作業木（git -C ../angular-cli-fix worktree add <work>/ssrl-wt-a 44129f66a3）に spec を足して
 pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_output=all
 ```
 

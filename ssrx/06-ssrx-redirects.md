@@ -783,7 +783,7 @@ d9fb854c9a は #33473（「`UrlTree` を返すガードのリダイレクトで�
 
 `isValidRedirectResponseCode` の記録： `301`→許す、`302`→許す、`303`→許す、`304`→許さない、`307`→許す、`308`→許す、`200`→許さない
 
-📄 `scratchpad/ssrx-demo/ssrx-redirects/build.mjs`
+📄 `work/ssrx-demo/ssrx-redirects/build.mjs`
 
 ```js
 // 使い方: node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > record.json
@@ -810,7 +810,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-redirects/record.ts`
+📄 `work/ssrx-demo/ssrx-redirects/record.ts`
 
 ```ts
 // 第 6 回 ssrx-redirects の記録。../angular-cli（44129f66a3）の @angular/ssr のソースを束ねて Node で動かす。

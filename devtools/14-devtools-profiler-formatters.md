@@ -786,7 +786,7 @@ Shift を押しながらなら 204〜209 行目で範囲、Ctrl（mac では Cmd
 
    `duration: > 0.1` のように `名前: 演算子 数` と書きます。`!` で否定、`duration > 1` のようにコロンを忘れると条件が 0 個になり、全部が残ります（7 節）。`source: click` は、zone.js の無いアプリでは source が空なので何も残りません。
 
-📄 `scratchpad の記録スクリプト（formatters.ts。共通の部品で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（formatters.ts。共通の部品で束ねて node で実行）`
 
 ```
 // 第 14 回 devtools-profiler-formatters の記録。
@@ -971,7 +971,7 @@ pnpm bazel test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/d-bazel.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/d-bazel.log）`
 
 ```
 …/record-formatter:test_chromium                       PASSED in 2.1s   16 passed

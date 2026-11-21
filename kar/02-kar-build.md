@@ -566,7 +566,7 @@ $ git show 701bde4818 --stat   # 2026-08-26「preserve duplicate bundle filename
 
 > **🧪 DEMO — 5 通りの ng test と、application builder の options・polyfills・出力（記録の再生）**
 >
-> `<scratchpad>/kar-demo/a/record.mjs` が、@angular/build 22.2.7・karma 6.4.4 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です（前の章と同じアプリ）。zone.js（0.16.2）・@angular/localize・istanbul-lib-instrument は、アプリの node\_modules に symlink を足すか外すかで出し入れしました。`hook.cjs` が `buildApplicationInternal`・`normalizePolyfills`・`createVirtualModulePlugin` を包んでいます。記録した 22.2.7 には 2 節の `progress`・`poll` の 2 行が入っているので、options の表に `progress` が出ます（`poll` は書いていないので出ません）。
+> `<work>/kar-demo/a/record.mjs` が、@angular/build 22.2.7・karma 6.4.4 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です（前の章と同じアプリ）。zone.js（0.16.2）・@angular/localize・istanbul-lib-instrument は、アプリの node\_modules に symlink を足すか外すかで出し入れしました。`hook.cjs` が `buildApplicationInternal`・`normalizePolyfills`・`createVirtualModulePlugin` を包んでいます。記録した 22.2.7 には 2 節の `progress`・`poll` の 2 行が入っているので、options の表に `progress` が出ます（`poll` は書いていないので出ません）。
 >
 > karmaConfig を書かない（builder の既定の設定）
 >

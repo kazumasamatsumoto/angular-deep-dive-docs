@@ -453,10 +453,10 @@ application builder の後処理 `executePostBundleSteps` は、`serviceWorker` 
 
 このサイトの `node_modules` にある本物の `ngsw-config.js`（22.1.6）を、小さなフォルダに対して走らせました（2026-11-03 14:32、Node 24.22.1）。設定は 5 節の雛形と同じ中身です。
 
-📄 `ターミナル（scratchpad/build-sw-a/ngsw-demo）`
+📄 `ターミナル（work/build-sw-a/ngsw-demo）`
 
 ```
-$ cd scratchpad/build-sw-a/ngsw-demo
+$ cd work/build-sw-a/ngsw-demo
 $ find dist -type f | sort
 dist/assets/logo.png
 dist/index.html
@@ -804,7 +804,7 @@ pnpm bazel test //packages/service-worker/config/test:test \
   --nocache_test_results --test_output=all '--test_arg=--filter=processNavigationUrls'
 ```
 
-2026-11-03 にこのマシンで走らせた結果です。`bazel build` の 2 つは **Build completed successfully**（Elapsed 1.4 秒、キャッシュあり、ログは `scratchpad/sw-logs/a-cli.log`）、`diff` は **IDENTICAL**。`--filter=processNavigationUrls` は **Ran 3 of 10 specs、PASSED in 0.6s**。走らせる前と後で `git status --short` は同じでした。
+2026-11-03 にこのマシンで走らせた結果です。`bazel build` の 2 つは **Build completed successfully**（Elapsed 1.4 秒、キャッシュあり、ログは `work/sw-logs/a-cli.log`）、`diff` は **IDENTICAL**。`--filter=processNavigationUrls` は **Ran 3 of 10 specs、PASSED in 0.6s**。走らせる前と後で `git status --short` は同じでした。
 
 ### 直すとしたら、どこから
 

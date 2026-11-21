@@ -625,7 +625,7 @@ pnpm bazel test //packages/core/schematics/test:test \
   "--test_arg=--filter=inject migration"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/mig-logs/b-inject.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/mig-logs/b-inject.log）`
 
 ```
 ==================== Test output for //packages/core/schematics/test:test (shard 1 of 16):

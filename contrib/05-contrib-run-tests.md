@@ -465,7 +465,7 @@ Ran 1 of 3 specs
 Incomplete: fit() or fdescribe() was found
 exit=2
 ```
-*リポジトリの外（scratchpad）に置いた試しのファイルで、tslint と Jasmine を直接動かした結果。xit は lint にかからない。*
+*リポジトリの外（作業用フォルダ）に置いた試しのファイルで、tslint と Jasmine を直接動かした結果。xit は lint にかからない。*
 
 67〜68 行目の `ban` で `fdescribe` と `fit` の呼び出しはエラー、64 行目で `debugger` 文もエラーです。CI の PR のワークフローは `pnpm tslint` を走らせるので（[第 10 回](10-contrib-pr-flow.md)）、消し忘れは CI でも止まります。`xit` はどちらにもかからず、結果に pending として残るだけなので、コミットの前に自分で消します。
 

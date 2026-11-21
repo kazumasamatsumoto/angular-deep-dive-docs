@@ -586,7 +586,7 @@ TCB は「どこに書くか」で 2 通りに分かれます。ふつうは元�
 📄 `手元で走らせたスクリプト（要点）`
 
 ```
-// scratchpad の tsconfig（このサイトの tsconfig.app.json を extends し、出力先だけ変えたもの）で
+// 手元の作業フォルダの tsconfig（このサイトの tsconfig.app.json を extends し、出力先だけ変えたもの）で
 const p = new ngc.NgtscProgram(cfg.rootNames, cfg.options, host);
 const before = p.getTsProgram();
 await p.compiler.analyzeAsync();

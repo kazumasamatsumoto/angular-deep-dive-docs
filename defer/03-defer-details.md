@@ -374,7 +374,7 @@ LView の側の記録は、名前つきのオブジェクトではなく**配列
 
    タイマーが `NEXT` の状態を描き、`NEXT` と `STATE_IS_FROZEN_UNTIL` を null にしました。この時間の仕組みは [第 5 回](05-defer-minimum-after.md)で 1 行ずつ読みます。
 
-📄 `scratchpad の記録スクリプト（a/details.ts。共通の build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/details.ts。共通の build.mjs で束ねて node で実行）`
 
 ```
 // defer-details の記録: 形の違う 4 つの @defer の塊を描き、blocks() の tDetails（TView の側）と
@@ -745,7 +745,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance --nocache_test_result
   '--test_arg=--filter=^getControlFlowBlocks > @defer blocks'
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/a-details.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/a-details.log）`
 
 ```
 Ran 9 of 2693 specs

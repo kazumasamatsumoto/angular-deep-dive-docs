@@ -232,10 +232,10 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 
 この describe は、外側の `describe('Animation')` の中にあります。外側には `beforeEach`（55〜58 行目）があり、`[BrowserTestingModule, TestModule]` だけで環境を作り直します（[第 19 回](19-animations-testing.md)で引きます）。Jasmine では、内側の `beforeAll` は内側の最初の it の前に 1 回だけ走り、外側の `beforeEach` はその**あと**、it ごとに走ります。../angular の jasmine-core 6.3.0 で同じ形を組んで確かめました。
 
-📄 `確かめた順番（scratchpad のスクリプト。../angular は変えていない）`
+📄 `確かめた順番（手元の作業フォルダのスクリプト。../angular は変えていない）`
 
 ```
-// scratchpad に置いた確認用のスクリプト（../angular の jasmine-core 6.3.0 を読むだけ）
+// 作業用フォルダに置いた確認用のスクリプト（../angular の jasmine-core 6.3.0 を読むだけ）
 env.describe('Animation', () => {
   env.beforeEach(() => log.push('outer beforeEach (L55)'));
   env.afterEach(() => log.push('outer afterEach (L60)'));

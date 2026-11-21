@@ -509,7 +509,7 @@ b74eef889f（2026-07-31、#33719 を閉じる）の本文は「客が切断す�
 
 2 つの関数は、このサイトの依存の配布物 `@angular/ssr/node` 22.1.7 です（f8576e3c8b・b74eef889f・36dff801ee の行が入っていることを、配布物の `node.mjs` を grep して確かめました）。「直す前」は `git show b74eef889f^:packages/angular/ssr/node/src/response.ts` で取り出した写しを、スクリプトの隣に置いて束ねました（../angular-cli は書き換えていません）。2026-11-06、Node v24.22.1。
 
-📄 `scratchpad/ssrx-demo/_shared-c/build.mjs`
+📄 `work/ssrx-demo/_shared-c/build.mjs`
 
 ```js
 // 使い方: RESEARCH=~/angular-research node build.mjs <記録のスクリプト.ts> <出力.mjs>  →  node <出力.mjs> > 記録.json
@@ -548,7 +548,7 @@ await build({ entryPoints: [entry], outfile: out, bundle: true, platform: 'node'
 ```
 *束ねるスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-node-streams/record.ts`
+📄 `work/ssrx-demo/ssrx-node-streams/record.ts`
 
 ```ts
 // Node のリクエストとレスポンスの記録。127.0.0.1 の上だけで、外へは通信しない。
@@ -847,7 +847,7 @@ process.exit(0);
 
 ### 手元で走らせた結果
 
-練習用の複製（angular-cli-fix、44129f66a3）で `pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all` を走らせ、`//packages/angular/ssr/node/test:test` は「42 specs, 0 failures」（0.2 秒）でした（scratchpad/ssrx-logs/c-cli-tests.log）。
+練習用の複製（angular-cli-fix、44129f66a3）で `pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all` を走らせ、`//packages/angular/ssr/node/test:test` は「42 specs, 0 failures」（0.2 秒）でした（work/ssrx-logs/c-cli-tests.log）。
 
 - 複製の response.ts を b74eef889f の前に戻すと、HTTP/1.1 と HTTP/2 の 111・120 行目の it が `Timeout - Async function did not complete within 5000ms` で落ちました（42 件中 2 件、10.1 秒。c-cli-reverted.log）。150 行目の `await writePromise` が終わらないからで、5 節の「前」の記録と同じです。
 - 複製の request.ts から f8576e3c8b の行を消すと、`abort handling` の 4 件（HTTP/1.1 と HTTP/2 で 2 件ずつ）が落ち、validation.ts を 33169801c6 の前に戻すと「本文を tee せずに移す」の 1 件が落ちました。

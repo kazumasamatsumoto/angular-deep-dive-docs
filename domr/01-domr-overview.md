@@ -259,7 +259,7 @@ pnpm bazel test //packages/platform-browser:platform-browser_errors \
   //packages/platform-browser:platform-browser_api --nocache_test_results
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/a-pb-node.log・a-web.log・a-golden.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/a-pb-node.log・a-web.log・a-golden.log）`
 
 ```
 Ran 1 of 159 specs

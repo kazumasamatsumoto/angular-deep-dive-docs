@@ -1194,7 +1194,7 @@ c7fd4a2ed99 は、preprocessor の検査に 4 節の関連メッセージ（firs
 
 > **🧪 DEMO — どう書くと、何の命令と、どの診断になるか**
 >
-> scratchpad の記録スクリプトが、`foreignImports` を持つ小さなコンポーネントを @angular/compiler-cli 22.1.6（このサイトの node\_modules）で `performCompilation`（`strictTemplates`）にかけ、診断の code と出力のテンプレート関数を集めました。22.2.6 でも同じでした。ブラウザでは何もコンパイルしません。外のコンポーネントの代わりは中身の無い関数で、`miniImport` は受け取った値をそのまま返します（ngtsc は評価しないので、形だけあれば足ります）。
+> 手元の作業フォルダの記録スクリプトが、`foreignImports` を持つ小さなコンポーネントを @angular/compiler-cli 22.1.6（このサイトの node\_modules）で `performCompilation`（`strictTemplates`）にかけ、診断の code と出力のテンプレート関数を集めました。22.2.6 でも同じでした。ブラウザでは何もコンパイルしません。外のコンポーネントの代わりは中身の無い関数で、`miniImport` は受け取った値をそのまま返します（ngtsc は評価しないので、形だけあれば足ります）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/fgn-compiler)
 

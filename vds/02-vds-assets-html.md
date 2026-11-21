@@ -607,7 +607,7 @@ index.html に足された `/@vite/client` の中身も、Angular が手を入�
 
 > **🧪 DEMO — base href / と /app/ で、要求ごとに誰が何を返すか（記録の再生）**
 >
-> `<scratchpad>/vds-demo/a/record.mjs` が、@angular/build 22.1.7・vite 8.1.5 の `ng serve` を Node v24.22.1 で起動し、`http.request` で要求を送った記録です（スクリプトの全文は下のボタン）。アプリの `public/` には `favicon.ico`・`robots.txt`・拡張子の無い `version`・`data.json`・`help.html`・`docs/index.html` を置きました。「応答した middleware」は、包みのモジュールが `stack` の各 middleware を包み、見出しを書いた時点で動いていたものの名前を記録した値です。
+> `<work>/vds-demo/a/record.mjs` が、@angular/build 22.1.7・vite 8.1.5 の `ng serve` を Node v24.22.1 で起動し、`http.request` で要求を送った記録です（スクリプトの全文は下のボタン）。アプリの `public/` には `favicon.ico`・`robots.txt`・拡張子の無い `version`・`data.json`・`help.html`・`docs/index.html` を置きました。「応答した middleware」は、包みのモジュールが `stack` の各 middleware を包み、見出しを書いた時点で動いていたものの名前を記録した値です。
 >
 > index.html の &lt;base href="/"&gt; のまま。baseHref の option は無い。Vite の config.base: `/`
 >

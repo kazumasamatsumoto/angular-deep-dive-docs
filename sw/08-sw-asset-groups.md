@@ -1061,7 +1061,7 @@ pnpm bazel test //packages/service-worker/worker/test:test \
   '--test_arg=--filter=^(prefetch assets|Driver (caches lazy content|prefetches updates to lazy|unhashed requests|handles redirected))'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/b-assets.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/b-assets.log）`
 
 ```
 Ran 15 of 153 specs

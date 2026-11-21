@@ -386,7 +386,7 @@ lines.forEach((l, idx) => {
 const total = specs.reduce((a, s) => a + s.runs, 0);
 if (total !== 43) throw new Error('数が 43 にならない: ' + total);
 
-const body = `// 自動生成 — 手で編集しないこと（scratchpad の pipe-demo/b/issues/make-data.mjs が作った）。
+const body = `// 自動生成 — 手で編集しないこと（手元の作業フォルダの pipe-demo/b/issues/make-data.mjs が作った）。
 // issue の欄（番号・状態・日付・ラベル）は 2026-11-09 に gh で取ったもの。ch・ja・link はこの章の書き手が付けたもの。
 // SPECS は ../angular（8576f161ae4）の packages/core/test/acceptance/pipe_spec.ts から拾ったもの。
 

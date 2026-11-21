@@ -524,7 +524,7 @@ $ git show 683d0e09e5 -- …/builders/karma/find-tests.ts             # 同じ�
 
 > **🧪 DEMO — 10 通りの ng test と、見つかったテスト・Karma に渡った設定（記録の再生）**
 >
-> `<scratchpad>/kar-demo/a/record.mjs` が、@angular/build 22.2.7・karma 6.4.4・karma-jasmine 5.1.0・karma-chrome-launcher 3.2.0 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です。アプリは spec が 5 本（`greet.spec.ts`・`app.spec.ts`・`feature/counter.spec.ts`・`feature/counter.test.ts`・わざと落ちる `broken.spec.ts`）の小さなもので、ブラウザは bazel のキャッシュにある chrome-headless-shell を `CHROME_BIN` で渡しました。`hook.cjs` が `normalizeOptions`・`findTests`・`getBaseKarmaOptions`、karma の `parseConfig` と `Server` を包み、引数と戻り値を書き出しています。パスは `<app>`（アプリ）・`<out>`（`<app>/dist/test-out/<uuid>`）・`<site>`・`<pnpm>` に縮めています。記録した 22.2.7 は 44129f66a3 より後の版で、違いは[第 2 回](02-kar-build.md)の `progress`・`poll` の 2 行だけです（この章の行は同じ）。
+> `<work>/kar-demo/a/record.mjs` が、@angular/build 22.2.7・karma 6.4.4・karma-jasmine 5.1.0・karma-chrome-launcher 3.2.0 の `ng test --watch=false` を Node v24.22.1 で走らせた記録です。アプリは spec が 5 本（`greet.spec.ts`・`app.spec.ts`・`feature/counter.spec.ts`・`feature/counter.test.ts`・わざと落ちる `broken.spec.ts`）の小さなもので、ブラウザは bazel のキャッシュにある chrome-headless-shell を `CHROME_BIN` で渡しました。`hook.cjs` が `normalizeOptions`・`findTests`・`getBaseKarmaOptions`、karma の `parseConfig` と `Server` を包み、引数と戻り値を書き出しています。パスは `<app>`（アプリ）・`<out>`（`<app>/dist/test-out/<uuid>`）・`<site>`・`<pnpm>` に縮めています。記録した 22.2.7 は 44129f66a3 より後の版で、違いは[第 2 回](02-kar-build.md)の `progress`・`poll` の 2 行だけです（この章の行は同じ）。
 >
 > karmaConfig を書かない（builder の既定の設定）
 >

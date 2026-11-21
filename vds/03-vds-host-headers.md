@@ -243,7 +243,7 @@ CLI から `--allowed-hosts demo.test` と渡す道は、22.1.7 では使えま�
 
 > **🧪 DEMO — allowedHosts の 4 通りと Host（記録の再生）**
 >
-> `<scratchpad>/vds-demo/b/record-host.mjs` が、@angular/build 22.1.7・vite 8.1.5・Node v24.22.1 で本物の `ng serve` を設定ごとに起動し、`node:http` で Host を指定して `/` を取った結果です（Host には `:port` を付けた）。このページの中ではサーバーを動かしません。「次の要求へ」で 1 件ずつ進めてください。赤い状態は 403 です。
+> `<work>/vds-demo/b/record-host.mjs` が、@angular/build 22.1.7・vite 8.1.5・Node v24.22.1 で本物の `ng serve` を設定ごとに起動し、`node:http` で Host を指定して `/` を取った結果です（Host には `:port` を付けた）。このページの中ではサーバーを動かしません。「次の要求へ」で 1 件ずつ進めてください。赤い状態は 403 です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/vds-host-headers)
 
@@ -414,8 +414,8 @@ $ git show b85ec6798b -- packages/angular/build/src/builders/dev-server/vite/ser
 
 | 起動 | 状態 | Content-Type | 本文 | Host: other.test | ?x=1 を付ける |
 | --- | --- | --- | --- | --- | --- |
-| 1 回目 | 200 | application/json | { "workspace": { "root": "&lt;scratchpad&gt;/vds-demo/b/app", "uuid": "a1a51303-78ab-4940-a838-053f4185af08" } } | 403 | 404（text/html; charset=utf-8） |
-| 2 回目 | 200 | application/json | { "workspace": { "root": "&lt;scratchpad&gt;/vds-demo/b/app", "uuid": "a1a51303-78ab-4940-a838-053f4185af08" } } | 403 | 404（text/html; charset=utf-8） |
+| 1 回目 | 200 | application/json | { "workspace": { "root": "&lt;work&gt;/vds-demo/b/app", "uuid": "a1a51303-78ab-4940-a838-053f4185af08" } } | 403 | 404（text/html; charset=utf-8） |
+| 2 回目 | 200 | application/json | { "workspace": { "root": "&lt;work&gt;/vds-demo/b/app", "uuid": "a1a51303-78ab-4940-a838-053f4185af08" } } | 403 | 404（text/html; charset=utf-8） |
 
 2 回起動しても uuid は同じで、cacheDir のファイルから読んだことが分かります。この 2 回目の動きは 05485ede7b（2025-04）で直ったもので、それまでは 43 行目が `const devtoolsConfig = …` と同じ名前の変数を中で作っていたため、外の 30 行目の変数が `undefined` のまま 65 行目に渡り、2 回目以降の起動では中身が返りませんでした。この middleware を通る spec は今もありません（テストの節で確かめます）。また、1 節の順のとおり Host の検査の後ろにあるので、許していない Host には 403 です。
 
@@ -645,11 +645,11 @@ pnpm bazel test //packages/angular/build:dev-server_integration_tests --nocache_
 📄 `作業木の作り方（../angular-cli-fix から。../angular-cli は触らない）`
 
 ```
-git -C ~/angular-research/angular-cli-fix worktree add <scratchpad>/vds-wt-b 44129f66a3
-cd <scratchpad>/vds-wt-b && ln -s ~/angular-research/angular-cli-fix/node_modules node_modules
+git -C ~/angular-research/angular-cli-fix worktree add <work>/vds-wt-b 44129f66a3
+cd <work>/vds-wt-b && ln -s ~/angular-research/angular-cli-fix/node_modules node_modules
 # 4 か所を 1 行ずつ壊して、dev-server の spec を全部走らせる
 pnpm bazel test //packages/angular/build:dev-server_integration_tests --nocache_test_results --test_output=all --flaky_test_attempts=1
-git -C ~/angular-research/angular-cli-fix worktree remove --force <scratchpad>/vds-wt-b
+git -C ~/angular-research/angular-cli-fix worktree remove --force <work>/vds-wt-b
 ```
 
 📄 `壊した 4 か所（1 回の実行でまとめて）`

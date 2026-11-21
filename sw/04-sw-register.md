@@ -500,7 +500,7 @@ pnpm bazel test //packages/service-worker/test:test \
   '--test_arg=--filter=^(provideServiceWorker|ServiceWorkerModule) '
 ```
 
-2026-11-03 にこのマシンで走らせた結果です（ログは `scratchpad/sw-logs/a-register.log`）。Node の `:test` は **Ran 2 of 41 specs、2 specs, 0 failures、PASSED in 0.8s**（当たったのは 2 つの `'should pass'` だけ）。`:test_web_chromium` は **89 passed, 0 failed、PASSED in 0.9s** で、`--filter` はブラウザの test runner には効かず、comm\_spec（35）・integration\_spec（4）と provider\_spec（25 × 2）の全部が走りました。走らせる前と後で `git status --short` は同じでした。
+2026-11-03 にこのマシンで走らせた結果です（ログは `work/sw-logs/a-register.log`）。Node の `:test` は **Ran 2 of 41 specs、2 specs, 0 failures、PASSED in 0.8s**（当たったのは 2 つの `'should pass'` だけ）。`:test_web_chromium` は **89 passed, 0 failed、PASSED in 0.9s** で、`--filter` はブラウザの test runner には効かず、comm\_spec（35）・integration\_spec（4）と provider\_spec（25 × 2）の全部が走りました。走らせる前と後で `git status --short` は同じでした。
 
 ### 直すとしたら、どこから
 

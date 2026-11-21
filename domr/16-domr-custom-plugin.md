@@ -299,7 +299,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=should bind events inside the NgZone after a replacement'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/d-hmr.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/d-hmr.log）`
 
 ```
 Ran 1 of 2693 specs

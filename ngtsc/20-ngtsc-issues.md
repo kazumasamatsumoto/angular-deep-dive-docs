@@ -130,7 +130,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/typecheck/test:test \
 ```
 
 - 1 つめは 4 つの shard が 0・1・1・2 件（合計 4 = it 1 つ × 4 つのファイルシステム）で、2.6 秒で PASSED でした。**shard の 1 つは 0 件**でも PASSED です。shard の分け方は spec の通し番号の余りなので（[第 17 回](17-ngtsc-hmr.md)）、件数が偏ることがあります。合計で見ます。
-- 2 つめは単体テストのターゲットで shard が無く、8 件（2 つの it × 4）で 1.0 秒でした（ログは scratchpad/ngtsc-logs/e-issues-host.log・e-issues-retag.log）。
+- 2 つめは単体テストのターゲットで shard が無く、8 件（2 つの it × 4）で 1.0 秒でした（ログは work/ngtsc-logs/e-issues-host.log・e-issues-retag.log）。
 - どちらも直したあとの木なので通ります。直す前に落ちることを確かめるには、src の直しだけを手元で戻して走らせることになりますが、../angular を変えないこのシリーズではそこまでしていません。
 
 ## 6. 最初に読む issue の選び方

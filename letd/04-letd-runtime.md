@@ -762,7 +762,7 @@ diff --git a/packages/core/src/hydration/cleanup.ts b/packages/core/src/hydratio
 
 ### 記録：サーバーで描いてから、Node の上でハイドレーションする
 
-5 つのテンプレートを compiler-cli でコンパイルし、platform-server の `renderApplication` で `provideClientHydration()` 付きで描いて HTML を書き、別の Node のプロセスでその HTML を domino の `document` に読んで `bootstrapApplication`（`provideClientHydration()` 付き）しました。最後に、コンポーネントの `todos[6]` のキーを読みます。ErrorHandler に届かず `process.on('unhandledRejection')` に来たものも記録します。写し A は 22.1.6 の `@angular/core` を scratchpad に写して #71990 と同じ 1 か所を足したもの、写し B はさらに annotate の 658 行目に当たる行で `@let` を外したものです（../angular は変えていません）。
+5 つのテンプレートを compiler-cli でコンパイルし、platform-server の `renderApplication` で `provideClientHydration()` 付きで描いて HTML を書き、別の Node のプロセスでその HTML を domino の `document` に読んで `bootstrapApplication`（`provideClientHydration()` 付き）しました。最後に、コンポーネントの `todos[6]` のキーを読みます。ErrorHandler に届かず `process.on('unhandledRejection')` に来たものも記録します。写し A は 22.1.6 の `@angular/core` を 作業用フォルダに写して #71990 と同じ 1 か所を足したもの、写し B はさらに annotate の 658 行目に当たる行で `@let` を外したものです（../angular は変えていません）。
 
 | テンプレート | サーバーの ngh（\_\_nghData\_\_） | todos\[6\] のキー | クライアントで起きたこと |
 | --- | --- | --- | --- |

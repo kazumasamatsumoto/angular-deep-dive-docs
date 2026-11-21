@@ -422,7 +422,7 @@ Chrome 156（macOS）で試すと、次のようになりました。
 
 写しの `preventDefault()` は写しの欄を変えるだけで、元の touchend は `defaultPrevented` が `false` のままでした（5 節の 540〜541 行目）。写しは `Event` ではなく、`composedPath` も持ちません（500〜513 行目で関数を写さない）。
 
-📄 `記録のスクリプト（scratchpad/jsa-demo/c/。build.mjs で束ね、rec-run.mjs がヘッドレスの Chrome を動かす）`
+📄 `記録のスクリプト（work/jsa-demo/c/。build.mjs で束ね、rec-run.mjs がヘッドレスの Chrome を動かす）`
 
 ```
 // ===== build.mjs =====
@@ -906,7 +906,7 @@ pnpm bazel test //packages/core/primitives/event-dispatch/test:browser_test_chro
 git show a24179e1251 --stat
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/c-all.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/c-all.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed

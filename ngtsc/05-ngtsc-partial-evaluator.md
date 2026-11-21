@@ -1122,7 +1122,7 @@ export class Z {}
 
 2 つ目（`` `app-${config.width}` ``）の relatedInformation が 2 件なのは、図の 3 段のうち、いちばん外の段が診断の本体と同じ node（161〜165 行目）だからです。3 つ目は、`complex` の宣言が shared.ts にあるので、「Function is declared here.」が**別のファイル**を指しています。
 
-📄 `記録のスクリプト（scratchpad の記録スクリプト pe.mjs。angular-deep-dive を cwd にして node で走らせる）`
+📄 `記録のスクリプト（手元の作業フォルダの記録スクリプト pe.mjs。angular-deep-dive を cwd にして node で走らせる）`
 
 ```
 // 第 5 回（ngtsc-partial-evaluator）の記録。
@@ -1533,7 +1533,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/partial_evaluator/test:test \
   --nocache_test_results --test_output=all '--test_arg=--filter=enum'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/b-pe-all.log・b-pe-enum.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/b-pe-all.log・b-pe-enum.log）`
 
 ```
 365 specs, 0 failures

@@ -879,7 +879,7 @@ pnpm bazel test //packages/forms/signals/test/node:test \
   --test_output=all
 ```
 
-📄 `出力（抜粋。scratchpad/forms-logs/e-forms-sf-validation.log）`
+📄 `出力（抜粋。work/forms-logs/e-forms-sf-validation.log）`
 
 ```
 ==================== Test output for //packages/forms/signals/test/node:test:

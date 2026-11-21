@@ -750,7 +750,7 @@ pnpm bazel test //packages/service-worker/worker/test:test \
   '--test_arg=--filter=^Driver (updates to new content|updates a specific client|updates when refreshed|returns old content|handles empty client ID|preserves multiple client|routing|navigationRequestStrategy)'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/sw-logs/b-versions.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/sw-logs/b-versions.log）`
 
 ```
 Ran 19 of 153 specs
@@ -764,7 +764,7 @@ Ran 19 of 153 specs
 
 - どのタブにどの版を使わせるかは `assignVersion`（5 節）と `updateClient`（6 節）。it は `updates to new content when requested` の形で、ID を変えた `makeRequest` と `makeNavigationRequest` を並べて足します。
 - ナビゲーションの判定は `isNavigationRequest`（3 節）。it は describe `routing` に、条件を 1 つ外した `navRequest` を足します。
-- 関係する issue に #54036（`navigationRequestStrategy: 'freshness'` で `VERSION_READY` が余分に出る）があります。196 行目でナビゲーションをネットワークに流すことと、`Driver.handleFetch` がナビゲーションのたびに更新の確認を積むこと（[第 6 回](06-sw-driver-fetch.md)の 2 節）の組み合わせを、手元で確かめる入口になります（[第 20 回](20-sw-issues.md)）。このページの偽物の世界でも、`navigationRequestStrategy: 'freshness'` の v1 を入れて tab-1 を閉じ、サーバーを v2 にして tab-2 をナビゲーションで開くと、tab-2 は 196 行目でネットワークから `<h1>v2</h1>` を受け取る一方、898 行目で v1（その時点の `latestHash`）にピン留めされ、5 秒後のアイドルの確認で `VERSION_DETECTED`・`VERSION_READY` が届きました（このデモのボタンには入れていません。scratchpad で `createSwWorld` を直接呼んで確かめた手順です）。このパッケージはセキュリティの修正以外を受け付けない方針なので（[第 6 回](06-sw-driver-fetch.md)）、本家に PR を出すことは勧めません。
+- 関係する issue に #54036（`navigationRequestStrategy: 'freshness'` で `VERSION_READY` が余分に出る）があります。196 行目でナビゲーションをネットワークに流すことと、`Driver.handleFetch` がナビゲーションのたびに更新の確認を積むこと（[第 6 回](06-sw-driver-fetch.md)の 2 節）の組み合わせを、手元で確かめる入口になります（[第 20 回](20-sw-issues.md)）。このページの偽物の世界でも、`navigationRequestStrategy: 'freshness'` の v1 を入れて tab-1 を閉じ、サーバーを v2 にして tab-2 をナビゲーションで開くと、tab-2 は 196 行目でネットワークから `<h1>v2</h1>` を受け取る一方、898 行目で v1（その時点の `latestHash`）にピン留めされ、5 秒後のアイドルの確認で `VERSION_DETECTED`・`VERSION_READY` が届きました（このデモのボタンには入れていません。作業用フォルダで `createSwWorld` を直接呼んで確かめた手順です）。このパッケージはセキュリティの修正以外を受け付けない方針なので（[第 6 回](06-sw-driver-fetch.md)）、本家に PR を出すことは勧めません。
 
 ## 聞かれそうな質問
 

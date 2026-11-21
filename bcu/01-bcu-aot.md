@@ -759,7 +759,7 @@ Angular の変換だけを当てた結果（418〜425 行目、前の章の引�
 
 ## 10. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の dist を require しました。`initializeHash()` を先に呼びます（ワーカーでは parallel-worker.ts の 49 行目が呼ぶ。前の章の引用。直接 `AotCompilation` を作るときは呼ぶ人がいないと 4 節のホストの `calculateHash` が assert で落ちる）。476 行目の結果は、`require.cache` の typescript を、`createEmitAndSemanticDiagnosticsBuilderProgram` だけを包んだ写しに差し替えて記録しました（typescript の export は書き換えられない getter のため）。テンプレートの診断は、`TypeScriptCompilation.loadCompilerCli` を `NgtscProgram` の子クラスを返す物に替え、作られたコンパイラの `getDiagnosticsForFile` を包みました。44129f66a3 との比べは、../angular-cli の `diagnostics.ts` と `compiler-options.ts` を読むだけで transpile し、同じ入力を渡しています。
+スクリプトは `<work>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の dist を require しました。`initializeHash()` を先に呼びます（ワーカーでは parallel-worker.ts の 49 行目が呼ぶ。前の章の引用。直接 `AotCompilation` を作るときは呼ぶ人がいないと 4 節のホストの `calculateHash` が assert で落ちる）。476 行目の結果は、`require.cache` の typescript を、`createEmitAndSemanticDiagnosticsBuilderProgram` だけを包んだ写しに差し替えて記録しました（typescript の export は書き換えられない getter のため）。テンプレートの診断は、`TypeScriptCompilation.loadCompilerCli` を `NgtscProgram` の子クラスを返す物に替え、作られたコンパイラの `getDiagnosticsForFile` を包みました。44129f66a3 との比べは、../angular-cli の `diagnostics.ts` と `compiler-options.ts` を読むだけで transpile し、同じ入力を渡しています。
 
 📄 `記録のスクリプト（rec-aot.mjs）`
 

@@ -29,7 +29,7 @@ angular/angular-cli · 読了 約 12 分 · 基礎 · [サイトで読む（デ�
 
 ### platform-server（../angular、22.2.0-next.7、8576f161ae4）
 
-「走った数」は、一番外の `describe` の名前ごとに `--test_arg=--filter=^名前 ` で走らせ、「Ran N of 399 specs」を読んだものです（scratchpad/ssrx-logs/c-ng-count.log。`event_replay_spec.ts` と `init/test` は別のターゲットの数）。合計 424 件です。
+「走った数」は、一番外の `describe` の名前ごとに `--test_arg=--filter=^名前 ` で走らせ、「Ran N of 399 specs」を読んだものです（work/ssrx-logs/c-ng-count.log。`event_replay_spec.ts` と `init/test` は別のターゲットの数）。合計 424 件です。
 
 | ファイル | 行数 | describe（行） | it の行 | 走った数 |
 | --- | --- | --- | --- | --- |
@@ -257,7 +257,7 @@ pnpm bazel test //packages/platform-server/test:test --nocache_test_results --te
   "--test_arg=--filter=^resolveUrl "
 ```
 
-📄 `scratchpad/ssrx-logs/c-ng-tests.log（要点）`
+📄 `work/ssrx-logs/c-ng-tests.log（要点）`
 
 ```
 //packages/platform-server/init/test:test          PASSED in 0.5s    2 specs, 0 failures
@@ -278,7 +278,7 @@ pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_o
   "--test_arg=--filter=^getPreferredLocale "
 ```
 
-📄 `scratchpad/ssrx-logs/c-cli-tests.log（要点）`
+📄 `work/ssrx-logs/c-cli-tests.log（要点）`
 
 ```
 //packages/angular/ssr/node/test:test   PASSED in 0.2s   42 specs, 0 failures（Finished in 0.069 seconds）
@@ -353,7 +353,7 @@ angular の `area: server` で開いている 19 件と 2025-09-01 以降に閉�
 - 2026 年に閉じた 78 件の内訳は、completed が 55 件、not\_planned が 19 件、duplicate が 4 件、です。NOT\_PLANNED には、#34157・#33342（重要 CSS。「beasties の側の問題」）や #32910（allowedHosts をリクエストごとに決めたい）のように、Angular の外か、設計として受けないと答えたものが入っています。
 - angular の側の閉じた issue は、domino の DOM（止まる・メモリを使い切る）と、サニタイズと直列化（`</noscript>` の外へ出られる）が多く、このシリーズの範囲の外（[platformServer の章](../platform/03-ssr-platform-server.md)・[サニタイズの章](../domr/17-domr-sanitization.md)・[renderApplication の章](../platform/02-ssr-render-application.md)）です。
 
-📄 `scratchpad/ssrx-demo/ssrx-tests-issues/make-data.mjs`
+📄 `work/ssrx-demo/ssrx-tests-issues/make-data.mjs`
 
 ```js
 // 第 10 回の表のデータを作る。使い方: RESEARCH=~/angular-research LOGS=<ssrx-logs> node make-data.mjs > tests-issues.json
@@ -577,7 +577,7 @@ console.log(JSON.stringify({ SPECS, COMMITS, ISSUES }));
 ```
 *表のデータを作ったスクリプトの全文（記録）*
 
-📄 `scratchpad/ssrx-demo/ssrx-tests-issues/count-ng.sh`
+📄 `work/ssrx-demo/ssrx-tests-issues/count-ng.sh`
 
 ```sh
 #!/bin/zsh

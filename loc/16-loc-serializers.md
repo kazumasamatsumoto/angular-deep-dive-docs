@@ -469,10 +469,10 @@ ID は custom ID → legacy ID のうち 40 文字のもの（`useLegacyIds` の
 
 第 15 回の 7 節と同じ `dist/main.js`（ngc → esbuild、ソースマップ付き）から `MessageExtractor` で 5 つのメッセージを集め、本物の 6 つの書き手に渡しました（2026-11-03、`@angular/localize/tools` 22.1.6）。
 
-📄 `ターミナル（ログは scratchpad/i18n-logs/d-serializers-node.log）`
+📄 `ターミナル（ログは work/i18n-logs/d-serializers-node.log）`
 
 ```
-cd scratchpad/build-loc-d/extract-demo   # 第 15 回と同じ dist/main.js
+cd work/build-loc-d/extract-demo   # 第 15 回と同じ dist/main.js
 node serialize.mjs xlf      # Xliff1TranslationSerializer('en', basePath, true, {}, fs)
 node serialize.mjs xlf2     # Xliff2TranslationSerializer('en', basePath, true, {}, fs)
 node serialize.mjs xmb      # XmbTranslationSerializer(basePath, true, fs)
@@ -696,7 +696,7 @@ node serialize.mjs badOption  # Xliff2TranslationSerializer(…, {'xml:space': '
 
 > **🧪 DEMO — ParsedMessage を &lt;trans-unit&gt; にする（XLIFF 1.2 の書き手の移植）**
 >
-> テンプレート文字列の中身を、[第 13 回](13-loc-localize-tag.md)のデモと同じ `splitTemplateLiteral` で部品と式に分け、**本物の `ɵparseMessage`** で `ParsedMessage` にします。それを、この章の `.ts` に写した `XmlFile`・`extractIcuPlaceholders`・`Xliff1TranslationSerializer` の**移植版**で書きます。本物との違いは、メッセージが 1 つなので `consolidateMessages` を省いたことと、ブラウザのメッセージには位置が無いので `<context-group>` を書かず、`equiv-text` には `${…}` の中身をそのまま入れること（本物はソースマップで戻した元のソースの文字列）です。下の 5 つの例は、Node で本物の書き手と出力が一致することを確かめてあります（scratchpad/i18n-logs/d-port-compare.log）。
+> テンプレート文字列の中身を、[第 13 回](13-loc-localize-tag.md)のデモと同じ `splitTemplateLiteral` で部品と式に分け、**本物の `ɵparseMessage`** で `ParsedMessage` にします。それを、この章の `.ts` に写した `XmlFile`・`extractIcuPlaceholders`・`Xliff1TranslationSerializer` の**移植版**で書きます。本物との違いは、メッセージが 1 つなので `consolidateMessages` を省いたことと、ブラウザのメッセージには位置が無いので `<context-group>` を書かず、`equiv-text` には `${…}` の中身をそのまま入れること（本物はソースマップで戻した元のソースの文字列）です。下の 5 つの例は、Node で本物の書き手と出力が一致することを確かめてあります（work/i18n-logs/d-port-compare.log）。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/loc-serializers)
 
@@ -1276,7 +1276,7 @@ pnpm bazel test //packages/localize/tools/test:test --test_sharding_strategy=dis
   '--test_arg=--filter=TranslationSerializer|extractIcuPlaceholders|format_options'
 ```
 
-📄 `出力（2026-11-03 に実行。ログは scratchpad/i18n-logs/d-f16-serializers.log・d-tools-noshard.log）`
+📄 `出力（2026-11-03 に実行。ログは work/i18n-logs/d-f16-serializers.log・d-tools-noshard.log）`
 
 ```
 （shard 4 のまま）shard 1〜4 がそれぞれ Ran 81 of 390 specs    PASSED in 0.9s

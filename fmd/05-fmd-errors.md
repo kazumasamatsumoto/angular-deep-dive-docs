@@ -477,7 +477,7 @@ $ pnpm bazel test //packages/forms/test:test --nocache_test_results --test_outpu
 --filter=should throw if  Ran 21 of 1153 specs、0 failures
 --filter=should warn      Ran 6 of 1153 specs、0 failures
 
-# 記録の取り方（<scratchpad>/fmd-demo/a/record.mjs）
+# 記録の取り方（<work>/fmd-demo/a/record.mjs）
 #   demo-errors.ts を TypeScript で JS にし、platform-server の domino の上で JIT で動かす。
 #   prod は先に globalThis.ngDevMode = false を置いてから @angular/* を読み込む。
 $ node record.mjs ~/angular-research/angular-deep-dive fmd-errors.demo-errors.ts runFmdErAll '[[]]'

@@ -726,7 +726,7 @@ coverage を有効にすると、application builder の options の `instrument
 
 > **🧪 DEMO — @angular/build:karma の 1 回（記録の再生）**
 >
-> `<scratchpad>/kar-demo/b/record.mjs` が、@angular/build 22.2.7・karma 6.4.4・karma-jasmine 5.1.0・karma-coverage 2.2.1 の `ng test` を Node v24.22.1 で起動した記録です（ブラウザは Chrome Headless 155.0.8043.0 (Mac OS 10.15.7)）。`hook.cjs` が `@angular/build` の `execute`・`buildApplicationInternal`・`writeTestFiles`・`AngularAssetsMiddleware`・`injectKarmaReporter` と、karma の `Server` を包み、出来事を 1 行ずつ書きました。ms は最初の記録からの時間です。記録の版は 22.2.7 で、引用の 44129f66a3 との違いは `poll` と `progress` を application builder に渡す 1 か所（[次の章](04-kar-runner.md)の 0edb6c646f）だけです。`<out>` は `dist/test-out/<uuid>`、`node_modules/` は symlink の先を短くしたものです。
+> `<work>/kar-demo/b/record.mjs` が、@angular/build 22.2.7・karma 6.4.4・karma-jasmine 5.1.0・karma-coverage 2.2.1 の `ng test` を Node v24.22.1 で起動した記録です（ブラウザは Chrome Headless 155.0.8043.0 (Mac OS 10.15.7)）。`hook.cjs` が `@angular/build` の `execute`・`buildApplicationInternal`・`writeTestFiles`・`AngularAssetsMiddleware`・`injectKarmaReporter` と、karma の `Server` を包み、出来事を 1 行ずつ書きました。ms は最初の記録からの時間です。記録の版は 22.2.7 で、引用の 44129f66a3 との違いは `poll` と `progress` を application builder に渡す 1 か所（[次の章](04-kar-runner.md)の 0edb6c646f）だけです。`<out>` は `dist/test-out/<uuid>`、`node_modules/` は symlink の先を短くしたものです。
 >
 > `ng test --watch=false` — @angular/build:karma を 1 回だけ。終了コード 1
 >

@@ -61,7 +61,7 @@ git log --oneline HEAD..origin/main -- packages/core/src/defer packages/core/src
   packages/core/src/event_delegation_utils.ts packages/core/primitives/event-dispatch packages/core/primitives/defer
 ```
 
-- ラベルの付いたものの JSON は、シリーズの準備で取ったもの（scratchpad/defer-logs/open-core\_-defer.json ほか 4 つ）です。`core: incremental hydration` のラベルは、開いているものが 1 件（#58695）、2025-11 以降に閉じたものは 0 件でした。
+- ラベルの付いたものの JSON は、シリーズの準備で取ったもの（work/defer-logs/open-core\_-defer.json ほか 4 つ）です。`core: incremental hydration` のラベルは、開いているものが 1 件（#58695）、2025-11 以降に閉じたものは 0 件でした。
 - ラベルの無いものは、`gh search issues` の `"incremental hydration"`・`defer`・`hydration` の結果から、第 1〜19 回の行に直接かかるものだけを選びました。ハイドレーションの道の不具合（#71769・#71296・#71545・#70796・#69908・#70113）は、どれもラベルが `area: core` だけでした。ラベルで絞るだけでは、このシリーズの話の半分を見落とします。
 - 「PR・commit」の列は、`closedByPullRequestsReferences`、`gh pr list --search`、commit の本文の `Fixes #番号` のどれかで見つけたものだけです。`gh pr list --search` が返した PR は、本文に `Fixes #番号` があるかを `gh pr view` で読んで確かめました。
 - 表の「内容」は題をそのまま写さず、本文とコメントを読んで日本語で短くしたものです。「章」と「どこ」は、このシリーズのどこを開いて読むかです。付け方は下の make-issues-data.mjs の `NOTES` にあります。
@@ -74,7 +74,7 @@ git log --oneline HEAD..origin/main -- packages/core/src/defer packages/core/src
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/defer-issues)
 
-📄 `scratchpad の make-issues-data.mjs（表のデータを作る。NOTES が書き手の付けた要約と章）`
+📄 `手元の作業フォルダの make-issues-data.mjs（表のデータを作る。NOTES が書き手の付けた要約と章）`
 
 ```
 // 第 20 回 defer-issues の表のデータを作る。
@@ -82,7 +82,7 @@ git log --oneline HEAD..origin/main -- packages/core/src/defer packages/core/src
 // NOTES は、この章の書き手が issue の本文・コメント・付いた PR・commit を読んで付けたもの（題をそのまま写さず日本語で要約）。
 // 使い方: node make-issues-data.mjs  →  angular-deep-dive/src/app/pages/chapters/defer-issues.data.ts
 import { readFileSync, writeFileSync } from 'node:fs';
-const LOGS = '<scratchpad>/defer-logs/';
+const LOGS = '<work>/defer-logs/';
 const OUT = '~/angular-research/angular-deep-dive/src/app/pages/chapters/defer-issues.data.ts';
 const HERE = new URL('.', import.meta.url).pathname;
 
@@ -157,7 +157,7 @@ const COMMITS = [
   { h: '3a0835b3328', d: '2026-09-22', s: "fix(core): don't crash initEventReplay when two apps share an APP_ID", issue: '', ch: 'defer-hydrate-events', what: '同じ APP_ID の 2 つ目のアプリで警告して戻る', spec: 'event_replay_spec.ts に 84 行', head: false },
 ];
 
-const body = `// 自動生成 — 手で編集しないこと（scratchpad の make-issues-data.mjs が作った）。
+const body = `// 自動生成 — 手で編集しないこと（手元の作業フォルダの make-issues-data.mjs が作った）。
 // issue の欄（番号・状態・日付・ラベル・コメント数）は 2026-11-06 に gh で取ったもの。ja・ch・where・pr はこの章の書き手が付けたもの。
 
 export const ROWS = ${JSON.stringify(rows, null, 1)} as const;
@@ -233,7 +233,7 @@ recent-commits.txt（33 個）のうち、このシリーズの行に直接か�
    2 節の最後の 6 件のように、仕様・ブラウザの振る舞い・前提の違いで閉じるものが多くあります。脱水の塊が更新されない（#70198）のは、第 17 回の 0 節のとおり、その塊にまだ LView が無いからです。
 4. **手元で再現する**
 
-   本家の spec の形で書き（[第 19 回](19-defer-tests.md)の 7 節）、../angular を変えない間は、scratchpad の harness で同じ手順を走らせます。記録の環境（Node・domino・JIT・22.1.6）のせいで起きることと、本物の振る舞いを分けます。domino の `eventPhase` の値のように、環境だけの違いは不具合と書きません（第 18 回の 5 節）。
+   本家の spec の形で書き（[第 19 回](19-defer-tests.md)の 7 節）、../angular を変えない間は、手元の作業フォルダの harness で同じ手順を走らせます。記録の環境（Node・domino・JIT・22.1.6）のせいで起きることと、本物の振る舞いを分けます。domino の `eventPhase` の値のように、環境だけの違いは不具合と書きません（第 18 回の 5 節）。
 5. **付いた PR と commit を読む**
 
    `gh pr list --search` と `git log --grep` で探し、`gh pr diff` と `git show` で、直した行と足した spec を読みます。マージされずに閉じた PR は、コメントで理由を確かめます。

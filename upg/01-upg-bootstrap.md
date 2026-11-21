@@ -595,7 +595,7 @@ AngularJS の `$injector` は 5.2 の run の中でしか手に入りません�
 
 > **🧪 DEMO — UpgradeModule の起動（記録の再生）**
 >
-> `<scratchpad>/upg-demo/a/record-bootstrap.mjs` が、AngularJS 1.8.3・@angular/upgrade 22.1.6・@angular/core 22.1.6・zone.js 0.16.3 を jsdom 26.1.0 の上で JIT で起動した記録です。ブラウザの中では何も起動しません。場面を選び、「次の段へ」で 1 段ずつ進めてください。「ゾーン」は `NgZone.isInAngularZone()` の値です。
+> `<work>/upg-demo/a/record-bootstrap.mjs` が、AngularJS 1.8.3・@angular/upgrade 22.1.6・@angular/core 22.1.6・zone.js 0.16.3 を jsdom 26.1.0 の上で JIT で起動した記録です。ブラウザの中では何も起動しません。場面を選び、「次の段へ」で 1 段ずつ進めてください。「ゾーン」は `NgZone.isInAngularZone()` の値です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/upg-bootstrap)
 

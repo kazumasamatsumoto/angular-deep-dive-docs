@@ -302,7 +302,7 @@ options が無ければ 215〜217 行目で `''`。あれば 219 行目で `root
 
    `{scrollMargin: '1px'}` と `{scrollMargin: '2px'}` は、3 節の 219 行目の鍵がどちらも `'undefined/undefined'` です。だから observer 5 は 1 つだけ作られ、options は最初の塊の `{"scrollMargin":"1px"}` です。d（2px のつもりの塊）もこの observer に observe され、observer 5 の callback で発火しました。次の「テストと直し方」で、この振る舞いが main でどう変わったかを見ます。
 
-📄 `scratchpad の記録スクリプト（viewport.ts。共通の build.mjs で束ねて node で実行。共通の harness.ts と build.mjs は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（viewport.ts。共通の build.mjs で束ねて node で実行。共通の harness.ts と build.mjs は第 1 回に全文）`
 
 ```
 // 第 12 回（defer-viewport）の記録。
@@ -577,7 +577,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/defer-logs/c-viewport.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/defer-logs/c-viewport.log）`
 
 ```
 Ran 15 of 2693 specs

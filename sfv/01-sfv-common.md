@@ -119,7 +119,7 @@ t.ts(5,29): error TS2322: Type 'WithoutFieldTree<EmailValidationError>' is not a
 📄 `記録：required・email・pattern に値を入れた結果`
 
 ```
-# <scratchpad>/sfv-demo/a/rec-common.mjs を Node 24 で実行（サイトの node_modules の @angular/forms 22.2.6）
+# <work>/sfv-demo/a/rec-common.mjs を Node 24 で実行（サイトの node_modules の @angular/forms 22.2.6）
 --- required(p) を付けたフィールドに入れた値 → errors() の kind
 null       required
 undefined  required

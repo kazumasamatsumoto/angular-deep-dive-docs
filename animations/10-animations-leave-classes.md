@@ -381,7 +381,7 @@ angular/angular · 読了 約 13 分 · 中核 · [サイトで読む（デモ�
 
 1. **走らせ方と結果**
 
-   `animation_spec.ts` はブラウザ版の `//packages/core/test/acceptance:acceptance_web_chromium` でしか中身が走りません（Node 版は 50〜53 行目で 1 本だけ）。2026-11-01 に `pnpm bazel test //packages/core/test/acceptance:acceptance_web_chromium --nocache_test_results` を走らせ、`2743 passed, 0 failed, 3 skipped`、`Finished running tests in 6.3s`、`PASSED in 6.8s` でした（ログは scratchpad/anim-logs/c-acceptance-web-chromium.log）。絞り込みの引数は無いので、1 本だけ見たいときは手元の作業コピーで `it` を `fit` にします（ここでは試していません）。
+   `animation_spec.ts` はブラウザ版の `//packages/core/test/acceptance:acceptance_web_chromium` でしか中身が走りません（Node 版は 50〜53 行目で 1 本だけ）。2026-11-01 に `pnpm bazel test //packages/core/test/acceptance:acceptance_web_chromium --nocache_test_results` を走らせ、`2743 passed, 0 failed, 3 skipped`、`Finished running tests in 6.3s`、`PASSED in 6.8s` でした（ログは work/anim-logs/c-acceptance-web-chromium.log）。絞り込みの引数は無いので、1 本だけ見たいときは手元の作業コピーで `it` を `fit` にします（ここでは試していません）。
 2. **この章に関わる it の数え方**
 
    クラスの leave を扱う it は `describe('animate.leave')`（76〜993 行目、17 本）に集まっています。`grep -n "^\s*it(" packages/core/test/acceptance/animation_spec.ts | awk -F: '$1>=76 && $1<=994'` で一覧が出ます。fallback の setTimeout（389〜394 行目）を直接確かめる it は acceptance にはありません。`integration/animations/e2e/src/animations.e2e-spec.ts` の `it('should remove element when animationend is dropped (fallback timeout)')`（76 行目）が、本物のブラウザで確かめています。

@@ -1002,7 +1002,7 @@ pnpm bazel test //packages/core/test:test --nocache_test_results --test_output=a
 pnpm bazel test //packages/common/test:test --nocache_test_results --test_output=all '--test_arg=--filter=l10n|I18nPluralPipe|I18nSelectPipe'
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/c-core-locale.log・c-common-l10n.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/c-core-locale.log・c-common-l10n.log）`
 
 ```
 # core（locale data api）。shard 4 つ

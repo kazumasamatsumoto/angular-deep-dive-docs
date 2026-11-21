@@ -815,7 +815,7 @@ pnpm bazel test //packages/core/test/acceptance:acceptance \
   '--test_arg=--filter=^styling (non-string class keys|should support Set|should apply map-based|should allow static and bound)'
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/c-sm-r3.log・c-sm-acc.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/c-sm-r3.log・c-sm-acc.log）`
 
 ```
 # render3

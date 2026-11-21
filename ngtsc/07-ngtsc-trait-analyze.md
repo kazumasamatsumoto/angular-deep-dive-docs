@@ -822,7 +822,7 @@ export class SomeModule {}
 - `Undecorated`：デコレーターは無いのに `@Input()` があるので、DirectiveDecoratorHandler の detect が「Angular の機能を使うクラス」として当てます（trigger はデコレーターではなく PropertyDeclaration）。analyze は analysis 無し・診断 1 件（-992007 `UNDECORATED_CLASS_USING_ANGULAR_FEATURES`）を返し、analysis が null の Analyzed のまま resolve の直後も変わりません。
 - `NotExportedInModule`：既定の設定では Resolved まで進みます。`compileNonExportedClasses: false` では 477〜485 行目で analysis が null になり、register も呼ばれないので、NgModule の側が「declarations にあるのにディレクティブでもコンポーネントでもない」（-996001）と言います。
 
-📄 `記録のスクリプト（scratchpad の記録スクリプト traits.mjs。angular-deep-dive を cwd にして node で走らせる）`
+📄 `記録のスクリプト（手元の作業フォルダの記録スクリプト traits.mjs。angular-deep-dive を cwd にして node で走らせる）`
 
 ```
 // 第 7 回（ngtsc-trait-analyze）の記録。
@@ -1084,7 +1084,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/transform/test:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/b-transform-all.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/b-transform-all.log）`
 
 ```
 36 specs, 0 failures

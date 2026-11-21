@@ -379,7 +379,7 @@ $ git show 4422f4ef509 -- packages/forms/signals/src/field/context.ts
 📄 `Node で動かした記録（22.2.6）`
 
 ```
-# Node 24 + サイトの node_modules の @angular/forms 22.2.6（<scratchpad>/sft-demo/b/node/depth2.mjs）
+# Node 24 + サイトの node_modules の @angular/forms 22.2.6（<work>/sft-demo/b/node/depth2.mjs）
 # s = schema(p => { [A] validate(p.next, ({valueOf}) => valueOf(p.data))
 #                   [B] validate(p,      ({valueOf}) => valueOf(p.data))
 #                   applyWhenValue(p.next, v => v != null, s) })

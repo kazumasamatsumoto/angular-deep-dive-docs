@@ -48,7 +48,7 @@ cd ../angular
 pnpm bazel query 'tests(//packages/localize/...)'
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/i18n-logs/e-query-localize.log）`
+📄 `出力（2026-11-03。ログは work/i18n-logs/e-query-localize.log）`
 
 ```
 js_test rule //packages/localize:localize_api
@@ -942,7 +942,7 @@ pnpm bazel test //packages/compiler-cli/test/compliance/test_cases:r3_view_compi
   //packages/compiler-cli/test/compliance/linked:linked '--test_arg=--filter=r3_view_compiler_i18n' --nocache_test_results
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/i18n-logs/e-golden.log）`
+📄 `出力（2026-11-03。ログは work/i18n-logs/e-golden.log）`
 
 ```
 _diff_test rule //packages/compiler-cli/test/compliance/test_cases:r3_view_compiler_i18n.golden_test

@@ -416,7 +416,7 @@ index 83e1adfb1af..961bcc6d151 100644
 - 上限 1 MB では `declared` も pull が 1026 回になるまで読んでから止まります。宣言が上限より小さくても、239 行目が実際の量で止めます。
 - `maxResponseBodySize: 0` は、トークンが 1048576 のままです（provide\_server.ts 40 行目）。
 
-📄 `scratchpad/ssrx-demo/ssrx-server-http/record.ts`
+📄 `work/ssrx-demo/ssrx-server-http/record.ts`
 
 ```ts
 // このサイトの依存の @angular/platform-server・@angular/common 22.1.6 を Node で動かし、
@@ -527,7 +527,7 @@ writeFileSync('record.json', JSON.stringify({ node: process.version, angular: VE
 ```
 *記録を取ったスクリプトの全文*
 
-📄 `scratchpad/ssrx-demo/_shared-a/build.mjs`
+📄 `work/ssrx-demo/_shared-a/build.mjs`
 
 ```js
 // 使い方: RESEARCH_ROOT=<angular-research の場所> node build.mjs <記録のスクリプト.ts> <出力.mjs>
@@ -747,8 +747,8 @@ fetch\_spec.ts の 3 つの it は `FetchBackend` を直接作り、691 行目�
 
 ### 手元で走らせた結果
 
-- ../angular で `pnpm bazel test //packages/platform-server/test:test --nocache_test_results --test_output=all "--test_arg=--filter=HttpClient|max response body"`：「Ran 18 of 399 specs / 18 specs, 0 failures」（2026-11-06、scratchpad/ssrx-logs/a-filter-HttpClient\_max\_respo.log）。
-- `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all "--test_arg=--filter=response buffering limits"`：「Ran 3 of 410 specs / 3 specs, 0 failures」（scratchpad/ssrx-logs/a-http-limit.log）。
+- ../angular で `pnpm bazel test //packages/platform-server/test:test --nocache_test_results --test_output=all "--test_arg=--filter=HttpClient|max response body"`：「Ran 18 of 399 specs / 18 specs, 0 failures」（2026-11-06、work/ssrx-logs/a-filter-HttpClient\_max\_respo.log）。
+- `pnpm bazel test //packages/common/http/test:test --nocache_test_results --test_output=all "--test_arg=--filter=response buffering limits"`：「Ran 3 of 410 specs / 3 specs, 0 failures」（work/ssrx-logs/a-http-limit.log）。
 
 ### 直すとしたら
 

@@ -343,7 +343,7 @@ angular/angular · 読了 約 12 分 · 基礎 · [サイトで読む（デモ�
 
    `TypeScriptProgramCreate`（`ts.createProgram`）の 160.1 ms が最も長く、Angular の `Analysis`・`Resolve`・`Compile` は合わせて 20.9 ms です。`TcbUpdateProgram` は型チェック用のプログラムを作り直す時間です（[typecheck-program-driver の章](../typecheck/04-typecheck-program-driver.md)）。それぞれの段がどこで切り替わるかは [第 18 回](18-ngtsc-diagnostics-perf.md)で読みます。
 
-📄 `scratchpad の記録スクリプト（overview.mjs、angular-deep-dive を cwd にして node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（overview.mjs、angular-deep-dive を cwd にして node で実行）`
 
 ```
 // ngtsc-overview の記録: 小さなプロジェクトを、ngc と同じ道（readConfiguration → performCompilation）で emit する。
@@ -550,7 +550,7 @@ pnpm bazel test //packages/compiler-cli/test:perform_compile --nocache_test_resu
 pnpm bazel test //packages/compiler-cli/src/ngtsc/core/test:test --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/a-perform-compile.log・a-units.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/a-perform-compile.log・a-units.log）`
 
 ```
 //packages/compiler-cli/test:perform_compile    9 specs, 0 failures   PASSED in 1.3s

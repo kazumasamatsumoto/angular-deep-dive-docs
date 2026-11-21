@@ -385,7 +385,7 @@ window.__jsaction_bootstrap(document.body,"ng",["click"],["load"]);
 
    `triggerEventHandler('click', null)` で、inner の `(click)` は `$event = null` で呼ばれ、例外は出ませんでした。4 節の 114 行目です。
 
-📄 `scratchpad/jsa-demo/d/angular.ts（defer シリーズの共通の build.mjs で束ねて node で実行。共通の harness.ts は defer-overview の章に全文）`
+📄 `work/jsa-demo/d/angular.ts（defer シリーズの共通の build.mjs で束ねて node で実行。共通の harness.ts は defer-overview の章に全文）`
 
 ```
 // 第 11 回 jsaction-angular の記録。
@@ -709,7 +709,7 @@ pnpm bazel test //packages/platform-server/test:event_replay_test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/d-angular-filter.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/d-angular-filter.log）`
 
 ```
 Ran 6 of 23 specs

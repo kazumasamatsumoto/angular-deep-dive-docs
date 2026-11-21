@@ -863,7 +863,7 @@ pnpm bazel test //packages/forms/signals/test/node:test \
   --test_output=all
 ```
 
-📄 `実際に走らせた記録（scratchpad/forms-logs/e-forms-sf-rules-submit.log）`
+📄 `実際に走らせた記録（work/forms-logs/e-forms-sf-rules-submit.log）`
 
 ```
 # 第 19 回のフィルタと | でつないだ 1 本で走らせた記録

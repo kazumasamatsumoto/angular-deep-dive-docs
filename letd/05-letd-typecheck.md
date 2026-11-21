@@ -847,7 +847,7 @@ diff --git a/vscode-ng-language-service/syntaxes/src/template.ts b/vscode-ng-lan
 
 > **🧪 DEMO — @let の書き方ごとの TCB と診断（記録の再生）**
 >
-> scratchpad の `tc-record.mjs` が、本物の `@angular/compiler-cli` の `NgtscProgram`（`strictTemplates: true`）で 1 つずつコンパイルし、`TemplateTypeChecker.getTypeCheckBlock` の本文と、TS・NG・拡張診断を記録しました。表示は 22.1.6 の記録で、22.2.6 でも全部の場面で同じ記録でした（TypeScript 6.0.3）。code は `ng build` と同じ `formatDiagnostics` で整形した値です。
+> 手元の作業フォルダの `tc-record.mjs` が、本物の `@angular/compiler-cli` の `NgtscProgram`（`strictTemplates: true`）で 1 つずつコンパイルし、`TemplateTypeChecker.getTypeCheckBlock` の本文と、TS・NG・拡張診断を記録しました。表示は 22.1.6 の記録で、22.2.6 でも全部の場面で同じ記録でした（TypeScript 6.0.3）。code は `ng build` と同じ `formatDiagnostics` で整形した値です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/letd-typecheck)
 

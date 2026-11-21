@@ -755,11 +755,11 @@ pnpm bazel test //packages/router/test:test_web --nocache_test_results --test_ou
   Chromium: 1180 passed, 0 failed   Firefox: 1178 passed, 0 failed
 ```
 
-Chromium の数が Firefox より 2 多いのは、397 行目の条件で `real platform navigation` の 2 つが Chromium でだけ作られるからです（ログは scratchpad/nav-logs/b-web-router.log）。
+Chromium の数が Firefox より 2 多いのは、397 行目の条件で `real platform navigation` の 2 つが Chromium でだけ作られるからです（ログは work/nav-logs/b-web-router.log）。
 
 新しい本家の修正と、今の版の spec の関係を、作業木で確かめました。
 
-📄 `scratchpad/nav-logs/b-wt-traverse-before.log・b-wt-traverse-after.log・b-wt-fe72-revert.log（要点）`
+📄 `work/nav-logs/b-wt-traverse-before.log・b-wt-traverse-after.log・b-wt-fe72-revert.log（要点）`
 
 ```
 # 作業木（8576f161ae4）に、../angular-main の 3320da96da2 が足した it

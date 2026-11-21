@@ -739,7 +739,7 @@ index 63313b875d..915d7c2b9a 100644
 
 > **🧪 DEMO 1 — getPrerenderParams とリダイレクトを持つアプリから取り出した記録（再生）**
 >
-> `<scratchpad>/srt-demo/a/record-params.mjs` を Node v24.22.1 で走らせた記録です（JIT・zoneless、@angular/core 22.2.6）。同じアプリを、44129f66a3 の src を束ねたもの・npm の @angular/ssr 22.2.7・（「正規表現の状態」だけ）0fdcde5426^ の src を束ねたもので取り出しました。呼んだのは `getRoutesFromAngularRouterConfig(bootstrap, document, new URL('http://localhost/'), invoke, fallback)` で、外への通信はありません。太字の行が Prerender です。
+> `<work>/srt-demo/a/record-params.mjs` を Node v24.22.1 で走らせた記録です（JIT・zoneless、@angular/core 22.2.6）。同じアプリを、44129f66a3 の src を束ねたもの・npm の @angular/ssr 22.2.7・（「正規表現の状態」だけ）0fdcde5426^ の src を束ねたもので取り出しました。呼んだのは `getRoutesFromAngularRouterConfig(bootstrap, document, new URL('http://localhost/'), invoke, fallback)` で、外への通信はありません。太字の行が Prerender です。
 >
 > product/:id（Prerender、fallback は書かない）。getPrerenderParams は inject(ProductService) から 2 つの id を返す
 >
@@ -786,7 +786,7 @@ index 63313b875d..915d7c2b9a 100644
 cd ~/angular-research/angular-cli-fix   # 44129f66a3
 pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_output=all \
   '--test_arg=--filter=invokeGetPrerenderParams'
-# 作業用の複製（git worktree add <scratchpad>/srt-wt-a 44129f66a3）で、ng-routes.ts の 79 行目に g を戻す
+# 作業用の複製（git worktree add <work>/srt-wt-a 44129f66a3）で、ng-routes.ts の 79 行目に g を戻す
 #   -const URL_PARAMETER_REGEXP = /(?<!\\):([^/]+)/;
 #   +const URL_PARAMETER_REGEXP = /(?<!\\):([^/]+)/g;
 bazelisk test //packages/angular/ssr/test:test --nocache_test_results --test_output=all

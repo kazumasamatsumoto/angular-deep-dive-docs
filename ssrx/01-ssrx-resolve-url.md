@@ -590,7 +590,7 @@ url.ts の歴史は短く、すべて 2026 年です。`git log -- packages/plat
 - `"ht\ntp://evil.com/path"`：基準なしでは `http://evil.com/path`（`allowedHosts` の検査にはこのホスト名が渡る）、基準ありでは 5703（160 行目）。
 - `"/.//attacker.example/collect"`：../angular-main だけ 5702。8576f161ae4 ではパスが `//attacker.example/collect` の URL になります。
 
-📄 `scratchpad/ssrx-demo/ssrx-resolve-url/record.ts`
+📄 `work/ssrx-demo/ssrx-resolve-url/record.ts`
 
 ```ts
 // ../angular（8576f161ae4）と ../angular-main（74961c66242）の url.ts の resolveUrl、
@@ -683,7 +683,7 @@ console.log(JSON.stringify({ node: process.version, origin: ORIGIN, rows, whites
 ```
 *記録を取ったスクリプトの全文*
 
-📄 `scratchpad/ssrx-demo/_shared-a/build.mjs`
+📄 `work/ssrx-demo/_shared-a/build.mjs`
 
 ```js
 // 使い方: RESEARCH_ROOT=<angular-research の場所> node build.mjs <記録のスクリプト.ts> <出力.mjs>
@@ -901,7 +901,7 @@ await build({
 
 ### 手元で走らせた結果
 
-../angular で `pnpm bazel test //packages/platform-server/test:test --nocache_test_results --test_output=all` は「399 specs, 0 failures」（7.9 秒、2026-11-06）。`"--test_arg=--filter=^resolveUrl"` で url\_spec.ts だけに絞ると「Ran 14 of 399 specs / 14 specs, 0 failures」でした（url\_spec.ts の it は 14 個なので全部です。ログは scratchpad/ssrx-logs/a-filter-\_resolveUrl\_.log）。このターゲットは zone.js ありで走ります（BUILD.bazel のコメント「Zone と Zoneless で共有するテストがあるため」）。
+../angular で `pnpm bazel test //packages/platform-server/test:test --nocache_test_results --test_output=all` は「399 specs, 0 failures」（7.9 秒、2026-11-06）。`"--test_arg=--filter=^resolveUrl"` で url\_spec.ts だけに絞ると「Ran 14 of 399 specs / 14 specs, 0 failures」でした（url\_spec.ts の it は 14 個なので全部です。ログは work/ssrx-logs/a-filter-\_resolveUrl\_.log）。このターゲットは zone.js ありで走ります（BUILD.bazel のコメント「Zone と Zoneless で共有するテストがあるため」）。
 
 ### 直すとしたら
 

@@ -532,7 +532,7 @@ handler が作った `CompileResult`（[第 9 回](09-ngtsc-directive-handler.md
 
    A と B のテンプレートはどちらも `[title]="[1, 2]"` で、ファイルの先頭の `const _c0 = () => [1, 2];` を**両方が**使っています。3 節で 1 回目の訪問が両方のクラスを同じ `ConstantPool` でコンパイルし、6 節の 402 行目で 1 つだけ先頭に置かれた結果です。
 
-📄 `記録に使ったスクリプト（scratchpad の記録スクリプト）`
+📄 `記録に使ったスクリプト（手元の作業フォルダの記録スクリプト）`
 
 ```
 // 第 12 回の記録。angular-deep-dive を cwd にして `node <このファイル>` で走らせる。
@@ -722,7 +722,7 @@ pnpm bazel test //packages/compiler-cli/test/compliance/full:full \
   '--test_arg=--filter=nested component declarations'
 ```
 
-📄 `出力（抜粋。2026-11-05 に実行。ログは scratchpad/ngtsc-logs/c-ngtsc-transform2.log・c-compliance-nested.log）`
+📄 `出力（抜粋。2026-11-05 に実行。ログは work/ngtsc-logs/c-ngtsc-transform2.log・c-compliance-nested.log）`
 
 ```
 # test/ngtsc（shard 2 → 4 → 3 → 1 の順に出た）

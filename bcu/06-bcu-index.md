@@ -879,7 +879,7 @@ ng build の最後に出る `index.html` は、あなたが書いた `src/index.
 
 ## 10. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `src/utils/index-file/` の 3 つの .js を require しました。フォントは外に取りに行かず、`node:https` の `get` を、呼ばれた URL・UA・agent を記録して決めた CSS を返す偽物に差し替えています（inline-fonts.js は呼ぶたびに `node_https_1.get` を引くので差し替えが効きます）。importmap の並びの確かめは、別のスクリプトで 127.0.0.1 に小さなサーバーを立て、headless Chrome を CDP（Chrome を外から操る仕組み）で動かしました。
+スクリプトは `<work>/bcu-demo/b/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `src/utils/index-file/` の 3 つの .js を require しました。フォントは外に取りに行かず、`node:https` の `get` を、呼ばれた URL・UA・agent を記録して決めた CSS を返す偽物に差し替えています（inline-fonts.js は呼ぶたびに `node_https_1.get` を引くので差し替えが効きます）。importmap の並びの確かめは、別のスクリプトで 127.0.0.1 に小さなサーバーを立て、headless Chrome を CDP（Chrome を外から操る仕組み）で動かしました。
 
 📄 `記録のスクリプト（rec-index.mjs）`
 

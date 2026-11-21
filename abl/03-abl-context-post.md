@@ -1143,7 +1143,7 @@ JS の側は、既に ID の行があれば置き換え（60・61 行目）、�
 
 ## 14. 記録の取り方
 
-小さな入口は `<scratchpad>/abl-demo/a/ctx-ws` にスクリプトが作って最後に消します。サイトの node\_modules の @angular/build の dist から `bundler-context.js`・`bundler-files.js`・`load-result-cache.js`・`inject-debug-ids.js` と、サーバーの印を付けるプラグインを絶対パスで require し、`utils/hash.js` の initializeHash を先に呼んでいます。9 節の cwd の記録は前の章の rec-results.mjs を、cwd を変えて 2 回走らせたもの、11 節の ng serve の確かめは、カウンターのアプリに styles.css を足して `ng serve` のログを読んだものです。
+小さな入口は `<work>/abl-demo/a/ctx-ws` にスクリプトが作って最後に消します。サイトの node\_modules の @angular/build の dist から `bundler-context.js`・`bundler-files.js`・`load-result-cache.js`・`inject-debug-ids.js` と、サーバーの印を付けるプラグインを絶対パスで require し、`utils/hash.js` の initializeHash を先に呼んでいます。9 節の cwd の記録は前の章の rec-results.mjs を、cwd を変えて 2 回走らせたもの、11 節の ng serve の確かめは、カウンターのアプリに styles.css を足して `ng serve` のログを読んだものです。
 
 📄 `記録のスクリプト（rec-context.mjs）`
 

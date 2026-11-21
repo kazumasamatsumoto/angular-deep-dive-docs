@@ -862,7 +862,7 @@ pnpm bazel test //packages/compiler-cli/src/ngtsc/file_system/testing/test:test 
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/ngtsc-logs/e-env-inj.log・e-fs-unit.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/ngtsc-logs/e-env-inj.log・e-fs-unit.log）`
 
 ```
 # test/ngtsc:ngtsc

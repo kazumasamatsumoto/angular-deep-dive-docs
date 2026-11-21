@@ -290,7 +290,7 @@ $ git show 4df97d1923 -- …/routes/route-tree.ts   # 2025-01-24「enhance dynam
 
 > **🧪 DEMO — 本物の 22.2.7 の木と、ページの上の写しで、同じ URL を照合する**
 >
-> 記録：`<scratchpad>/srt-demo/b/tree/record.mjs` が、@angular/ssr 22.2.7（@angular/core・router 22.2.6、Node v24.22.1）の `ɵextractRoutesAndCreateRouteTree` を呼んで作った木の `toObject()` と、URL ごとの `routeTree.match(pathname)` の答えです。写し：`srt-route-tree.demo-tree.ts` は route-tree.ts の 114〜137・147〜151・161〜201・209〜211・227〜262 行目を写したもので、各段で何を試したかを書き足しただけです。記録の `toObject()` をそのまま `fromObject` で入れています。行番号は元の route-tree.ts のもので、その行は[サーバールートの章](../platform/05-ssr-server-routes.md)の 8 節の引用にあります。
+> 記録：`<work>/srt-demo/b/tree/record.mjs` が、@angular/ssr 22.2.7（@angular/core・router 22.2.6、Node v24.22.1）の `ɵextractRoutesAndCreateRouteTree` を呼んで作った木の `toObject()` と、URL ごとの `routeTree.match(pathname)` の答えです。写し：`srt-route-tree.demo-tree.ts` は route-tree.ts の 114〜137・147〜151・161〜201・209〜211・227〜262 行目を写したもので、各段で何を試したかを書き足しただけです。記録の `toObject()` をそのまま `fromObject` で入れています。行番号は元の route-tree.ts のもので、その行は[サーバールートの章](../platform/05-ssr-server-routes.md)の 8 節の引用にあります。
 >
 > Router の設定（どの場面も、star 以外はこれ）
 >
@@ -552,7 +552,7 @@ pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_o
 # 名前で絞る（0 件でも PASSED になるので「Ran N of 249 specs」を見る）
 pnpm bazel test //packages/angular/ssr/test:test --nocache_test_results --test_output=all '--test_arg=--filter=^RouteTree '
 # 作業木（44129f66a3）で 1 か所ずつ書き換えて走らせ、git checkout で戻す
-python3 <scratchpad>/srt-demo/b/mut/mutate.py <scratchpad>/srt-wt-b
+python3 <work>/srt-demo/b/mut/mutate.py <work>/srt-wt-b
 ```
 
 📄 `自分で走らせた結果（2026-11-18）`

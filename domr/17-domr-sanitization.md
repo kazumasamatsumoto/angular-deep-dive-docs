@@ -842,7 +842,7 @@ pnpm bazel test //packages/platform-browser/test:test --nocache_test_results --t
   '--test_arg=--filter=^(DOM Sanitization Service|Meta service|title service) '
 ```
 
-📄 `出力（2026-11-04 に実行。抜粋。ログは scratchpad/domr-logs/e-core-sanit.log・e-accept-sec.log・e-pb-sec-meta.log）`
+📄 `出力（2026-11-04 に実行。抜粋。ログは work/domr-logs/e-core-sanit.log・e-accept-sec.log・e-pb-sec-meta.log）`
 
 ```
 //packages/core/test:test（4 シャード）

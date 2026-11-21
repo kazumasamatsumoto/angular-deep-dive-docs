@@ -689,7 +689,7 @@ background は 77 行目で印を確かめ、82〜85 行目でそのタブのポ
 
    最初の `[ng-version]` がよその要素になり、その要素には `__ngContext__` が無いからです。返事は `ivy: false` で、パネルは 8 節の 76 行目で「only supports Angular versions 12 and above」を出し、ポップアップは `unsupported.html` になります。さらに 6 節の 149 行目の条件が false なので、バックエンドは inspector も `componentTreeDirty` も用意しません。`supportedApis` の 6 つが true のままなのと対照的です。
 
-📄 `scratchpad の記録スクリプト（a/detect.ts。場面ごとに node detect.mjs と場面の名前で実行）`
+📄 `手元の作業フォルダの記録スクリプト（a/detect.ts。場面ごとに node detect.mjs と場面の名前で実行）`
 
 ```
 // devtools-detect の記録: 場面ごとに別のプロセスで走らせ、shared-utils の angular-check の返り値と、
@@ -776,7 +776,7 @@ process.exit(0);
 
 ```
 
-📄 `scratchpad の記録スクリプト（a/prod-prelude.ts。detect.ts の先頭で import）`
+📄 `手元の作業フォルダの記録スクリプト（a/prod-prelude.ts。detect.ts の先頭で import）`
 
 ```
 // 「本番モード」の場面だけ、@angular/core を読み込む前に ngDevMode を false にする（enableProdMode や本番ビルドの define と同じ値）。
@@ -873,7 +873,7 @@ pnpm bazel test //devtools/projects/shared-utils:test \
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/a-tests.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/a-tests.log）`
 
 ```
 //devtools/projects/shared-utils:test_chromium   1/1 test files | 22 passed, 0 failed   PASSED in 2.4s
@@ -899,7 +899,7 @@ pnpm bazel test //devtools/projects/shared-utils:test \
 
 `backend_bundle.js` は 1 つのファイルに束ねられているので、その中の 1 つのファイルが読み込みで投げると、`backend.ts` の 25 行目の `handshake` の購読まで届きません。すると content script は handshake を送り続け、パネルは返事を受けられないまま 8 節の 80〜81 行目で「Angular application not detected.」になります。1a2bcb2295c の前は、`window.ng` の無い本番のページ（JIT コンパイラを含まない AOT のビルド）で、「production configuration」ではなくこの画面になる順番でした。
 
-📄 `scratchpad の記録スクリプト（a/perf-track.ts。前の版は git show で写したもの）`
+📄 `手元の作業フォルダの記録スクリプト（a/perf-track.ts。前の版は git show で写したもの）`
 
 ```
 // devtools-detect の「テストと直し方」用の記録: 1a2bcb2295c（本番モードでプロファイラーを始めない）の前と後で、

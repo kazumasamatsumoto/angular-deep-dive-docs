@@ -80,11 +80,11 @@ export class Card {
 📄 `ターミナル（2026-11-18）`
 
 ```
-cd <scratchpad>/bmap-demo/a/app      # 題材の複製（src は共有の題材と同じ。node_modules は ~/angular-research/angular-deep-dive のもの）
+cd <work>/bmap-demo/a/app      # 題材の複製（src は共有の題材と同じ。node_modules は ~/angular-research/angular-deep-dive のもの）
 npx ng build -c development             # optimization: false, outputHashing: none, sourceMap: false
 npx ng build                            # production（angular.json の既定。optimization は既定の true、outputHashing: all）
 cd dist/demo/browser && python3 -m http.server 8731 &
-node <scratchpad>/bmap-demo/a/tools/cdp.mjs http://127.0.0.1:8731/ <scratchpad>/bmap-demo/a/tools/dom.json
+node <work>/bmap-demo/a/tools/cdp.mjs http://127.0.0.1:8731/ <work>/bmap-demo/a/tools/dom.json
 ```
 
 ![この章の見取り図。左の書いたものが、ビルドで ɵcmp の中身（中）になり、実行時に DOM（右）になる。%COMP% だけはビルドの出力の中では決まらず、実行時に APP_ID とコンポーネントの id で置き換わる](../assets/bmap-component-1.svg)
@@ -704,8 +704,8 @@ describe('component id (getComponentId)', () => {
 📄 `出力（2026-11-18、抜粋）`
 
 ```
-$ git -C ~/angular-research/angular-fix worktree add --detach <scratchpad>/bmap-wt-a 8576f161ae4
-$ cd <scratchpad>/bmap-wt-a && bazelisk test //packages/core/test/render3:render3 --nocache_test_results --test_output=all "--test_arg=--filter=component id"
+$ git -C ~/angular-research/angular-fix worktree add --detach <work>/bmap-wt-a 8576f161ae4
+$ cd <work>/bmap-wt-a && bazelisk test //packages/core/test/render3:render3 --nocache_test_results --test_output=all "--test_arg=--filter=component id"
 3 specs, 0 failures
 //packages/core/test/render3:render3   PASSED in 1.2s      （初回。ビルド込みで 48 秒）
 
@@ -714,7 +714,7 @@ $ cd <scratchpad>/bmap-wt-a && bazelisk test //packages/core/test/render3:render
 3 specs, 1 failure
 //packages/core/test/render3:render3   FAILED in 1.0s
 
-$ git -C ~/angular-research/angular-fix worktree remove --force <scratchpad>/bmap-wt-a
+$ git -C ~/angular-research/angular-fix worktree remove --force <work>/bmap-wt-a
 ```
 
 ### 直すとしたら

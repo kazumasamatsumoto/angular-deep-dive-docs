@@ -606,7 +606,7 @@ JIT では、`styleUrl` や `templateUrl` を `import` に書き換え、esbuild
 
 ## 9. どう録ったか
 
-スクリプトは `<scratchpad>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `lazy-routes-transformer.js`・`uri.js`・`angular-host.js` を require しました（Node v24.22.1）。作業用のワークスペースの node\_modules はサイトの物への symlink なので、ふつうのプロジェクトと同じパスに見えるよう `preserveSymlinks` にしています。共有の小道具は [1 回目](01-bcu-aot.md)と同じです。
+スクリプトは `<work>/bcu-demo/a/` に置き、サイトの node\_modules の @angular/build 22.2.7 の `lazy-routes-transformer.js`・`uri.js`・`angular-host.js` を require しました（Node v24.22.1）。作業用のワークスペースの node\_modules はサイトの物への symlink なので、ふつうのプロジェクトと同じパスに見えるよう `preserveSymlinks` にしています。共有の小道具は [1 回目](01-bcu-aot.md)と同じです。
 
 📄 `記録のスクリプト（rec-host.mjs）`
 

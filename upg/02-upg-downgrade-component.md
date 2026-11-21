@@ -980,7 +980,7 @@ AngularJS の要素が消えると jqLite が要素に `$destroy` のイベン�
 
 > **🧪 DEMO — downgrade したコンポーネントの input・output・破棄（記録の再生）**
 >
-> `<scratchpad>/upg-demo/a/record-downgrade.mjs` の記録です（AngularJS 1.8.3・@angular/upgrade 22.1.6・@angular/core 22.1.6・jsdom 26.1.0）。AngularJS のテンプレートは `<ng2-greet ng-if="show" name="Hi {{who}}" [title]="title" bindon-value="m.val" (clicked)="onClicked($event)" on-picked="onPicked($event)"><span class="head">…</span> text <b>bold</b></ng2-greet>` です。`name` は `@Input`（setter で記録）、`title` は `input()`、`value` は `model()`、`clicked` は `EventEmitter`、`picked` は `output()` です。
+> `<work>/upg-demo/a/record-downgrade.mjs` の記録です（AngularJS 1.8.3・@angular/upgrade 22.1.6・@angular/core 22.1.6・jsdom 26.1.0）。AngularJS のテンプレートは `<ng2-greet ng-if="show" name="Hi {{who}}" [title]="title" bindon-value="m.val" (clicked)="onClicked($event)" on-picked="onPicked($event)"><span class="head">…</span> text <b>bold</b></ng2-greet>` です。`name` は `@Input`（setter で記録）、`title` は `input()`、`value` は `model()`、`clicked` は `EventEmitter`、`picked` は `output()` です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/upg-downgrade-component)
 

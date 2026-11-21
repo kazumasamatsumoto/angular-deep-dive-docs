@@ -134,7 +134,7 @@ observe 3 通り × responseType 4 通りで 12、json の 3 つにだけ型引�
 
 型は実行時に残らないので、ページの上では見せられません。代わりに、下の 2 つのファイルを Node で動かし、TypeScript 6.0.3 の型検査器（`checker.typeToString`）で各変数の型と、その行のエラーを取り出しました。`@angular/common` はこのサイトが使う 22.1.6 の型定義（.d.ts）です。**これは 2026-11-06 に一度走らせた記録の再生です**（ページを開いて検査しているわけではありません）。22.2.0-next.7 のソースと ../angular-main の client.ts も同じ宣言であることを確かめてあります。
 
-📄 `scratchpad/a-httpx/tc/cases.ts（検査したファイルの全文）`
+📄 `work/a-httpx/tc/cases.ts（検査したファイルの全文）`
 
 ```
 import {HttpClient, HttpClientCommonOptions} from '@angular/common/http';
@@ -185,7 +185,7 @@ const h4 = http.post<Hero, {name: string}>(url, {name: 'x'});
 
 ```
 
-📄 `scratchpad/a-httpx/tc/run.mjs（検査したスクリプトの全文）`
+📄 `work/a-httpx/tc/run.mjs（検査したスクリプトの全文）`
 
 ```
 // 使い方: node run.mjs <angular-deep-dive のパス> <cases.ts>
@@ -464,7 +464,7 @@ h1 の `http.head(url)` は `Observable<Object>` です。HEAD の応答は HTTP
 
 ### 手元で走らせた結果
 
-../angular で `pnpm bazel test //packages/common:common_api --test_output=errors` は PASSED（テスト 1.6 秒、全体 8.0 秒、2026-11-06、scratchpad/httpx-logs/a-golden.log）。宣言を変えたら `pnpm bazel run //packages/common:common_api.accept` で記録を書き直します（contributing-docs/public-api-surface.md の手順）。4 節の型の記録は、上の run.mjs を `node run.mjs <angular-deep-dive> cases.ts` で走らせたものです。
+../angular で `pnpm bazel test //packages/common:common_api --test_output=errors` は PASSED（テスト 1.6 秒、全体 8.0 秒、2026-11-06、work/httpx-logs/a-golden.log）。宣言を変えたら `pnpm bazel run //packages/common:common_api.accept` で記録を書き直します（contributing-docs/public-api-surface.md の手順）。4 節の型の記録は、上の run.mjs を `node run.mjs <angular-deep-dive> cases.ts` で走らせたものです。
 
 ### 直すとしたら
 
@@ -472,7 +472,7 @@ h1 の `http.head(url)` は `Observable<Object>` です。HEAD の応答は HTTP
 - 型の振る舞いを spec にするなら、記録の cases.ts のようなファイルを型検査だけ走らせる形になります。このパッケージにはその仕組みが無く、公開 API の記録が代わりです。
 - #18586・#49760・#21866 はどれも「型を変えると既存のコードの選ばれ方が変わる」ので、長く開いたままです。issue の全体は[第 6 回](06-httpx-tests-issues.md)にまとめます。本家に PR や issue を出すことは勧めません。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、「実行する」を押しました。a1 は object、b1 は string、b2 は Blob（size 14、type 'application/json'）、b3 は ArrayBuffer（byteLength 14）、c1 は HttpResponse、c3 は Sent → HttpResponse でした。型が Observable&lt;Object&gt; の f2（head）・f3（post）・g1（post）は、どれも Sent のイベントと HttpResponse の 2 つが届きました（f2 の body は null）。f4（request、型は any）も同じ 2 つ、h1（head(url)）は null でした。/api/ への通信は 0 件、コンソールの警告とエラーは 0 件です（scratchpad/a-httpx/verify/verify.mjs、prod.json）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、「実行する」を押しました。a1 は object、b1 は string、b2 は Blob（size 14、type 'application/json'）、b3 は ArrayBuffer（byteLength 14）、c1 は HttpResponse、c3 は Sent → HttpResponse でした。型が Observable&lt;Object&gt; の f2（head）・f3（post）・g1（post）は、どれも Sent のイベントと HttpResponse の 2 つが届きました（f2 の body は null）。f4（request、型は any）も同じ 2 つ、h1（head(url)）は null でした。/api/ への通信は 0 件、コンソールの警告とエラーは 0 件です（work/a-httpx/verify/verify.mjs、prod.json）。
 
 ## 聞かれそうな質問
 

@@ -617,7 +617,7 @@ pnpm bazel test //packages/compiler-cli/test/ngtsc:ngtsc \
   '--test_arg=--filter=restricted inputs|input coercion'
 ```
 
-📄 `出力（抜粋。2026-11-02 に実行。ログは scratchpad/tc-logs/c-inputs.log・c-ngtsc-inputs.log）`
+📄 `出力（抜粋。2026-11-02 に実行。ログは work/tc-logs/c-inputs.log・c-ngtsc-inputs.log）`
 
 ```
 ==================== Test output for //packages/compiler-cli/src/ngtsc/typecheck/test:test:

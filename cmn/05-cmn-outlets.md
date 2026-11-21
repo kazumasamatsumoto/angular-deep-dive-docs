@@ -576,7 +576,7 @@ pnpm bazel test //packages/common/test:test \
   '--test_arg=--filter=NgTemplateOutlet|^insert/remove|^inputs '
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/b-outlets.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/b-outlets.log）`
 
 ```
 Ran 46 of 667 specs

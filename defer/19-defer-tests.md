@@ -59,11 +59,11 @@ pnpm bazel test //packages/core/test:test \
 ```
 
 - どれも Node の jasmine なので、`'--test_arg=--filter=…'` の正規表現が「describe の名前を全部つないだ it の名前」に当たります。**0 件に当たっても PASSED になる**ので、出力の `Ran N of M specs` を必ず見ます。
-- 2026-11-06 に走らせた結果：`^@defer ` で `Ran 95 of 2693 specs`（6.1 秒）、`^IdleScheduler` で 15 件（2.1 秒）、`trigger resolution` で 7 件（4.9 秒）、`partial hydration` で `Ran 41 of 399 specs`（7.1 秒）、`DeferFixture` で 14 件（4.8 秒）。ログは scratchpad/defer-logs/e-defer-only.log・e-idle.log・e-trigger.log・e-partial.log・e-fixture.log です。
+- 2026-11-06 に走らせた結果：`^@defer ` で `Ran 95 of 2693 specs`（6.1 秒）、`^IdleScheduler` で 15 件（2.1 秒）、`trigger resolution` で 7 件（4.9 秒）、`partial hydration` で `Ran 41 of 399 specs`（7.1 秒）、`DeferFixture` で 14 件（4.8 秒）。ログは work/defer-logs/e-defer-only.log・e-idle.log・e-trigger.log・e-partial.log・e-fixture.log です。
 - 2 節の地図では `@defer` の describe の it は 94 個ですが、走ったのは 95 件でした。`error handling > with ngDevMode`（1328 行目の describe）の中の it が `[true, false].forEach` の中に書かれていて、2 回作られるからです。地図は「書いてある it の数」です。
 - shard があるのは `//packages/core/test:test` の方です。`DeferFixture` の 14 件は、4 本の shard に 4・3・3・4 件に分かれて出ました。数字は shard ごとに出るので合計で読みます。
 
-📄 `出力（//packages/core/test:test を DeferFixture で絞ったとき。scratchpad/defer-logs/e-fixture.log の抜粋）`
+📄 `出力（//packages/core/test:test を DeferFixture で絞ったとき。work/defer-logs/e-fixture.log の抜粋）`
 
 ```
 Ran 4 of 1391 specs
@@ -86,7 +86,7 @@ INFO: Elapsed time: 4.807s
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/defer-tests)
 
-📄 `scratchpad の spec-map.mjs（describe と it を字下げで数える。node spec-map.mjs <spec.ts>… で JSON を出す）`
+📄 `手元の作業フォルダの spec-map.mjs（describe と it を字下げで数える。node spec-map.mjs <spec.ts>… で JSON を出す）`
 
 ```
 // spec ファイルの describe の木（名前・行・直下と配下の it の数）を、行頭の字下げから作る。
@@ -562,7 +562,7 @@ it('should finish hydration when loading fails and there is no @error block', as
 - `@error` がある形は、もとの it と同じく本体が消えて `@error` が出て、安定に戻り、登録簿も `hydrating` も空になりました。拾われなかった reject が 1 つあるのは、[第 17 回](17-defer-hydration-queue.md)の 4 節の `cleanupRemainingHydrationQueue` で reject した Promise を、だれも受け取っていないものです。
 - `@error` の無い形は、NG0750 が `ErrorHandler` に届いたあと、1 秒たっても安定せず、`d0` が登録簿と `hydrating` に残り、jsaction も残りました（記録の `html`）。
 
-📄 `scratchpad の記録スクリプト（repro.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（repro.ts、共通の build.mjs で束ねて node で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 19 回 defer-tests の「spec の形で再現する」の記録。

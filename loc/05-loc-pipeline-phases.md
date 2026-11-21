@@ -1222,7 +1222,7 @@ pnpm bazel test //packages/compiler-cli/test/compliance/full:full \
   "--test_arg=--filter=r3_view_compiler_i18n/(blocks|nested_nodes|ng-container_ng-template)"
 ```
 
-📄 `出力（2026-11-03 に実行。抜粋。ログは scratchpad/i18n-logs/b-phases.log）`
+📄 `出力（2026-11-03 に実行。抜粋。ログは work/i18n-logs/b-phases.log）`
 
 ```
 //packages/compiler-cli/test/compliance/full:full（shard 2）

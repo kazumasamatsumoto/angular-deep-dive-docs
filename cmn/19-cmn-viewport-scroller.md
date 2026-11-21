@@ -581,7 +581,7 @@ pnpm bazel test //packages/router/test:test \
   '--test_arg=--filter=RouterScroller'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/d-scroller-node.log・d-common-web.log・d-router-scroller-only.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/d-scroller-node.log・d-common-web.log・d-router-scroller-only.log）`
 
 ```
 # Node

@@ -506,7 +506,7 @@ ng test のカバレッジでだけ通る道です（f9a7d52f66）。66〜67 行
 
 ## 9. どう録ったか
 
-スクリプトは `<scratchpad>/esb-demo/a/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `tools/javascript-transformer/javascript-transformer.js` を require しました。ワーカーへの依頼は、Piscina の `prototype.run` を包んで記録しています。比べるための 44129f66a3 は、作業木の 2 つの .ts を esbuild で .js にしてから同じ物に当てました。7 節の ng build は、サイトの node\_modules を 1 つずつ symlink した node\_modules に偽のパッケージを足した、カウンターのアプリのコピーで走らせています。
+スクリプトは `<work>/esb-demo/a/` に置き、Node v24.22.1 で、サイトの node\_modules の @angular/build 22.2.7 の `tools/javascript-transformer/javascript-transformer.js` を require しました。ワーカーへの依頼は、Piscina の `prototype.run` を包んで記録しています。比べるための 44129f66a3 は、作業木の 2 つの .ts を esbuild で .js にしてから同じ物に当てました。7 節の ng build は、サイトの node\_modules を 1 つずつ symlink した node\_modules に偽のパッケージを足した、カウンターのアプリのコピーで走らせています。
 
 📄 `記録のスクリプト（rec-transform.mjs）`
 

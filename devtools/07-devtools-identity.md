@@ -392,7 +392,7 @@ angular/angular · 読了 約 12 分 · 発展 · [サイトで読む（デモ�
 >
 > 最後の項目は Node（V8）の上で `gc()` を明示して呼んだ結果です。Chrome も同じ V8 ですが、本物の拡張で、いつ GC が走り、そのあとパネルの何が空になるかは確かめていません。言えるのは、7 節の 2 つの行（core の 147 行目と component-tree.ts の 71・74 行目）から「要素の注入器の `WeakRef` の先は、ほかから参照されない一時的なオブジェクトになりうる」ということと、記録でそれが回収されたことまでです。8576f161ae4 より新しい main（7c8c8d177b1 で `injector-tree/injector-tree.ts` に移った `getOrCreateInjectorId`）でも、この 2 行の形は同じです。
 
-📄 `scratchpad の記録スクリプト（identity.ts、共通の build.mjs で束ねて node --expose-gc で実行。共通の harness.ts は第 1 回に全文）`
+📄 `手元の作業フォルダの記録スクリプト（identity.ts、共通の build.mjs で束ねて node --expose-gc で実行。共通の harness.ts は第 1 回に全文）`
 
 ```
 // 第 7 回 devtools-identity の記録。
@@ -594,7 +594,7 @@ pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/directive-forest
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/b-bazel.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/b-bazel.log）`
 
 ```
 identity-tracker/test_bundle.spec.js  Chromium 1/1 test files | 11 passed, 0 failed

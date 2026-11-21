@@ -347,7 +347,7 @@ $ git show 8f592950191 -- packages/common/upgrade   # refactor(core): remove unn
 
 > **🧪 DEMO — LocationUpgradeModule.config() の 6 通り（記録の再生）**
 >
-> `<scratchpad>/lshim-demo/a/record-module.mjs` が、@angular/common 22.1.6・@angular/upgrade 22.1.6・AngularJS 1.8.3・zone.js 0.16.3 を jsdom 26.1.0 の上で起動した記録です。設定ごとに Node を 1 本起こし、AngularJS の側は `.factory('$location', downgradeInjectable($locationShim))` で差し替えています。ブラウザの中では何も起動しません。設定を選び、「次の段へ」で 1 段ずつ進めてください。赤い URL は、ブラウザの `location.href` と `$location.absUrl()` が食い違っている列です。
+> `<work>/lshim-demo/a/record-module.mjs` が、@angular/common 22.1.6・@angular/upgrade 22.1.6・AngularJS 1.8.3・zone.js 0.16.3 を jsdom 26.1.0 の上で起動した記録です。設定ごとに Node を 1 本起こし、AngularJS の側は `.factory('$location', downgradeInjectable($locationShim))` で差し替えています。ブラウザの中では何も起動しません。設定を選び、「次の段へ」で 1 段ずつ進めてください。赤い URL は、ブラウザの `location.href` と `$location.absUrl()` が食い違っている列です。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/lshim-module)
 
@@ -444,7 +444,7 @@ AngularJS の `module.factory(name, fn)` は、内部で `name + 'Provider'` と
 
 > **🧪 DEMO — AngularJS の側の差し替えと、$locationShim ができる時（記録の再生）**
 >
-> `<scratchpad>/lshim-demo/a/record-register.mjs` の記録です（スクリプトの全文は 6 節のデモの「記録スクリプトの全文を見る」）。どの場合も `<base href="/">` と `config()` で起動しています。
+> `<work>/lshim-demo/a/record-register.mjs` の記録です（スクリプトの全文は 6 節のデモの「記録スクリプトの全文を見る」）。どの場合も `<base href="/">` と `config()` で起動しています。
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/lshim-module)
 

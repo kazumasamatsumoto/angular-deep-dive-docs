@@ -849,7 +849,7 @@ active の判定は cfb26f59992（2025-11-09、AleksanderBodurri、PR #65037）�
 >
 > **129〜130 行目**：ずれた（mismatched）ノードを探す `findErrorNodesForHydrationOverlay` は、子へ進むときに自分ではなく 109 行目の `findNodesForHydrationOverlay` を呼びます。だから、ハイドレーションできた親の中の、ずれた子は見つかりません。main では 3eaae88e5d7（2026-09-20、fix）が 130 行目を自分を呼ぶ形に直しました（spec の追加は無し。手元の木にはまだ無い）。
 >
-> **85〜97 行目**：`switch` には `hydrated`・`mismatched`・`skipped` しかなく、プロトコルの型にある 4 つめの `dehydrated`（まだハイドレーションしていない）は 96 行目で `AngularDevtoolsError` を投げます。112 行目は状態を持つノードを種類を見ずに返すので、ルートの直下に `ngh` の残った要素があると、重ね表示を有効にしたところで投げて止まります。記録の環境で、描画したあとの子の要素に `ngh` 属性を手で付けて `enableHydrationOverlays` を送ると、`AngularDevtoolsError: Unsupported hydration status highlighting: dehydrated` が投げられました（scratchpad の hydration-dehydrated.ts）。incremental hydration（`@defer (hydrate on …)`）の本物のページでは確かめていません。main の同じ行も同じです（`git show origin/main:…` で確かめた）。gh で探した範囲では、同じ報告は見つかりませんでした。
+> **85〜97 行目**：`switch` には `hydrated`・`mismatched`・`skipped` しかなく、プロトコルの型にある 4 つめの `dehydrated`（まだハイドレーションしていない）は 96 行目で `AngularDevtoolsError` を投げます。112 行目は状態を持つノードを種類を見ずに返すので、ルートの直下に `ngh` の残った要素があると、重ね表示を有効にしたところで投げて止まります。記録の環境で、描画したあとの子の要素に `ngh` 属性を手で付けて `enableHydrationOverlays` を送ると、`AngularDevtoolsError: Unsupported hydration status highlighting: dehydrated` が投げられました（手元の作業フォルダの hydration-dehydrated.ts）。incremental hydration（`@defer (hydrate on …)`）の本物のページでは確かめていません。main の同じ行も同じです（`git show origin/main:…` で確かめた）。gh で探した範囲では、同じ報告は見つかりませんでした。
 
 ## 7. DEMO：getRoutes と getTransferState を本物のバックエンドに送る
 
@@ -881,7 +881,7 @@ active の判定は cfb26f59992（2025-11-09、AleksanderBodurri、PR #65037）�
 
 記録のスクリプトの全文です（共通の部品 harness.ts は[第 1 回](01-devtools-overview.md)に全文があります）。`@angular/router` が `@angular/common` を先に読み込むので、JIT のコンパイラ（`@angular/compiler`）をいちばん先に読み込んでいます。
 
-📄 `scratchpad の記録スクリプト（router-transfer.ts、共通の build.mjs で束ねて node で実行）`
+📄 `手元の作業フォルダの記録スクリプト（router-transfer.ts、共通の build.mjs で束ねて node で実行）`
 
 ```
 // 第 18 回 devtools-router-transfer の記録。
@@ -1096,7 +1096,7 @@ pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/router-tree:test
   --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/e-router-transfer.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/e-router-transfer.log）`
 
 ```
 ng-devtools-backend/src/lib/router-tree:test_chromium   26 passed  PASSED in 2.0s

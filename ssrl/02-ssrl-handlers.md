@@ -229,7 +229,7 @@ $ grep -n "reqHandler" packages/schematics/angular/ssr/files/application-builder
 
 > **🧪 DEMO — 本物の印・判定・dev-server の中間処理（記録の再生）**
 >
-> `<scratchpad>/ssrl-demo/a/handlers/record.mjs` が、Node v24.22.1 で @angular/ssr 22.2.7 の 2 つの関数と、@angular/build 22.2.7 の `isSsr*RequestHandler`（`src/utils/server-rendering/utils.js`）を呼んだ記録です。
+> `<work>/ssrl-demo/a/handlers/record.mjs` が、Node v24.22.1 で @angular/ssr 22.2.7 の 2 つの関数と、@angular/build 22.2.7 の `isSsr*RequestHandler`（`src/utils/server-rendering/utils.js`）を呼んだ記録です。
 >
 > 下は、本物の `createAngularSsrExternalMiddleware`（`ssr-middleware.js`）に、`ssrLoadModule` だけを持つ偽の ViteDevServer を渡し、`node:http` のサーバーに挟んで `fetch` で 1 回ずつリクエストした記録です。`'./server.mjs'` には場合ごとの `reqHandler` を、`'/main.server.mjs'` には呼ばれたことを記録するだけの偽の `ɵgetOrCreateAngularServerApp` を返しています。`AngularAppEngine` は本物のクラスです。
 >
@@ -377,7 +377,7 @@ $ grep -n "reqHandler" packages/schematics/angular/ssr/files/application-builder
 
 > **🧪 DEMO — process のリスナー数と、投げっぱなしの例外（記録の再生）**
 >
-> `<scratchpad>/ssrl-demo/a/handlers/errors.mjs` が、場合ごとに別の子プロセスを起こして記録しました。`AngularNodeAppEngine` の前には、`ɵsetAngularAppEngineManifest` で最小の manifest を置いています（「manifest なし」を除く）。「Zone が先にある」は、zone.js ではなく `globalThis.Zone = {}` を置いただけです。
+> `<work>/ssrl-demo/a/handlers/errors.mjs` が、場合ごとに別の子プロセスを起こして記録しました。`AngularNodeAppEngine` の前には、`ɵsetAngularAppEngineManifest` で最小の manifest を置いています（「manifest なし」を除く）。「Zone が先にある」は、zone.js ではなく `globalThis.Zone = {}` を置いただけです。
 >
 > 終了コード：`0`
 >
@@ -480,7 +480,7 @@ $ grep -n "reqHandler" packages/schematics/angular/ssr/files/application-builder
 
 ### spec を足すとしたら（作業木で書いて走らせた）
 
-📄 `<scratchpad>/ssrl-wt-a/packages/angular/ssr/test/handler_spec.ts`
+📄 `<work>/ssrl-wt-a/packages/angular/ssr/test/handler_spec.ts`
 
 ```ts
 // test/handler_spec.ts（作業木で新しく書いたもの）
@@ -507,7 +507,7 @@ describe('createRequestHandler', () => {
 ```
 # ../angular-cli-fix（44129f66a3）で、変えずに
 pnpm bazel test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all
-# 作業木 <scratchpad>/ssrl-wt-a に handler_spec.ts を 2 つ足して
+# 作業木 <work>/ssrl-wt-a に handler_spec.ts を 2 つ足して
 pnpm bazel test //packages/angular/ssr/test:test //packages/angular/ssr/node/test:test --nocache_test_results --test_output=all
 ```
 

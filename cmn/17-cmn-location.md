@@ -697,7 +697,7 @@ pnpm bazel test //packages/router/test:test \
   '--test_arg=--filter=Trailing Slash Integration'
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/cmn-logs/d-location.log・d-trailing.log）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/cmn-logs/d-location.log・d-trailing.log）`
 
 ```
 Ran 23 of 667 specs

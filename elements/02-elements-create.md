@@ -417,7 +417,7 @@ constructor で作らない理由は、この getter を入れたコミット e3
 
 ### 手元で走らせた結果
 
-`pnpm bazel test //packages/elements/test:test_chromium //packages/elements/test:test_firefox --nocache_test_results --test_output=all` で、どちらも「1/1 test files | 59 passed, 0 failed, 5 skipped」、4.8 秒でした（2026-11-06。ログは scratchpad/el-logs/a-test.log）。名前の絞り込みが効かないことは[第 1 回](01-elements-overview.md)のテストの節で確かめました。
+`pnpm bazel test //packages/elements/test:test_chromium //packages/elements/test:test_firefox --nocache_test_results --test_output=all` で、どちらも「1/1 test files | 59 passed, 0 failed, 5 skipped」、4.8 秒でした（2026-11-06。ログは work/el-logs/a-test.log）。名前の絞り込みが効かないことは[第 1 回](01-elements-overview.md)のテストの節で確かめました。
 
 ### 直すとしたら
 
@@ -425,7 +425,7 @@ constructor で作らない理由は、この getter を入れたコミット e3
 - #34594（2019 年から開いている「要素のプロパティの getter と setter の振る舞いの違い」）や #22114（コンポーネントのメソッドを要素に出してほしい）は、4 節の 240〜252 行目に関係します。メソッドを出すのは入力の一覧（`reflectComponentType`）に無い情報が要るので、この関数だけでは直せません。#63090（2025-08 に閉じた同じ要望）も同じです。
 - 直すなら create-custom-element.ts の `createCustomElement` の中で、spec は create-custom-element\_spec.ts の 322 行目のあたり（本物の strategy を使う it）に足します。本家に PR を出すことは勧めません。issue の全体は[第 8 回](08-elements-tests-issues.md)にあります。
 
-**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、A・B・C の順に押しました。A は最初のプロパティで strategy ができ（own のプロパティなし）、つなぐ前に読んだ A.count は 3、appendChild の中で constructor・ngOnChanges(label: undefined → 'A です'（firstChange）, count: undefined → 3（firstChange）)・描いた「A です：3」が出ました（ngOnChanges 1 回・描いた 1 回）。B は appendChild の中で「（なし）：0」を描き、プロパティを入れた直後に読んだ B.count は 3、約 11ms 後に ngOnChanges（2 つとも firstChange）と「B です：3」が出ました（ngOnChanges 1 回・描いた 2 回）。C は入れる前に own のプロパティ true・NgElementImpl ではない（false）で、appendChild の中で NgElementImpl の constructor → connectedCallback → 「own のプロパティ: label, count」→ constructor → ngOnChanges → 描いた「C です：5」が出て、戻ったあとは own のプロパティ false、C.count は 5 でした。コンソールの警告とエラーは 0 件でした（scratchpad/el-a-exp/verify.mjs、2026-11-06）。
+**本番ビルドでデモを動かした結果（2026-11-06）。**ヘッドレスの Chrome（HeadlessChrome/155.0.8043.0）で本番ビルドのこのページを開き、A・B・C の順に押しました。A は最初のプロパティで strategy ができ（own のプロパティなし）、つなぐ前に読んだ A.count は 3、appendChild の中で constructor・ngOnChanges(label: undefined → 'A です'（firstChange）, count: undefined → 3（firstChange）)・描いた「A です：3」が出ました（ngOnChanges 1 回・描いた 1 回）。B は appendChild の中で「（なし）：0」を描き、プロパティを入れた直後に読んだ B.count は 3、約 11ms 後に ngOnChanges（2 つとも firstChange）と「B です：3」が出ました（ngOnChanges 1 回・描いた 2 回）。C は入れる前に own のプロパティ true・NgElementImpl ではない（false）で、appendChild の中で NgElementImpl の constructor → connectedCallback → 「own のプロパティ: label, count」→ constructor → ngOnChanges → 描いた「C です：5」が出て、戻ったあとは own のプロパティ false、C.count は 5 でした。コンソールの警告とエラーは 0 件でした（work/el-a-exp/verify.mjs、2026-11-06）。
 
 ## 聞かれそうな質問
 

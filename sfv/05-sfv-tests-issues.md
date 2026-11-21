@@ -54,7 +54,7 @@ $ cd ~/angular-research/angular        # 8576f161ae4
 $ pnpm bazel test //packages/forms/signals/test/node:test --nocache_test_results --test_output=all
 $ pnpm bazel test //packages/forms/signals/test/node:test --nocache_test_results --test_output=all \
     "--test_arg=--filter=^min validator "      # ほかの 10 個も同じ形で、describe の名前を ^ と空白で挟む
-# 作業木は git -C ~/angular-research/angular-fix worktree add <scratchpad>/sfv-wt-b 8576f161ae4 で作り、
+# 作業木は git -C ~/angular-research/angular-fix worktree add <work>/sfv-wt-b 8576f161ae4 で作り、
 # そこで ~/angular-research/angular/node_modules/.bin/bazel test … を直接走らせた（終わってから worktree remove --force で消した）
 ```
 

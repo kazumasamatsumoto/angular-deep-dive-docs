@@ -391,7 +391,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 📄 `ターミナル`
 
 ```
-# scratchpad/build-loc-e/parser-demo.mjs（2026-11-03 に実行）
+# work/build-loc-e/parser-demo.mjs（2026-11-03 に実行）
 # サイトの node_modules の @angular/localize/tools 22.1.6 の 5 つのパーサーに、同じ翻訳を 5 つの形式で見せる
 node parser-demo.mjs
 ```
@@ -618,7 +618,7 @@ node parser-demo.mjs
 
 173〜177 行目、compiler の `ParseError` の重さ（`ParseErrorLevel.ERROR` か WARNING）が、そのまま `Diagnostics` の error か warning になります。`toString()` は「どのファイルの何行何列か」と前後の文字を付けるので、出力には `[ERROR ->]` の印と `/m.xlf@3:59` のような位置が入ります。
 
-📄 `Xliff1TranslationParser に 10 の例の trans-unit を読ませた出力（scratchpad/build-loc-e/parser-demo.mjs、2026-11-03、抜粋）`
+📄 `Xliff1TranslationParser に 10 の例の trans-unit を読ませた出力（work/build-loc-e/parser-demo.mjs、2026-11-03、抜粋）`
 
 ```
 == basic locale= fr
@@ -1072,7 +1072,7 @@ pnpm bazel test //packages/localize/tools/test:test --nocache_test_results --tes
   '--test_arg=--filter=TranslationLoader|TranslationParser|SimpleArbTranslationParser|Diagnostics'
 ```
 
-📄 `出力（2026-11-03。ログは scratchpad/i18n-logs/e-ch17.log）`
+📄 `出力（2026-11-03。ログは work/i18n-logs/e-ch17.log）`
 
 ```
 ==================== Test output for //packages/localize/tools/test:test (shard 2 of 4):

@@ -512,7 +512,7 @@ cd ~/angular-research/angular
 pnpm bazel test //devtools/projects/ng-devtools-backend/src/lib/directive-forest/property-mutation:test --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-05 に実行。抜粋。ログは scratchpad/devtools-logs/c-all.log。ほかのターゲットと一緒に走らせ、全体で 44.4 秒）`
+📄 `出力（2026-11-05 に実行。抜粋。ログは work/devtools-logs/c-all.log。ほかのターゲットと一緒に走らせ、全体で 44.4 秒）`
 
 ```
 //devtools/projects/ng-devtools-backend/src/lib/directive-forest/property-mutation:test_chromium

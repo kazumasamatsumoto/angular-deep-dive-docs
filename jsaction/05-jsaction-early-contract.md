@@ -458,7 +458,7 @@ Angular の `initEventReplay` は、安定したあとに「`getAppScopedQueuedE
 
    `window._ejsas` にはこのページの `ng` だけが残り、箱をクリックしても q は伸びず（増えた数 0）、dispatcher にも届きません。
 
-📄 `scratchpad/jsa-demo/b/collect-early.mjs（min.js と本番の HTML を読んで .data.ts に書く記録のスクリプト）`
+📄 `work/jsa-demo/b/collect-early.mjs（min.js と本番の HTML を読んで .data.ts に書く記録のスクリプト）`
 
 ```
 // 使い方: node collect-early.mjs <サイトの本番ビルドの browser/ ディレクトリ>
@@ -490,7 +490,7 @@ for (const p of pages) {
 
 const RECORDED = { core, minBytes, minJs, html, at: new Date().toISOString().slice(0, 10) };
 const SCRIPT = readFileSync(new URL(import.meta.url), 'utf8');
-const out = `// 自動生成（scratchpad/jsa-demo/b/collect-early.mjs）。手で編集しない。\n` +
+const out = `// 自動生成（work/jsa-demo/b/collect-early.mjs）。手で編集しない。\n` +
   `export const RECORDED = ${JSON.stringify(RECORDED, null, 2)} as const;\n\n` +
   `export const SCRIPT = ${JSON.stringify(SCRIPT)};\n`;
 writeFileSync(join(SITE, 'src/app/pages/chapters/jsaction-early-contract.data.ts'), out);
@@ -617,7 +617,7 @@ pnpm bazel test //packages/platform-server/test:event_replay_test \
   '--test_arg=--filter=_ejsas' --nocache_test_results --test_output=all
 ```
 
-📄 `出力（2026-11-06 に実行。抜粋。ログは scratchpad/jsa-logs/b-base.log・b-server.log）`
+📄 `出力（2026-11-06 に実行。抜粋。ログは work/jsa-logs/b-base.log・b-server.log）`
 
 ```
 Chromium: |██████████| 1/1 test files | 111 passed, 0 failed
