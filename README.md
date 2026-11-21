@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 67 シリーズ・768 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 68 シリーズ・777 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -75,6 +75,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 65. [@angular/build の compilation と utils の読み残し](bcu/README.md)（10 章）— AotCompilation・ParallelCompilation と worker・hmr-candidates と typescript-printer・AngularHost と lazy-routes-transformer・bundle-calculator と stats-table・index-file・auto-csp・options の正規化・path/url/source-map・spec と issue
 66. [Router の型と説明文の読み残し](rmd/README.md)（9 章）— models.ts の Route・ガード・Resolve の型、provideRouter の機能、イベント、RouterLink と RouterOutlet、URL の小道具の説明文を、本物の動きと突き合わせる
 67. [Forms の説明文の読み残し](fmd/README.md)（10 章）— AbstractControl・FormGroup・FormArray・FormControl・FormBuilder・Validators と、NgControl・リアクティブとテンプレートのディレクティブ・ControlValueAccessor の説明文を、本物の動きと突き合わせる
+68. [common の説明文の読み残し](cmd/README.md)（9 章）— NgOptimizedImage・ローダー・日付と数の書式・pipe・組み込みディレクティブ・Location の説明文を、本物の動きと突き合わせる
 
 ## 作り直し方
 

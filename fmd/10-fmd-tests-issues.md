@@ -302,4 +302,5 @@ JSDoc の ```` ```html ```` や ```` ```ts ```` の中は文字列で、どの b
 
 ---
 
-← 前: [値のアクセサーの説明文：select・radio・既定のアクセサー](09-fmd-accessors.md)
+← 前: [値のアクセサーの説明文：select・radio・既定のアクセサー](09-fmd-accessors.md)  
+次: [NgOptimizedImage の説明文：入力と検査の約束](../cmd/01-cmd-image.md) →

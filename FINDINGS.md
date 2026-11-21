@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（43 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（44 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1033,3 +1033,74 @@ await cycle(); // 3 回目に戻す
 | [9](fmd/09-fmd-accessors.md) | （綴り）「The follow example」「one or of more」「evntually」 | select\_multiple\_control\_value\_accessor.ts 59・124、radio\_control\_value\_accessor.ts 113、select\_control\_value\_accessor.ts 146 | main 同じ |
 
 第 6〜9 回の説明文で、書いてあるとおりに動いたものも多くありました。getter と control の一致、`path` の文字列、`standalone` と `name` の options の 2 つの例、`ngFormOptions` の `updateOn`、select と radio の例のアプリ、IME の既定の動きは、どれも説明文のとおりです。
+
+## common の説明文の読み残し
+
+### [spec と issue を読む：common の説明文を固めているもの](cmd/09-cmd-tests-issues.md) — 6. このシリーズで見つけたもの（食い違いと不具合）
+
+どれも 8576f161ae4 の行を読み、本物の @angular/common 22.2.6（ページのデモと Node の記録）か、説明文の例をそのまま取り出したファイルの型検査（サイトの compiler-cli、`--strict`・`strictTemplates`）で確かめたものです。「main」は ../angular の origin/main（d201dd76ef2、2026-11-20）で、直っていなければ「main 同じ」と書きました。第 1〜4 回の行は、その章の記録をそのまま並べています。
+
+| 章 | 何が起きるか | 行（8576f161ae4） | 確かめ方と main |
+| --- | --- | --- | --- |
+| [1](cmd/01-cmd-image.md) | （食い違い）「document の head に preconnect の link を自動で作る」。ディレクティブは作らず、作るのは angular-cli の webpack の `browser` ビルダーだけ | directives/ng\_optimized\_image/ng\_optimized\_image.ts 177 | このサイト（application ビルダー）の index.html に link が 0 件。e33a0ff3dd0 から。main 同じ |
+| [1](cmd/01-cmd-image.md) | （一覧の欠け）組み込みのローダーの一覧が 4 つで Netlify が無い | ng\_optimized\_image.ts 222〜226 | index.ts は provideNetlifyLoader も出す（03c3b3eb79e）。main 同じ |
+| [1](cmd/01-cmd-image.md) | （例の誤り）独自のローダーの例と Step 3 で、src が `…logo.png-undefined.jpg` になる | ng\_optimized\_image.ts 238〜245・251 | 記録と本物。getRewrittenSrc は width を渡さない。main 同じ |
+| [1](cmd/01-cmd-image.md) | （例の誤り）ngSrcset の例に width・height が無く、開発 NG02954、本番 `TypeError` | ng\_optimized\_image.ts 306〜307 | 記録と本物。main 同じ |
+| [1](cmd/01-cmd-image.md) | （説明不足）decoding の既定は auto と書くが、priority では入力を無視して sync | ng\_optimized\_image.ts 330〜339 | 記録。main 同じ |
+| [1](cmd/01-cmd-image.md) | （文の誤り）「ngSrc は Base64 の文字列」。`data:` で始まるかだけを見る | ng\_optimized\_image.ts 834・840〜841 | 記録。main 同じ（L846〜847） |
+| [1](cmd/01-cmd-image.md) | （コメントの誤り）placeholder の大きさと書くが、測るのは img の描かれた大きさ | ng\_optimized\_image.ts 1418 | 読み比べ。main 同じ |
+| [1](cmd/01-cmd-image.md) | （例の誤り）Step 1 の例に template が無く NG2001 | ng\_optimized\_image.ts 197〜202 | strict の ngc。main 同じ |
+| [1](cmd/01-cmd-image.md) | （spec の名前）it の名前と中身が違う | test/directives/ng\_optimized\_image\_spec.ts 1434 | 読み比べ。main 同じ |
+| [2](cmd/02-cmd-image-loaders.md) | （食い違い）Cloudflare の path は「ドメイン名」なのに、例外の文はできあがりの URL を見せ、そのとおり渡すと `/cdn-cgi/image/` が二重 | image\_loaders/cloudflare\_loader.ts 20・28 | 記録。main 同じ |
+| [2](cmd/02-cmd-image-loaders.md) | （不具合）Imgix のローダーが ngSrc の query（`hero.jpg?crop=faces`）を黙って捨てる | image\_loaders/imgix\_loader.ts 71〜72 | 記録と本物。cloudflare・cloudinary は残す。main 同じ |
+| [2](cmd/02-cmd-image-loaders.md) | （食い違い）preload の link の src・srcset の説明が元の値と書くが、ローダーを通した URL | preload-link-creator.ts 36〜39・47〜48 | 読み比べ（75e6297f090 から）。main 同じ |
+| [2](cmd/02-cmd-image-loaders.md) | （食い違い）「例外を投げて知らせる」と書くが console.warn | tokens.ts 14 | 読み比べ。main 同じ |
+| [2](cmd/02-cmd-image-loaders.md) | （名前の誤り）引数名 ngSrc に、LCP の要素の src（ローダーを通した URL）が渡る | lcp\_image\_observer.ts 178〜179・191〜192 | 読み比べ。main 同じ |
+| [2](cmd/02-cmd-image-loaders.md) | （例の食い違い）ImageKit・Imgix の説明の例と例外の文の例が違う | imagekit\_loader.ts 44、imgix\_loader.ts 42 | 記録。main 同じ |
+| [3](cmd/03-cmd-date.md) | （例の誤り）W の例 `1... 5`。6 まで出る | pipes/date\_pipe.ts 142 | 記録と本物（2015-08-31 は 6）。main 同じ |
+| [3](cmd/03-cmd-date.md) | （例の誤り）aaaa の例「ante meridiem」。en-US は AM/PM | date\_pipe.ts 155 | 記録と本物。main 同じ |
+| [3](cmd/03-cmd-date.md) | （例の誤り）B・b の例の語が出力と違う。extra なしは NG02303 | date\_pipe.ts 157〜162 | 記録と本物。main 同じ |
+| [3](cmd/03-cmd-date.md) | （例の誤り）ZZZZ の例 `GMT-8:00`。本物は `GMT-08:00` | date\_pipe.ts 177 | 記録と本物。main 同じ |
+| [3](cmd/03-cmd-date.md) | （不具合）z・O の短い形が `+04:30` の分を落とす（`GMT+4`） | i18n/format\_date.ts 462・875 | 本物。PR #69239 は閉じた。main 同じ |
+| [3](cmd/03-cmd-date.md) | （例の誤り）Usage の例の imports に DatePipe が無く NG8004 ×3 | date\_pipe.ts 202〜215 | strict の ngc。main 同じ |
+| [3](cmd/03-cmd-date.md) | （例の差）medium・shortTime の PM の前は U+202F | date\_pipe.ts 191〜195 | 記録と本物。main 同じ |
+| [3](cmd/03-cmd-date.md) | （説明不足）Y を y と並べるが、w の無い Y は開発で NG02300、年末に年がずれる | date\_pipe.ts 126〜129 | 記録と本物。main 同じ |
+| [3](cmd/03-cmd-date.md) | （コメントの誤り）yy の写し、「1..52」（53 まで）、b と B の例の入れ替わり | format\_date.ts 608・680・756・784 | 読み比べと本物。main 同じ |
+| [4](cmd/04-cmd-number.md) | （例のコメントの誤り）`'0 001,35 CA$'`。fr の CAD は `$CA` | packages/examples/common/pipes/ts/currency\_pipe.ts 37 | 記録と本物（e2e も `$CA`）。60935b29fc1 から。main 同じ |
+| [4](cmd/04-cmd-number.md) | （例の差）fr の出力のコメントが普通の空白。本物は U+202F・U+00A0 | examples の number\_pipe.ts 36・percent\_pipe.ts 28 | 記録と本物。main 同じ |
+| [4](cmd/04-cmd-number.md) | （説明の中の食い違い）CurrencyPipe の桁の既定を 2 と書き、すぐ下で通貨の桁と書く | pipes/number\_pipe.ts 247〜253 | 記録と本物（JPY 0、KWD 3）。main 同じ |
+| [4](cmd/04-cmd-number.md) | （不具合）formatCurrency の display に `$&`・`$$` を渡すと置換の記号として読まれる | i18n/format\_number.ts 209 | 記録と本物。main 同じ |
+| [4](cmd/04-cmd-number.md) | （不具合）I18nSelectPipe に mapping `null` で `TypeError`（I18nPluralPipe は InvalidPipeArgument） | pipes/i18n\_select\_pipe.ts 44 | 記録と本物。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （食い違い）NgForOf は「置いた要素が複製の親になる」「繰り返すのは要素の中身」と書くが、置いた要素そのものが兄弟として複製される | directives/ng\_for\_of.ts 76〜77・81〜82 | デモ（`<li>a</li><li>b</li><li>c</li><!---->`）。6c3b57a9682（2018）から。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （例の誤り）NgPlural の例に other が無く、en-US で 0・1 以外は NG02308 | directives/ng\_plural.ts 19〜25 | デモと記録。2016 年の例（9cee8bcc83c）から。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （説明不足）`ngPluralCase="0"` も値の一致（`=0` と同じ）。spec 48 は固めるが説明文は「= で始まる値だけ」 | ng\_plural.ts 37〜40（実装 114〜115） | デモ。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （見出しの誤り）「ケースを入れ子にできる例」に入れ子が無い | directives/ng\_switch.ts 94 | 読み比べ。850b86749c2（2018）から。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （説明不足）NgIf は「false か null で else」と書くが、偽の値すべて（`0`・`''`・`NaN`・`undefined`）で else | directives/ng\_if.ts 24〜26・67 | デモ。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （型の食い違い）`ngForTrackBy` の入力の型が `null` を受けないが、実装と spec 320 は `null` を許す | ng\_for\_of.ts L208〜215 | このサイトの build（strictTemplates で TS2322）。main 同じ |
+| [5](cmd/05-cmd-structural.md) | （綴り）「more complex then a property access」（than） | ng\_for\_of.ts 132（と L40） | main 同じ |
+| [5](cmd/05-cmd-structural.md) | （振る舞い）NgPlural は同じカテゴリのまま値が変わってもビューを壊して作り直す | ng\_plural.ts L64〜69 | デモ（3 → 4 で 1 つ作り直し）。説明文の食い違いではない。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （例の誤り）`[ngClass]="stringExp\|arrayExp\|objExp\|Set"` の `\|` が pipe と読まれ NG8004 ×3 | directives/ng\_class.ts 44 | strictTemplates の ngc。d797c5cb94e（2024-12）から。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （一覧の欠け）受け取る形の一覧に Set が無い | ng\_class.ts 65〜69 | デモ（Set も受ける）。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （例の誤り）単位の例 `'font-style.em'` は `font-style: 2em` になり、ブラウザーに捨てられる | directives/ng\_style.ts 51 | デモ（Chrome で style 属性が付かない）。a84a9ba705e（2019）から。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （食い違い）`ngComponentOutletInjector` の既定は「今の view container の injector」と書くが、実装は `parentInjector` で、outlet と同じ要素のディレクティブの providers が見えない | directives/ng\_component\_outlet.ts 41〜42（実装 L159） | デモ（同じ要素で provide した値でなく外側の値）。3ef73c2b194（2017）の文、実装は 8578682dcfc（2016）から。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （説明不足）content の配列は `<ng-content>` の順に入り、`select` で振り分けない | ng\_component\_outlet.ts 47〜48 | デモ。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （説明の強さ）context は object「であるべき」だが、文字列で `TypeError: Reflect.get called on non-object` | directives/ng\_template\_outlet.ts 29 | デモと記録。main 同じ |
+| [6](cmd/06-cmd-attr-outlets.md) | （綴り）「will be bind」（bound） | ng\_component\_outlet.ts 38 | 29d358170b0（2023）から。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （食い違い）SlicePipe は「blank は blank のまま」と書くが、`undefined` は `null`（spec 48 は実装の側） | pipes/slice\_pipe.ts 27 | デモ。2c42a50fc3b（2016）から。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （古い文）「この ngFor の例」「ngFor で回す例」。例は `@for` に変わった | slice\_pipe.ts 31、keyvalue\_pipe.ts 48 | e7608e503f1・e7d0113dad0（2025）で例だけ変わった。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （食い違い）KeyValuePipe は「既定は Unicode の値で比べる」と書くが、数のキーは数の大きさ（Map の 9 と 10 は 9 が先） | keyvalue\_pipe.ts 41 | デモと spec 212。2b49bf77afc（2018）から。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （不具合）`keyvalue: null` で、挿入の順だけが違う新しい Map を渡しても前の並びのまま | keyvalue\_pipe.ts 43（実装 L131〜146） | デモ（22.2.6 で再現）。#72114、PR #72115（開）。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （食い違い）titlecase は「空白で区切る」と書くが、空白の後ろの記号を飛ばして最初の文字を大文字にする（`'(abc)'` → `'(Abc)'`） | pipes/case\_conversion\_pipes.ts 63 | デモ。d244523ae62（2018）から。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （型の食い違い）JsonPipe の戻りの型は `string` で「どの値も JSON の文字列に」と書くが、`undefined`・関数は `undefined`、BigInt・循環は `TypeError` | pipes/json\_pipe.ts 16・35・37 | デモ。main 同じ |
+| [7](cmd/07-cmd-pipes.md) | （説明不足）AsyncPipe は切り替えた直後に前の値ではなく `null` を返す。Promise は「解除」ではなく結果を捨てるだけ | pipes/async\_pipe.ts 116〜120 | デモ。main 同じ |
+| [8](cmd/08-cmd-location.md) | （食い違い）「正規化された URL は base href を含む」と書くが、`normalize`・`path` は base href を外す（spec 252 も外す方） | location/location.ts 39〜44 | デモ。2015 年の 0366f317af9 からの文。main 同じ |
+| [8](cmd/08-cmd-location.md) | （例の誤り）見出しは `/foo/bar/`、渡すのは `'foo/bar'`（答えは `'foo/bar'` のまま） | packages/examples/common/location/ts/path\_location\_component.ts・hash\_location\_component.ts 22 | デモ（両方の戦略）。main 同じ |
+| [8](cmd/08-cmd-location.md) | （食い違い）go は「正規化した URL に変える」と書くが、末尾のスラッシュを残す（`/my/app/foo/`） | location.ts 163〜164 | デモ。main 同じ |
+| [8](cmd/08-cmd-location.md) | （文の崩れ）stripTrailingSlash の説明の 2 文目 | location.ts 302〜303、location/util.ts 33〜34 | a6809e0e7dd・b25f9253117 から。main 同じ |
+| [8](cmd/08-cmd-location.md) | （例の食い違い）APP\_BASE\_HREF の例 `'/my/app'` と、すぐ下の「/ で終わるべき」 | location/location\_strategy.ts 71・94〜95 | 読み比べ（Location の読み書きはどちらでも同じ URL）。main 同じ |
+| [8](cmd/08-cmd-location.md) | （古い文）ブラウザー用の PlatformLocation は platform-browser が持つ、と書く。2019 年から common の BrowserPlatformLocation | location/platform\_location.ts 20〜21 | デモ（instanceof）。1537791f06d（2019）で移った。main 同じ |
+| [8](cmd/08-cmd-location.md) | （説明不足）ViewportScroller の offset は「上の余白」だが x も引く、anchor は ID だけでなく name も、scroll restoration は止めるだけでなく auto にも戻せる | viewport\_scroller.ts L35〜38・57・63 | デモ（偽物の window と document）。main 同じ |
+| [8](cmd/08-cmd-location.md) | （名前の誤り、main で直った）`subscribe` の `@param value`・`@param exception` | location.ts L261〜262 | 6e024600e0b（2026-10-08）で `onNext`・`onThrow`・`onReturn` に直った |
+| [9](cmd/09-cmd-tests-issues.md) | （spec の前提）web の suite の日付の 2 本が、JST のマシンで落ちる（Node では通る。`--test_env=TZ=UTC` でも同じ） | test/i18n/format\_date\_spec.ts 373〜375、test/pipes/date\_pipe\_spec.ts L169〜171 | 2 節。main 同じ（date\_pipe\_spec.ts は main で L167〜169 にずれる） |
+
+第 5〜8 回の説明文で、書いてあるとおりに動いたものも多くありました。NgIf の then・else・as と 1 回の購読、NgForOf の局所変数と trackBy、NgSwitch の「一致したものは全部」と `===`、NgClass の空白の区切り、NgStyle の `null`、NgTemplateOutlet の例、NgComponentOutlet の 2 つの例、SlicePipe・TitleCasePipe・KeyValuePipe の例のファイルの「期待される出力」、PathLocationStrategy と HashLocationStrategy の例の URL、末尾のスラッシュの 2 つの戦略は、どれも説明文のとおりです。
