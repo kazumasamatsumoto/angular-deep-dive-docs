@@ -323,4 +323,5 @@ provideClientHydration の矛盾する組み合わせ（第 2 回、本番は黙
 
 ---
 
-← 前: [platform-browser-dynamic の説明文：JIT の platform と ResourceLoader](06-pbd-dynamic.md)
+← 前: [platform-browser-dynamic の説明文：JIT の platform と ResourceLoader](06-pbd-dynamic.md)  
+次: [ハイドレーションの公開 API と型の説明文](../crh/01-crh-hydration-api.md) →

@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（47 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（48 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1270,3 +1270,50 @@ await cycle(); // 3 回目に戻す
 | 6 | （説明のとおり何もしない）`createCompiler` の options（defaultEncapsulation・preserveWhitespaces）は効かない。`CompilerFactory` を inject する行は無い | compiler\_factory.ts 22〜60 | Node の記録。8c71b9fc42e（2021-11）から。main 同じ |
 | 6 | （非推奨の文の不足）「代わりに platformBrowser」は、CLI を使わない JIT で templateUrl のある NgModule を bootstrapModule するときだけ同じに動かない（「is not resolved」）。COMPILER\_OPTIONS は bootstrapApplication では読まれない | platform\_providers.ts 21〜39、core の application\_ngmodule\_factory\_compiler.ts 50〜58 | Node の記録。a4e2139620e（2025-04）の文。main 同じ |
 | 6 | （説明に無い）`ResourceLoaderImpl` は status 300 を成功、0 で本文ありを成功にする。本番では platformBrowser のあとの platformBrowserDynamic が黙って今の platform を返し、ResourceLoader が置かれない | resource\_loader/resource\_loader\_impl.ts 32〜39 | Node の記録。746f85a621a（2015）から。main 同じ |
+
+## core の説明文の読み残し（3）
+
+### [spec と issue を読む：core の説明文（3）を固めているもの](crh/08-crh-tests-issues.md) — 4. このシリーズで見つけたもの（食い違いと不具合）
+
+「説明・約束」は説明文かコメントの言うこと、「実際」は記録か実装で確かめた振る舞いです。行は 8576f161ae4、「新しい本家」は origin/main（d201dd76ef2、2026-11-20）です。
+
+| # | 回 | ファイルと行 | 説明・約束 | 実際 | 新しい本家 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | `core/src/hydration/tokens.ts` 76 | `JSACTION_BLOCK_ELEMENT_MAP` は「jsaction の属性を持つ要素をアクションの名前ごとにまとめた Map」 | キーは要素の `ngb`（@defer のブロックの id）、無ければ `''` | 同じ |
+| 2 | 1 | `core/src/hydration/event_replay.ts` 227〜228 | テンプレートで付けた「すべての」DOM イベントを集める | `isEarlyEventType` のイベントだけ。(mouseenter)(scroll) には付かない | 同じ |
+| 3 | 1 | `core/src/hydration/annotate.ts` L283〜287 | `__nghData__` のキーが無ければ「ブラウザーでエラー」 | 開発モードの `console.warn`（NG0505）だけ。本番は何も出ない | 同じ |
+| 4 | 1 | `core/src/hydration/interfaces.ts` L49 | `DEFER_PREFETCH_TRIGGERS = 'pt'` | どこからも読まれない | 直った（b493d767a4b で削除） |
+| 5 | 1 | `core/src/hydration/utils.ts` 355〜360 | 名前 `countBlocksSkippedByHydration` | `__nghDeferData__` のキーの数（ハイドレート済みも数える） | 同じ |
+| 6 | 1 | `core/src/hydration/skip_hydration.ts` 66 | （親の属性を見る） | 前半の式は 61 行目と同じでいつも false。動きは説明どおり | 同じ |
+| 7 | 1 | `platform-server/test/full_app_hydration_spec.ts` 7026 | （spec） | integration\_spec.ts が読み込み時に `ngServerMode = true` にし、走る順で NG0401。`--seed=46107` で落ちる | 同じ |
+| 8 | 2 | `core/src/hydration/annotate.ts` L830〜831 | i18n のあるコンポーネントを飛ばすのは「まだ対応していないから」 | `withI18nSupport()` があれば対応している | 同じ |
+| 9 | 2 | `core/src/hydration/utils.ts` 249〜250 と L283 | （テキストの印 `ngetn` を拾って戻す） | 拾う側は空白を消し、戻す側は残して比べる。`<!-- ngetn -->` で NG0500 | 同じ |
+| 10 | 2 | `core/src/hydration/annotate.ts` 544〜545 | `serializeLView` の `@param` は 2 つ | 3 つ目の `parentDeferBlockId` の説明が無い | 同じ |
+| 11 | 3 | `core/src/hydration/error_handling.ts` 469〜477 | `stripNewlines`「改行を全部取り除く」 | 空白とタブも消す。NG0500 の文で `class="btnbtn-primary"` | 同じ |
+| 12 | 3 | `error_handling.ts` L111・L437〜455 | 外のスクリプトが DOM を変えたかもしれない、という注記は外から来たノードのとき | 要素どうしの不一致ではいつも付く | 同じ |
+| 13 | 3 | `error_handling.ts` 494〜499 | `describeDomNode` は「本番でも安全、本番の道から呼ぶ」 | 呼ぶ 2 か所はどちらも `ngDevMode &&` の中 | 同じ |
+| 14 | 3 | `core/src/hydration/utils.ts` L155〜164 | データが無ければエラー。本番でも番号付きの RuntimeError に | 壊れた ngh の番号で、本番は `Cannot read properties of undefined (reading 'd')` | 同じ |
+| 15 | 3 | `core/src/hydration/utils.ts` 368〜372 | 文の中の関数名 `markRNodeAsMismatchedByHydration` | 本当の名前は `markRNodeAsHavingHydrationMismatch` | 同じ |
+| 16 | 3 | `core/src/hydration/utils.ts` L508〜515 | （`isDisconnectedNode`） | `initDisconnectedNodes` と同じ初期化を重ねて書いている | 同じ |
+| 17 | 4 | `core/src/defer/instructions.ts` L771・819 | トリガーの名前は「暗黙の引き金でなければ (&lt;target&gt;)」 | 同じビューの #ref の `on viewport(b)` に &lt;target&gt; が付かない（ad2376435b4 の回帰） | 同じ |
+| 18 | 4 | `core/src/defer/triggering.ts` 651〜653・L669〜674 | 「すべてのブロックのトリガーを正しく初期化する」 | 根がテキストだけのブロックには hydrate on timer ほかが仕掛けられず、親ごとハイドレートされない | 同じ |
+| 19 | 4 | `core/src/hydration/utils.ts` 419 | `warnIncrementalHydrationNotConfigured` は「例外を投げる」 | `console.warn`（NG0508）をプロセスで 1 回 | 同じ |
+| 20 | 4 | `core/src/defer/instructions.ts` 536〜537 | `ɵɵdeferHydrateOnTimer` の delay は「内容を読み込むまで」 | 待つのはハイドレートまで（内容は HTML にある） | 同じ |
+| 21 | 5 | `core/src/resource/api.ts` L156〜157 | `reload()` しても要求を出すまで reloading にならない | `reload()` の直後（`loader` の前）に reloading。spec も同期を固めている | 同じ |
+| 22 | 5 | `core/src/resource/resource.ts` L580（型は api.ts L207） | `stream` は `undefined` を返してよい | `status()`・`hasValue()`・`isLoading()` が `TypeError: state.stream is not a function` | 同じ（L613） |
+| 23 | 5 | `core/src/resource/api.ts` L71 | error のとき `value()` は `undefined` | 投げる（`ResourceValueError`） | 直った（b8622e0fa26） |
+| 24 | 5 | `core/src/resource/api.ts` L270〜271 | `stream` は signal の Promise を返す | 4e331062e83 から signal を同期で返す形と `undefined` も許す | 同じ |
+| 25 | 6 | `platform-browser/src/dom/dom_renderer.ts` L442〜443 | `RendererStyleFlags2.Important`「important の印」 | `DashCase` 無しの camelCase の名前では何も書かれない。`[style]="{backgroundColor: '… !important'}"` も | 同じ |
+| 26 | 6 | `core/src/render/api.ts` 171・179 | `setAttribute` の `@param namespace` | 短い名前だけ。URI で `InvalidCharacterError`（`createElement` は URI も通す） | 同じ |
+| 27 | 6 | `core/src/render/api.ts` 153〜155・161〜163・209、L88〜92 | parentNode / nextSibling の「呼ぶ側は null に頼れない」、`???`、createComment「DOM に足す」 | null を返すだけ、作って返すだけ | 同じ |
+| 28 | 6 | `core/src/i18n/tokens.ts` 113・116・122〜127・149・152 | 説明文の例のコード | import が足りず strict の tsc で TS2304。`bootstrapModule({providers})` はアプリの注入器に届かない | 同じ |
+| 29 | 6 | `core/src/animation/utils.ts` 44〜53 | `assertAnimationTypes`「値が animation の型か確かめる」 | テンプレートの値は getter の関数に包まれて渡るので、何でも通る | 同じ |
+| 30 | 6 | `core/src/animation/queue.ts` L93〜98 | （溜めた animation を順に呼んで消す） | 1 つが投げると `clear()` に届かず、後ろの enter が走らず、flush のたびにまた投げる。`<ng-container animate.enter>` で起きる | 同じ |
+| 31 | 6 | `core/src/animation/utils.ts` 305・L9 | 「与えたリストのクラスを含むか」 | 1 つでも含めば true。L9 は書きかけのコメント | 同じ |
+| 32 | 7 | `core/src/util/assert.ts` 114 | 失敗の文「Expected=&gt; … &lt;=Actual」 | 左右が逆で、`<`・`>` では成り立つ式に読める（`[Expected=> 0 > -1 <=Actual]`） | 同じ |
+| 33 | 7 | `core/src/util/stringify.ts` 55・62〜63、41 | `maxLength` は出力の長さ。`@param separator` | 出力は最大 maxLength + 3 文字（4 → 7 文字）。separator という引数は無い | 同じ |
+| 34 | 7 | `platform-server/src/utils.ts` L101〜106・`transfer_state.ts` L83〜87 | `startMeasuring` と `stopMeasuring` は対で使う（profiler.ts 15・30 行目） | 早い `return` で `stop` を飛ばし、`start:🅰️:` の mark が描くたびに 2 つ残る | 同じ |
+| 35 | 7 | `core/src/image_performance_warning.ts` L27・94、216〜217・228〜229 | Map のコメント、`data:` と `blob:` は「取ってくる資源なので除く」 | Map は無い、理由が逆。警告の文は同じ URL が 2 回 | 同じ |
+| 36 | 7 | `core/src/util/ng_dev_mode.ts` 26、`array_utils.ts` 121、`performance.ts` 15〜17 | 型 `null \| NgDevModePerfCounters`、`Array.splice2`、説明の文 | 実際は `false` も入る、そのメソッドは無い、文が切れている | 同じ |
+
+振る舞いの不具合は 7・9・11・14・17・18・22・25・30・34 の 10 個で（7 は spec の不具合、11 と 17 は開発モードの文と DevTools の表示の不具合）、残りは説明文・コメント・名前の食い違いです。新しい本家で直っていたのは 4 と 23 の 2 つだけでした。
