@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（48 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（49 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1317,3 +1317,13 @@ await cycle(); // 3 回目に戻す
 | 36 | 7 | `core/src/util/ng_dev_mode.ts` 26、`array_utils.ts` 121、`performance.ts` 15〜17 | 型 `null \| NgDevModePerfCounters`、`Array.splice2`、説明の文 | 実際は `false` も入る、そのメソッドは無い、文が切れている | 同じ |
 
 振る舞いの不具合は 7・9・11・14・17・18・22・25・30・34 の 10 個で（7 は spec の不具合、11 と 17 は開発モードの文と DevTools の表示の不具合）、残りは説明文・コメント・名前の食い違いです。新しい本家で直っていたのは 4 と 23 の 2 つだけでした。
+
+## animations の説明文の読み残し
+
+### [spec と issue を読む：animations の説明文を固めているもの](anm/09-anm-tests-issues.md) — 5. このシリーズで見つけたもの（食い違いと不具合）
+
+「説明・約束」は説明文かコメントの言うこと、「実際」は記録か実装で確かめた振る舞いです。行は 8576f161ae4 で、新しい本家（origin/main、8b15295e8c7、2026-11-20）では、どの行も変わっていません（直っていない）。左に印のある行が「不具合」です。
+
+> **🧪 一覧（種類で絞れます）**
+>
+> ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/anm-tests-issues)

@@ -367,4 +367,5 @@ web の suite は jasmine の Node の実行器ではなく、ブラウザーの
 
 ---
 
-← 前: [開発用の小道具の説明文：assert・ngDevMode・画像の警告・profiler](07-crh-dev-utils.md)
+← 前: [開発用の小道具の説明文：assert・ngDevMode・画像の警告・profiler](07-crh-dev-utils.md)  
+次: [trigger・state・style・animate の説明文](../anm/01-anm-trigger-state.md) →

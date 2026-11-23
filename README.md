@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 72 シリーズ・812 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 73 シリーズ・821 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -80,6 +80,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 70. [core の説明文の読み残し（2）](cra/README.md)（10 章）— ApplicationRef・platform・ViewContainerRef・signal の input/output/クエリ・NgZone・ErrorHandler・DebugElement・サニタイズの説明文を、本物の動きと突き合わせる
 71. [platform の説明文の読み残し](pbd/README.md)（7 章）— bootstrapApplication・provideClientHydration・レンダラーとイベント・Meta と Title・platform-server・platform-browser-dynamic の説明文を、本物の動きと突き合わせる
 72. [core の説明文の読み残し（3）](crh/README.md)（8 章）— ハイドレーション・@defer・resource・Renderer2・開発用の小道具の説明文とコメントを、本物の動きと突き合わせる
+73. [animations の説明文の読み残し](anm/README.md)（9 章）— trigger・state・transition・query・stagger の DSL、AnimationBuilder とプレイヤー、AST・タイムライン・エンジン・Web Animations の説明文を、本物の動きと突き合わせる
 
 ## 作り直し方
 
