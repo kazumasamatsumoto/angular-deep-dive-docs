@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（49 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（50 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1327,3 +1327,13 @@ await cycle(); // 3 回目に戻す
 > **🧪 一覧（種類で絞れます）**
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/anm-tests-issues)
+
+## ng コマンドの内側
+
+### [spec と issue を読む：ng コマンドを固めているもの](ngx/10-ngx-tests-issues.md) — 5. このシリーズで見つけたもの（食い違いと不具合）
+
+「説明・約束」は説明文・コメント・help の文の言うこと、「実際」は記録か実装で確かめた振る舞いです。行は 44129f66a3 で、「新しい本家」は origin/main（de5620f18d、2026-11-23）で同じ行を見た結果です。左に印のある行が、新しい本家で直っていない「不具合」です。
+
+> **🧪 一覧（種類で絞れます）**
+>
+> ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ngx-tests-issues)

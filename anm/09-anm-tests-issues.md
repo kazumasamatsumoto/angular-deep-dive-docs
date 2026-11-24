@@ -329,4 +329,5 @@ timeline の計算なら browser/test/dsl/animation\_spec.ts の `invokeAnimatio
 
 ---
 
-← 前: [provideAnimations と BrowserAnimationsModule の説明文](08-anm-module.md)
+← 前: [provideAnimations と BrowserAnimationsModule の説明文](08-anm-module.md)  
+次: [ng と打ってから：bin/ng・init・command-runner](../ngx/01-ngx-entry.md) →
