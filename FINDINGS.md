@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（50 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（51 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1337,3 +1337,15 @@ await cycle(); // 3 回目に戻す
 > **🧪 一覧（種類で絞れます）**
 >
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/ngx-tests-issues)
+
+## @angular-devkit の内側
+
+### [spec と issue を読む：@angular-devkit を固めているもの](dvk/12-dvk-tests-issues.md) — 5. このシリーズで見つけたもの（食い違いと不具合）
+
+「説明・約束」は説明文・JSDoc・コメント・README の言うこと（無ければ名前から期待すること）、「実際」は記録か実装で確かめた振る舞いです。行は 44129f66a3 で、「新しい本家」は origin/main（0a61cbc4bf）で同じ行を見た結果です。左に印のある行が、新しい本家で直っていない「不具合」です。第 1〜6 回の行は各回の記録のメモから、第 7〜11 回の行はこの章を書いた側の記録から集めました。
+
+> **🧪 一覧（種類で絞れます）**
+>
+> ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/dvk-tests-issues)
+
+22.2.7 で直っていたのは、テンプレートの例外（99741e8eb5・3ed20d1db0）、smart default の provider と知らないキーの文（ad04d689bb・c0e6b3cf68）、`DelegateTree` の `partition`・`filter`（e7fd1bd9cb・1854c1714d）、`chain` の入れ子（cf1f3b9d43）で、どれも main にも入っています。第 7〜11 回の不具合は、どれも main で同じ行のままでした。

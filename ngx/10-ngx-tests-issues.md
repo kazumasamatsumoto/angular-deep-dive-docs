@@ -193,4 +193,5 @@ Run Target Tool 13   Serve Tools 9   Doc Search Tool 2   migrateSingleFile 8   m
 
 ---
 
-← 前: [ng mcp：CLI の MCP サーバー](09-ngx-mcp.md)
+← 前: [ng mcp：CLI の MCP サーバー](09-ngx-mcp.md)  
+次: [パスと文字列：virtual-fs/path と utils/strings](../dvk/01-dvk-path.md) →
