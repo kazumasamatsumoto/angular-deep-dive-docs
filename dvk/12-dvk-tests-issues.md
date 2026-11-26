@@ -263,4 +263,5 @@ collection の名前のキャッシュ（第 8 回）は #21131 と同じ根で�
 
 ---
 
-← 前: [テストの道具：SchematicTestRunner と TestingArchitectHost](11-dvk-testing.md)
+← 前: [テストの道具：SchematicTestRunner と TestingArchitectHost](11-dvk-testing.md)  
+次: [変更の単位とファイルの道具：Change・json-file・workspace](../sca/01-sca-change.md) →

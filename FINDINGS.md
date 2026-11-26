@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（51 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（52 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1349,3 +1349,15 @@ await cycle(); // 3 回目に戻す
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/dvk-tests-issues)
 
 22.2.7 で直っていたのは、テンプレートの例外（99741e8eb5・3ed20d1db0）、smart default の provider と知らないキーの文（ad04d689bb・c0e6b3cf68）、`DelegateTree` の `partition`・`filter`（e7fd1bd9cb・1854c1714d）、`chain` の入れ子（cf1f3b9d43）で、どれも main にも入っています。第 7〜11 回の不具合は、どれも main で同じ行のままでした。
+
+## @schematics/angular の道具と移行
+
+### [spec と issue を読む：@schematics/angular の道具を固めているもの](sca/11-sca-tests-issues.md) — 5. このシリーズで見つけたもの（食い違いと不具合）
+
+「内容」は、説明文・JSDoc・コメント（無ければ名前から期待すること）と、記録か実装で確かめた振る舞いです。行は 44129f66a3 の `packages/schematics/angular` からのパスで、「新しい本家」は origin/main（0a61cbc4bf）で同じ行を見た結果です。左に印のある行が、新しい本家で直っていない「不具合」です。第 1〜6 回の行と第 7〜10 回の行は、それぞれの回の記録のメモから集めました。
+
+> **🧪 一覧（種類で絞れます）**
+>
+> ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sca-tests-issues)
+
+refactor-jasmine-vitest は、44129f66a3（2026-09-10）のあと、2026-10-24〜11-17 に 11 の修正が main に入り（うち 7 つは 22.2.7 にも。第 8〜10 回の「直った」の行）、今も PR が 3 つ開いている、動きの多い所です。直っていない不具合のうち refactor のものは、変換の出力の文字列としては「正しく」、変換後を Vitest か型の検査に通して初めて見えるものがほとんどでした。utility と migrations の不具合は、spec の無いファイル（`change.ts`・`json-file.ts`・`css-import-lexer.ts`・`app_component.ts`）か、spec が通らない形（別のパッケージの builder、config schematic の名前の規則）の上にありました。
