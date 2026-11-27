@@ -307,4 +307,5 @@ done コールバック（第 10 回）が #34730、build target の名前（第
 
 ---
 
-← 前: [Jasmine から Vitest へ（4）：lifecycle と fakeAsync](10-sca-jv-lifecycle.md)
+← 前: [Jasmine から Vitest へ（4）：lifecycle と fakeAsync](10-sca-jv-lifecycle.md)  
+次: [sass の url を書き換える：lexer と rebasing-importer](../bld/01-bld-sass-rebase.md) →

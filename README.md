@@ -1,6 +1,6 @@
 # Angular Deep Dive
 
-Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 76 シリーズ・854 章。
+Angular の内側（angular/angular と angular/angular-cli のソース）を、1 ステップずつ読む日本語の連載です。全 77 シリーズ・863 章。
 
 各章の Markdown は、[サイト](https://angular-deep-dive-cyan.vercel.app) の本番ビルドから `npm run build` で作っています。コードの引用は行番号つきで、▶ の付いた行が本文で読む行です。デモはボタンで動くので、各章の「サイトで読む」から開いてください。
 
@@ -84,6 +84,7 @@ Angular の内側（angular/angular と angular/angular-cli のソース）を�
 74. [ng コマンドの内側](ngx/README.md)（10 章）— @angular/cli を読む：引数の読み方・schema から作るオプション・設定・パッケージマネージャー・ng add と ng update・analytics・MCP サーバー
 75. [@angular-devkit の内側](dvk/README.md)（12 章）— core・schematics・architect を読む：仮想ファイルシステム・JSON schema・ワークスペース・Tree とエンジン・ワークフロー・jobs・builder の呼び方
 76. [@schematics/angular の道具と移行](sca/README.md)（11 章）— utility・migrations・refactor を読む：Change と AST の道具・依存の追加・standalone の書き換え・builder の移行・Jasmine から Vitest へ
+77. [@angular/build の読み残し（sass・i18n・dev-server・unit-test）](bld/README.md)（9 章）— sass の url の書き換えとワーカー・extract-i18n と翻訳の差し込み・チャンクの最適化と esbuild の小道具・dev-server と Vite の middleware の残り・ng-packagr と unit-test の builder・spec と issue
 
 ## 作り直し方
 

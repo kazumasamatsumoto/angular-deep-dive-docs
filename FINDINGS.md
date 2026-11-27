@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（52 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（53 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1361,3 +1361,15 @@ await cycle(); // 3 回目に戻す
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/sca-tests-issues)
 
 refactor-jasmine-vitest は、44129f66a3（2026-09-10）のあと、2026-10-24〜11-17 に 11 の修正が main に入り（うち 7 つは 22.2.7 にも。第 8〜10 回の「直った」の行）、今も PR が 3 つ開いている、動きの多い所です。直っていない不具合のうち refactor のものは、変換の出力の文字列としては「正しく」、変換後を Vitest か型の検査に通して初めて見えるものがほとんどでした。utility と migrations の不具合は、spec の無いファイル（`change.ts`・`json-file.ts`・`css-import-lexer.ts`・`app_component.ts`）か、spec が通らない形（別のパッケージの builder、config schematic の名前の規則）の上にありました。
+
+## @angular/build の読み残し（sass・i18n・dev-server・unit-test）
+
+### [spec と issue を読む：@angular/build の読み残しを固めているもの](bld/09-bld-tests-issues.md) — 6. このシリーズで見つけたもの（食い違いと不具合）
+
+「食い違い」は説明（JSDoc・schema・コミットの説明・title / summary）と実装が合わない所、「不具合」は記録で壊れ方を確かめた所、「壊れる入力」は思った形にならない入力、「事実」は直す話ではないが知っておくべき所です。最後の列は新しい本家（1e4b0960d8）で同じかどうかで、22.2.x で直ったものはそのコミットを書いています。
+
+> **🧪 DEMO — 見つけたものを種類と章で絞る（38 件）**
+>
+> ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/bld-tests-issues)
+
+第 5〜8 回で見つけたものは、gh で開いている issue と閉じた issue を検索して、同じ報告は見つかりませんでした。近いものとして、#34248 は 7 回目の 94 行目とは別の原因（ビルドの側の古い中身）、#28656 は 133 行目の正規表現が正しい ID を拒んだ別の件（2024-10 に閉じた）、#34044 は 5 回目の 116〜118 行目で閉じた件です。
