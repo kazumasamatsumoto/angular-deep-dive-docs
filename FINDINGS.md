@@ -4,7 +4,7 @@
 
 これまでの連載で、本家（angular/angular・angular/angular-cli・angular/components）のソースを読んでいる途中で見つけた不具合や食い違いを、シリーズごとに 1 か所に集めたものです。どれも本家には issue も PR も出していません。手元で直したものは、本家の木とは別の複製（`../angular-fix` など）の枝にだけあります。
 
-この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（53 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
+この一覧は、各章の「このシリーズで見つけたもの」などの節を `npm run build` のたびに集め直して作っています（54 シリーズ）。行番号や確かめ方は各章のとおりで、デモは各章の「サイトで読む」（https://angular-deep-dive-cyan.vercel.app）から動かせます。
 
 ## 手元で直したもの（見つけた不具合を手元で直す）
 
@@ -1373,3 +1373,18 @@ refactor-jasmine-vitest は、44129f66a3（2026-09-10）のあと、2026-10-24�
 > ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/bld-tests-issues)
 
 第 5〜8 回で見つけたものは、gh で開いている issue と閉じた issue を検索して、同じ報告は見つかりませんでした。近いものとして、#34248 は 7 回目の 94 行目とは別の原因（ビルドの側の古い中身）、#28656 は 133 行目の正規表現が正しい ID を拒んだ別の件（2024-10 に閉じた）、#34044 は 5 回目の 116〜118 行目で閉じた件です。
+
+## webpack の builder の内側：@angular-devkit/build-angular と schematics の CLI
+
+### [spec と issue を読む：webpack の builder と schematics の CLI を固めているもの](bwp/12-bwp-tests-issues.md) — 6. このシリーズで見つけたもの（食い違いと不具合）
+
+第 1〜11 回の記録で確かめた、説明・コメント・schema の約束と実装の食い違い、壊れる入力、不具合です。行は 44129f66a3、「main」は origin/main（2026-11-27）と 22.2.x の枝で直っているか、「issue」は gh で探した結果です。種類は、振る舞いが約束と違って利用者に見えるものを「不具合」、コメント・説明・使われない option など読み手が誤るものを「食い違い」、壊れる引数やファイルを「壊れる入力」、文言だけのものを「説明」にしました。
+
+> **🧪 DEMO — 食い違いと不具合を絞る**
+>
+> ▶ [このデモはサイトで動かせます](https://angular-deep-dive-cyan.vercel.app/chapter/bwp-tests-issues)
+
+> [!NOTE]
+> **ポイント**
+>
+> 直ったものは 3 つの形に分かれます。22.2.x の枝に cherry-pick されて 22.2.7 に入ったもの（B1 の ssr-dev-server の Host、B15 の `--debug=false`、B14 の karma の schema の説明）、origin/main だけで直って 22.2.x には無いもの（B10 の copy-assets の symlink、#34164）、どちらでも未修正のものです。未修正のものの多くは、2 つの builder の間の名前の確かめ（prerender・app-shell・extract-i18n が `@angular/build:application` を知らない）と、記録しないと見えないログの抜け（karma の spec が無い文、ssr-dev-server の stdout の無視）でした。

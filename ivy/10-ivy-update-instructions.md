@@ -117,7 +117,7 @@ angular/angular · 読了 約 12 分 · 中核 · [サイトで読む（デモ�
 16 ▶   typeof ngDevMode === 'undefined' || ngDevMode ? {__brand__: 'NO_CHANGE'} : ({} as NO_CHANGE);
 ```
 
-初回はどうなるのでしょう。133 行目、blueprint の VARS 区画は `NO_CHANGE` で埋められています。`NO_CHANGE` は 15〜16 行目のとおり、ただの空オブジェクトです。他のどんな値とも `Object.is` で一致しないので、**初回の比較は必ず「変わった」になり**、DOM への初回書き込みが起こります。
+初回はどうなるのでしょう。133 行目、blueprint の VARS 区画は `NO_CHANGE` で埋められています。`NO_CHANGE` は 15〜16 行目のとおり、開発モードでは `__brand__` だけを持つオブジェクト、本番では空のオブジェクトです。中身ではなく、同じ 1 つのオブジェクトかどうかで見分けます。他のどんな値とも `Object.is` で一致しないので、**初回の比較は必ず「変わった」になり**、DOM への初回書き込みが起こります。
 
 ## 3. bindingUpdated：Object.is の 1 行
 

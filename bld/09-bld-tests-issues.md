@@ -272,4 +272,5 @@ ng build や ng serve では途中の値（metafile の行、componentStyles の
 
 ---
 
-← 前: [unit-test と ng-packagr の builder の残り](08-bld-unit-test-packagr.md)
+← 前: [unit-test と ng-packagr の builder の残り](08-bld-unit-test-packagr.md)  
+次: [browser builder の流れ：options から webpack の実行まで](../bwp/01-bwp-browser.md) →
